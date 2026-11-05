@@ -123,9 +123,13 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 | R701–R704 | 100 kΩ 1 % (NTC pull-ups) | 0603 | C25803 | Basic | 16.6 M |
 | C701–C704 | 100 nF 50 V X7R (GPIO) | 0603 | C14663 | Basic | 36.6 M |
 | TH701 | Murata NCP18WF104F12RB, 100 k 1 % B 4250 K | 0603 | C71280 | Extended | 115 k |
-| J1–J4 | Connectors | TBD | TBD | | |
+| J1, J5 | JST B10B-PH-K-S(LF)(SN), 1×10 2 mm, 100 V 2 A (cell taps) | JST_PH_B10B-PH-K_1x10_P2.00mm_Vertical | C158038 | Extended | 25,205 |
+| J2 | JST B6B-PH-K-S(LF)(SN), 1×6 (cell NTCs) | JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical | C131342 | Extended | 32,477 |
+| J3, J4 | JST B2B-PH-K-S(LF)(SN), 1×2 (isoSPI A / B) | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical | C131337 | Extended | 293,303 |
 
-There are 5 Extended lines: U1, R201–R218, Q301, T501/T601 and TH701. Every capacitor is Basic.
+There are 8 Extended lines: U1, R201–R218, Q301, T501/T601, TH701 and the three JST PH
+sizes. Every capacitor is Basic. The connectors are through-hole, so they need JLC's THT
+assembly or hand soldering.
 
 Why these values are safe at the voltages involved:
 
@@ -149,16 +153,36 @@ Source: Fig. 2 and Table 14, plus the Watchdog and Discharge Timer section (Tabl
 | 56 WDT | no-connect flag | Open-drain output; Table 14 allows it to be left disconnected. The slave has no local host to read it, and the master already sees a timeout through isoSPI. |
 | 43–47 GPIO5–GPIO9 | no-connect flag | Spare. Firmware turns on their internal pull-downs so the inputs don't float: write GPIOx = 0 for GPIO5–8 (CFGAR0 / CFGBR0) and DCC0 = 1 for GPIO9 (Table 72). A watchdog timeout restores the defaults (pull-downs off), so firmware rewrites them after each wake-up. GPIO5 can't join GPIO4 as an I²C pair because GPIO4 carries the onboard NTC. |
 
-## Connector candidates (harness not decided)
+## Connectors: JST PH (decided 2026-11-05)
 
-| Function | Pins | Candidates |
+All connectors are JST PH (2 mm pitch, top-entry through-hole, rated 100 V / 2 A). PH
+stops at 16 circuits, so the 19 cell taps split across two 10-pin headers. C9 appears on
+both, so each harness half carries its own reference.
+
+| Ref | Pins | Pinout |
 |---|---|---|
-| Cell taps C0–C18 | 19 (+1 spare) | Molex Micro-Fit 3.0 2×10 (3 mm, 5 A, 600 V); JST XH 1×20 (2.5 mm, 250 V, long); Würth WR-MPC3 2×10; JST GH 1.25 mm (only 50 V rating, too low for the end-to-end stack) |
-| Cell NTCs | 6 (3 × 2) | JST PH 1×6 (2 mm); JST GH 1×6; 3 × JST PH 2-pin |
-| isoSPI A in / B out | 2 each | Molex Micro-Fit 3.0 1×2 or Micro-Lock Plus; JST GH 1×2 (signals sit near V− of the module); twisted pair |
+| J1 CELL_TAPS_C0-C9 | 10 | pin n = C(n−1): pin 1 = C0 (V−) … pin 10 = C9 |
+| J5 CELL_TAPS_C9-C18 | 10 | pin n = C(n+8): pin 1 = C9 … pin 10 = C18 (top of stack) |
+| J2 NTC_3x2 | 6 | 1–2 NTC1 (GPIO1, V−), 3–4 NTC2 (GPIO2, V−), 5–6 NTC3 (GPIO3, V−); odd pin = GPIO |
+| J3 ISOSPI_A_IN, J4 ISOSPI_B_OUT | 2 | pin 1 = +, pin 2 = − (transformer line side); twisted pair, wired pin-to-pin |
 
-For plug-and-play, put C0 and C18 at opposite ends of the cell-tap connector, and choose a
-pin order whose partial mating can't put the full stack across two adjacent pins.
+Why these choices:
+
+- **Voltage:** adjacent pins differ by one cell (≤ 4.2 V). The largest span across one header
+  is 9 cells (37.8 V). The highest pin sits at 75.6 V to V−, under PH's 100 V rating. Keep
+  J1 and J5 at least 1 mm apart on the PCB (IPC-2221 B2 asks 0.6 mm at 51–100 V).
+- **Current:** balance current is about 110 mA per tap, well inside 2 A and PH's 24–32 AWG wire.
+- **Shared C9:** it carries only C9's sense and balance current. If either plug is off,
+  the other half still has its reference.
+- **Rejected:** a single connector would mean Micro-Fit or XH 1×20 (bigger). GH is rated
+  only 50 V.
+
+Risks to watch:
+
+- PH has only a friction lock, so it can back out under vibration. Use a dab of RTV or a
+  retention clip if the motor shakes it loose.
+- Hot-plug: if J5 mates before J1, C9–C18 float relative to V−. The plug order (J1 first)
+  and the per-cell clamps are still open below.
 
 ## Open items
 
@@ -183,9 +207,10 @@ pin order whose partial mating can't put the full stack across two adjacent pins
 - [ ] KiCad ERC reports unconnected pins as **errors**, not warnings (299 on the unwired
       sheet: pin_not_connected, pin_not_driven, power_pin_not_driven). They disappear as
       the circuit is wired. V+, VREG and V− will need PWR_FLAGs.
-- [ ] Hot-plug protection for the plug-and-play harness (connector pin order, per-cell
+- [ ] Hot-plug protection for the plug-and-play harness (J1-before-J5 plug order, per-cell
       clamps).
-- [ ] Connector and harness pinout matched to the Funwheel pack (candidates above).
+- [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
+- [ ] Harness: match J1/J5/J2 pin order to the Funwheel pack's tap and NTC wiring.
 - [ ] Board outline (the current 120 × 70 mm rectangle is a placeholder).
 - [ ] EVAL-ADBMS1818Z schematic not reviewed (not supplied). Cross-check pins and the
       transformer against it if it turns up.
