@@ -1,5 +1,7 @@
 # Private reference material (Racc's pictures) - local only, never published
 _reference/racc/
+# Vendor datasheets (copyrighted) - local only
+_reference/datasheets/
 
 # Local sessions and recovery copies
 *.kicad_prl
