@@ -11,12 +11,7539 @@
 		(comment 1 "Baseline: ADBMS1818 datasheet Figure 112 typical application")
 		(comment 2 "Not for manufacture")
 	)
-	(lib_symbols)
-	(text "Clean slate. Build from the ADBMS1818 typical application (datasheet Fig. 112).\nSee ../docs/slave-18s-design-basis.md for values and open items."
+	(lib_symbols
+		(symbol "ADBMS1818:ADBMS1818"
+			(pin_names (offset 1.016))
+			(exclude_from_sim no) (in_bom yes) (on_board yes)
+			(property "Reference" "U" (at 0 54.61 0) (effects (font (size 1.27 1.27))))
+			(property "Value" "ADBMS1818" (at 0 -58.42 0) (effects (font (size 1.27 1.27))))
+			(property "Footprint" "Package_QFP:LQFP-64-1EP_10x10mm_P0.5mm_EP5x5mm_ThermalVias" (at 0 -60.96 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/adbms1818.pdf" (at 0 -63.5 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(property "Description" "18-cell battery stack monitor, isoSPI, 64-lead LQFP_EP (SW-64-2 / 05-08-1982)" (at 0 -66.04 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(property "MPN" "ADBMS1818ASWZ" (at 0 -68.58 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "" (at 0 -71.12 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(symbol "ADBMS1818_0_1"
+				(rectangle (start -17.78 50.8) (end 17.78 -50.8) (stroke (width 0.254) (type default)) (fill (type background)))
+			)
+			(symbol "ADBMS1818_1_1"
+				(pin power_in line (at -20.32 48.26 0) (length 2.54)
+					(name "V+" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 45.72 0) (length 2.54)
+					(name "C18" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 43.18 0) (length 2.54)
+					(name "S18" (effects (font (size 1.27 1.27))))
+					(number "3" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 40.64 0) (length 2.54)
+					(name "C17" (effects (font (size 1.27 1.27))))
+					(number "4" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 38.10 0) (length 2.54)
+					(name "S17" (effects (font (size 1.27 1.27))))
+					(number "5" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 35.56 0) (length 2.54)
+					(name "C16" (effects (font (size 1.27 1.27))))
+					(number "6" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 33.02 0) (length 2.54)
+					(name "S16" (effects (font (size 1.27 1.27))))
+					(number "7" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 30.48 0) (length 2.54)
+					(name "C15" (effects (font (size 1.27 1.27))))
+					(number "8" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 27.94 0) (length 2.54)
+					(name "S15" (effects (font (size 1.27 1.27))))
+					(number "9" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 25.40 0) (length 2.54)
+					(name "C14" (effects (font (size 1.27 1.27))))
+					(number "10" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 22.86 0) (length 2.54)
+					(name "S14" (effects (font (size 1.27 1.27))))
+					(number "11" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 20.32 0) (length 2.54)
+					(name "C13" (effects (font (size 1.27 1.27))))
+					(number "12" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 17.78 0) (length 2.54)
+					(name "S13" (effects (font (size 1.27 1.27))))
+					(number "13" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 15.24 0) (length 2.54)
+					(name "C12" (effects (font (size 1.27 1.27))))
+					(number "14" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 12.70 0) (length 2.54)
+					(name "S12" (effects (font (size 1.27 1.27))))
+					(number "15" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 10.16 0) (length 2.54)
+					(name "C11" (effects (font (size 1.27 1.27))))
+					(number "16" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 7.62 0) (length 2.54)
+					(name "S11" (effects (font (size 1.27 1.27))))
+					(number "17" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 5.08 0) (length 2.54)
+					(name "C10" (effects (font (size 1.27 1.27))))
+					(number "18" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 2.54 0) (length 2.54)
+					(name "S10" (effects (font (size 1.27 1.27))))
+					(number "19" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 0.00 0) (length 2.54)
+					(name "C9" (effects (font (size 1.27 1.27))))
+					(number "20" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -2.54 0) (length 2.54)
+					(name "S9" (effects (font (size 1.27 1.27))))
+					(number "21" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -5.08 0) (length 2.54)
+					(name "C8" (effects (font (size 1.27 1.27))))
+					(number "22" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -7.62 0) (length 2.54)
+					(name "S8" (effects (font (size 1.27 1.27))))
+					(number "23" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -10.16 0) (length 2.54)
+					(name "C7" (effects (font (size 1.27 1.27))))
+					(number "24" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -12.70 0) (length 2.54)
+					(name "S7" (effects (font (size 1.27 1.27))))
+					(number "25" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -15.24 0) (length 2.54)
+					(name "C6" (effects (font (size 1.27 1.27))))
+					(number "26" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -17.78 0) (length 2.54)
+					(name "S6" (effects (font (size 1.27 1.27))))
+					(number "27" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -20.32 0) (length 2.54)
+					(name "C5" (effects (font (size 1.27 1.27))))
+					(number "28" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -22.86 0) (length 2.54)
+					(name "S5" (effects (font (size 1.27 1.27))))
+					(number "29" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -25.40 0) (length 2.54)
+					(name "C4" (effects (font (size 1.27 1.27))))
+					(number "30" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -27.94 0) (length 2.54)
+					(name "S4" (effects (font (size 1.27 1.27))))
+					(number "31" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -30.48 0) (length 2.54)
+					(name "C3" (effects (font (size 1.27 1.27))))
+					(number "32" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -33.02 0) (length 2.54)
+					(name "S3" (effects (font (size 1.27 1.27))))
+					(number "33" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -35.56 0) (length 2.54)
+					(name "C2" (effects (font (size 1.27 1.27))))
+					(number "34" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -38.10 0) (length 2.54)
+					(name "S2" (effects (font (size 1.27 1.27))))
+					(number "35" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -40.64 0) (length 2.54)
+					(name "C1" (effects (font (size 1.27 1.27))))
+					(number "36" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at -20.32 -43.18 0) (length 2.54)
+					(name "S1" (effects (font (size 1.27 1.27))))
+					(number "37" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at -20.32 -45.72 0) (length 2.54)
+					(name "C0" (effects (font (size 1.27 1.27))))
+					(number "38" (effects (font (size 1.27 1.27))))
+				)
+				(pin output line (at 20.32 48.26 180) (length 2.54)
+					(name "DRIVE" (effects (font (size 1.27 1.27))))
+					(number "49" (effects (font (size 1.27 1.27))))
+				)
+				(pin power_in line (at 20.32 45.72 180) (length 2.54)
+					(name "VREG" (effects (font (size 1.27 1.27))))
+					(number "48" (effects (font (size 1.27 1.27))))
+				)
+				(pin output line (at 20.32 43.18 180) (length 2.54)
+					(name "VREF1" (effects (font (size 1.27 1.27))))
+					(number "51" (effects (font (size 1.27 1.27))))
+				)
+				(pin output line (at 20.32 40.64 180) (length 2.54)
+					(name "VREF2" (effects (font (size 1.27 1.27))))
+					(number "50" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 35.56 180) (length 2.54)
+					(name "IPA/SCK" (effects (font (size 1.27 1.27))))
+					(number "62" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 33.02 180) (length 2.54)
+					(name "IMA/CSB" (effects (font (size 1.27 1.27))))
+					(number "61" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 30.48 180) (length 2.54)
+					(name "IPB" (effects (font (size 1.27 1.27))))
+					(number "64" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 27.94 180) (length 2.54)
+					(name "IMB" (effects (font (size 1.27 1.27))))
+					(number "63" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at 20.32 25.40 180) (length 2.54)
+					(name "SDI/NC" (effects (font (size 1.27 1.27))))
+					(number "53" (effects (font (size 1.27 1.27))))
+				)
+				(pin open_collector line (at 20.32 22.86 180) (length 2.54)
+					(name "SDO/NC" (effects (font (size 1.27 1.27))))
+					(number "54" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at 20.32 17.78 180) (length 2.54)
+					(name "ISOMD" (effects (font (size 1.27 1.27))))
+					(number "55" (effects (font (size 1.27 1.27))))
+				)
+				(pin input line (at 20.32 15.24 180) (length 2.54)
+					(name "DTEN" (effects (font (size 1.27 1.27))))
+					(number "52" (effects (font (size 1.27 1.27))))
+				)
+				(pin open_collector line (at 20.32 12.70 180) (length 2.54)
+					(name "WDT" (effects (font (size 1.27 1.27))))
+					(number "56" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at 20.32 10.16 180) (length 2.54)
+					(name "IBIAS" (effects (font (size 1.27 1.27))))
+					(number "57" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line (at 20.32 7.62 180) (length 2.54)
+					(name "ICMP" (effects (font (size 1.27 1.27))))
+					(number "58" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 2.54 180) (length 2.54)
+					(name "GPIO1" (effects (font (size 1.27 1.27))))
+					(number "39" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 0.00 180) (length 2.54)
+					(name "GPIO2" (effects (font (size 1.27 1.27))))
+					(number "40" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 -2.54 180) (length 2.54)
+					(name "GPIO3" (effects (font (size 1.27 1.27))))
+					(number "41" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 -5.08 180) (length 2.54)
+					(name "GPIO4" (effects (font (size 1.27 1.27))))
+					(number "42" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 -7.62 180) (length 2.54)
+					(name "GPIO5" (effects (font (size 1.27 1.27))))
+					(number "43" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 -10.16 180) (length 2.54)
+					(name "GPIO6" (effects (font (size 1.27 1.27))))
+					(number "44" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 -12.70 180) (length 2.54)
+					(name "GPIO7" (effects (font (size 1.27 1.27))))
+					(number "45" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 -15.24 180) (length 2.54)
+					(name "GPIO8" (effects (font (size 1.27 1.27))))
+					(number "46" (effects (font (size 1.27 1.27))))
+				)
+				(pin bidirectional line (at 20.32 -17.78 180) (length 2.54)
+					(name "GPIO9" (effects (font (size 1.27 1.27))))
+					(number "47" (effects (font (size 1.27 1.27))))
+				)
+				(pin power_in line (at -2.54 -53.34 90) (length 2.54)
+					(name "V-" (effects (font (size 1.27 1.27))))
+					(number "59" (effects (font (size 1.27 1.27))))
+				)
+				(pin power_in line (at 0.00 -53.34 90) (length 2.54)
+					(name "V-" (effects (font (size 1.27 1.27))))
+					(number "60" (effects (font (size 1.27 1.27))))
+				)
+				(pin power_in line (at 2.54 -53.34 90) (length 2.54)
+					(name "V-" (effects (font (size 1.27 1.27))))
+					(number "65" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:C"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 0.635 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Unpolarized capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 0.762) (xy 2.032 0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Transistor_BJT:Q_NPN_BCE"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 5.08 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Q_NPN_BCE"
+				(at 5.08 -1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "NPN transistor, base/collector/emitter"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Device" "NPN"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=B 2=C 3=E"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "BJT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Q_NPN_BCE_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy 0.635 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 1.905) (xy 0.635 -1.905)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.27 0)
+					(radius 2.8194)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Q_NPN_BCE_1_1"
+				(polyline
+					(pts
+						(xy 0.635 0.635) (xy 2.54 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 -0.635) (xy 2.54 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.778) (xy 1.778 -1.27) (xy 2.286 -2.286) (xy 1.27 -1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "E"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "isoSPI_XFMR:HM2113ZNL"
+			(pin_names (offset 0.254) (hide yes))
+			(exclude_from_sim no) (in_bom yes) (on_board yes)
+			(property "Reference" "T" (at 0 8.89 0) (effects (font (size 1.27 1.27))))
+			(property "Value" "HM2113ZNL" (at 0 -8.89 0) (effects (font (size 1.27 1.27))))
+			(property "Footprint" "slave18s:Pulse_HM2113ZNL" (at 0 -11.43 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(property "Datasheet" "https://www.pulseelectronics.com (BM101.C)" (at 0 -13.97 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(property "Description" "isoSPI/BMS transformer 1:1, 150 uH, CT both sides, line-side CMC, 4300 Vrms / 1000 VDC working" (at 0 -16.51 0) (effects (font (size 1.27 1.27)) (hide yes)))
+			(symbol "HM2113ZNL_0_1"
+				(rectangle (start -7.62 6.35) (end 7.62 -6.35) (stroke (width 0.254) (type default)) (fill (type background)))
+				(polyline (pts (xy -0.635 5.08) (xy -0.635 -5.08)) (stroke (width 0.254) (type default)) (fill (type none)))
+				(polyline (pts (xy 0.635 5.08) (xy 0.635 -5.08)) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 5.08) (mid -1.905 4.445) (end -2.54 3.81) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 3.81) (mid -1.905 3.175) (end -2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 2.54) (mid -1.905 1.905) (end -2.54 1.27) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 1.27) (mid -1.905 0.635) (end -2.54 0) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 0) (mid -1.905 -0.635) (end -2.54 -1.27) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 -1.27) (mid -1.905 -1.905) (end -2.54 -2.54) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 -2.54) (mid -1.905 -3.175) (end -2.54 -3.81) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start -2.54 -3.81) (mid -1.905 -4.445) (end -2.54 -5.08) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 3.81) (mid 1.905 4.445) (end 2.54 5.08) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 2.54) (mid 1.905 3.175) (end 2.54 3.81) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 1.27) (mid 1.905 1.905) (end 2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 0) (mid 1.905 0.635) (end 2.54 1.27) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 -1.27) (mid 1.905 -0.635) (end 2.54 0) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 -2.54) (mid 1.905 -1.905) (end 2.54 -1.27) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 -3.81) (mid 1.905 -3.175) (end 2.54 -2.54) (stroke (width 0.254) (type default)) (fill (type none)))
+				(arc (start 2.54 -5.08) (mid 1.905 -4.445) (end 2.54 -3.81) (stroke (width 0.254) (type default)) (fill (type none)))
+				(polyline (pts (xy -5.08 5.08) (xy -2.54 5.08)) (stroke (width 0) (type default)) (fill (type none)))
+				(polyline (pts (xy -5.08 0) (xy -2.54 0)) (stroke (width 0) (type default)) (fill (type none)))
+				(polyline (pts (xy -5.08 -5.08) (xy -2.54 -5.08)) (stroke (width 0) (type default)) (fill (type none)))
+				(polyline (pts (xy 5.08 5.08) (xy 2.54 5.08)) (stroke (width 0) (type default)) (fill (type none)))
+				(polyline (pts (xy 5.08 0) (xy 2.54 0)) (stroke (width 0) (type default)) (fill (type none)))
+				(polyline (pts (xy 5.08 -5.08) (xy 2.54 -5.08)) (stroke (width 0) (type default)) (fill (type none)))
+				(circle (center -3.81 5.715) (radius 0.254) (stroke (width 0) (type default)) (fill (type outline)))
+				(circle (center 3.81 5.715) (radius 0.254) (stroke (width 0) (type default)) (fill (type outline)))
+				(text "CMC" (at 5.08 -7.112 0) (effects (font (size 0.8 0.8))))
+			)
+			(symbol "HM2113ZNL_1_1"
+				(pin passive line (at -10.16 5.08 0) (length 2.54) (name "PHY+" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27)))))
+				(pin passive line (at -10.16 0 0) (length 2.54) (name "PHY_CT" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
+				(pin passive line (at -10.16 -5.08 0) (length 2.54) (name "PHY-" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))
+				(pin passive line (at 10.16 5.08 180) (length 2.54) (name "LINE+" (effects (font (size 1.27 1.27)))) (number "6" (effects (font (size 1.27 1.27)))))
+				(pin passive line (at 10.16 0 180) (length 2.54) (name "LINE_CT" (effects (font (size 1.27 1.27)))) (number "5" (effects (font (size 1.27 1.27)))))
+				(pin passive line (at 10.16 -5.08 180) (length 2.54) (name "LINE-" (effects (font (size 1.27 1.27)))) (number "4" (effects (font (size 1.27 1.27)))))
+			)
+		)
+		(symbol "Device:Thermistor_NTC"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TH"
+				(at -4.445 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Thermistor_NTC"
+				(at 3.175 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "thermistor NTC resistor sensor RTD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_* RV_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Thermistor_NTC_0_1"
+				(arc
+					(start -3.175 2.413)
+					(mid -3.0506 2.3165)
+					(end -3.048 2.159)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -3.048 2.794)
+					(mid -2.9736 2.9736)
+					(end -2.794 3.048)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 3.048)
+					(mid -2.6144 2.9736)
+					(end -2.54 2.794)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 2.54)
+					(mid -2.9736 2.6144)
+					(end -3.048 2.794)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.794 1.905)
+					(mid -2.9736 1.9794)
+					(end -3.048 2.159)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.54 2.159)
+					(mid -2.6144 1.9794)
+					(end -2.794 1.905)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -2.159 2.794)
+					(mid -2.434 2.5608)
+					(end -2.794 2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 2.159) (xy -2.54 2.794)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -3.683) (xy -2.54 -1.397) (xy -2.794 -2.159) (xy -2.286 -2.159) (xy -2.54 -1.397) (xy -2.54 -1.651)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.54) (xy -1.778 1.524) (xy 1.778 -1.524) (xy 1.778 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -1.397) (xy -1.778 -3.683) (xy -2.032 -2.921) (xy -1.524 -2.921) (xy -1.778 -3.683)
+						(xy -1.778 -3.429)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.016 2.54)
+					(end 1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Thermistor_NTC_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector_Generic:Conn_01x19"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 25.4 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x19"
+				(at 0 -25.4 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x19, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x19_1_1"
+				(rectangle
+					(start -1.27 24.13)
+					(end 1.27 -24.13)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 22.987)
+					(end 0 22.733)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 20.447)
+					(end 0 20.193)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 17.907)
+					(end 0 17.653)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 15.367)
+					(end 0 15.113)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 12.827)
+					(end 0 12.573)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 10.287)
+					(end 0 10.033)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 7.747)
+					(end 0 7.493)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 5.207)
+					(end 0 4.953)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -4.953)
+					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -7.493)
+					(end 0 -7.747)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -10.033)
+					(end 0 -10.287)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -12.573)
+					(end 0 -12.827)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -15.113)
+					(end 0 -15.367)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -17.653)
+					(end 0 -17.907)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -20.193)
+					(end 0 -20.447)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -22.733)
+					(end 0 -22.987)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 22.86 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 20.32 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 17.78 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 15.24 0)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 12.7 0)
+					(length 3.81)
+					(name "Pin_5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 10.16 0)
+					(length 3.81)
+					(name "Pin_6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 7.62 0)
+					(length 3.81)
+					(name "Pin_7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 5.08 0)
+					(length 3.81)
+					(name "Pin_8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "Pin_9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "Pin_12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -7.62 0)
+					(length 3.81)
+					(name "Pin_13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -10.16 0)
+					(length 3.81)
+					(name "Pin_14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -12.7 0)
+					(length 3.81)
+					(name "Pin_15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -15.24 0)
+					(length 3.81)
+					(name "Pin_16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -17.78 0)
+					(length 3.81)
+					(name "Pin_17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -20.32 0)
+					(length 3.81)
+					(name "Pin_18"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "18"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -22.86 0)
+					(length 3.81)
+					(name "Pin_19"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "19"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector_Generic:Conn_01x06"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x06"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x06_1_1"
+				(rectangle
+					(start -1.27 6.35)
+					(end 1.27 -8.89)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 5.207)
+					(end 0 4.953)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -4.953)
+					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -7.493)
+					(end 0 -7.747)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 5.08 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "Pin_5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -7.62 0)
+					(length 3.81)
+					(name "Pin_6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector_Generic:Conn_01x02"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x02"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x02_1_1"
+				(rectangle
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(text "Parts placed UNWIRED, grouped by function. Values, footprints, LCSC and MPN are filled in.\nWire per ADBMS1818 Figure 112 + Racc isoSPI filtering. See ../docs/slave-18s-design-basis.md."
 		(exclude_from_sim no)
-		(at 25.4 25.4 0)
+		(at 15.24 15.24 0)
 		(effects (font (size 2 2)) (justify left top))
-		(uuid "0c7b5a1e-2f42-4c55-b1a8-5d3a6e9f1818")
+		(uuid "79970fdc-5dd3-472a-87a0-228a2b4a521b")
+	)
+	(text "U1  ADBMS1818 (64-LQFP_EP, EP = V-)"
+		(exclude_from_sim no)
+		(at 50.800000000000004 66.03999999999999 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "a71e4a06-4db6-4bfb-9baf-d287d25ff7ca")
+	)
+	(text "CELL INPUTS  R100-R118: 10 ohm series on C0-C18"
+		(exclude_from_sim no)
+		(at 106.68 35.56 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "5fada218-09f2-4239-95ab-42c0bd72a90e")
+	)
+	(text "C101-C118: 100 nF 100 V, Cn (after 10 ohm) to V-"
+		(exclude_from_sim no)
+		(at 106.68 60.96000000000001 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "691525bc-2492-4d61-864d-96588848d08c")
+	)
+	(text "R201-R218: 33 ohm 1 W balance, cell n node (before 10 ohm) to Sn"
+		(exclude_from_sim no)
+		(at 106.68 109.22 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "2b47f784-b7b6-4ad4-87d2-72e9af3391b7")
+	)
+	(text "SUPPLY: V+ filter, DRIVE NPN -> VREG, VREF1/2"
+		(exclude_from_sim no)
+		(at 106.68 162.56 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "d9947530-afcf-4f67-8324-c9be454ff671")
+	)
+	(text "isoSPI BIAS: IBIAS-1k-ICMP-1k-V-"
+		(exclude_from_sim no)
+		(at 259.08000000000004 162.56 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "a49a1fcc-c680-4446-a498-d344a3edba99")
+	)
+	(text "isoSPI PORT A: 2x51 ohm split term + 10 nF CTs"
+		(exclude_from_sim no)
+		(at 106.68 195.58 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "bd7f911a-db4d-4db2-afe1-ed3ddd5c3d61")
+	)
+	(text "isoSPI PORT B: 2x51 ohm split term + 10 nF CTs"
+		(exclude_from_sim no)
+		(at 226.05999999999997 195.58 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "c7be014a-738f-4e13-b9a5-ce53b87f2525")
+	)
+	(text "THERMISTORS: 100k to VREF2 + 100 nF, GPIO1-3 cell NTC, GPIO4 onboard"
+		(exclude_from_sim no)
+		(at 106.68 233.68 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "988401d3-d36e-44e3-ad58-ff0d76b468d9")
+	)
+	(text "CONNECTORS (TBD)"
+		(exclude_from_sim no)
+		(at 360.68 50.8 0)
+		(effects (font (size 2 2) (bold yes)) (justify left bottom))
+		(uuid "3fa464a7-c633-45b2-b8a8-87ad63163689")
+	)
+	(symbol
+		(lib_id "ADBMS1818:ADBMS1818")
+		(at 55.88 127.0 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a4edaba7-7dda-431e-b89d-d6183e0832df")
+		(property "Reference" "U1"
+			(at 55.88 72.39 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "ADBMS1818"
+			(at 55.88 185.42 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Package_QFP:LQFP-64-1EP_10x10mm_P0.5mm_EP5x5mm_ThermalVias"
+			(at 55.88 127.0 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 55.88 127.0 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "18-cell battery monitor, LQFP-64-EP 10x10 (SW-64-2), Extended"
+			(at 55.88 127.0 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C5372802"
+			(at 55.88 127.0 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "ADBMS1818ASWAZ-RL"
+			(at 55.88 127.0 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Pin 2 = C18 ... pin 38 = C0. EP (pin 65) to V- plane. ISOMD to VREG."
+			(at 55.88 127.0 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "fdd01386-91ac-4e7d-b9bb-4d4b5eddec4e")
+		)
+		(pin "2"
+			(uuid "8fec62c8-f3ea-4d6a-a938-00373b496516")
+		)
+		(pin "3"
+			(uuid "d38ffaf1-a761-4d5c-83d2-c8c40f203770")
+		)
+		(pin "4"
+			(uuid "9d59c9f4-74a6-4f46-b6b4-24996294e9fb")
+		)
+		(pin "5"
+			(uuid "d14dbec8-9bb8-4109-9cda-75cfeac0b0a8")
+		)
+		(pin "6"
+			(uuid "b3d55b8b-c213-46ef-a590-54afff88c487")
+		)
+		(pin "7"
+			(uuid "c1babe54-02a4-46fd-8e3c-58fe05fdc0f5")
+		)
+		(pin "8"
+			(uuid "e7ab3bc6-f77f-4809-9653-6ed29cd3e183")
+		)
+		(pin "9"
+			(uuid "744e2de9-2c80-411f-9dff-d1a7c065b565")
+		)
+		(pin "10"
+			(uuid "5189f8fe-b7b1-4fea-8b23-12c10dfe48ca")
+		)
+		(pin "11"
+			(uuid "feb01fce-7a9c-4807-a93d-d245075da2cb")
+		)
+		(pin "12"
+			(uuid "1db94731-322b-4824-b896-b6d98d2230cb")
+		)
+		(pin "13"
+			(uuid "50492493-e9ef-4fb5-8174-f89f41bc0f59")
+		)
+		(pin "14"
+			(uuid "e407de57-2ea9-43a7-b22c-6aa99a28b48e")
+		)
+		(pin "15"
+			(uuid "9a99548b-41d1-4afd-bb49-a64077618c4f")
+		)
+		(pin "16"
+			(uuid "33ca73d7-93fb-43e6-a31b-1e7287df00f7")
+		)
+		(pin "17"
+			(uuid "71c2fe5a-979d-41fc-a3b7-fe2485ba615e")
+		)
+		(pin "18"
+			(uuid "7eaf8bd6-ae33-4dee-8f05-901cbc586d76")
+		)
+		(pin "19"
+			(uuid "074dd74e-5437-407d-b480-3335984bb782")
+		)
+		(pin "20"
+			(uuid "e5736b13-cc68-4b8c-b886-abb93313b76a")
+		)
+		(pin "21"
+			(uuid "2279c7f4-328f-410d-a671-8d8178803131")
+		)
+		(pin "22"
+			(uuid "ae08e77e-f209-4602-91f5-aa4b405dca18")
+		)
+		(pin "23"
+			(uuid "f3bbc335-8213-4049-bf9d-3835766894b1")
+		)
+		(pin "24"
+			(uuid "63fb7f6b-9e02-4c6a-856e-0ad0ac328820")
+		)
+		(pin "25"
+			(uuid "18e28f5e-17e6-493d-ac03-ddb50c63e40d")
+		)
+		(pin "26"
+			(uuid "94871895-619a-49cf-8393-de4c97cb79e3")
+		)
+		(pin "27"
+			(uuid "2447619e-89b4-498c-88fd-4eb9cfc61b65")
+		)
+		(pin "28"
+			(uuid "bfc46add-8ad2-4827-b079-8255fb291cf9")
+		)
+		(pin "29"
+			(uuid "1b20f123-a3f6-4505-a205-c208e746f7ea")
+		)
+		(pin "30"
+			(uuid "cf45c1ae-a4b9-43ff-bf44-c5be061991dd")
+		)
+		(pin "31"
+			(uuid "3f29db68-092e-45ad-894a-8f47eb26b8bd")
+		)
+		(pin "32"
+			(uuid "2ee2b199-9b4b-4b50-b40d-91c59c9b21a7")
+		)
+		(pin "33"
+			(uuid "bde49a44-56e1-4d76-a952-da78923c036e")
+		)
+		(pin "34"
+			(uuid "b7b388cc-25af-4795-b862-11d6a3002237")
+		)
+		(pin "35"
+			(uuid "fe17e947-fb2b-4063-a238-b0b5f9f8d2a4")
+		)
+		(pin "36"
+			(uuid "b2f94103-f9ea-4f9d-9202-da37af88636a")
+		)
+		(pin "37"
+			(uuid "4b28799a-6d7d-44c0-bba4-2f5746223b2f")
+		)
+		(pin "38"
+			(uuid "0a80f933-0c13-46a1-b647-f01b8cb249df")
+		)
+		(pin "39"
+			(uuid "fe56be9e-1a0a-48fe-8e75-53ca6707767b")
+		)
+		(pin "40"
+			(uuid "b63e8b60-a1ef-467f-9c63-318b898c8f40")
+		)
+		(pin "41"
+			(uuid "5beaba50-b4c4-4a2b-be47-5a1918b1638f")
+		)
+		(pin "42"
+			(uuid "724967b4-734a-498d-a196-ccb65c071768")
+		)
+		(pin "43"
+			(uuid "d114bf12-9ee3-4efe-b091-dc132627dba1")
+		)
+		(pin "44"
+			(uuid "c56e2ab7-aba0-4632-8022-6058ed7ba66f")
+		)
+		(pin "45"
+			(uuid "28c83b7d-9196-4851-ba50-eb65382ff880")
+		)
+		(pin "46"
+			(uuid "8be23201-c7f1-436f-8f29-46f110df5c7d")
+		)
+		(pin "47"
+			(uuid "56c52cb4-473e-4809-93d2-9cf8fe492b25")
+		)
+		(pin "48"
+			(uuid "a05bc35d-ebd6-4e81-a1fe-97e09c40a345")
+		)
+		(pin "49"
+			(uuid "0af74acc-67a5-49a6-99f6-981e7cebaffc")
+		)
+		(pin "50"
+			(uuid "eae3ffdd-e572-4146-8fb0-6cde88250efc")
+		)
+		(pin "51"
+			(uuid "3d7aad39-aabd-409b-8c59-a7e521ee442c")
+		)
+		(pin "52"
+			(uuid "4e4d0659-afa0-44c6-8515-889a5ed10603")
+		)
+		(pin "53"
+			(uuid "a04e427b-a999-4b72-b024-f02c3591ec71")
+		)
+		(pin "54"
+			(uuid "8a52e559-8536-419a-aee6-f9d8ac593ed2")
+		)
+		(pin "55"
+			(uuid "9391478a-e7fa-4388-a2a7-4174696bcaa7")
+		)
+		(pin "56"
+			(uuid "31210e95-caae-4bae-9ae5-54ba3c111764")
+		)
+		(pin "57"
+			(uuid "8ba2333a-f8cc-4b11-a95c-4955378da27d")
+		)
+		(pin "58"
+			(uuid "61432346-fed9-4a85-a467-dd11b884bc17")
+		)
+		(pin "59"
+			(uuid "47f2dcd1-e751-487c-8f29-6e0c5eef13b6")
+		)
+		(pin "60"
+			(uuid "31432bd2-4a15-426c-af07-b6fa98e58874")
+		)
+		(pin "61"
+			(uuid "2039303b-2634-45b2-b836-91418b2ca558")
+		)
+		(pin "62"
+			(uuid "d428198b-6cb8-4193-bbd9-e5bc748a64cc")
+		)
+		(pin "63"
+			(uuid "222a68b7-643f-4f08-8cfb-457ff203ee1b")
+		)
+		(pin "64"
+			(uuid "4a3a6fdf-50ff-4d71-a339-962a88676548")
+		)
+		(pin "65"
+			(uuid "29525ceb-650a-4990-8f81-496e3fcbcd38")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 111.76 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "46fa51b2-d190-4079-b6c5-e77669091441")
+		(property "Reference" "R100"
+			(at 114.3 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 114.3 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 111.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 111.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 111.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 111.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C0 series resistor (Fig. 112)"
+			(at 111.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "3d7582ee-7ae7-4338-abca-0748b4189cb2")
+		)
+		(pin "2"
+			(uuid "fdb1c38f-2103-4ca9-82b0-1d4733edb3be")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R100")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 124.46 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "176ad7fc-2a6e-4738-bf8e-5cfeaa63f6a6")
+		(property "Reference" "R101"
+			(at 127.0 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 127.0 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 124.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 124.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 124.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 124.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 124.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C1 series resistor (Fig. 112)"
+			(at 124.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "f0e7faa5-9f35-4fe1-b110-01d02b88028c")
+		)
+		(pin "2"
+			(uuid "bcc47f26-6e94-4da4-b24a-2c77afeb853a")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 137.16 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ed1ec264-87aa-40f1-a4c8-594c7c3e591a")
+		(property "Reference" "R102"
+			(at 139.7 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 139.7 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 137.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 137.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 137.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 137.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 137.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C2 series resistor (Fig. 112)"
+			(at 137.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "1def8d83-0570-4e09-8dcf-ca5ef7613fbb")
+		)
+		(pin "2"
+			(uuid "0ce8efb9-e052-4a68-8a42-7a08b9692dda")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R102")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 149.86 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "be77524a-b6fa-4948-b8bf-a57e22d8f97e")
+		(property "Reference" "R103"
+			(at 152.4 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 152.4 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 149.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 149.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 149.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 149.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 149.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C3 series resistor (Fig. 112)"
+			(at 149.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "35414140-3323-410c-911e-ce725b13fcec")
+		)
+		(pin "2"
+			(uuid "c034f459-61b3-40f5-b822-48664838af7d")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R103")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 162.56 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "77a2948b-afec-482a-a3cf-a5232bc52a72")
+		(property "Reference" "R104"
+			(at 165.1 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 165.1 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 162.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 162.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 162.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 162.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 162.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C4 series resistor (Fig. 112)"
+			(at 162.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "185b3263-d26c-4538-9538-1aadcb432189")
+		)
+		(pin "2"
+			(uuid "eb77fdeb-69ab-4b02-a98d-543c5bc435b1")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 175.26 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "67e36fe2-f3be-4360-a71d-3cbdb1a468f5")
+		(property "Reference" "R105"
+			(at 177.8 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 177.8 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 175.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 175.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 175.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 175.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 175.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C5 series resistor (Fig. 112)"
+			(at 175.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "bec93677-c4c7-4351-accb-e0f52dc9f25d")
+		)
+		(pin "2"
+			(uuid "c7dd9e56-2f05-4dcb-952c-a6ee2616b5b2")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 187.96 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "866101bc-cffe-4881-93e4-5642020de65e")
+		(property "Reference" "R106"
+			(at 190.5 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 190.5 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 187.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 187.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 187.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 187.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 187.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C6 series resistor (Fig. 112)"
+			(at 187.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "90a01e40-b12f-42fd-9435-4fffe8ebe94e")
+		)
+		(pin "2"
+			(uuid "f8311615-4da1-419f-8ddf-a11f70d3985e")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R106")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 200.66 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "78e03c0f-87ab-4722-9d7a-440daefdd185")
+		(property "Reference" "R107"
+			(at 203.2 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 203.2 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 200.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 200.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 200.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 200.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 200.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C7 series resistor (Fig. 112)"
+			(at 200.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "53329d3d-0793-41fa-affc-a92f4b7d815d")
+		)
+		(pin "2"
+			(uuid "3609b4ba-8679-40dd-903c-f68b45979f2e")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R107")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 213.36 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a4f5f556-b168-4612-be7f-2e3e8d0fda78")
+		(property "Reference" "R108"
+			(at 215.9 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 215.9 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 213.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 213.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 213.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 213.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 213.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C8 series resistor (Fig. 112)"
+			(at 213.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "3261de37-6d85-40ca-aa64-841e9ff1c5e8")
+		)
+		(pin "2"
+			(uuid "341a1dad-1a81-4348-beef-7372c11098a1")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 226.06 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "93504c56-5c17-40a5-a16f-56ce403b0c56")
+		(property "Reference" "R109"
+			(at 228.6 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 228.6 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 226.06 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 226.06 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 226.06 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 226.06 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 226.06 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C9 series resistor (Fig. 112)"
+			(at 226.06 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "fa5b5691-2ce3-4600-8bf4-a022228fa1ae")
+		)
+		(pin "2"
+			(uuid "885ea101-0f25-4ebf-af88-07af3a34130d")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 238.76 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d4ac74ba-12a4-475a-bb32-2d251710b7ca")
+		(property "Reference" "R110"
+			(at 241.3 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 241.3 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 238.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 238.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 238.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 238.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 238.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C10 series resistor (Fig. 112)"
+			(at 238.76 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "9f99fafb-a555-4ba3-875f-7bb1db978180")
+		)
+		(pin "2"
+			(uuid "f5771aff-8ae2-4ae5-a08e-3c82e2fc4a35")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R110")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 251.46 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "64f33714-b747-4ea2-97bc-00b718091a2f")
+		(property "Reference" "R111"
+			(at 254.0 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 254.0 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 251.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 251.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 251.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 251.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 251.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C11 series resistor (Fig. 112)"
+			(at 251.46 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "eaa84fa1-ede6-4fff-9be3-228783fcd0b2")
+		)
+		(pin "2"
+			(uuid "3fa98b2a-fdfe-47a8-82fa-84723296e18c")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 264.16 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "177ce02a-992c-4633-8cfa-e71047df83ed")
+		(property "Reference" "R112"
+			(at 266.7 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 266.7 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 264.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 264.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 264.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 264.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 264.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C12 series resistor (Fig. 112)"
+			(at 264.16 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "b49576b5-c92a-4f72-946b-53edd8cfed1a")
+		)
+		(pin "2"
+			(uuid "967970a4-4ce6-4b7f-8b79-883909e99ced")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R112")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 276.86 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b1c97860-d404-43aa-9e3a-303f814cccc9")
+		(property "Reference" "R113"
+			(at 279.4 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 279.4 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 276.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 276.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 276.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 276.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 276.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C13 series resistor (Fig. 112)"
+			(at 276.86 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "e37d3922-e3fb-414b-9e68-001cdb1f28b5")
+		)
+		(pin "2"
+			(uuid "ce47a953-91cb-4611-83ec-dc15849e7c0c")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R113")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 289.56 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6dcafffb-8dc0-4d0f-b5cd-452e218ebc53")
+		(property "Reference" "R114"
+			(at 292.1 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 292.1 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 289.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 289.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 289.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 289.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 289.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C14 series resistor (Fig. 112)"
+			(at 289.56 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "2323212d-18e8-4466-96d7-761931509b05")
+		)
+		(pin "2"
+			(uuid "1e0aa46e-4564-4c20-a46d-fc19b336d1a6")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R114")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 302.26 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "08eb25d1-d3d0-46c8-8bdf-139a3db70938")
+		(property "Reference" "R115"
+			(at 304.8 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 304.8 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 302.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 302.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 302.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 302.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 302.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C15 series resistor (Fig. 112)"
+			(at 302.26 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "f5761a87-b18c-4421-905d-36481b41066d")
+		)
+		(pin "2"
+			(uuid "57e1e1d8-1f71-4528-bd4f-78913bc029fa")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R115")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 314.96 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "82aafadf-f81a-4c92-b7ef-5fc277823e83")
+		(property "Reference" "R116"
+			(at 317.5 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 317.5 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 314.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 314.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 314.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 314.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 314.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C16 series resistor (Fig. 112)"
+			(at 314.96 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "7aa15fb7-61c7-495a-be76-211c50068d12")
+		)
+		(pin "2"
+			(uuid "44a0c701-7ea5-4e32-a34a-2325d4b3a1c8")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R116")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 327.66 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "874c96a8-1fbb-4de3-88b5-49910a31f23c")
+		(property "Reference" "R117"
+			(at 330.2 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 330.2 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 327.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 327.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 327.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 327.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 327.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C17 series resistor (Fig. 112)"
+			(at 327.66 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "95314651-04b7-400c-9130-2b1834f1aefa")
+		)
+		(pin "2"
+			(uuid "8e96ef3b-5c0e-4179-9652-09bce0b726c4")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R117")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 340.36 45.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "29a8fe87-8d58-432f-9984-148bdffb4a59")
+		(property "Reference" "R118"
+			(at 342.9 44.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10"
+			(at 342.9 46.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 340.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 340.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+			(at 340.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22859"
+			(at 340.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF100JT5E"
+			(at 340.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C18 series resistor (Fig. 112)"
+			(at 340.36 45.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "2401f9ac-0654-406c-a888-1e3e92f646a2")
+		)
+		(pin "2"
+			(uuid "b0e23cef-de5b-45c4-bce2-022b39cf6b5b")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R118")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 111.76 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "579f231a-a942-4399-b86e-f638d5d62007")
+		(property "Reference" "C101"
+			(at 114.3 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 114.3 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 111.76 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 111.76 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 111.76 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 111.76 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C1 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 111.76 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "84ea038d-2783-4313-a196-9f7cd89acdd3")
+		)
+		(pin "2"
+			(uuid "c95ad577-963f-4ae2-af5d-59d10af7aa04")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 129.54 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cf8a57ee-775b-4b5b-b4ae-fa073ea5434c")
+		(property "Reference" "C102"
+			(at 132.08 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 132.08 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 129.54 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 129.54 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 129.54 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 129.54 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 129.54 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C2 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 129.54 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "5de834e7-653b-4b37-8f00-4161d030e1c5")
+		)
+		(pin "2"
+			(uuid "45ec17c8-0580-48b6-9dd1-444c275cdee3")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C102")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 147.32 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "36a38950-3b3c-445d-97d3-d47651b32164")
+		(property "Reference" "C103"
+			(at 149.86 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 149.86 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 147.32 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 147.32 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 147.32 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 147.32 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 147.32 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C3 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 147.32 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "8cfd04f7-215d-4bf6-97c7-3d9dec12ab1f")
+		)
+		(pin "2"
+			(uuid "11717aaf-a4f7-488b-8fdd-df0574ae9c8a")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C103")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 165.1 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c06e42c1-8aa4-4b18-b923-80d1af49b217")
+		(property "Reference" "C104"
+			(at 167.64 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 167.64 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 165.1 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 165.1 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 165.1 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 165.1 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 165.1 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C4 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 165.1 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "979ee792-f578-4358-92fc-a5d48ded8e24")
+		)
+		(pin "2"
+			(uuid "00c5b1e8-4908-4e55-a488-fbe5113b2ca3")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 182.88 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "546ea224-1b08-40d5-9f11-83ae89513047")
+		(property "Reference" "C105"
+			(at 185.42 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 185.42 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 182.88 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 182.88 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 182.88 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 182.88 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 182.88 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C5 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 182.88 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a844a750-6095-4b94-b389-80b4fd6cdfe8")
+		)
+		(pin "2"
+			(uuid "137a6c48-b834-456d-ba59-f9fc869e3fd9")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 200.66 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cc15a953-a309-4757-833c-49f6b5583b54")
+		(property "Reference" "C106"
+			(at 203.2 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 203.2 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 200.66 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 200.66 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 200.66 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 200.66 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 200.66 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C6 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 200.66 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "4d146031-fb63-4f57-94a0-6340b7d02989")
+		)
+		(pin "2"
+			(uuid "40115421-4370-48e5-87cf-731287e6b867")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C106")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 218.44 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9edd88f2-8927-46b4-b539-29a3c832a1ab")
+		(property "Reference" "C107"
+			(at 220.98 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 220.98 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 218.44 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 218.44 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 218.44 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 218.44 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 218.44 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C7 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 218.44 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "ac111c99-2fcd-421b-bf66-4932f100473d")
+		)
+		(pin "2"
+			(uuid "aba0815e-1425-4561-bc64-5ea625423ab2")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C107")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 236.22 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2445b16e-fd2f-401a-84b8-b7b23ad9372a")
+		(property "Reference" "C108"
+			(at 238.76 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 238.76 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 236.22 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 236.22 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 236.22 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 236.22 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 236.22 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C8 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 236.22 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "e8e211ec-71f2-4e8f-836a-712f0410a4ce")
+		)
+		(pin "2"
+			(uuid "be6530ae-6d4b-4336-a88f-b8c13aa9d0be")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C108")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 254.0 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "41905b3d-9050-48d5-b56c-a09da74ec543")
+		(property "Reference" "C109"
+			(at 256.54 69.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 256.54 72.39 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 254.0 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 254.0 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 254.0 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 254.0 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 254.0 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C9 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 254.0 71.12 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "7d75303e-015e-43c3-8e4a-4d5e230d1c09")
+		)
+		(pin "2"
+			(uuid "50ec2881-8243-4ed2-9ab6-3eb5dcc07e24")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 111.76 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "34dd617b-63a8-49cb-8352-a7f17a8dbf8f")
+		(property "Reference" "C110"
+			(at 114.3 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 114.3 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 111.76 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 111.76 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 111.76 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 111.76 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C10 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 111.76 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "dfb99c3e-1aa5-4c36-86e7-1147f8f8cdca")
+		)
+		(pin "2"
+			(uuid "612f3c89-6eba-446e-944d-6de3ab3256de")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C110")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 129.54 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2b486624-e677-4c70-9d9a-18d7f81adb3c")
+		(property "Reference" "C111"
+			(at 132.08 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 132.08 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 129.54 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 129.54 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 129.54 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 129.54 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 129.54 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C11 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 129.54 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "bdb938a7-7786-4f8d-8b51-9b0418a25fe7")
+		)
+		(pin "2"
+			(uuid "80f37e77-7132-4fee-8a8d-9ce663329d94")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 147.32 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9c8898a0-fc40-460f-95ee-04f3b4df51da")
+		(property "Reference" "C112"
+			(at 149.86 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 149.86 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 147.32 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 147.32 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 147.32 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 147.32 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 147.32 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C12 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 147.32 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "2d1a358a-53df-468c-807d-d92130e88ed0")
+		)
+		(pin "2"
+			(uuid "4cb3201d-4dda-49d2-ab06-c485426244ca")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C112")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 165.1 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8177fe0f-f30e-456f-8121-7193a405187b")
+		(property "Reference" "C113"
+			(at 167.64 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 167.64 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 165.1 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 165.1 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 165.1 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 165.1 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 165.1 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C13 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 165.1 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "81e3feb1-bcc3-4331-979b-42d959841346")
+		)
+		(pin "2"
+			(uuid "4e63af41-e026-47e9-a573-973bbdaefda2")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C113")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 182.88 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "abbd1418-c0fb-4b16-9ee0-a12b089b7a14")
+		(property "Reference" "C114"
+			(at 185.42 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 185.42 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 182.88 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 182.88 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 182.88 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 182.88 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 182.88 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C14 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 182.88 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "236f6f54-773c-429e-942d-6fb2727eb585")
+		)
+		(pin "2"
+			(uuid "153d1509-283d-48a8-a392-40fc85f10b61")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C114")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 200.66 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "26ac6593-85f7-48a3-96b0-8b8967cf6a5c")
+		(property "Reference" "C115"
+			(at 203.2 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 203.2 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 200.66 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 200.66 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 200.66 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 200.66 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 200.66 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C15 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 200.66 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "9baf6578-fca7-49db-b790-be32f300b9e6")
+		)
+		(pin "2"
+			(uuid "6a32e622-a61e-4bb8-929d-3c0f27293bc8")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C115")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 218.44 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4c60448a-fe90-4c0b-b71b-64c3f0a9eba9")
+		(property "Reference" "C116"
+			(at 220.98 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 220.98 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 218.44 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 218.44 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 218.44 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 218.44 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 218.44 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C16 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 218.44 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "51a7a8af-cf9a-4a32-9328-3cb578124367")
+		)
+		(pin "2"
+			(uuid "390103ab-63b1-4538-9aa7-d743fb297392")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C116")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 236.22 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cbf527be-5a56-4ecf-8cf2-bef8bfaf776b")
+		(property "Reference" "C117"
+			(at 238.76 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 238.76 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 236.22 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 236.22 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 236.22 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 236.22 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 236.22 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C17 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 236.22 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "9ef9832f-e64a-48ea-915c-d5e5d66a9fd1")
+		)
+		(pin "2"
+			(uuid "8f2c9569-c7aa-4d81-b3e5-e8e3b4ebec5c")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C117")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 254.0 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "64c38327-aa2d-4f83-94fd-1d2e94ade33b")
+		(property "Reference" "C118"
+			(at 256.54 87.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 256.54 90.17 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 254.0 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 254.0 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 254.0 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 254.0 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 254.0 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C18 (after 10 ohm) to V-. 100 V: grounded-cap filter sees up to the full stack"
+			(at 254.0 88.9 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "ef233c8d-5b5f-4e8b-aa91-26c8c35f6692")
+		)
+		(pin "2"
+			(uuid "19ab7bc8-ad05-46bc-a92d-7eff96192007")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C118")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 111.76 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "09a7d02f-3650-42e7-b796-eed3e20f97a3")
+		(property "Reference" "R201"
+			(at 114.3 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 114.3 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 111.76 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 111.76 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 111.76 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 111.76 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 1 node (before 10 ohm) to S1. ~0.4 W at 4.2 V"
+			(at 111.76 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "9fa2f72b-8d15-47e6-80f3-f85034e6c5d9")
+		)
+		(pin "2"
+			(uuid "6dee1b32-e05c-42a8-b914-b3c144103f81")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 129.54 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "692a592a-c621-4182-8316-6a4d93c68922")
+		(property "Reference" "R202"
+			(at 132.08 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 132.08 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 129.54 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 129.54 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 129.54 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 129.54 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 129.54 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 2 node (before 10 ohm) to S2. ~0.4 W at 4.2 V"
+			(at 129.54 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "0ff9f2d0-cac5-4422-9677-e0ce2fc683ff")
+		)
+		(pin "2"
+			(uuid "3cb101de-6a28-4328-9c51-c7ddb4c58895")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R202")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 147.32 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f31285ca-690e-452d-a216-aed4c6e13b74")
+		(property "Reference" "R203"
+			(at 149.86 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 149.86 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 147.32 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 147.32 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 147.32 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 147.32 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 147.32 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 3 node (before 10 ohm) to S3. ~0.4 W at 4.2 V"
+			(at 147.32 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "fcb76bcd-2d86-4b65-ae5d-c1cb420bb7cb")
+		)
+		(pin "2"
+			(uuid "d770ffb3-ac50-4479-bc1f-c6f0cf7ed2f6")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R203")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 165.1 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "116db9dc-ac3f-4dbf-b64e-57ad73c656e3")
+		(property "Reference" "R204"
+			(at 167.64 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 167.64 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 165.1 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 165.1 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 165.1 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 165.1 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 165.1 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 4 node (before 10 ohm) to S4. ~0.4 W at 4.2 V"
+			(at 165.1 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "d0d0925a-594e-45ce-a7ab-59be24b3b6f3")
+		)
+		(pin "2"
+			(uuid "a927176f-4f07-45e1-bd96-2d1d6f610edc")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R204")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 182.88 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ea1facd5-9d7c-411b-806d-9a4641856dad")
+		(property "Reference" "R205"
+			(at 185.42 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 185.42 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 182.88 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 182.88 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 182.88 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 182.88 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 182.88 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 5 node (before 10 ohm) to S5. ~0.4 W at 4.2 V"
+			(at 182.88 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "68d17a8a-83f4-481b-99c8-19677e2e0d73")
+		)
+		(pin "2"
+			(uuid "54f72c2e-000a-4324-bdbd-264acf399b5e")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R205")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 200.66 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "17cf7fa0-7134-44df-ac22-afb0f7ae88de")
+		(property "Reference" "R206"
+			(at 203.2 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 203.2 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 200.66 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 200.66 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 200.66 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 200.66 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 200.66 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 6 node (before 10 ohm) to S6. ~0.4 W at 4.2 V"
+			(at 200.66 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "6a247a56-a798-4823-bdf2-f31db50f60db")
+		)
+		(pin "2"
+			(uuid "6d32e558-f315-4049-9228-a01591f7a6f6")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R206")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bd5d3583-b071-43d2-b073-3ff45001a7a5")
+		(property "Reference" "R207"
+			(at 220.98 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 220.98 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 218.44 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 218.44 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 218.44 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 218.44 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 218.44 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 7 node (before 10 ohm) to S7. ~0.4 W at 4.2 V"
+			(at 218.44 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "5093c1f6-711a-4e1e-b409-ed785bda1c95")
+		)
+		(pin "2"
+			(uuid "4d785f16-2bde-4c8b-80b3-525250c896cd")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R207")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 236.22 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "07896f76-4316-4d8e-931e-541b3aa77503")
+		(property "Reference" "R208"
+			(at 238.76 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 238.76 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 236.22 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 236.22 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 236.22 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 236.22 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 236.22 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 8 node (before 10 ohm) to S8. ~0.4 W at 4.2 V"
+			(at 236.22 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "38df6897-8926-416e-a2b0-4f788fcc7848")
+		)
+		(pin "2"
+			(uuid "78f97d37-51ce-4c6e-acda-d3eace3fb4db")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R208")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 254.0 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7b33f42a-f140-41a2-b4d4-44a98f89abdc")
+		(property "Reference" "R209"
+			(at 256.54 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 256.54 120.65 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 254.0 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 254.0 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 254.0 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 254.0 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 254.0 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 9 node (before 10 ohm) to S9. ~0.4 W at 4.2 V"
+			(at 254.0 119.38 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "018245b3-919e-4ddc-b788-cddfb51725e3")
+		)
+		(pin "2"
+			(uuid "4f471ce3-3bd4-42f0-a446-ccebaa3aaf26")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R209")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 111.76 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "018feed1-80b4-410d-b3c8-1702fa8bbb5a")
+		(property "Reference" "R210"
+			(at 114.3 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 114.3 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 111.76 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 111.76 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 111.76 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 111.76 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 10 node (before 10 ohm) to S10. ~0.4 W at 4.2 V"
+			(at 111.76 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a3e7faaf-4dc9-45a0-be64-76f0ee1fecbc")
+		)
+		(pin "2"
+			(uuid "a3b3526d-94f3-4e92-969d-c89c29332765")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R210")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 129.54 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0f40bf97-cece-433e-9476-3a9d83dd88a9")
+		(property "Reference" "R211"
+			(at 132.08 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 132.08 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 129.54 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 129.54 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 129.54 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 129.54 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 129.54 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 11 node (before 10 ohm) to S11. ~0.4 W at 4.2 V"
+			(at 129.54 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "481f7455-2b3b-4126-a233-8b41ebd20859")
+		)
+		(pin "2"
+			(uuid "553fcfe7-2a77-49d9-b05f-f508d0a463f5")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R211")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 147.32 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e57ec6d6-4f55-40d3-82d4-ef94211ffb18")
+		(property "Reference" "R212"
+			(at 149.86 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 149.86 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 147.32 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 147.32 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 147.32 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 147.32 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 147.32 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 12 node (before 10 ohm) to S12. ~0.4 W at 4.2 V"
+			(at 147.32 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "ff8d64f5-96de-4edc-a46c-cfb169fae2e3")
+		)
+		(pin "2"
+			(uuid "1b8d34a2-648f-43e3-ac0d-f5922d14c422")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R212")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 165.1 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e4aaacf8-880a-4d34-8f63-cefd8f27285b")
+		(property "Reference" "R213"
+			(at 167.64 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 167.64 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 165.1 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 165.1 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 165.1 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 165.1 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 165.1 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 13 node (before 10 ohm) to S13. ~0.4 W at 4.2 V"
+			(at 165.1 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "70517a42-b8bf-4cc8-bcfc-fbc2c5a7735a")
+		)
+		(pin "2"
+			(uuid "9517e7f1-dad9-4c5d-8194-03c98615f941")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R213")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 182.88 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "051ed942-52bc-49cd-92a6-5ee2c2ca5265")
+		(property "Reference" "R214"
+			(at 185.42 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 185.42 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 182.88 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 182.88 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 182.88 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 182.88 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 182.88 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 14 node (before 10 ohm) to S14. ~0.4 W at 4.2 V"
+			(at 182.88 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "424fac05-8848-44aa-8846-4985508ccdd6")
+		)
+		(pin "2"
+			(uuid "59fc12cb-fc69-4bf7-ae0a-1d238fea5aaf")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R214")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 200.66 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cc952cea-1522-4976-b3ad-13479314af66")
+		(property "Reference" "R215"
+			(at 203.2 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 203.2 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 200.66 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 200.66 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 200.66 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 200.66 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 200.66 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 15 node (before 10 ohm) to S15. ~0.4 W at 4.2 V"
+			(at 200.66 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "e11053a6-2c8b-437f-8036-f3509a155b61")
+		)
+		(pin "2"
+			(uuid "f514412d-411e-4e32-ac21-d63458aea741")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R215")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d6439753-2d47-40b7-9d33-0448c723ec6d")
+		(property "Reference" "R216"
+			(at 220.98 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 220.98 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 218.44 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 218.44 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 218.44 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 218.44 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 218.44 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 16 node (before 10 ohm) to S16. ~0.4 W at 4.2 V"
+			(at 218.44 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "175e6e80-587f-487c-a666-b5a2046caadf")
+		)
+		(pin "2"
+			(uuid "ab148f02-637d-4fa2-9f86-f26af5b81695")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R216")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 236.22 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c1e003f4-d477-4b88-85e6-f01ffd627fbb")
+		(property "Reference" "R217"
+			(at 238.76 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 238.76 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 236.22 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 236.22 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 236.22 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 236.22 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 236.22 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 17 node (before 10 ohm) to S17. ~0.4 W at 4.2 V"
+			(at 236.22 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "c42f0a0b-738f-45c7-8e41-13e177be9b58")
+		)
+		(pin "2"
+			(uuid "5664f794-95fc-4f98-9272-c311db4d999b")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R217")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 254.0 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5c048b33-5899-4564-991b-c9f7de3cbbbb")
+		(property "Reference" "R218"
+			(at 256.54 135.89 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "33 1W"
+			(at 256.54 138.43 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 254.0 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 254.0 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+			(at 254.0 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C53728"
+			(at 254.0 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "25121WF330JT4E"
+			(at 254.0 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell 18 node (before 10 ohm) to S18. ~0.4 W at 4.2 V"
+			(at 254.0 137.16 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "02976b9c-029a-4950-8694-e869be1e7f82")
+		)
+		(pin "2"
+			(uuid "7b6f9115-2ef0-414c-8ad9-c31ce510e63b")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R218")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 111.76 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5ca4f82e-bac5-465f-8260-be74ad4b6291")
+		(property "Reference" "R301"
+			(at 114.3 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100"
+			(at 114.3 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 111.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 ohm 1% 100 mW 0603 (Basic)"
+			(at 111.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C22775"
+			(at 111.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF1000T5E"
+			(at 111.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Top of stack to V+"
+			(at 111.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a3be94b6-08f1-4928-bd0c-b9004eb78953")
+		)
+		(pin "2"
+			(uuid "29e9d2b6-b6a3-4132-968c-6413c217c243")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R301")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 127.0 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b6c5d0b0-cbb3-4d5b-b542-a7b235ef7e8d")
+		(property "Reference" "C301"
+			(at 129.54 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n 100V"
+			(at 129.54 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 127.0 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 127.0 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
+			(at 127.0 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C28233"
+			(at 127.0 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL21B104KCFNNNE"
+			(at 127.0 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "V+ to V-"
+			(at 127.0 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "1c332f9d-612f-4284-b4f8-a1a2925ce79b")
+		)
+		(pin "2"
+			(uuid "b29d853e-825b-490a-b576-b2a7a21ddb9e")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C301")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 142.24 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "71324505-4fb8-42ad-90c1-d9e969b29bf4")
+		(property "Reference" "R302"
+			(at 144.78 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100"
+			(at 144.78 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 142.24 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 142.24 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 ohm 1% 125 mW 150 V 0805 (Basic)"
+			(at 142.24 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C17408"
+			(at 142.24 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0805W8F1000T5E"
+			(at 142.24 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Top of stack to NPN collector"
+			(at 142.24 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "190ffdf3-f179-4aa4-aba7-79a1df2539ec")
+		)
+		(pin "2"
+			(uuid "853a7ef1-03e3-4207-8c83-ef24b0dceb74")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R302")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 157.48 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c57d813a-a20d-4fdf-9909-a61a1a281864")
+		(property "Reference" "C302"
+			(at 160.02 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10n 100V"
+			(at 160.02 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 157.48 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 157.48 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 nF 100 V X7R 0603 (Extended)"
+			(at 157.48 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C282516"
+			(at 157.48 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "TCC0603X7R103K101CT"
+			(at 157.48 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "NPN collector to V- (Fig. 112 value; datasheet text says 100 nF)"
+			(at 157.48 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "14d3d2f5-8479-4745-a702-4529fd14a1d8")
+		)
+		(pin "2"
+			(uuid "5b6b4234-190b-43fb-b40c-2417d82b7319")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C302")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 172.72 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7c8424e4-bf6b-4e5f-ab64-e3baa6b27a09")
+		(property "Reference" "C303"
+			(at 175.26 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "1u"
+			(at 175.26 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 172.72 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 172.72 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "1 uF 50 V X5R 0603 (Basic)"
+			(at 172.72 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C15849"
+			(at 172.72 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL10A105KB8NNNC"
+			(at 172.72 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "VREG to V- (NPN emitter). Do not exceed 1 uF"
+			(at 172.72 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "4173b4b4-ece2-4047-8108-2d210387556b")
+		)
+		(pin "2"
+			(uuid "ee0b9595-7c04-408d-898f-a1a0a75068eb")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C303")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 187.96 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "780dcecd-8b58-4184-abed-49eea30a3097")
+		(property "Reference" "C304"
+			(at 190.5 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "1u"
+			(at 190.5 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 187.96 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 187.96 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "1 uF 50 V X5R 0603 (Basic)"
+			(at 187.96 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C15849"
+			(at 187.96 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL10A105KB8NNNC"
+			(at 187.96 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "VREF1 to V-"
+			(at 187.96 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "7e48c1c5-79fd-4850-8402-18c681121fb7")
+		)
+		(pin "2"
+			(uuid "b3601419-117f-41cf-88d6-fa67b9a804e9")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C304")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 203.2 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f30fdcd2-38b7-46be-9092-0abd555c3e35")
+		(property "Reference" "C305"
+			(at 205.74 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "1u"
+			(at 205.74 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 203.2 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 203.2 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "1 uF 50 V X5R 0603 (Basic)"
+			(at 203.2 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C15849"
+			(at 203.2 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CL10A105KB8NNNC"
+			(at 203.2 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "VREF2 to V-"
+			(at 203.2 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "5b7170c6-7dc8-4e4c-a853-9284e2df21f0")
+		)
+		(pin "2"
+			(uuid "25ec240d-9f2b-48f9-90fe-755350160d7b")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C305")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_BJT:Q_NPN_BCE")
+		(at 218.44 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ac83ea57-379c-4b9c-a5a7-d272a19a9ee8")
+		(property "Reference" "Q301"
+			(at 220.98 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "FZT853"
+			(at 220.98 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-223-3_TabPin2"
+			(at 218.44 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 218.44 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "NPN 100 V 6 A 3 W SOT-223, hFE >= 100 (Extended)"
+			(at 218.44 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C435890"
+			(at 218.44 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "FZT853TA"
+			(at 218.44 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "DRIVE regulator pass transistor. ~1.6 W worst case: needs collector copper"
+			(at 218.44 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "5bf4bc7e-882f-4886-bf3a-2d053439f5ee")
+		)
+		(pin "2"
+			(uuid "6e426c0f-163a-4c09-96b1-bb61d4536bfa")
+		)
+		(pin "3"
+			(uuid "e7fb64da-5fe4-439c-8c41-632791ddd783")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "Q301")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 264.16 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6b573404-5bc3-4626-900b-7d0b2eec2587")
+		(property "Reference" "R401"
+			(at 266.7 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "1k"
+			(at 266.7 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 264.16 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 264.16 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "1 kohm 1% 0603 (Basic)"
+			(at 264.16 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C21190"
+			(at 264.16 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF1001T5E"
+			(at 264.16 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "IBIAS to ICMP"
+			(at 264.16 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "c692e83e-4bcb-45a5-a25f-3f8944e57540")
+		)
+		(pin "2"
+			(uuid "1a5dfa43-abed-4058-8ee6-f3b7d1babc8d")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R401")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 276.86 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a5f8ed1e-acb1-46ec-b621-7c09f2360b44")
+		(property "Reference" "R402"
+			(at 279.4 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "1k"
+			(at 279.4 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 276.86 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 276.86 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "1 kohm 1% 0603 (Basic)"
+			(at 276.86 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C21190"
+			(at 276.86 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF1001T5E"
+			(at 276.86 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "ICMP to V-"
+			(at 276.86 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "67f2d1bb-9f24-4055-9743-0199d25b0293")
+		)
+		(pin "2"
+			(uuid "9b0d0218-e5dc-4b5c-aad1-b33482f6c313")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R402")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "isoSPI_XFMR:HM2113ZNL")
+		(at 111.76 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "faa9947b-bab2-41d0-8e4f-b3abc520315c")
+		(property "Reference" "T501"
+			(at 109.22 196.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "HM2113ZNL"
+			(at 109.22 214.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "slave18s:Pulse_HM2113ZNL"
+			(at 111.76 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "Pulse BMS transformer 1:1, CT, CMC, 4300 Vrms, 1000 VDC working (Extended)"
+			(at 111.76 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C5730533"
+			(at 111.76 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "HM2113ZNLT"
+			(at 111.76 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Pins 1-2(CT)-3 chip side, 6-5(CT)-4 line side"
+			(at 111.76 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "d9fa5d21-6d51-445b-9f22-a3310401c751")
+		)
+		(pin "2"
+			(uuid "5cf76490-daa7-4dd0-9860-69b73af434c7")
+		)
+		(pin "3"
+			(uuid "5c86608f-a0d8-4a05-8f2a-10aaaa18654f")
+		)
+		(pin "4"
+			(uuid "88ca4a85-06bf-404b-a64c-ffccb185d8f9")
+		)
+		(pin "5"
+			(uuid "5ae6cb25-ef13-4d88-95a9-cb3fc92da83f")
+		)
+		(pin "6"
+			(uuid "d17d2e5a-73da-498c-a89d-959515a626f1")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "T501")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 132.08 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7c0c48a9-027c-473f-9ac7-da376d800227")
+		(property "Reference" "R501"
+			(at 134.62 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "51"
+			(at 134.62 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 132.08 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 132.08 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "51 ohm 1% 0603 (Basic)"
+			(at 132.08 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C23197"
+			(at 132.08 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF510JT5E"
+			(at 132.08 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "IPA to termination centre"
+			(at 132.08 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "95abbaf6-b9d5-4772-8cfc-29dd66157078")
+		)
+		(pin "2"
+			(uuid "3eca043e-4068-49b5-b70f-5897fcdc04f2")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R501")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 152.4 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a9fb6665-bfec-4a93-b948-b58c6e76b06d")
+		(property "Reference" "R502"
+			(at 154.94 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "51"
+			(at 154.94 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 152.4 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 152.4 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "51 ohm 1% 0603 (Basic)"
+			(at 152.4 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C23197"
+			(at 152.4 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF510JT5E"
+			(at 152.4 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "IMA to termination centre"
+			(at 152.4 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "78a1a0ee-4594-48b6-9226-dda892268ee9")
+		)
+		(pin "2"
+			(uuid "2ed1f1b1-e829-4bce-adc3-c724973d4df1")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R502")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 172.72 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "36318db0-45a2-49c3-82f1-f6bb4696a74a")
+		(property "Reference" "C501"
+			(at 175.26 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10n"
+			(at 175.26 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 172.72 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 172.72 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 nF 50 V X7R 0603 (Basic)"
+			(at 172.72 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C57112"
+			(at 172.72 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 172.72 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Termination centre tap to V-"
+			(at 172.72 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "9d284e5c-36e2-4647-b25b-02ac33bc7815")
+		)
+		(pin "2"
+			(uuid "a60da70f-68d0-4169-95e2-af36919376e1")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C501")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 193.04 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8abc48ac-12c9-49b6-8d0b-34f10bbe1128")
+		(property "Reference" "C502"
+			(at 195.58 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10n"
+			(at 195.58 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 193.04 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 193.04 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 nF 50 V X7R 0603 (Basic)"
+			(at 193.04 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C57112"
+			(at 193.04 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 193.04 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Transformer chip-side CT (pin 2) to V-"
+			(at 193.04 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "bbc77388-f93a-4a9b-9742-5692d756d98c")
+		)
+		(pin "2"
+			(uuid "ec4fa7d4-5f8f-49ad-8616-f927e0272308")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C502")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "isoSPI_XFMR:HM2113ZNL")
+		(at 231.14 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ee9a0e37-fe87-4a54-a038-356fe13d0cce")
+		(property "Reference" "T601"
+			(at 228.6 196.85 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "HM2113ZNL"
+			(at 228.6 214.63 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "slave18s:Pulse_HM2113ZNL"
+			(at 231.14 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 231.14 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "Pulse BMS transformer 1:1, CT, CMC, 4300 Vrms, 1000 VDC working (Extended)"
+			(at 231.14 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C5730533"
+			(at 231.14 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "HM2113ZNLT"
+			(at 231.14 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Pins 1-2(CT)-3 chip side, 6-5(CT)-4 line side"
+			(at 231.14 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "61c09c29-22f7-45f4-a43c-0e7bc6426c6e")
+		)
+		(pin "2"
+			(uuid "62eb1aac-6e04-45d5-8e3a-518523150c8b")
+		)
+		(pin "3"
+			(uuid "50d5f87a-ea86-4fd3-9729-4d996e59ed22")
+		)
+		(pin "4"
+			(uuid "dce2f25a-a6b3-4ae2-8ace-52ad9139d23d")
+		)
+		(pin "5"
+			(uuid "ac064c0e-b98e-4bfa-8eb9-7fb40dd18b79")
+		)
+		(pin "6"
+			(uuid "94531fcb-8a59-425a-8e0e-dcb71f566781")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "T601")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 251.46 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3a7ce0d5-f24f-4707-b113-f016c4225b37")
+		(property "Reference" "R601"
+			(at 254.0 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "51"
+			(at 254.0 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 251.46 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 251.46 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "51 ohm 1% 0603 (Basic)"
+			(at 251.46 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C23197"
+			(at 251.46 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF510JT5E"
+			(at 251.46 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "IPB to termination centre"
+			(at 251.46 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "0ba0df1c-78aa-4ac4-941f-7bc9fcc7cd18")
+		)
+		(pin "2"
+			(uuid "d97a2c66-1444-4054-9deb-e449e822af1c")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R601")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 271.78 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6e2d1eba-0df9-4505-accd-48a5e346f072")
+		(property "Reference" "R602"
+			(at 274.32 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "51"
+			(at 274.32 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 271.78 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 271.78 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "51 ohm 1% 0603 (Basic)"
+			(at 271.78 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C23197"
+			(at 271.78 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF510JT5E"
+			(at 271.78 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "IMB to termination centre"
+			(at 271.78 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "e2ae6e94-3fec-40b1-a3ef-9d20ecd74bab")
+		)
+		(pin "2"
+			(uuid "2dffb766-ad67-4b60-bb2b-f35a0ca7f9b4")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R602")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 292.1 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a869656e-36bd-4657-a688-5699bf20b348")
+		(property "Reference" "C601"
+			(at 294.64 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10n"
+			(at 294.64 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 292.1 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 292.1 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 nF 50 V X7R 0603 (Basic)"
+			(at 292.1 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C57112"
+			(at 292.1 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 292.1 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Termination centre tap to V-"
+			(at 292.1 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "c399e956-6518-48f5-b1ab-048cf57bfb82")
+		)
+		(pin "2"
+			(uuid "bcf47994-58ce-49ae-9e19-da562df013bc")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C601")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 312.42 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ed69f5ff-de2f-4138-a43d-6ee33df7c59b")
+		(property "Reference" "C602"
+			(at 314.96 204.47 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "10n"
+			(at 314.96 207.01 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 312.42 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 312.42 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "10 nF 50 V X7R 0603 (Basic)"
+			(at 312.42 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C57112"
+			(at 312.42 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 312.42 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Transformer chip-side CT (pin 2) to V-"
+			(at 312.42 205.74 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "96f33348-b5fd-4b48-a427-6be4e5fce402")
+		)
+		(pin "2"
+			(uuid "063cb18e-f961-45e6-a297-e99cfb3a851e")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C602")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 111.76 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1d28fced-305f-4b12-a5ba-4ab96a5828bd")
+		(property "Reference" "R701"
+			(at 114.3 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100k"
+			(at 114.3 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 111.76 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 111.76 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 kohm 1% 0603 (Basic)"
+			(at 111.76 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C25803"
+			(at 111.76 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF1003T5E"
+			(at 111.76 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell NTC 1: VREF2 pull-up to GPIO1"
+			(at 111.76 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "1df11914-e6f3-4632-ab6c-a0704ab8c488")
+		)
+		(pin "2"
+			(uuid "e790744e-6e13-43a5-a11d-bc5c534769d4")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R701")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 127.0 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3e213b44-fc5e-4040-a9bd-59b7f1a177a1")
+		(property "Reference" "C701"
+			(at 129.54 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n"
+			(at 129.54 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 127.0 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 127.0 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 50 V X7R 0603 (Basic)"
+			(at 127.0 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C14663"
+			(at 127.0 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 127.0 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell NTC 1: GPIO1 to V-"
+			(at 127.0 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "8ed85212-f56f-41dd-b8d1-51b030dbfb01")
+		)
+		(pin "2"
+			(uuid "dab7b735-5915-4116-82cd-882af5d2ab72")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C701")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 142.24 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "798968c7-a45c-4c76-abe4-9eed34fe421d")
+		(property "Reference" "R702"
+			(at 144.78 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100k"
+			(at 144.78 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 142.24 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 142.24 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 kohm 1% 0603 (Basic)"
+			(at 142.24 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C25803"
+			(at 142.24 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF1003T5E"
+			(at 142.24 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell NTC 2: VREF2 pull-up to GPIO2"
+			(at 142.24 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "309b95b3-ed42-4260-a67b-a64de6344fc8")
+		)
+		(pin "2"
+			(uuid "fbd32cd8-a253-4398-ae7f-2f1693b69151")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R702")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 157.48 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b6b651f1-9335-4251-94b2-b2555ee20861")
+		(property "Reference" "C702"
+			(at 160.02 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n"
+			(at 160.02 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 157.48 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 157.48 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 50 V X7R 0603 (Basic)"
+			(at 157.48 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C14663"
+			(at 157.48 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 157.48 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell NTC 2: GPIO2 to V-"
+			(at 157.48 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "67c16cb6-462c-4465-b37d-2c45f4965668")
+		)
+		(pin "2"
+			(uuid "eead2a5d-4276-45ea-b3a9-57f57e2f1490")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C702")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 172.72 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "67e896f9-8ba1-4dca-bf67-48dd3f67ebce")
+		(property "Reference" "R703"
+			(at 175.26 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100k"
+			(at 175.26 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 172.72 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 172.72 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 kohm 1% 0603 (Basic)"
+			(at 172.72 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C25803"
+			(at 172.72 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF1003T5E"
+			(at 172.72 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell NTC 3: VREF2 pull-up to GPIO3"
+			(at 172.72 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "13b3fae4-897f-4339-9b34-b78a7c8f7b50")
+		)
+		(pin "2"
+			(uuid "bd56d8ef-7c89-4c01-80df-c91cd45bb307")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R703")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 187.96 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4addda38-1be8-4e0d-bfcf-680c0fee199d")
+		(property "Reference" "C703"
+			(at 190.5 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n"
+			(at 190.5 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 187.96 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 187.96 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 50 V X7R 0603 (Basic)"
+			(at 187.96 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C14663"
+			(at 187.96 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 187.96 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Cell NTC 3: GPIO3 to V-"
+			(at 187.96 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "4ecd9a81-2860-4634-816d-af7c27504388")
+		)
+		(pin "2"
+			(uuid "9fe13728-3576-4a8e-b638-b29b6e82f25a")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C703")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 203.2 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2df1beea-ebe3-418b-bc51-1970ff64e02c")
+		(property "Reference" "R704"
+			(at 205.74 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100k"
+			(at 205.74 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 203.2 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 203.2 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 kohm 1% 0603 (Basic)"
+			(at 203.2 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C25803"
+			(at 203.2 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "0603WAF1003T5E"
+			(at 203.2 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Board NTC: VREF2 pull-up to GPIO4"
+			(at 203.2 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "853ea1ce-f55e-4476-a359-f3feea0296e5")
+		)
+		(pin "2"
+			(uuid "aba2811f-ad5e-4033-a98c-6542202188e0")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "R704")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 218.44 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8c1bd621-832a-464f-b6b6-2b6c1df2613c")
+		(property "Reference" "C704"
+			(at 220.98 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100n"
+			(at 220.98 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 218.44 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 218.44 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "100 nF 50 V X7R 0603 (Basic)"
+			(at 218.44 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C14663"
+			(at 218.44 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 218.44 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Board NTC: GPIO4 to V-"
+			(at 218.44 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "b8b20aa1-e68b-4289-891d-ec0b400dd06c")
+		)
+		(pin "2"
+			(uuid "040f5d2d-45b3-4118-86ed-4ecb0f689303")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "C704")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Thermistor_NTC")
+		(at 233.68 243.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f709ac06-39ec-4434-b418-d55eb6ae5d9b")
+		(property "Reference" "TH701"
+			(at 236.22 242.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "100k NTC"
+			(at 236.22 245.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 233.68 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 233.68 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "NTC 100 kohm 1% B25/50 4250 K 0603 Murata (Extended)"
+			(at 233.68 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "C71280"
+			(at 233.68 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "NCP18WF104F12RB"
+			(at 233.68 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "Onboard sensor, GPIO4 to V-"
+			(at 233.68 243.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "84919b55-c5d0-4b0f-b51d-22fb9ddb1bb5")
+		)
+		(pin "2"
+			(uuid "a9ea348b-f6be-42f5-b653-58859c73cade")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "TH701")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x19")
+		(at 365.76 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c36c852e-a261-4bb1-8f06-2375078e57e5")
+		(property "Reference" "J1"
+			(at 368.3 59.69 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "CELL_TAPS_19"
+			(at 368.3 62.23 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" ""
+			(at 365.76 60.96 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 365.76 60.96 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "Placeholder - harness not decided"
+			(at 365.76 60.96 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "TBD"
+			(at 365.76 60.96 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "TBD"
+			(at 365.76 60.96 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "C0..C18 cell taps. Candidates in design basis"
+			(at 365.76 60.96 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "ff0f18c4-8e87-4b71-a085-65fb0d4cd282")
+		)
+		(pin "2"
+			(uuid "066d2de2-3321-46a9-9c51-0e0ddb173d47")
+		)
+		(pin "3"
+			(uuid "b9c9fef9-ba50-4a30-be87-05de60a6419b")
+		)
+		(pin "4"
+			(uuid "7bde8c32-e61b-4f21-a965-9db1a21fccf8")
+		)
+		(pin "5"
+			(uuid "3d5e0aa4-1a3b-4235-80f0-6ad0e238888a")
+		)
+		(pin "6"
+			(uuid "3ebd28e3-24c8-4e94-a62b-aa9b08e888ff")
+		)
+		(pin "7"
+			(uuid "6d1f4127-2125-4276-b3af-d7866592dde3")
+		)
+		(pin "8"
+			(uuid "7cf850ac-f15f-46df-9055-69b7bdfd8427")
+		)
+		(pin "9"
+			(uuid "119251b2-a2c0-4452-87e0-b1cc8c83be34")
+		)
+		(pin "10"
+			(uuid "d6521cee-b1e8-43b7-892b-e0d59ea840b6")
+		)
+		(pin "11"
+			(uuid "4f3ab8f9-47ea-4c30-bf5b-0ff0a3711fce")
+		)
+		(pin "12"
+			(uuid "ce5fc9ef-c71e-4532-9b5e-cb3258884ded")
+		)
+		(pin "13"
+			(uuid "97afd1dc-b093-4d76-a3e3-9da931ef3d0b")
+		)
+		(pin "14"
+			(uuid "7b97ef24-df18-42c6-b05d-43befe73c47a")
+		)
+		(pin "15"
+			(uuid "d532e566-f517-4ccc-9cc5-ef29a4d48592")
+		)
+		(pin "16"
+			(uuid "e1783243-1ed8-451c-9424-21a9a252a601")
+		)
+		(pin "17"
+			(uuid "cdb5f897-fc73-4380-8067-6b1bdf523ad3")
+		)
+		(pin "18"
+			(uuid "e5abe68b-4ba3-487a-baec-b0c41c4eb676")
+		)
+		(pin "19"
+			(uuid "cddaf8fd-5741-4a4b-9c74-2a78b93fe665")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x06")
+		(at 365.76 116.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "39f34ade-1dff-4d36-9fd1-420f4513e589")
+		(property "Reference" "J2"
+			(at 368.3 115.57 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "NTC_3x2"
+			(at 368.3 118.11 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" ""
+			(at 365.76 116.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 365.76 116.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "Placeholder - harness not decided"
+			(at 365.76 116.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "TBD"
+			(at 365.76 116.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "TBD"
+			(at 365.76 116.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "3 cell NTC, 2 pins each"
+			(at 365.76 116.84 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "11110b15-074e-4d80-8eaa-1048f2c2c124")
+		)
+		(pin "2"
+			(uuid "aa47cf86-a66d-4667-8057-61ee7267687d")
+		)
+		(pin "3"
+			(uuid "daf6dbd6-2770-4660-8ad3-fc3ac161a4cb")
+		)
+		(pin "4"
+			(uuid "b8d2e1ed-0d90-4de5-934d-df1fe8302222")
+		)
+		(pin "5"
+			(uuid "2c214607-a0a8-481e-a7bb-c16f8e21c7cf")
+		)
+		(pin "6"
+			(uuid "a272cb95-e0aa-4ed5-8ea0-bef77a931952")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 365.76 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9f04c8de-6035-47c5-a2e2-d4c5e21c441e")
+		(property "Reference" "J3"
+			(at 368.3 171.45 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "ISOSPI_A_IN"
+			(at 368.3 173.99 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" ""
+			(at 365.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 365.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "Placeholder - harness not decided"
+			(at 365.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "TBD"
+			(at 365.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "TBD"
+			(at 365.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "isoSPI port A (toward master)"
+			(at 365.76 172.72 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "ce4a3424-c16c-45d6-87c1-1dad80ca55e4")
+		)
+		(pin "2"
+			(uuid "a4cbd51e-dbf0-4d29-9780-e19dbf85fe6f")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 365.76 228.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4dcb32ec-adf2-47c7-a90e-3facc5ea03ca")
+		(property "Reference" "J4"
+			(at 368.3 227.33 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Value" "ISOSPI_B_OUT"
+			(at 368.3 229.87 0)
+			(effects (font (size 1.27 1.27)) (justify left))
+		)
+		(property "Footprint" ""
+			(at 365.76 228.6 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 365.76 228.6 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "Placeholder - harness not decided"
+			(at 365.76 228.6 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "LCSC" "TBD"
+			(at 365.76 228.6 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "MPN" "TBD"
+			(at 365.76 228.6 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Note" "isoSPI port B (next module)"
+			(at 365.76 228.6 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1"
+			(uuid "dc1facca-adab-4d4d-8a37-c31a4c21c7f4")
+		)
+		(pin "2"
+			(uuid "7d1676e4-954f-426a-bce4-fdca13359b34")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(sheet_instances
 		(path "/" (page "1"))
