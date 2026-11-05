@@ -5788,11 +5788,11 @@
 			(at 160.02 171.45 0)
 			(effects (font (size 1.27 1.27)) (justify left))
 		)
-		(property "Value" "10n 100V"
+		(property "Value" "100n 100V"
 			(at 160.02 173.99 0)
 			(effects (font (size 1.27 1.27)) (justify left))
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 157.48 172.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
@@ -5800,19 +5800,19 @@
 			(at 157.48 172.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "Description" "10 nF 100 V X7R 0603 (Extended)"
+		(property "Description" "100 nF 100 V X7R 0805 (Basic)"
 			(at 157.48 172.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "LCSC" "C282516"
+		(property "LCSC" "C28233"
 			(at 157.48 172.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "MPN" "TCC0603X7R103K101CT"
+		(property "MPN" "CL21B104KCFNNNE"
 			(at 157.48 172.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "Note" "NPN collector to V- (Fig. 112 value; datasheet text says 100 nF)"
+		(property "Note" "NPN collector to V-. 100 nF per datasheet text (Fig. 112 shows 10 nF)"
 			(at 157.48 172.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
