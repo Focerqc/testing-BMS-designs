@@ -137,6 +137,18 @@ Why these values are safe at the voltages involved:
 Rejected NPN options: PBSS8110Z (0 stock), NSS1C201MZ4 (93 stock), FZT493TA (0 stock),
 PZTA42 (300 V, but hFE min only 25–40; the datasheet asks for > 40 over temperature).
 
+## Configuration and unused pins
+
+Source: Fig. 2 and Table 14, plus the Watchdog and Discharge Timer section (Table 33).
+
+| Pin | Net | Reason |
+|---|---|---|
+| 52 DTEN | **V−** | Disables the discharge timer. When the master or the isoSPI link is lost, the 2 s watchdog then resets the S control registers and turns every balance switch off. With DTEN = VREG the switches would keep running for up to 120 min with no host watching, which is a bad default while the 18 × ~110 mA thermal budget is still open. Revisit if unattended balancing is wanted; firmware can't override a pin tied to V−. |
+| 53 SDI, 54 SDO | no-connect flag | Both are NC when ISOMD = VREG (Fig. 2 footnote: "IPA, IMA, NC, NC"). |
+| 55 ISOMD | VREG | isoSPI mode (unchanged from Fig. 112). |
+| 56 WDT | no-connect flag | Open-drain output; Table 14 allows it to be left disconnected. The slave has no local host to read it, and the master already sees a timeout through isoSPI. |
+| 43–47 GPIO5–GPIO9 | no-connect flag | Spare. Firmware turns on their internal pull-downs so the inputs don't float: write GPIOx = 0 for GPIO5–8 (CFGAR0 / CFGBR0) and DCC0 = 1 for GPIO9 (Table 72). A watchdog timeout restores the defaults (pull-downs off), so firmware rewrites them after each wake-up. GPIO5 can't join GPIO4 as an I²C pair because GPIO4 carries the onboard NTC. |
+
 ## Connector candidates (harness not decided)
 
 | Function | Pins | Candidates |
@@ -165,11 +177,9 @@ pin order whose partial mating can't put the full stack across two adjacent pins
       against a real part or the Pulse 3D model before ordering.
 - [ ] FZT853 numbering: the Diodes datasheet shows B–C–E leads (tab C) without numbers.
       KiCad SOT-223-3_TabPin2 assumes pin 1 = B. That's standard, but check the outline page.
-- [ ] DTEN (pin 52): not shown in Figure 112. Tie to VREG to enable the discharge timer,
-      or to V−.
-- [ ] WDT (pin 56): leave open or add 1 MΩ to VREG. SDI/SDO (53/54) are NC in isoSPI mode:
-      add no-connect flags.
-- [ ] GPIO5–GPIO9 unused: decide (spare NTC, LED, I²C).
+- [x] DTEN (pin 52) to V− (discharge timer off). See "Configuration and unused pins".
+- [x] WDT (pin 56) and SDI/SDO (53/54): no-connect flags.
+- [x] GPIO5–GPIO9: no-connect flags, internal pull-downs enabled in firmware.
 - [ ] KiCad ERC reports unconnected pins as **errors**, not warnings (299 on the unwired
       sheet: pin_not_connected, pin_not_driven, power_pin_not_driven). They disappear as
       the circuit is wired. V+, VREG and V− will need PWR_FLAGs.
