@@ -42,7 +42,7 @@ The JLC BOM is `slave-18s/bom.csv`.
 | C-pin filter cap | 100 nF **to V−** | Per Cn, C1–C18 (18), after the 10 Ω. Grounded-cap filter, so each cap sees up to the full stack: **100 V rated** |
 | S-pin balance resistor | 33 Ω | From the cell node (before the 10 Ω) to Sn |
 | V+ filter | 100 Ω + 100 nF (100 V) V+ to V− | The earlier note said 10 nF. Figure 112 shows 100 nF |
-| DRIVE regulator | NPN, 100 Ω from top of stack to collector, 10 nF (100 V) at the collector, 1 µF at VREG (emitter) | Datasheet text recommends a 100 Ω / **100 nF** collector RC. Figure 112 shows 10 nF |
+| DRIVE regulator | NPN, 100 Ω from top of stack to collector, **100 nF** (100 V) at the collector, 1 µF at VREG (emitter) | Figure 112 shows 10 nF. We use the datasheet text's 100 Ω / 100 nF RC (deviation 6) |
 | VREF1 / VREF2 | 1 µF each | |
 | isoSPI termination | 100 Ω | Split 2 × 51 Ω with centre-tap caps (below) |
 | IBIAS / ICMP | IBIAS–1 kΩ–ICMP–1 kΩ–V− | |
@@ -67,6 +67,9 @@ to stack-level (100 V parts).
    alternative, but C17976 (68 Ω 1206) is an Extended part too, and each 1206 would run at
    about 82 % of its 0.25 W rating on a board that heats up while balancing.
 5. **isoSPI transformer HM2113ZNL instead of HX1188FNL.** See the transformer section.
+6. **Collector cap 100 nF instead of Figure 112's 10 nF.** The datasheet text (Simple Linear
+   Regulator) recommends a 100 Ω, 100 nF RC on the collector to protect the NPN from transients.
+   It's also the same Basic part as the filter caps (C28233), so there's one fewer Extended line.
 
 ## Balance resistor sizing
 
@@ -107,11 +110,10 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 |---|---|---|---|---|---|
 | U1 | ADBMS1818ASWAZ-RL | LQFP-64-1EP 10×10, EP5×5 | C5372802 | Extended | 12,496 |
 | R100–R118 | 10 Ω 1 % | 0603 | C22859 | Basic | 5.8 M |
-| C101–C118, C301 | 100 nF 100 V X7R | 0805 | C28233 | Basic | 3.25 M |
+| C101–C118, C301, C302 | 100 nF 100 V X7R (filters, V+, collector) | 0805 | C28233 | Basic | 3.25 M |
 | R201–R218 | 33 Ω 1 % 1 W | 2512 | C53728 | Extended | 49,062 |
 | R301 | 100 Ω 1 % (V+) | 0603 | C22775 | Basic | 8.6 M |
 | R302 | 100 Ω 1 % 150 V (collector) | 0805 | C17408 | Basic | 7.4 M |
-| C302 | 10 nF 100 V X7R (collector) | 0603 | C282516 | Extended | 463 k |
 | Q301 | FZT853TA, NPN 100 V 6 A 3 W | SOT-223 | C435890 | Extended | 264 |
 | C303–C305 | 1 µF 50 V X5R (VREG, VREF1, VREF2) | 0603 | C15849 | Basic | 11.9 M |
 | R401, R402 | 1 kΩ 1 % | 0603 | C21190 | Basic | 28 M |
@@ -123,8 +125,7 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 | TH701 | Murata NCP18WF104F12RB, 100 k 1 % B 4250 K | 0603 | C71280 | Extended | 115 k |
 | J1–J4 | Connectors | TBD | TBD | | |
 
-There are 7 Extended lines. C302 could become Basic C28233 (100 nF 100 V) if the collector
-cap follows the datasheet text instead of Figure 112.
+There are 5 Extended lines: U1, R201–R218, Q301, T501/T601 and TH701. Every capacitor is Basic.
 
 Why these values are safe at the voltages involved:
 
@@ -159,8 +160,7 @@ pin order whose partial mating can't put the full stack across two adjacent pins
 - [x] Choose the isoSPI transformer: HM2113ZNL.
 - [ ] Maximum balance current per S switch and the die thermal budget at 18 × ~110 mA. If
       it's too hot, add external balance MOSFETs (datasheet Figure 99).
-- [ ] Collector cap C302: keep Figure 112's 10 nF (Extended) or use the text's 100 nF
-      (Basic C28233)?
+- [x] Collector cap C302: 100 nF 100 V (Basic C28233), per the datasheet text.
 - [ ] HM2113ZNL footprint: pads are numbered counter-clockwise from the pin-1 dot. Confirm
       against a real part or the Pulse 3D model before ordering.
 - [ ] FZT853 numbering: the Diodes datasheet shows B–C–E leads (tab C) without numbers.
