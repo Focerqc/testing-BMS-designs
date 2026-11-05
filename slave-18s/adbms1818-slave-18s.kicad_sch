@@ -1,0 +1,25 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818")
+	(paper "A3")
+	(title_block
+		(title "ADBMS1818 18S slave module")
+		(date "2026-11-04")
+		(rev "0-draft")
+		(comment 1 "Baseline: ADBMS1818 datasheet Figure 112 typical application")
+		(comment 2 "Not for manufacture")
+	)
+	(lib_symbols)
+	(text "Clean slate. Build from the ADBMS1818 typical application (datasheet Fig. 112).\nSee ../docs/slave-18s-design-basis.md for values and open items."
+		(exclude_from_sim no)
+		(at 25.4 25.4 0)
+		(effects (font (size 2 2)) (justify left top))
+		(uuid "0c7b5a1e-2f42-4c55-b1a8-5d3a6e9f1818")
+	)
+	(sheet_instances
+		(path "/" (page "1"))
+	)
+	(embedded_fonts no)
+)

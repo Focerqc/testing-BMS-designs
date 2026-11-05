@@ -1,0 +1,8 @@
+# Preserve exact KiCad and vendor asset bytes across platforms.
+*.kicad_pcb -text
+*.kicad_sch -text
+*.kicad_pro -text
+*.kicad_mod -text
+*.step -text
+*.STEP -text
+_reference/** -text

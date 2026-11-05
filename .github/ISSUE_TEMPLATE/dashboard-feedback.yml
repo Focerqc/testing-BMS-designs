@@ -1,0 +1,41 @@
+name: Dashboard / placement prompt feedback
+description: Review a schematic, part choice, or placement; optionally include a Board Boxes prompt.
+title: "Dashboard feedback: "
+body:
+  - type: input
+    id: board_revision
+    attributes:
+      label: Board revision or commit
+      description: Optional, if known.
+      placeholder: "main, commit hash"
+    validations:
+      required: false
+  - type: input
+    id: component
+    attributes:
+      label: Component or board area
+      placeholder: "U1, balance resistors, isoSPI port A, ..."
+    validations:
+      required: true
+  - type: textarea
+    id: prompt_output
+    attributes:
+      label: Generated prompt output
+      description: Optional. Paste the prompt copied from the local Board Boxes dashboard if available.
+      render: text
+    validations:
+      required: false
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Your feedback
+      description: What should be checked, clarified, or changed?
+    validations:
+      required: true
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Optional links or details. Do not include private information.
+    validations:
+      required: false

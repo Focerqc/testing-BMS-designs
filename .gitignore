@@ -1,0 +1,27 @@
+# Private reference material (Racc's pictures) - local only, never published
+_reference/racc/
+
+# Local sessions and recovery copies
+*.kicad_prl
+*.lck
+~*
+*.bak
+*-backups/
+*-bak
+_autosave-*
+.history/
+.mcp-backups/
+.dashboard_backups/
+__pycache__/
+*.py[cod]
+node_modules/
+.venv/
+.env
+.env.*
+*.pem
+*.key
+Thumbs.db
+.DS_Store
+# Regenerable outputs
+exports/*
+!exports/README.md
