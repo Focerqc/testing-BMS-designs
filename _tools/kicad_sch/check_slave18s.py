@@ -1,7 +1,7 @@
 """Ground-truth check of the ADBMS1818 18S slave schematic against its wiring table.
 
 Runs kicad-cli (netlist + ERC) and checks:
-  1. every ref.pin in the table is on the expected net (CELL0 is the V- net);
+  1. every ref.pin in the table is on the expected net;
   2. every no-connect pin is alone on its net AND has an NC flag on its pin end;
   3. no extra pins of the checked parts sit on an expected net;
   4. every pin in the netlist is covered by the table, all 65 U1 pins are accounted for,
@@ -9,7 +9,7 @@ Runs kicad-cli (netlist + ERC) and checks:
   5. ERC (all severities) is empty.
 Exit code 0 only if everything passes. Re-run after any schematic edit.
 
-usage: python _tools/kicad_sch/check_slave18s.py [--sch FILE] [--blocks 1 2 3 4 5] [--erc]
+usage: python _tools/kicad_sch/check_slave18s.py [--sch FILE] [--blocks 1 2 3 4 5 6] [--erc]
 Wiring table source: docs/slave-18s-design-basis.md ("Schematic nets") and the datasheet.
 """
 import argparse
@@ -23,17 +23,18 @@ from pathlib import Path
 from kisch import DEFAULT_SCH, KICAD_CLI, kid, kids, load, no_connects, parse, symbols
 
 TMP = Path(tempfile.gettempdir())
-E = {b: {} for b in range(1, 6)}      # block -> {ref.pin: net}
-NC = {b: set() for b in range(1, 6)}  # block -> {ref.pin}
+E = {b: {} for b in range(1, 7)}      # block -> {ref.pin: net}
+NC = {b: set() for b in range(1, 7)}  # block -> {ref.pin}
+BLOCKS = sorted(E)
 
 
 def cell(n):
-    return "V-" if n == 0 else f"CELL{n}"   # CELL0 is the same net as V-
+    return f"CELL{n}"   # fused side of tap n. CELL0 is the C0 sense tap; V- has its own fuse F120
 
 
 # Block 1: power, references, bias, configuration pins
-E[1].update({"R301.1": "CELL18", "R301.2": "VP_F", "U1.1": "VP_F", "C301.1": "VP_F", "C301.2": "V-",
-             "R302.1": "CELL18", "R302.2": "VCOLL", "C302.1": "VCOLL", "C302.2": "V-",
+E[1].update({"R301.1": "VBAT_F", "R301.2": "VP_F", "U1.1": "VP_F", "C301.1": "VP_F", "C301.2": "V-",
+             "R302.1": "VBAT_F", "R302.2": "VCOLL", "C302.1": "VCOLL", "C302.2": "V-",
              "Q301.1": "DRIVE", "Q301.2": "VCOLL", "Q301.3": "VREG", "U1.49": "DRIVE", "U1.48": "VREG",
              "C303.1": "VREG", "C303.2": "V-", "C304.1": "VREF1", "C304.2": "V-", "U1.51": "VREF1",
              "C305.1": "VREF2", "C305.2": "V-", "U1.50": "VREF2",
@@ -71,10 +72,22 @@ for k, pin in zip((1, 2, 3, 4), (39, 40, 41, 42)):
 E[4].update({"J2.1": "GPIO1", "J2.2": "V-", "J2.3": "GPIO2", "J2.4": "V-", "J2.5": "GPIO3", "J2.6": "V-",
              "TH701.1": "GPIO4", "TH701.2": "V-"})
 
-# Block 5: cell-tap connectors
+# Block 5: cell-tap connectors (connector side of the fuses; J1.10 and J5.1 are both tap 9)
 for k in range(1, 11):
-    E[5][f"J1.{k}"] = cell(k - 1)
-    E[5][f"J5.{k}"] = cell(k + 8)
+    E[5][f"J1.{k}"] = f"TAP{k - 1}"
+    E[5][f"J5.{k}"] = f"TAP{k + 8}"
+
+# Block 6: hot-plug protection and test points (design basis, "Protection and test points")
+for n in range(19):                                   # tap fuses, AN-2093 Fig. 11
+    E[6].update({f"F1{n:02d}.1": f"TAP{n}", f"F1{n:02d}.2": cell(n)})
+E[6].update({"F119.1": "TAP18", "F119.2": "VBAT_F",     # supply branches
+             "F120.1": "TAP0", "F120.2": "V-",
+             "D301.1": "VBAT_F", "D301.2": "V-"})          # TVS, K = pin 1
+for n in range(1, 19):                               # zener clamps, K = pin 1 at Cn_F
+    E[6].update({f"D1{n:02d}.1": f"C{n}_F", f"D1{n:02d}.2": f"C{n - 1}_F"})
+for k, net in enumerate(["V-", "V-", "VREG", "VREF1", "VREF2", "DRIVE", "IPA", "IMA", "IPB", "IMB",
+                         "VCOLL", "C6_F", "C12_F", "C18_F"], 1):
+    E[6][f"TP{k}.1"] = net
 
 
 def kicad(sch):
@@ -99,10 +112,10 @@ def kicad(sch):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sch", default=str(DEFAULT_SCH))
-    ap.add_argument("--blocks", nargs="+", type=int, default=[1, 2, 3, 4, 5])
+    ap.add_argument("--blocks", nargs="+", type=int, default=BLOCKS)
     ap.add_argument("--erc", action="store_true", help="print every ERC violation")
     a = ap.parse_args()
-    full = sorted(a.blocks) == [1, 2, 3, 4, 5]
+    full = sorted(a.blocks) == BLOCKS
 
     pin2net, net2pins, erc = kicad(a.sch)
     exp, ncs = {}, set()
