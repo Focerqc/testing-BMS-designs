@@ -4236,7 +4236,7 @@
 	)
 	(text "THERMISTORS: 100k to VREF2 + 100 nF, GPIO1-3 cell NTC, GPIO4 onboard"
 		(exclude_from_sim no)
-		(at 106.68 233.68 0)
+		(at 106.68 231.14 0)
 		(effects
 			(font
 				(size 2 2)
@@ -4646,6 +4646,16 @@
 		)
 		(uuid "27c388f4-6e67-43e1-961f-31902c780a89")
 	)
+	(label "V-"
+		(at 127 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "28aea3f5-c68f-4283-9e6a-6a780c748e1b")
+	)
 	(label "S16"
 		(at 218.44 146.05 270)
 		(effects
@@ -4725,6 +4735,16 @@
 			(justify right bottom)
 		)
 		(uuid "2f898e6e-811f-4e50-95c0-cb55b17a9724")
+	)
+	(label "GPIO1"
+		(at 360.68 124.46 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3099255d-647b-44b0-b937-07544411ad48")
 	)
 	(label "IMA"
 		(at 152.4 209.55 270)
@@ -4866,6 +4886,26 @@
 		)
 		(uuid "44b8617b-f2e9-4ca4-a603-6cd852037bc8")
 	)
+	(label "V-"
+		(at 360.68 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4514e533-6aab-43ba-99b8-1f643da5ed08")
+	)
+	(label "VREF2"
+		(at 203.2 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "466d2c40-db60-46fa-804e-73ef674f3996")
+	)
 	(label "S1"
 		(at 35.56 170.18 180)
 		(effects
@@ -4875,6 +4915,16 @@
 			(justify right bottom)
 		)
 		(uuid "4671755a-f2a7-49a9-8829-92b4d952ed81")
+	)
+	(label "VREF2"
+		(at 111.76 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4722ed97-9df8-4e8f-a111-e1f0d6d8322a")
 	)
 	(label "V-"
 		(at 236.22 74.93 270)
@@ -4985,6 +5035,16 @@
 			(justify left bottom)
 		)
 		(uuid "585d8e77-acf7-4052-adf6-28a9a7cc69ea")
+	)
+	(label "GPIO3"
+		(at 187.96 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "58667c53-bfe5-4931-854e-fdb77c5aa7d1")
 	)
 	(label "ISOB_CM"
 		(at 271.78 201.93 90)
@@ -5176,6 +5236,16 @@
 		)
 		(uuid "6771880e-8d45-4895-9f3b-54d5af0a256f")
 	)
+	(label "GPIO1"
+		(at 127 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "681fb601-85a9-4958-914b-f3576bfc1e91")
+	)
 	(label "S9"
 		(at 35.56 129.54 180)
 		(effects
@@ -5205,6 +5275,16 @@
 			(justify left bottom)
 		)
 		(uuid "699b8033-d206-43c5-b521-e965853718a9")
+	)
+	(label "GPIO3"
+		(at 172.72 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6a54ac05-9653-4994-bd9e-e6482ae7af8b")
 	)
 	(label "S10"
 		(at 35.56 124.46 180)
@@ -5296,6 +5376,16 @@
 		)
 		(uuid "76acbfde-b632-4328-806f-4c83380caf67")
 	)
+	(label "VREF2"
+		(at 172.72 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "774e28eb-b797-470a-a522-331de73fefa3")
+	)
 	(label "V-"
 		(at 218.44 92.71 270)
 		(effects
@@ -5365,6 +5455,16 @@
 			(justify right bottom)
 		)
 		(uuid "7caeb8d0-39d6-4eac-a0da-87e7b1d891c7")
+	)
+	(label "GPIO2"
+		(at 360.68 129.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7cb2cf73-7895-4911-999f-ff667ed56de0")
 	)
 	(label "C12_F"
 		(at 35.56 111.76 180)
@@ -5476,6 +5576,16 @@
 		)
 		(uuid "866b78ed-18f7-4fef-8e2b-38ebedecdef1")
 	)
+	(label "GPIO1"
+		(at 76.2 124.46 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "869f7191-8e3c-40f1-9a85-5be8f596bc69")
+	)
 	(label "ISOB_CM"
 		(at 251.46 209.55 270)
 		(effects
@@ -5485,6 +5595,16 @@
 			(justify right bottom)
 		)
 		(uuid "87e81357-fd1d-4861-8cc2-3d3460584c31")
+	)
+	(label "GPIO2"
+		(at 76.2 127 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8834552e-8172-4736-ad67-9cf948e94aa1")
 	)
 	(label "V-"
 		(at 172.72 176.53 270)
@@ -5556,6 +5676,16 @@
 		)
 		(uuid "8f50ee52-5b88-4c7b-9504-cc90b5b1c64e")
 	)
+	(label "VREF2"
+		(at 142.24 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9011009e-ae14-4536-9186-0fbf174b05e7")
+	)
 	(label "S12"
 		(at 147.32 146.05 270)
 		(effects
@@ -5596,6 +5726,26 @@
 		)
 		(uuid "9237c799-95d1-4f3c-b324-1b0f0917fef1")
 	)
+	(label "V-"
+		(at 360.68 127 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "943fb135-8a4a-4a09-ad1e-9f5124173a18")
+	)
+	(label "GPIO2"
+		(at 157.48 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "94a79ca4-873f-40b4-8515-3f20b27c94fd")
+	)
 	(label "ICMP"
 		(at 276.86 168.91 90)
 		(effects
@@ -5605,6 +5755,16 @@
 			(justify left bottom)
 		)
 		(uuid "94cbd7eb-8814-4f86-9636-fb9156bc1b5d")
+	)
+	(label "V-"
+		(at 157.48 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "96b8d435-1647-4426-a52d-a4d2c4115f1c")
 	)
 	(label "ISOA_CM"
 		(at 132.08 209.55 270)
@@ -5746,6 +5906,16 @@
 		)
 		(uuid "a5abe288-8450-47d6-a006-ed342ac474b6")
 	)
+	(label "GPIO4"
+		(at 203.2 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a77d4f23-0d46-4935-8c8a-a9f5e8b23978")
+	)
 	(label "C17_F"
 		(at 35.56 86.36 180)
 		(effects
@@ -5845,6 +6015,16 @@
 			(justify left bottom)
 		)
 		(uuid "ad1e6b52-b7de-4bd1-90ee-2088914c6a1b")
+	)
+	(label "V-"
+		(at 360.68 137.16 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ae4817b8-9513-436b-b5f9-fc1ed9c24aba")
 	)
 	(label "CELL10"
 		(at 238.76 41.91 90)
@@ -6026,6 +6206,26 @@
 		)
 		(uuid "c6d36c9b-4f2a-46fc-8e14-f142339db6d0")
 	)
+	(label "GPIO4"
+		(at 76.2 132.08 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c80353d2-c6eb-4ace-85a2-e95a721817ea")
+	)
+	(label "V-"
+		(at 187.96 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c822dc36-3ad8-4aff-bf92-018f691c1e41")
+	)
 	(label "S5"
 		(at 35.56 149.86 180)
 		(effects
@@ -6046,6 +6246,36 @@
 		)
 		(uuid "c8db9f31-6fda-4a35-bc46-6efd52e52a88")
 	)
+	(label "GPIO1"
+		(at 111.76 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ca62f91d-4d87-41eb-b4d7-935e95e64eaf")
+	)
+	(label "GPIO2"
+		(at 142.24 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "cad675d3-b01d-4590-9ba5-5e0828033886")
+	)
+	(label "V-"
+		(at 218.44 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "cc398247-7004-4084-b151-3ef3dc329e3c")
+	)
 	(label "ISOA_LP"
 		(at 360.68 172.72 180)
 		(effects
@@ -6055,6 +6285,16 @@
 			(justify right bottom)
 		)
 		(uuid "cd1851ab-f6fb-4d6c-825c-db5cf1297977")
+	)
+	(label "GPIO3"
+		(at 360.68 134.62 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "cff41378-d663-474c-867e-e0fd9bcc2aeb")
 	)
 	(label "CELL6"
 		(at 187.96 41.91 90)
@@ -6115,6 +6355,16 @@
 			(justify right bottom)
 		)
 		(uuid "d401b49f-32cf-41d2-9afb-cdb951d73a3c")
+	)
+	(label "V-"
+		(at 233.68 247.65 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d526eb55-3776-4e2f-ada6-67dc8841a7e9")
 	)
 	(label "CELL18"
 		(at 111.76 168.91 90)
@@ -6195,6 +6445,16 @@
 			(justify right bottom)
 		)
 		(uuid "d9ce7a3e-8df1-4698-968f-268230495276")
+	)
+	(label "GPIO4"
+		(at 218.44 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "dc5ca831-1493-49a2-83dc-44ea0e2016b1")
 	)
 	(label "VP_F"
 		(at 35.56 78.74 180)
@@ -6376,6 +6636,16 @@
 		)
 		(uuid "f3a1e91c-3498-4049-b004-a97a8aecf18f")
 	)
+	(label "GPIO4"
+		(at 233.68 240.03 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f4346386-d3ce-444d-bcfb-46e8b06c90d6")
+	)
 	(label "C6_F"
 		(at 187.96 49.53 270)
 		(effects
@@ -6505,6 +6775,16 @@
 			(justify left bottom)
 		)
 		(uuid "fd376150-34a6-466c-aa00-61dd06dd6732")
+	)
+	(label "GPIO3"
+		(at 76.2 129.54 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fdffd024-461a-4e6d-91ee-2ee3c870125a")
 	)
 	(label "V-"
 		(at 111.76 74.93 270)
