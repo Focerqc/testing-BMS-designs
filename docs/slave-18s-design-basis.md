@@ -3,8 +3,9 @@
 Status: **schematic wired, PCB populated and roughly grouped, 2026-11-05.** Every part is on
 the root sheet with Value, Footprint, LCSC and MPN filled in, grouped by function, and
 connected with net labels (see "Schematic nets"). kicad-cli ERC: 0 errors, 0 warnings. All 90
-footprints are on the PCB, grouped by block, with no routing yet (see "PCB"). The JLC BOM is
-`slave-18s/bom.csv`.
+footprints are on the PCB, grouped by block, with no routing yet (see "PCB"). Net classes and
+HV clearance rules are in the project since 2026-11-06 (see "Net classes and clearance
+rules"). The JLC BOM is `slave-18s/bom.csv`.
 
 ## Scope
 
@@ -249,14 +250,119 @@ There are no drawn wires.
   U1 central, supply/VREF/bias (Q301, R301/R302, C301–C305, R401/R402) below U1, isoSPI A and B
   on the right (each transformer with its R/C), and J4 bottom right. There are 0 courtyard
   overlaps. J1's last pin and J5's first pin are 7 mm apart (≥ 1 mm required).
-- **Remaining DRC items** (expected before placement and routing; not fixed):
+- **Remaining DRC items** (expected before placement and routing; not fixed). After the net
+  classes and rules went in (2026-11-06, see the next section):
   - 183 unconnected (no routing);
-  - 27 silk_overlap and 27 silk_over_copper (reference text on tight groups, and the
-    placeholder-outline text running across U1);
-  - 16 drill_out_of_range: the 0.2 mm thermal vias in U1's stock `..._ThermalVias` footprint,
-    below the board setup's 0.3 mm minimum hole. Decide with the fab rules (JLC allows
-    0.2 mm at extra cost) or use the footprint without thermal vias.
+  - 22 silk_overlap and 15 silk_over_copper warnings (reference text on tight groups);
+  - the 16 drill_out_of_range errors on U1's 0.2 mm thermal vias are gone: the board
+    minimum hole is now 0.2 mm (see "U1 thermal vias").
 - 3D: U1, T501 and T601 render without bodies because no 3D model is linked. This is cosmetic.
+
+## Net classes and clearance rules (2026-11-06)
+
+`python _tools/kicad_sch/make_rules.py` writes both: the net classes and board minimums into
+`slave-18s/adbms1818-slave-18s.kicad_pro` (JSON read-modify-write, not pcbnew), and the
+custom rules into `slave-18s/adbms1818-slave-18s.kicad_dru`, generated from the nets on the
+board. `make_rules.py --check` passes only if both files are current **and** kicad-cli really
+loads the rules. That second part matters: kicad-cli silently ignores the whole `.kicad_dru`
+if one rule has a syntax error, so the check appends a canary rule to a temp copy and fails
+unless it fires. Run it after any schematic change that adds or renames nets; it stops on a
+net it can't place in the stack.
+
+### Track widths
+
+Heating doesn't set any width here. IPC-2221 (external, 10 °C rise) needs about 0.015 mm
+for 114 mA and 0.003 mm for 35 mA on 1 oz copper. The widths come from U1's pin pitch (0.3 mm
+pads at 0.5 mm, 0.2 mm gaps), JLC's 2 oz minimum (0.16 mm trace and space, capabilities
+page, 2026-11-06), voltage drop, and robustness. 1 oz copper is 0.49 mΩ per square.
+
+| Class | Nets | Track | Based on |
+|---|---|---|---|
+| HV_CELL | CELL1–18, C0_F–C18_F (and TAPn if added) | 0.25 mm | C-pin current is µA. The harness-side CELLn also carries one cell's balance current (≤ 114 mA) from the connector to R2nn. 0.25 mm runs between U1's pads at 0.5 mm pitch with 0.25 mm gaps |
+| BALANCE | S1–S18 | 0.30 mm | ≤ 114 mA (sizing table below). Same as U1's pad width. 1.6 mΩ/mm on 1 oz, so 30 mm drops about 6 mV next to 3.8 V across 33 Ω |
+| SUPPLY | VP_F, VCOLL, DRIVE, VREG | 0.40 mm | Q301 carries ≤ 35 mA peak (datasheet p. 71); DRIVE sources ≤ 1 mA. Wider for a short, low-inductance VREG decoupling loop. Neck down to 0.3 mm at U1 pins 1, 48 and 49. VCOLL's real job is the collector pour (placement checklist) |
+| ISOSPI_PHY | IPA, IMA, IPB, IMB, ISO*_CM, ISO*_CT | 0.25 mm, pair 0.25 / 0.25 | ≤ 30 mA per pin (abs max, p. 11). Not impedance-controlled: the runs stay under 2 cm (p. 86), far shorter than the pulse edges |
+| ISOSPI_LINE | ISOA_LP/LN, ISOB_LP/LN | 0.25 mm, pair 0.25 / 0.25 | Same currents, cable side of the transformers |
+| Default | V−, VREF1/2, IBIAS, ICMP, GPIO1–4 | 0.25 mm | mA or less. V− (chip ≤ 35 mA plus cell 1's balance return) will mostly be a pour |
+
+Every class keeps 0.2 mm clearance and the 0.6/0.3 mm via. Board minimums (Board Setup >
+Constraints): clearance 0.16 mm (JLC 2 oz), track 0.2 mm, hole 0.2 mm (JLC's preferred
+minimum, see "U1 thermal vias"), via 0.5 mm.
+
+### Clearance: IPC-2221B Table 6-1, column B2
+
+B2 is external conductors, uncoated, sea level to 3050 m. IPC-2221B is paywalled; the rows
+were checked against two reproductions of the table on 2026-11-06 (they agree).
+
+| Table row | B2 | Where it applies here | Set to |
+|---|---|---|---|
+| 0–15 V | 0.10 mm | Neighbouring cells (≤ 4.2 V), neighbouring U1 pins | 0.2 mm, net class |
+| 16–30 V | 0.10 mm | Nets up to 6 cells apart (25.2 V) | 0.2 mm, net class |
+| 31–50 V, 51–100 V | 0.60 mm | Nets far apart in the stack, up to 75.6 V | 0.6 mm, `.kicad_dru` |
+| 151–170 V | 1.25 mm | isoSPI line side vs this module, up to 151.2 V | 2.0 mm, `.kicad_dru` |
+
+**Why a rules file:** KiCad uses the larger of the two net classes' clearances. It can't make
+the clearance depend on how far apart two nets sit in the stack, and CELL3 vs CELL4 (4.2 V)
+must stay at 0.2 mm or U1's 0.5 mm-pitch pins could never be routed. So the rules file gives
+each net a level (its tap number: V− = 0, top of stack = 18; VREG, VREF, GPIO and the isoSPI
+chip side are level 0) and a bank = level ÷ 3, rounded down:
+
+| Bank | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|---|
+| Taps | 0–2 + low-voltage nets | 3–5 | 6–8 | 9–11 | 12–14 | 15–17 | 18, VP_F, VCOLL |
+
+- Same or neighbouring bank: at most 6 levels apart, 6 × 4.2 = 25.2 V. That's the 16–30 V row,
+  so the net class's 0.2 mm applies. The 6 includes an S pin, which sits up to one level
+  below its tap while its switch is on.
+- Two or more banks apart: up to 75.6 V, so 0.6 mm. Five rules, one per bank 0–4. Some pairs
+  only 12.6–30 V apart also get 0.6 mm; that costs a little space and is on the safe side.
+- Items with no net (copper text, later mounting holes) count as bank 0.
+
+**isoSPI barrier: 2.0 mm clearance and 2.0 mm creepage** between each port's line side
+(ISOA_LP/LN and T501's unconnected pad 5; the same for port B) and everything else,
+including the other port's line side. The line side floats between this module and its
+neighbour, so with two 18S slaves stacked (the Funwheel plan) it can sit up to 2 × 75.6 =
+151.2 V from our nets: B2 row 151–170 V = 1.25 mm. 2.0 mm adds margin for motor
+common-mode transients and ESD on the connector, and it costs nothing: the transformer's own
+rows are 12.4 mm apart and the connector sits next to it. On a flat board without slots,
+creepage equals the clearance; both constraints are in the rule so a later slot or cut-out
+can't hide a short surface path.
+
+**Datasheet layout rules** (Rev. B p. 86, isoSPI layout guidelines), also in the rules file:
+no copper pour inside T501/J3 or T601/J4 courtyards (item 2: no V− plane under the
+transformer or the connector), and only that port's isoSPI tracks and vias inside them
+(item 3: no traces across the isoSPI lines). Checked on a scratch copy: a V− zone under T501
+is flagged, a keepout area there is not. The "nothing between transformer and connector"
+part needs the placement, so it's on the checklist.
+
+### U1 thermal vias: keep the ThermalVias footprint, board minimum hole 0.2 mm
+
+- JLC capabilities page (2026-11-06): 2-layer minimum via hole 0.15 mm, preferred minimum
+  0.2 mm. A 0.2 mm hole costs extra only when the via is under 0.45 mm across. U1's 16 vias
+  are 0.2 mm holes in 0.5 mm pads (0.15 mm ring; JLC asks the via to be ≥ 0.1 mm larger than
+  the hole), so they're standard price.
+- The EP is U1's heat path: Table 12 gives θJA = 17 °C/W only with the EP soldered to the V−
+  plane, and the 18 balance switches put their heat into the die. The vias carry it to the
+  bottom-side V− copper. Dropping them to save nothing would be a bad trade.
+- The vias stay open (JLC doesn't fill vias on 2-layer boards by default), so a little solder
+  wicks into them. The stock footprint's 25 paste windows already allow for that. Check
+  JLC's DFM report when ordering; it may flag the vias as PTH holes with a thin ring.
+
+### DRC before and after (`kicad-cli pcb drc --severity-all`, no parts moved)
+
+| Item | Before | After |
+|---|---|---|
+| drill_out_of_range (error) | 16 | 0 |
+| clearance / creepage (error) | 0 | 0 |
+| items_not_allowed (error) | 0 | 0 |
+| silk_overlap (warning) | 22 | 22 |
+| silk_over_copper (warning) | 15 | 15 |
+| unconnected | 183 | 183 |
+| schematic parity | 0 | 0 |
+
+The rough grouping has no clearance problem yet: the closest pair two banks apart is 1.65 mm
+(R207 CELL7 vs R213 CELL13). To prove the rules are live, a copy with the 0.6 mm raised to
+3 mm flagged 266 pairs across all five stack rules.
 
 ## Open items
 
@@ -298,7 +404,10 @@ There are no drawn wires.
 - [ ] Board outline (the current 120 × 70 mm rectangle is a placeholder).
 - [x] Import the schematic into the PCB. Done 2026-11-05 with F8: 90 footprints, parity 0.
       See "PCB".
-- [ ] Final placement (Board Boxes), net classes and HV clearance rules, then routing.
-- [ ] U1 thermal vias: 0.2 mm holes vs the 0.3 mm board minimum (16 DRC items).
+- [x] Net classes and HV clearance rules. Done 2026-11-06 with `make_rules.py`. See "Net
+      classes and clearance rules".
+- [ ] Final placement (Board Boxes), then routing.
+- [x] U1 thermal vias: keep them, board minimum hole 0.2 mm (JLC preferred minimum, standard
+      price at 0.5 mm diameter). See "U1 thermal vias".
 - [ ] EVAL-ADBMS1818Z schematic not reviewed (not supplied). Cross-check pins and the
       transformer against it if it turns up.

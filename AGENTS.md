@@ -107,8 +107,21 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | `kisch.py --pins REGEX` | Lists parts, pin end points (mm) and which way each pin faces |
 | `check_pcb_parity.py` | PCB vs schematic: 90 footprints and names, every pad's net vs the kicad-cli netlist, DRC schematic parity. Exit 0 = pass. Run after any PCB or schematic change |
 | `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. Close KiCad first |
+| `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier) from the board's nets. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
 if it timed out, wait for the file to settle -> `kicad-cli sch upgrade --force` ->
 `orient_labels.py` -> `upgrade --force` again -> `check_slave18s.py` -> render the region
 and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alone.
+
+### Design rules (2026-11-06)
+
+- **kicad-cli silently ignores the whole `.kicad_dru` if one rule has a syntax error**: no
+  message, DRC just runs without custom rules. `make_rules.py --check` appends a canary rule
+  to a temp copy and fails unless it fires. Never hand-edit the `.kicad_dru`.
+- Custom rules are checked in both A/B orders and between pads of the same footprint; the
+  last matching rule wins, so the isoSPI barrier rules sit after the stack rules.
+- `A.NetName == '/ISOA_L*'` wildcards, `A.intersectsCourtyard('T501')`, `disallow zone` and
+  `creepage` all work in kicad-cli 10. `disallow zone` flags copper zones, not keepout areas.
+- NC pins get nets named `unconnected-(T501-LINE_CT-Pad5)` on the board. Rules that say "every
+  other net" must account for them.
