@@ -55,6 +55,9 @@ for source in board_files:
         if render.exists():
             image = render.relative_to(ROOT).as_posix()
             asset(image)
+            # Stable copy for the News page (data/ names are hashes).
+            (SITE / 'files').mkdir(exist_ok=True)
+            shutil.copyfile(render, SITE / 'files' / (source.stem + '-3d-' + kind + '.png'))
             entry.update(image=image, timestamp=datetime.datetime.fromtimestamp(render.stat().st_mtime).strftime('%b %d, %Y %H:%M'))
         renders[kind] = entry
     boards[relative] = dict(board=board, boxes=boxes, renders=renders)
