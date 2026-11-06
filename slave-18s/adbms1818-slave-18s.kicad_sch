@@ -6,7 +6,7 @@
 	(paper "A3")
 	(title_block
 		(title "ADBMS1818 18S slave module")
-		(date "2026-11-04")
+		(date "2026-11-05")
 		(rev "0-draft")
 		(comment 1 "Baseline: ADBMS1818 datasheet Figure 112 typical application")
 		(comment 2 "Not for manufacture")
@@ -4223,7 +4223,7 @@
 		)
 		(uuid "691525bc-2492-4d61-864d-96588848d08c")
 	)
-	(text "Parts placed UNWIRED, grouped by function. Values, footprints, LCSC and MPN are filled in.\nWire per ADBMS1818 Figure 112 + Racc isoSPI filtering. See ../docs/slave-18s-design-basis.md."
+	(text "Wired with net labels: labels with the same name are one net. CELL0 (bottom of stack) is the V- net.\nADBMS1818 Figure 112, isoSPI filtering per Fig. 104(B). See ../docs/slave-18s-design-basis.md."
 		(exclude_from_sim no)
 		(at 15.24 15.24 0)
 		(effects
