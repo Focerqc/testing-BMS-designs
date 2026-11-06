@@ -26,7 +26,7 @@ def asset(relative):
     return assets[relative]
 
 boards = {}
-SKIP = {'site', 'exports', '_reference', '.git'}
+SKIP = {'site', 'exports', '_reference', '.git', '.history'}
 board_files = sorted(p for p in ROOT.rglob('*.kicad_pcb') if not (SKIP & set(p.relative_to(ROOT).parts)))
 KICAD_CLI = r'C:\Program Files\KiCad\10.0\bin\kicad-cli.exe'
 for source in board_files:
