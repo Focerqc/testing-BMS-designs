@@ -21414,7 +21414,7 @@
 		(uuid "53b92931-604a-4c6b-8eea-8cb78275780d")
 	)
 	(gr_text "ADBMS1818 18S SLAVE - PLACEHOLDER OUTLINE"
-		(at 60 35 0)
+		(at 30 65 0)
 		(layer "F.SilkS")
 		(uuid "8fb10439-ea7b-414f-b3d1-45b3b14bad5a")
 		(effects
