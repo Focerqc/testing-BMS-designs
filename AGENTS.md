@@ -105,14 +105,32 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | `shift_group.py DX DY REF...` | Writes the file: moves parts together with their labels and no-connect flags |
 | `render_sch.py OUT.png --region X0 Y0 X1 Y1` | PNG of the sheet or a region (sheet mm) via kicad-cli PDF + PyMuPDF |
 | `kisch.py --pins REGEX` | Lists parts, pin end points (mm) and which way each pin faces |
-| `check_pcb_parity.py` | PCB vs schematic: 90 footprints and names, every pad's net vs the kicad-cli netlist, DRC schematic parity. Exit 0 = pass. Run after any PCB or schematic change |
+| `check_pcb_parity.py` | PCB vs schematic: every footprint and its name (148 since 2026-11-06), every pad's net vs the kicad-cli netlist, DRC schematic parity. Exit 0 = pass. Run after any PCB or schematic change |
 | `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. Close KiCad first |
-| `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier) from the board's nets. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
+| `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier, mounting-hole keep-out) from the board's nets. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
 if it timed out, wait for the file to settle -> `kicad-cli sch upgrade --force` ->
 `orient_labels.py` -> `upgrade --force` again -> `check_slave18s.py` -> render the region
 and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alone.
+
+### Adding the protection parts (2026-11-06)
+
+- **A script that writes symbols and pin-end labels straight into the `.kicad_sch` worked**
+  better than MCP batches for 58 parts: copy the lib symbol from KiCad's own `.kicad_sym`,
+  put each label exactly on the pin end, then `upgrade --force` -> `orient_labels.py` ->
+  `check_slave18s.py`. The checker, not the script, is what proves it.
+- **Symbol field angles are relative to the symbol.** On a part rotated 270 (a vertical
+  diode), Reference/Value need `(at x y 90)` to read horizontally; with 0 they come out
+  vertical and on top of each other. Render and look.
+- **After F8, check the user really saved.** Run `check_pcb_parity.py` only after they say
+  KiCad is closed; an unsaved F8 leaves the old board on disk. F8 drops new parts in a pile,
+  partly outside the outline; group them with `pcb_move.py` and check courtyards with
+  pcbnew (`GetCourtyard(F_CrtYd).BBox()`), all pairs.
+- **Changing a footprint size (0603 -> 1206) breaks the old grouping**: the R100 row
+  overlapped itself (17 shorting items) until it was respaced.
+- `kicad-cli pcb export svg` needs `--exclude-drawing-sheet`, or the title block covers
+  the board picture.
 
 ### Design rules (2026-11-06)
 

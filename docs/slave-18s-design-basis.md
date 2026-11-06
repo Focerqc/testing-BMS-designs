@@ -1,11 +1,12 @@
 # ADBMS1818 18S slave: design basis
 
-Status: **schematic wired, PCB populated and roughly grouped, 2026-11-05.** Every part is on
-the root sheet with Value, Footprint, LCSC and MPN filled in, grouped by function, and
-connected with net labels (see "Schematic nets"). kicad-cli ERC: 0 errors, 0 warnings. All 90
-footprints are on the PCB, grouped by block, with no routing yet (see "PCB"). Net classes and
-HV clearance rules are in the project since 2026-11-06 (see "Net classes and clearance
-rules"). The JLC BOM is `slave-18s/bom.csv`.
+Status: **schematic complete for a first bench board, PCB roughly grouped, 2026-11-06.**
+Every part is on the root sheet with Value, Footprint, LCSC and MPN filled in, grouped by
+function, and connected with net labels (see "Schematic nets"). kicad-cli ERC: 0 errors, 0
+warnings. Hot-plug protection, test points and mounting holes were added on 2026-11-06 (see
+"Protection and test points"). Net classes and HV clearance rules are in the project (see
+"Net classes and clearance rules"). Placement, outline and routing are not done. The JLC BOM
+is `slave-18s/bom.csv`.
 
 ## Scope
 
@@ -77,20 +78,39 @@ to stack-level (100 V parts).
 6. **Collector cap 100 nF instead of Figure 112's 10 nF.** The datasheet text (Simple Linear
    Regulator) recommends a 100 Ω, 100 nF RC on the collector to protect the NPN from transients.
    It's also the same Basic part as the filter caps (C28233), so there's one fewer Extended line.
+7. **Tap fuses F100–F118 and split supply fuses F119/F120 (2026-11-06).** Figure 112 has none.
+   Source: ADI AN-2093 (ADBMS1818 slave module) Fig. 11. See "Protection and test points".
+8. **Zener clamps D101–D118 between neighbouring C pins (2026-11-06).** Figure 112 has none.
+   Source: abs max Table 11 (p. 11, 8 V between C pins), AN-2093 Fig. 12.
+9. **TVS D301 across the stack after F119 (2026-11-06).** Source: V+ abs max 112.5 V
+   (Table 11), FZT853 VCEO 100 V, AN-2093 D1401.
+10. **R100–R118 in 1206 instead of 0603 (2026-11-06).** Figure 99 (p. 75) shows the balance
+    current of cell n returning through the C(n−1) series resistor, so each 10 Ω carries
+    about 89 mA (≈ 79 mW, 79 % of an 0603's 0.1 W). The 1206 is rated 0.25 W.
+11. **Test points and mounting holes (2026-11-06).** Not part of the circuit; bench access.
 
 ## Balance resistor sizing
 
-Uses the datasheet switch resistance (4 Ω typ, 10 Ω max).
+Uses the datasheet switch resistance (4 Ω typ, 10 Ω max). **Corrected 2026-11-06:** the first
+table ignored the 10 Ω filter resistor. Figure 99 (p. 75) shows the discharge path as
+CELLn → R2nn → Sn → internal switch → C(n−1) pin → R1(n−1) → CELL(n−1), so the loop is
+R_S + R_switch + 10 Ω. The tap fuses add roughly 2 × 0.7 Ω more (cold resistance, not yet
+checked against the Littelfuse sheet), which lowers the current slightly; it is left out here.
 
 | R_S | I at 4.2 V (4 Ω switch) | I at 4.2 V (10 Ω switch) | P in R_S at 4.2 V |
 |---|---|---|---|
-| 120 Ω (Racc's board) | ~34 mA | ~32 mA | 0.14 W |
-| 47 Ω | ~82 mA | ~74 mA | 0.32 W |
-| **33 Ω (Fig. 112)** | **~114 mA** | **~98 mA** | **0.43 W** |
+| 120 Ω (Racc's board) | ~31 mA | ~30 mA | 0.12 W |
+| 47 Ω | ~69 mA | ~63 mA | 0.22 W |
+| **33 Ω (Fig. 112)** | **~89 mA** | **~79 mA** | **0.26 W** |
 
-- 0.43 W in a 1 W 2512 is about 43 % loading.
-- All 18 balancing at once is about 8 W on the board. Firmware should balance odd and even
-  cells alternately, or the layout needs copper for heat spreading.
+- 0.26 W in a 1 W 2512 is about 26 % loading.
+- Each 10 Ω series resistor carries the same current: about 79 mW, hence 1206 (deviation 10).
+- All 18 balancing at once is about 6.7 W on the board (18 × 4.2 V × 89 mA). Firmware should
+  balance odd and even cells alternately, or the layout needs copper for heat spreading.
+- Firmware: keep DCP = 0 so balancing pauses during conversions (otherwise C(n−1) reads about
+  0.9 V off through the 10 Ω), and limit balancing to ≤ 80 mA per cell when the die is above
+  85 °C (p. 75). Read the die temperature (ITMP) while balancing.
+- The track widths (see "Track widths") were set with the old 114 mA figure, the safe side.
 
 ## isoSPI transformer
 
@@ -125,7 +145,7 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 | Ref | Part | Footprint | LCSC | Type | Stock |
 |---|---|---|---|---|---|
 | U1 | ADBMS1818ASWAZ-RL | LQFP-64-1EP 10×10, EP5×5 | C5372802 | Extended | 12,496 |
-| R100–R118 | 10 Ω 1 % | 0603 | C22859 | Basic | 5.8 M |
+| R100–R118 | 10 Ω 1 % 250 mW (1206W4F100JT5E) | 1206 | C17903 | Basic | 985,965 |
 | C101–C118, C301, C302 | 100 nF 100 V X7R (filters, V+, collector) | 0805 | C28233 | Basic | 3.25 M |
 | R201–R218 | 33 Ω 1 % 1 W | 2512 | C53728 | Extended | 49,062 |
 | R301 | 100 Ω 1 % (V+) | 0603 | C22775 | Basic | 8.6 M |
@@ -142,9 +162,16 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 | J1, J5 | JST B10B-PH-K-S(LF)(SN), 1×10 2 mm, 100 V 2 A (cell taps) | JST_PH_B10B-PH-K_1x10_P2.00mm_Vertical | C158038 | Extended | 25,205 |
 | J2 | JST B6B-PH-K-S(LF)(SN), 1×6 (cell NTCs) | JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical | C131342 | Extended | 32,477 |
 | J3, J4 | JST B2B-PH-K-S(LF)(SN), 1×2 (isoSPI A / B) | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical | C131337 | Extended | 293,303 |
+| F100–F120 | Littelfuse 0466.250NRHF, 250 mA 125 V DC, 50 A interrupt | Fuse_1206_3216Metric | C83557 | Extended | 50,048 |
+| D101–D118 | BZT52C6V8 (CJ), 6.8 V zener 500 mW | D_SOD-123 | C2120 | Extended | 51,589 |
+| D301 | SMAJ85A (Yangjie), 85 V TVS 400 W unidirectional | D_SMA | C698956 | Extended | 4,985 |
+| TP1–TP10 | Keystone 5015 SMD test loop | TestPoint_Keystone_5015_Micro_Mini | C2906768 | Extended | 53,270 |
+| TP11–TP14 | Bare 1.5 mm pad (no part, not in the BOM) | TestPoint_Pad_D1.5mm | — | — | — |
+| H1–H4 | M3 hole, NPTH, no copper (not in the BOM) | MountingHole_3.2mm_M3 | — | — | — |
 
-There are 8 Extended lines: U1, R201–R218, Q301, T501/T601, TH701 and the three JST PH
-sizes. Every capacitor is Basic. The connectors are through-hole, so they need JLC's THT
+There are 12 Extended lines: U1, R201–R218, Q301, T501/T601, TH701, the three JST PH
+sizes, and (since 2026-11-06) the fuse, zener, TVS and test loop. Every capacitor is Basic.
+The 2026-11-06 additions were checked on jlcpcb.com that day. The connectors are through-hole, so they need JLC's THT
 assembly or hand soldering.
 
 Why these values are safe at the voltages involved:
@@ -162,6 +189,35 @@ p. 6 outline gives the dimensions only, with no pin numbers.
 
 Rejected NPN options: PBSS8110Z (0 stock), NSS1C201MZ4 (93 stock), FZT493TA (0 stock),
 PZTA42 (300 V, but hFE min only 25–40; the datasheet asks for > 40 over temperature).
+
+## Protection and test points (added 2026-11-06)
+
+Figure 112 has no input protection, and the datasheet has no hot-plug section. It gives the
+limits (Table 11, p. 11: 8 V between neighbouring C pins, 112.5 V V+ to V−) and the
+internal clamps (Fig. 95, p. 72). The parts follow ADI AN-2093, the ADBMS1818 slave module
+reference (read from a mirror copy; check it against analog.com before ordering).
+
+| Item | Why | Value / part | First board? |
+|---|---|---|---|
+| F100–F118 | A cracked filter cap (up to 75.6 V to V−) or a slipped scope ground cannot pull pack current through the board (AN-2093 Fig. 11) | 250 mA 125 V DC 1206 | needed |
+| F119, F120 | Separate supply branches, as AN-2093 does. With one fuse per tap, the chip's ≤ 35 mA × ~0.7 Ω (≈ 25 mV) would show as error on cells 1 and 18 | same fuse | needed |
+| D101–D118 | J1/J5 pins mate in random order; the zener keeps each C pair under 8 V (AN-2093 Fig. 12 uses MMSZ4692T1G, C43431; BZT52C6V8 picked for stock) | 6.8 V SOD-123 | needed |
+| D301 | Protects V+ (112.5 V) and the FZT853 (VCEO 100 V) from harness transients. After F119, so a shorted TVS opens the fuse | SMAJ85A: 85 V standoff, 94.4–104 V breakdown, 137 V clamp | needed |
+| R100–R118 to 1206 | See deviation 10 | 10 Ω 250 mW | needed |
+| TP1–TP10 | Probe loops on the low-voltage nets (AN-2093 TP1400–TP1409) | Keystone 5015 | needed |
+| TP11–TP14 | Bare pads on VCOLL, C6_F, C12_F, C18_F: no exposed loop at 25–75 V | 1.5 mm pad | needed |
+| H1–H4 | M3, no copper; positions set with the outline | 3.2 mm NPTH | needed |
+| Reverse-polarity Schottky (AN-2093 D1400) | JST PH is keyed; only a miswired harness can reverse it | DFLS1100-7, C107674 | nice to have, not added |
+| "Awake" LED on VREG (AN-2093 LD1400) | Adds about 0.1 W to Q301 | KT-0603R + 2.2 kΩ | nice to have, not added |
+| isoSPI connector ESD | Not called for by the datasheet (Fig. 104, p. 81) or the HM2113ZNL sheet; termination, CT cap and choke are the protection | — | not needed |
+
+Footprint pad numbers were checked against the KiCad 10 stock footprints and symbols:
+D_SOD-123 and D_SMA pad 1 = cathode = `D_Zener` pin 1 (K); Fuse_1206 pads 1/2; both test-point
+footprints pad 1 = `TestPoint` pin 1. D301 uses `D_Zener` because KiCad's `D_TVS` is
+bidirectional.
+
+Cost: four new Extended lines (about $3 setup each per order) and about $5.40 of parts per
+board.
 
 ## Configuration and unused pins
 
@@ -213,8 +269,10 @@ There are no drawn wires.
 
 | Net | What it is |
 |---|---|
-| V− | Bottom of stack: U1 59, 60, EP 65, DTEN (52), every filter/CT/GPIO cap, R402, J2 2/4/6. **CELL0 is this net**: J1 pin 1 and R100's harness side carry the `V-` label, so the netlist has no separate CELL0 |
-| CELL1 … CELL18 | Harness-side cell nodes (J1/J5 pins, R1nn and R2nn harness side). CELL18 also feeds R301 and R302 |
+| V− | Chip ground, after F120: U1 59, 60, EP 65, DTEN (52), every filter/CT/GPIO cap, R402, J2 2/4/6, D301 anode, TP1/TP2. Since 2026-11-06 it is no longer the same net as CELL0 |
+| TAP0 … TAP18 | Connector side of the fuses: J1.1–J1.10 = TAP0–TAP9, J5.1–J5.10 = TAP9–TAP18 (J1.10 and J5.1 both TAP9). TAP0 also feeds F120, TAP18 also feeds F119 |
+| CELL0 … CELL18 | Fused cell nodes (F1nn pin 2): R1nn and R2nn harness side. CELL0 is the C0 sense tap only (R100) |
+| VBAT_F | After F119: R301 (V+), R302 (Q301 collector), D301 cathode |
 | C0_F … C18_F | Filtered node at U1 pin Cn (pin 38 − 2n): R1nn output, C1nn top (n ≥ 1) |
 | S1 … S18 | R2nn output to U1 pin Sn (pin 39 − 2n) |
 | VP_F | After R301, at U1 V+ (pin 1) and C301 |
@@ -225,37 +283,50 @@ There are no drawn wires.
 | ISOA_CT, ISOB_CT | Transformer chip-side centre tap (pin 2), 10 nF to V− (C502, C602) |
 | ISOA_LP / ISOA_LN, ISOB_LP / ISOB_LN | Line side: LINE+ (pin 6) to J3.1/J4.1, LINE− (pin 4) to J3.2/J4.2. Same polarity on both ports |
 | GPIO1 … GPIO4 | NTC inputs (U1 39–42) |
+| Zeners | D1nn: cathode (pin 1) at Cn_F, anode (pin 2) at C(n−1)_F |
+| Test points | TP1, TP2 V−; TP3 VREG; TP4 VREF1; TP5 VREF2; TP6 DRIVE; TP7–TP10 IPA, IMA, IPB, IMB; TP11 VCOLL; TP12–TP14 C6_F, C12_F, C18_F |
 
 - **PWR_FLAGs:** one each on VP_F (the net at U1 V+), VREG and V−. Nothing else needs one:
   VREF1, VREF2 and DRIVE are chip outputs, and ERC accepts the C-pin inputs on nets of
   passives.
 - **No-connect flags:** U1 43–47 (GPIO5–9), 53 (SDI), 54 (SDO), 56 (WDT), and T501/T601 pin 5
   (line-side centre tap).
-- **Check:** a script compared the kicad-cli netlist with the wiring table, 272 of 272 pins
-  (262 pin → net rows and 10 no-connects), 0 mismatches. All 65 U1 pins are accounted for.
+- **Check:** `check_slave18s.py` compares the kicad-cli netlist with the wiring table:
+  366 of 366 pins (356 pin → net rows and 10 no-connects, block 6 = protection and test
+  points), 0 mismatches, ERC 0/0 (2026-11-06). All 65 U1 pins are accounted for.
+- **Sheet size:** 594 × 297 mm ("User"; A3 height, A2 width) since 2026-11-06, so the
+  protection section sits beside the connectors.
 
-## PCB (populated 2026-11-05)
+## PCB (populated 2026-11-05, protection added 2026-11-06)
 
 - **Import:** KiCad 10 PCB Editor, Tools → Update PCB from Schematic (F8), default options.
   The MCP `sync_schematic_to_board` was tried first and rejected: its nets lacked the `/`
   prefix that KiCad gives local labels (`V-` instead of `/V-`), and it did not copy LCSC/MPN.
   That gave 289 parity errors, so the board was reverted and F8 used instead.
-- **Check** (`python _tools/kicad_sch/check_pcb_parity.py`): 90 of 90 footprints, each with the
-  footprint named in the schematic; 272 numbered pads, 0 net mismatches against the kicad-cli
-  netlist (PWR_FLAGs have no footprint); U1's 25 unnumbered thermal-via/paste pads carry no
-  foreign net; `kicad-cli pcb drc --schematic-parity`: 0 parity items.
+- **Check** (`python _tools/kicad_sch/check_pcb_parity.py`, 2026-11-06 after the second F8):
+  148 of 148 footprints, each with the footprint named in the schematic; 366 numbered pads,
+  0 net mismatches against the kicad-cli netlist (PWR_FLAGs have no footprint); 29 unnumbered
+  pads (U1's thermal-via/paste pads and the four NPTH holes) carry no foreign net;
+  `kicad-cli pcb drc --schematic-parity`: 0 parity items.
 - **Rough grouping, not placement.** Parts were moved with `_tools/kicad_sch/pcb_move.py`
   (translation only, all at 0°) into blocks inside the 120 × 70 mm placeholder: J1/J5/J2/J3
   along the top edge, balance R201–R218 (3 × 6), cell filters R1xx/C1xx, thermistors under J2,
   U1 central, supply/VREF/bias (Q301, R301/R302, C301–C305, R401/R402) below U1, isoSPI A and B
-  on the right (each transformer with its R/C), and J4 bottom right. There are 0 courtyard
-  overlaps. J1's last pin and J5's first pin are 7 mm apart (≥ 1 mm required).
-- **Remaining DRC items** (expected before placement and routing; not fixed). After the net
-  classes and rules went in (2026-11-06, see the next section):
-  - 183 unconnected (no routing);
-  - 22 silk_overlap and 15 silk_over_copper warnings (reference text on tight groups);
-  - the 16 drill_out_of_range errors on U1's 0.2 mm thermal vias are gone: the board
-    minimum hole is now 0.2 mm (see "U1 thermal vias").
+  on the right (each transformer with its R/C), and J4 bottom right. J1's last pin and J5's
+  first pin are 7 mm apart (≥ 1 mm required).
+- **2026-11-06 additions, also rough grouping:** the R100–R118 rows were respaced to a 5 mm
+  pitch for the 1206 footprints; C101–C118 and the zeners D101–D118 sit in the same columns
+  under them (D1nn under C1nn); the fuses F100–F120 and D301 below that. TP1–TP10 run along
+  the bottom edge, TP11–TP14 (HV bare pads) beside Q301, H1–H4 at the bottom-left,
+  bottom-right and top-right corners and the middle of the right edge (the top-left corner
+  is taken by J1). 0 courtyard overlaps (pcbnew courtyard boxes), all parts inside the outline.
+- **Remaining DRC items** (2026-11-06, after the protection parts; expected before placement
+  and routing, not fixed):
+  - 0 errors: no clearance, creepage, hole-clearance, courtyard or shorting items;
+  - 256 unconnected (no routing);
+  - 61 silk_overlap and 80 silk_over_copper warnings (reference text on tight groups);
+  - the 16 drill_out_of_range errors on U1's 0.2 mm thermal vias are gone since the net
+    classes went in: the board minimum hole is now 0.2 mm (see "U1 thermal vias").
 - 3D: U1, T501 and T601 render without bodies because no 3D model is linked. This is cosmetic.
 
 ## Net classes and clearance rules (2026-11-06)
@@ -328,6 +399,10 @@ rows are 12.4 mm apart and the connector sits next to it. On a flat board withou
 creepage equals the clearance; both constraints are in the rule so a later slot or cut-out
 can't hide a short surface path.
 
+**Mounting holes** (added 2026-11-06): `hole_clearance` 2.9 mm from the hole edge for
+anything near H1–H4, which keeps copper 4.5 mm from the centre of a 3.2 mm hole, clear of an
+M3 screw head or nylon washer (about 7 mm across). A copy with H4 dropped on U1 flagged it.
+
 **Datasheet layout rules** (Rev. B p. 86, isoSPI layout guidelines), also in the rules file:
 no copper pour inside T501/J3 or T601/J4 courtyards (item 2: no V− plane under the
 transformer or the connector), and only that port's isoSPI tracks and vias inside them
@@ -364,6 +439,45 @@ The rough grouping has no clearance problem yet: the closest pair two banks apar
 (R207 CELL7 vs R213 CELL13). To prove the rules are live, a copy with the 0.6 mm raised to
 3 mm flagged 266 pairs across all five stack rules.
 
+## Placement checklist (for the Board Boxes placement pass)
+
+Not done yet. Each item says what to check and where it comes from. Tick them in this file
+when the placement is reviewed.
+
+- [ ] **Q301 collector copper.** The SOT-223 tab (collector, VCOLL) needs a large copper
+      area on both layers, stitched with vias: DS33175 gives RθJA 42 °C/W on 52 × 52 mm 2 oz
+      (Tj ≈ 92 °C at 1.6 W) but 78 °C/W on 25 × 25 mm 1 oz (Tj ≈ 150 °C). Keep R302/C302
+      next to the collector and C303 (VREG) next to the emitter and U1 pin 48. VCOLL sits at
+      the top of the stack, so this copper is bank 6: 0.6 mm from banks 0–4.
+- [ ] **isoSPI barrier.** 2.0 mm clearance and creepage from each line side (T501/T601 pins
+      4–6, J3/J4, ISO*_LP/LN) to everything else; no copper pour and no foreign tracks under
+      T501/J3 or T601/J4 (rules file). Datasheet p. 86: U1 within 1–2 cm of each
+      transformer, the transformer within 2 cm of its connector, and the line-side pairs short
+      and side by side.
+- [ ] **J1/J5 spacing.** J1's last pin (TAP9) and J5's first pin (TAP9) are the same net, but
+      J1 pin 1 (TAP0) and J5 pin 10 (TAP18) are 75.6 V apart: keep the two headers' far ends
+      ≥ 0.6 mm apart in copper (rules file) and leave room for the plugs and the harness. Print
+      "PLUG J1 FIRST" on the silk only if the zeners are left off a build.
+- [ ] **Tap fuses.** F100–F120 close to J1/J5, so as little copper as possible sits before
+      the fuse. Keep them away from the hot R2xx: the 0466 fuse is rated to 90 °C and derates
+      with temperature.
+- [ ] **Zeners.** D1nn next to U1's C pins (on the Cn_F side of R1nn), short return to the
+      neighbouring Cn−1_F; they only work if they are closer to the chip than the 10 Ω.
+- [ ] **TVS D301** close to F119 and R301/R302, with a short return to V−.
+- [ ] **U1 EP and the V− star point.** The EP (pin 65) is soldered to a V− area with the
+      ThermalVias pattern (Table 12, the EP is V−). Run V− as a star from there: the filter
+      caps C1xx, VREF/VREG caps, the isoSPI caps C5xx/C6xx and F120 return to it; don't
+      route the balance current through it.
+- [ ] **Balance-resistor heat.** R201–R218: 0.26 W each, about 6.7 W if all 18 balance at
+      once (see "Balance resistor sizing"). Spread them, give them copper, keep them away
+      from U1 (die limit 80 mA above 85 °C), TH701 (it would read board heat, not cell heat),
+      the fuses and the zeners.
+- [ ] **Test-point reachability.** TP1–TP10 loops on the edge, on the top side, with room
+      for a hook clip (≥ 5 mm between loops), labels on the silk. TP11–TP14 HV pads also
+      reachable but not next to the low-voltage loops (0.6 mm rule, and fingers).
+- [ ] **Mounting holes.** Choose positions with the outline; keep the 4.5 mm keep-out (rule)
+      and keep the screws away from HV copper and from the isoSPI barrier.
+
 ## Open items
 
 - [x] Build the ADBMS1818 symbol from the datasheet pin table (64-LQFP_EP). Done; netlist
@@ -374,7 +488,8 @@ The rough grouping has no clearance problem yet: the closest pair two banks apar
 - [x] Choose the NPN: FZT853TA. **Stock is thin (264).** Recheck before ordering.
       Collector copper must carry about 1.6 W.
 - [x] Choose the isoSPI transformer: HM2113ZNL.
-- [ ] Maximum balance current per S switch and the die thermal budget at 18 × ~110 mA. If
+- [ ] Maximum balance current per S switch and the die thermal budget at 18 × ~89 mA
+      (corrected 2026-11-06; 80 mA limit above 85 °C die, p. 75). If
       it's too hot, add external balance MOSFETs (datasheet Figure 99).
 - [x] Collector cap C302: 100 nF 100 V (Basic C28233), per the datasheet text.
 - [x] HM2113ZNL footprint: checked against Pulse BM101.C p. 2. Pin-1 dot at pad 1,
@@ -397,8 +512,10 @@ The rough grouping has no clearance problem yet: the closest pair two banks apar
 - [x] GPIO5–GPIO9: no-connect flags, internal pull-downs enabled in firmware.
 - [x] Wire the schematic. Done 2026-11-05: ERC 0 errors, 0 warnings, with PWR_FLAGs on
       VP_F, VREG and V−. See "Schematic nets".
-- [ ] Hot-plug protection for the plug-and-play harness (J1-before-J5 plug order, per-cell
-      clamps).
+- [x] Hot-plug protection for the plug-and-play harness. Done 2026-11-06: tap fuses,
+      per-pair zener clamps and a TVS, so plug order no longer matters for the C pins. See
+      "Protection and test points".
+- [x] Test points and mounting holes. Done 2026-11-06 (hole positions open).
 - [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
 - [ ] Harness: match J1/J5/J2 pin order to the Funwheel pack's tap and NTC wiring.
 - [ ] Board outline (the current 120 × 70 mm rectangle is a placeholder).
