@@ -276,10 +276,16 @@ There are no drawn wires.
       transformer".
 - [x] FZT853 numbering: Diodes DS33175 p. 1 pin-out (tab C; E-C-B) matches
       SOT-223-3_TabPin2 (1 = B, 2 = C/tab, 3 = E). No change needed. See "Parts".
-- [ ] Q301 package and heat. About 1.4–1.6 W (peaks higher) in a SOT-223 needs large
-      collector copper: the 3 W rating assumes 52 × 52 mm of 2 oz copper. Decide at placement
-      whether that copper fits, or move to a bigger package (DPAK/TO-252 NPN, ≥ 100 V,
-      hFE > 40) or split the drop with a series resistor.
+- [x] Q301 package: **keep FZT853 (SOT-223). Decision by Racc, 2026-11-06.** He first
+      read it as a 1 W part, then confirmed the 3 W rating is enough. Condition from
+      DS33175: RθJA 42 °C/W on 52 × 52 mm 2 oz collector copper (Tj ≈ 92 °C at 1.6 W,
+      25 °C air; ≈ 107 °C at 40 °C air), but 78 °C/W on 25 × 25 mm 1 oz (Tj ≈ 150 °C, the
+      limit). So placement must give the collector tab a large copper area (both layers,
+      stitched). The datasheet (Simple Linear Regulator, p. 71) sets no power figure, only
+      Beta > 40 over temperature at up to 35 mA, collector ≥ 6 V above V−, 100 Ω/100 nF on
+      the collector, and "attention" to heating. DPAK fallback if the copper won't fit:
+      ZXTN4004K (Diodes DS35458: 150 V, hFE ≥ 60 at 85 mA, 33 °C/W on 50 × 50 mm 2 oz,
+      JLC C460146/C157603, Extended), not yet fully checked.
 - [x] DTEN (pin 52) to V− (discharge timer off). See "Configuration and unused pins".
 - [x] WDT (pin 56) and SDI/SDO (53/54): no-connect flags.
 - [x] GPIO5–GPIO9: no-connect flags, internal pull-downs enabled in firmware.
