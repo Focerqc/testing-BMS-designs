@@ -64,6 +64,7 @@ PORT = {"A": (("T501", "J3"), re.compile(r"/(IPA|IMA|ISOA_\w+)$|unconnected-\(T5
         "B": (("T601", "J4"), re.compile(r"/(IPB|IMB|ISOB_\w+)$|unconnected-\(T601-"))}
 BARRIER = 2.0       # mm, clearance and creepage, line side vs everything else
 HV_FAR = 0.6        # mm, IPC-2221B B2 31-150 V
+HOLE_KEEPOUT = 2.9  # mm, copper to M3 hole edge (4.5 mm from the centre)
 
 
 def board_nets(pcb=PCB):
@@ -153,6 +154,14 @@ def dru_text(nets):
                 f'(rule "Only isoSPI {p} tracks and vias inside {" and ".join(refs)}"',
                 "  (constraint disallow track via)",
                 f'  (condition "({inside}) && !{any_net("A", own)}"))']
+    out += ["",
+            "# 4. Mounting holes H1-H4 (M3, NPTH, 3.2 mm): keep copper 4.5 mm from the hole centre so",
+            f"#    an M3 screw head or nylon washer (about 7 mm across) never touches copper. {HOLE_KEEPOUT} mm",
+            "#    from the hole edge = 4.5 mm - 1.6 mm hole radius.",
+            "",
+            '(rule "Mounting hole copper keep-out"',
+            f"  (constraint hole_clearance (min {HOLE_KEEPOUT}mm))",
+            "  (condition \"A.memberOfFootprint('H*')\"))"]
     return "\n".join(out) + "\n"
 
 
