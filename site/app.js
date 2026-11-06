@@ -2355,6 +2355,18 @@
       clearTimeout(resizeFitTimer);
       resizeFitTimer = setTimeout(() => { if (S.board) fit(); }, 120);
     });
+    // The stage can change size without a window resize (page still laying out on first
+    // load, a hidden pane being shown). Re-fit then too, or the board opens as a speck.
+    if (window.ResizeObserver) {
+      let lastW = 0, lastH = 0;
+      new ResizeObserver(entries => {
+        const { width, height } = entries[0].contentRect;
+        if (Math.abs(width - lastW) < 2 && Math.abs(height - lastH) < 2) return;
+        lastW = width; lastH = height;
+        clearTimeout(resizeFitTimer);
+        resizeFitTimer = setTimeout(() => { resize(); if (S.board) fit(); }, 120);
+      }).observe(stage);
+    }
     canvas.addEventListener('mousedown', onDown);
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
