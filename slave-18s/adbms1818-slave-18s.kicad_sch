@@ -4201,7 +4201,7 @@
 	)
 	(text "CELL INPUTS  R100-R118: 10 ohm series on C0-C18"
 		(exclude_from_sim no)
-		(at 106.68 35.56 0)
+		(at 106.68 31.75 0)
 		(effects
 			(font
 				(size 2 2)
@@ -4260,7 +4260,7 @@
 	)
 	(text "U1  ADBMS1818 (64-LQFP_EP, EP = V-)"
 		(exclude_from_sim no)
-		(at 50.8 66.04 0)
+		(at 38.1 66.04 0)
 		(effects
 			(font
 				(size 2 2)
@@ -4338,6 +4338,146 @@
 		(at 76.2 114.3)
 		(uuid "fae9ba7c-43f6-4c97-9102-a7a5914fe8ba")
 	)
+	(label "CELL7"
+		(at 218.44 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "00034dd3-44fa-43ba-ab4a-0f707e0a81c3")
+	)
+	(label "C12_F"
+		(at 147.32 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "01e286b0-ab59-4fe9-92be-d034da954540")
+	)
+	(label "S6"
+		(at 200.66 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "035a0265-b505-48a6-aa3e-27a8d22c7b73")
+	)
+	(label "V-"
+		(at 165.1 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "03e7ff75-3ed6-421f-8789-8bbcb053bd73")
+	)
+	(label "S14"
+		(at 35.56 104.14 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "05ade4d3-bc29-4cb8-a2c5-4ebfb4a82a32")
+	)
+	(label "C4_F"
+		(at 162.56 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "07e41ee6-3039-4f44-9f17-8aff0f6a2b59")
+	)
+	(label "C11_F"
+		(at 35.56 116.84 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0acce002-4d71-4072-9504-1bc66d33f9cd")
+	)
+	(label "C7_F"
+		(at 35.56 137.16 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0c0416a2-0f7d-4b6a-94f2-06b4eaa40d41")
+	)
+	(label "CELL15"
+		(at 302.26 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0c29e4e5-248c-4ea6-bc98-4404ad8349a7")
+	)
+	(label "V-"
+		(at 165.1 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0db778dc-6504-4a0f-a430-4152a8df5a5b")
+	)
+	(label "S14"
+		(at 182.88 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0fac0ab6-f674-4388-b532-c45d9200a6da")
+	)
+	(label "C0_F"
+		(at 111.76 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1cdd93da-756d-42cf-8284-1b687c1f1da5")
+	)
+	(label "CELL13"
+		(at 276.86 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1ce84b09-4577-4ba1-a97c-95b51b0e80c7")
+	)
+	(label "CELL4"
+		(at 165.1 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1ffc006b-5578-461b-84e2-faeb89c8479b")
+	)
 	(label "V-"
 		(at 55.88 180.34 270)
 		(effects
@@ -4347,6 +4487,16 @@
 			(justify right bottom)
 		)
 		(uuid "204000cc-7e69-4a8f-b233-c3bc3d833ba4")
+	)
+	(label "C7_F"
+		(at 218.44 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "210918bc-0b33-42c9-a132-b0255ef8be47")
 	)
 	(label "V-"
 		(at 256.54 170.18 270)
@@ -4358,6 +4508,16 @@
 		)
 		(uuid "223d9884-d05d-4e99-97b8-bd031d0e471f")
 	)
+	(label "S6"
+		(at 35.56 144.78 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2448b7ee-c3aa-4fd6-9ea9-83a76e9e3ba7")
+	)
 	(label "VCOLL"
 		(at 226.06 167.64 90)
 		(effects
@@ -4367,6 +4527,46 @@
 			(justify left bottom)
 		)
 		(uuid "2459c7fb-5bd6-4418-beaf-4b759827748c")
+	)
+	(label "C13_F"
+		(at 165.1 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2550955b-2210-41a9-9387-a1b5254cea5e")
+	)
+	(label "S16"
+		(at 35.56 93.98 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2725f065-6bd0-42c4-9e58-8ca0b7f6f837")
+	)
+	(label "V-"
+		(at 147.32 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "27c388f4-6e67-43e1-961f-31902c780a89")
+	)
+	(label "S16"
+		(at 218.44 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2af58953-605e-49c4-8c08-d3ea659260bc")
 	)
 	(label "DRIVE"
 		(at 76.2 78.74 0)
@@ -4378,6 +4578,66 @@
 		)
 		(uuid "2b4f0b3e-85c7-4dd4-a7db-b38cd94018c8")
 	)
+	(label "V-"
+		(at 254 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2c45c46b-2e44-4624-a7fa-a24f6609002d")
+	)
+	(label "CELL1"
+		(at 111.76 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2cba6557-0d33-4835-b0f6-e6e3d5ff55a0")
+	)
+	(label "CELL2"
+		(at 137.16 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2e5097b6-be32-4425-b58d-04e28d204099")
+	)
+	(label "S2"
+		(at 129.54 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2f1953bb-4d2a-460d-8643-d2b215c7b3b7")
+	)
+	(label "CELL13"
+		(at 165.1 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2f4486b5-2b80-4dce-9bae-7dd5dc2d087f")
+	)
+	(label "C9_F"
+		(at 35.56 127 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2f898e6e-811f-4e50-95c0-cb55b17a9724")
+	)
 	(label "VP_F"
 		(at 127 168.91 90)
 		(effects
@@ -4387,6 +4647,56 @@
 			(justify left bottom)
 		)
 		(uuid "35b4982a-4edd-4a19-a7c0-9271b3158c76")
+	)
+	(label "CELL3"
+		(at 147.32 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "38177df8-c4a7-4844-a186-4a41786f751c")
+	)
+	(label "V-"
+		(at 200.66 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3867fbfc-7786-4a68-9f57-a9f095eca353")
+	)
+	(label "S13"
+		(at 35.56 109.22 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3a204bc8-5874-4a65-8af9-417fa4f1d029")
+	)
+	(label "C5_F"
+		(at 35.56 147.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3a9dcf06-a6b4-4c02-8c4d-a536cb3b0cbe")
+	)
+	(label "V-"
+		(at 129.54 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3b99b2e4-a583-4231-b841-e8bb3434f370")
 	)
 	(label "VREF1"
 		(at 76.2 83.82 0)
@@ -4398,6 +4708,46 @@
 		)
 		(uuid "3d9a432e-2912-4e1a-886a-ed5d2e6613cf")
 	)
+	(label "V-"
+		(at 254 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3e0df3bb-90e6-4747-9ca9-b8b79a70129c")
+	)
+	(label "C8_F"
+		(at 35.56 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40c2bb77-c468-4b32-b91b-b10b7d93b39b")
+	)
+	(label "C10_F"
+		(at 111.76 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40c32470-f19f-4ff3-bc5e-67b7f0171ce8")
+	)
+	(label "C1_F"
+		(at 35.56 167.64 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "41d64bfb-c14e-4c65-aeff-674649595fa8")
+	)
 	(label "VREF2"
 		(at 76.2 86.36 0)
 		(effects
@@ -4407,6 +4757,86 @@
 			(justify left bottom)
 		)
 		(uuid "449c6709-62dd-40a2-908f-1c24a08439d3")
+	)
+	(label "C17_F"
+		(at 236.22 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "44b8617b-f2e9-4ca4-a603-6cd852037bc8")
+	)
+	(label "S1"
+		(at 35.56 170.18 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4671755a-f2a7-49a9-8829-92b4d952ed81")
+	)
+	(label "V-"
+		(at 236.22 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "47c9c6d7-6388-4ff7-ac93-7f871413363d")
+	)
+	(label "S18"
+		(at 254 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "48fdd2f8-4d95-4d04-ac3c-c082fcd4ebeb")
+	)
+	(label "V-"
+		(at 111.76 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "490a06a9-c31e-4405-a099-1ab10e84e828")
+	)
+	(label "CELL7"
+		(at 200.66 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4b157c06-65a1-49bd-8703-9ebef25511b2")
+	)
+	(label "C6_F"
+		(at 200.66 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4ca820e0-5102-45ab-b297-d3f3682ad52b")
+	)
+	(label "C4_F"
+		(at 165.1 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "52df4a2a-f242-4dea-9520-d339e644b597")
 	)
 	(label "VCOLL"
 		(at 142.24 176.53 270)
@@ -4418,6 +4848,146 @@
 		)
 		(uuid "53312146-d4f7-4388-a9f8-ded67571d060")
 	)
+	(label "CELL1"
+		(at 124.46 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "53c85596-7838-47d8-9a4f-7c745f2d06b2")
+	)
+	(label "S4"
+		(at 165.1 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "579e345f-223b-4940-9dfb-045d9048db10")
+	)
+	(label "V-"
+		(at 200.66 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "59b081db-1aa2-4350-a091-a2b0ce7fd34d")
+	)
+	(label "C6_F"
+		(at 35.56 142.24 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5a42e6da-8e8c-447c-a4af-c3fecd4ee128")
+	)
+	(label "CELL9"
+		(at 254 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5c6203d1-8a62-42ad-9d5a-40788b7870d1")
+	)
+	(label "S17"
+		(at 35.56 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d50f5c0-df02-462e-8ef3-6dd2d8ef1f0b")
+	)
+	(label "C18_F"
+		(at 340.36 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5e6723aa-8d63-43b6-bb9a-56a79fb2f5f6")
+	)
+	(label "CELL16"
+		(at 218.44 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6088be02-00d7-43ef-9072-a65cf7381a2d")
+	)
+	(label "CELL14"
+		(at 289.56 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6134addf-312a-4e8c-9535-a06216f144b4")
+	)
+	(label "S11"
+		(at 35.56 119.38 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "620fe2a2-5168-4d65-8216-145e02297420")
+	)
+	(label "CELL8"
+		(at 213.36 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "625c44a8-84b7-46fa-81a7-65d492e1cf1d")
+	)
+	(label "S3"
+		(at 35.56 160.02 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "628a864d-f25a-4e47-8a3d-cbc8f0b514ad")
+	)
+	(label "S7"
+		(at 35.56 139.7 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "664a556b-843f-4425-8737-ad47643a311f")
+	)
+	(label "S10"
+		(at 111.76 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6660f11f-0deb-41c6-bedd-8f29b18a8707")
+	)
 	(label "VREG"
 		(at 246.38 170.18 270)
 		(effects
@@ -4427,6 +4997,16 @@
 			(justify right bottom)
 		)
 		(uuid "6771880e-8d45-4895-9f3b-54d5af0a256f")
+	)
+	(label "S9"
+		(at 35.56 129.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "68215324-a872-418d-8802-8224486b120e")
 	)
 	(label "DRIVE"
 		(at 218.44 172.72 180)
@@ -4438,6 +5018,76 @@
 		)
 		(uuid "68a65b89-a033-460f-b98d-b8e8f82b0eb0")
 	)
+	(label "CELL5"
+		(at 175.26 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "699b8033-d206-43c5-b521-e965853718a9")
+	)
+	(label "S10"
+		(at 35.56 124.46 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6b6de7f8-4b0b-4ee0-9380-11a1e6143d30")
+	)
+	(label "C11_F"
+		(at 251.46 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6dc87eec-63a3-4ed7-8ca1-ce2f58368c6b")
+	)
+	(label "S3"
+		(at 147.32 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6e2c6c64-c10d-475b-89a0-aa90b368b567")
+	)
+	(label "C10_F"
+		(at 238.76 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6fb9d50e-9328-46f8-81c7-49cb5ae682a7")
+	)
+	(label "C14_F"
+		(at 35.56 101.6 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7132c860-ff8f-4beb-acd2-f6e8267be84a")
+	)
+	(label "C16_F"
+		(at 314.96 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7288d8db-4877-48b7-b798-d8a9d5aef55c")
+	)
 	(label "VREG"
 		(at 76.2 81.28 0)
 		(effects
@@ -4448,6 +5098,156 @@
 		)
 		(uuid "72c778ca-5f61-472b-ad4a-fe082f57894a")
 	)
+	(label "C16_F"
+		(at 35.56 91.44 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7424a6ce-4f03-4310-87c6-a67d7c344e3c")
+	)
+	(label "CELL16"
+		(at 314.96 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "76acbfde-b632-4328-806f-4c83380caf67")
+	)
+	(label "V-"
+		(at 218.44 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "77ac1a84-1e09-4fe0-95cd-6b18074a430b")
+	)
+	(label "C3_F"
+		(at 147.32 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7824d1f6-689c-457a-96a5-56921d94a994")
+	)
+	(label "S2"
+		(at 35.56 165.1 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "78c000a4-0424-41ca-94c1-0385f9b337cd")
+	)
+	(label "CELL12"
+		(at 147.32 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79c07daf-ae15-4804-a9d8-8c18aba37331")
+	)
+	(label "C18_F"
+		(at 35.56 81.28 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7c591ed1-5304-4708-b58a-af8e54fd3c62")
+	)
+	(label "C1_F"
+		(at 124.46 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7caeb8d0-39d6-4eac-a0da-87e7b1d891c7")
+	)
+	(label "C12_F"
+		(at 35.56 111.76 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7cdcf477-0bc8-4a4a-9f1a-7397e6db726f")
+	)
+	(label "C5_F"
+		(at 175.26 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "80ac3f36-e37b-4aa7-8780-d1a16dce8694")
+	)
+	(label "V-"
+		(at 236.22 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "82a9ecf5-9a3b-4fbc-bba0-aeeffe0a3809")
+	)
+	(label "C5_F"
+		(at 182.88 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "82ba4ce5-728d-485f-a640-f94f8fc06208")
+	)
+	(label "CELL11"
+		(at 129.54 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "82c5bc06-d916-4b20-9096-f893ea5e69e0")
+	)
+	(label "S18"
+		(at 35.56 83.82 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "82ef2b03-49c2-4eb1-93d9-ad73c0bf40d0")
+	)
+	(label "C9_F"
+		(at 226.06 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8363d561-fe1a-4965-8df0-1e6c642a0cb2")
+	)
 	(label "VP_F"
 		(at 236.22 170.18 270)
 		(effects
@@ -4457,6 +5257,36 @@
 			(justify right bottom)
 		)
 		(uuid "846466ed-ab08-48fa-a481-ae3bd73c67a0")
+	)
+	(label "C15_F"
+		(at 35.56 96.52 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8522b6cd-759c-4e6d-80c6-2d92620f9b32")
+	)
+	(label "C9_F"
+		(at 254 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "856a9508-8831-4e24-a53f-b3684de879dd")
+	)
+	(label "C14_F"
+		(at 182.88 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "866b78ed-18f7-4fef-8e2b-38ebedecdef1")
 	)
 	(label "V-"
 		(at 172.72 176.53 270)
@@ -4478,6 +5308,46 @@
 		)
 		(uuid "88bd6243-fa38-47b0-830f-9319c1e8ef8b")
 	)
+	(label "C18_F"
+		(at 254 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8a09053a-733d-4fd6-9a8e-b37904aaa789")
+	)
+	(label "CELL12"
+		(at 264.16 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8f3454b1-fa7b-4ff3-a352-33fcca234f7a")
+	)
+	(label "CELL17"
+		(at 236.22 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8f50ee52-5b88-4c7b-9504-cc90b5b1c64e")
+	)
+	(label "S12"
+		(at 147.32 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "90c7bcc9-f82c-42c0-ac59-7fbbaa677a87")
+	)
 	(label "V-"
 		(at 127 176.53 270)
 		(effects
@@ -4487,6 +5357,16 @@
 			(justify right bottom)
 		)
 		(uuid "9164100f-706a-4487-9b0a-bdb95746fb09")
+	)
+	(label "S1"
+		(at 111.76 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "91fd124f-09b9-4b5f-a09c-53a610bd563f")
 	)
 	(label "ICMP"
 		(at 264.16 176.53 270)
@@ -4508,6 +5388,46 @@
 		)
 		(uuid "94cbd7eb-8814-4f86-9636-fb9156bc1b5d")
 	)
+	(label "CELL18"
+		(at 254 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "970dfc0e-c8a5-457b-bc62-c9db3c535b49")
+	)
+	(label "S13"
+		(at 165.1 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9853f569-4912-48e8-8d67-4d7db4cfd96d")
+	)
+	(label "C2_F"
+		(at 35.56 162.56 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9ba5286a-3158-4504-84a7-90edef66c2bc")
+	)
+	(label "S15"
+		(at 35.56 99.06 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9d8d925c-7145-459a-9478-8eaa595363d9")
+	)
 	(label "VP_F"
 		(at 111.76 176.53 270)
 		(effects
@@ -4517,6 +5437,16 @@
 			(justify right bottom)
 		)
 		(uuid "9dba3942-0cf8-4738-9ffd-f12e3909dda6")
+	)
+	(label "C7_F"
+		(at 200.66 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9e889cee-c3f9-47a5-a48d-697c89acaa8a")
 	)
 	(label "V-"
 		(at 203.2 176.53 270)
@@ -4528,6 +5458,36 @@
 		)
 		(uuid "a2eba7a4-d9b1-4720-8ceb-b72214419297")
 	)
+	(label "S12"
+		(at 35.56 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a3a8f1e8-f111-43d6-9f33-85e002c6e4a9")
+	)
+	(label "C2_F"
+		(at 137.16 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a4482474-5f28-479b-b42f-9398287f338d")
+	)
+	(label "C14_F"
+		(at 289.56 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a492c1da-77bf-4ec0-b943-d2e92fe5cbfc")
+	)
 	(label "VREF1"
 		(at 187.96 168.91 90)
 		(effects
@@ -4537,6 +5497,96 @@
 			(justify left bottom)
 		)
 		(uuid "a4ba6c99-ad13-4f12-b5e9-3a80566187dc")
+	)
+	(label "C0_F"
+		(at 35.56 172.72 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a5abe288-8450-47d6-a006-ed342ac474b6")
+	)
+	(label "C17_F"
+		(at 35.56 86.36 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a84528d0-187f-45a5-b483-2b7f1c33031b")
+	)
+	(label "S5"
+		(at 182.88 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a90d85dd-d482-4f23-884b-270b42b3cb0b")
+	)
+	(label "C10_F"
+		(at 35.56 121.92 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a9c700a9-54c4-4dcf-99a6-589050d90cb0")
+	)
+	(label "S9"
+		(at 254 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a9cc2b3b-7f0b-45c3-bbdb-12289cc61e76")
+	)
+	(label "S8"
+		(at 236.22 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "aa0cf1bc-ac10-4866-9a79-68f039da750b")
+	)
+	(label "CELL5"
+		(at 182.88 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "aa80f652-f06b-4d7d-b4e4-48e8622d53ff")
+	)
+	(label "C17_F"
+		(at 327.66 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ac354b5b-4ebb-4fd1-a84b-9b93b1d4b67d")
+	)
+	(label "CELL4"
+		(at 162.56 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ac9b8174-53c1-4f03-9553-6ca960700234")
 	)
 	(label "IBIAS"
 		(at 264.16 168.91 90)
@@ -4548,6 +5598,36 @@
 		)
 		(uuid "ad1e6b52-b7de-4bd1-90ee-2088914c6a1b")
 	)
+	(label "CELL10"
+		(at 238.76 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "af06dc0f-da2f-495d-89e8-010331561a0f")
+	)
+	(label "V-"
+		(at 111.76 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b107b1fb-0e0b-41df-991c-16d869c20f41")
+	)
+	(label "CELL14"
+		(at 182.88 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b19cd1e2-a5cd-4e0f-aefc-9485620ea323")
+	)
 	(label "VREF2"
 		(at 203.2 168.91 90)
 		(effects
@@ -4558,6 +5638,26 @@
 		)
 		(uuid "b4873ed8-e0ec-4f09-8842-cd4a34821fad")
 	)
+	(label "CELL2"
+		(at 129.54 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b66bd3f5-a0a3-4d7b-8bc3-74b626ad6d9b")
+	)
+	(label "C11_F"
+		(at 129.54 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b730e390-a2d6-4647-bd5c-39c7e701b20c")
+	)
 	(label "VCOLL"
 		(at 157.48 168.91 90)
 		(effects
@@ -4567,6 +5667,16 @@
 			(justify left bottom)
 		)
 		(uuid "b7836c5c-1ca0-4bb2-af68-82f52c6e4bae")
+	)
+	(label "C13_F"
+		(at 35.56 106.68 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b843c2c9-17a2-4e32-95b8-7ef40e9e64a3")
 	)
 	(label "V-"
 		(at 157.48 176.53 270)
@@ -4588,6 +5698,16 @@
 		)
 		(uuid "b9ba5a6f-6f56-410c-b971-0c75d49e2cd2")
 	)
+	(label "CELL6"
+		(at 200.66 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "bb7e02a6-5b35-4987-a56b-f481e326fd5b")
+	)
 	(label "V-"
 		(at 276.86 176.53 270)
 		(effects
@@ -4597,6 +5717,36 @@
 			(justify right bottom)
 		)
 		(uuid "bd10c369-d15b-4e89-8d3b-cd33f5f907e8")
+	)
+	(label "CELL18"
+		(at 340.36 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "bd949283-87a1-4014-84d8-644e72ca9b2e")
+	)
+	(label "CELL9"
+		(at 226.06 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c098c1f0-fe97-450f-a14f-4465ef525311")
+	)
+	(label "V-"
+		(at 182.88 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c0fb0bd6-35d7-4e47-924b-ed77ff7f1ff7")
 	)
 	(label "IBIAS"
 		(at 76.2 116.84 0)
@@ -4608,6 +5758,36 @@
 		)
 		(uuid "c2c1f948-226f-415f-87fd-3d4b724fe25b")
 	)
+	(label "S11"
+		(at 129.54 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c496cd20-8c53-44ee-ace9-d95e76f321a6")
+	)
+	(label "C15_F"
+		(at 200.66 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c6d36c9b-4f2a-46fc-8e14-f142339db6d0")
+	)
+	(label "S5"
+		(at 35.56 149.86 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c8984482-9896-41f8-98ea-7ecd20da2934")
+	)
 	(label "V-"
 		(at 187.96 176.53 270)
 		(effects
@@ -4617,6 +5797,46 @@
 			(justify right bottom)
 		)
 		(uuid "c8db9f31-6fda-4a35-bc46-6efd52e52a88")
+	)
+	(label "CELL6"
+		(at 187.96 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cff44e2f-b2bd-41fe-943a-d7e37786af00")
+	)
+	(label "C12_F"
+		(at 264.16 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d156436e-650f-49dd-b6bb-c47ce55f6ae3")
+	)
+	(label "S8"
+		(at 35.56 134.62 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d3794057-d1c9-435d-9c51-08d34ccaf946")
+	)
+	(label "V-"
+		(at 182.88 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d401b49f-32cf-41d2-9afb-cdb951d73a3c")
 	)
 	(label "CELL18"
 		(at 111.76 168.91 90)
@@ -4628,6 +5848,46 @@
 		)
 		(uuid "d71331df-81ac-46b2-a6c6-8ce4f8aea0ca")
 	)
+	(label "CELL17"
+		(at 327.66 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d7ddf49a-4435-4827-9362-039d3b6347cb")
+	)
+	(label "CELL3"
+		(at 149.86 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d80a966a-9517-4a18-8e18-19801bbab3c3")
+	)
+	(label "CELL11"
+		(at 251.46 41.91 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d86bd4c7-a7b9-451c-8043-70523a1505b3")
+	)
+	(label "V-"
+		(at 129.54 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d889b758-f56c-4186-be0d-ef8e2d307e9d")
+	)
 	(label "ICMP"
 		(at 76.2 119.38 0)
 		(effects
@@ -4638,6 +5898,26 @@
 		)
 		(uuid "d9ad5389-a896-4bff-b545-3820ebcd6dc5")
 	)
+	(label "C16_F"
+		(at 218.44 85.09 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d9c218ac-a017-42ec-a3c6-b58111ad55cf")
+	)
+	(label "S7"
+		(at 218.44 123.19 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d9ce7a3e-8df1-4698-968f-268230495276")
+	)
 	(label "VP_F"
 		(at 35.56 78.74 180)
 		(effects
@@ -4647,6 +5927,26 @@
 			(justify right bottom)
 		)
 		(uuid "dcbe26c9-7db8-48d6-b8ba-bcf8648bce70")
+	)
+	(label "C13_F"
+		(at 276.86 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "dd8898bf-74af-4a2b-95ca-7986eac69ee2")
+	)
+	(label "C2_F"
+		(at 129.54 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "de7d1856-2cd9-41cd-aa18-04ded428ca4d")
 	)
 	(label "V-"
 		(at 58.42 180.34 270)
@@ -4668,6 +5968,26 @@
 		)
 		(uuid "e2b4b204-0b50-44eb-b3ad-670b2c2ffe4b")
 	)
+	(label "C4_F"
+		(at 35.56 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e62a2598-ff27-4479-b9a4-92ec2ca7739d")
+	)
+	(label "S17"
+		(at 236.22 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e8bfa658-7f03-4b0f-b5dc-b522ba80bbc1")
+	)
 	(label "V-"
 		(at 53.34 180.34 270)
 		(effects
@@ -4677,6 +5997,96 @@
 			(justify right bottom)
 		)
 		(uuid "e8d711a9-dc45-4e9e-a0d7-639484e1e491")
+	)
+	(label "C3_F"
+		(at 35.56 157.48 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e992f3d3-2674-4558-96cb-12261e85f579")
+	)
+	(label "CELL15"
+		(at 200.66 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ea231aa9-405c-425e-874e-6b33b5db4c88")
+	)
+	(label "C3_F"
+		(at 149.86 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ea38159b-eac1-4f6c-bb6e-2e3486d07e85")
+	)
+	(label "C15_F"
+		(at 302.26 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "eb322dcb-42ac-4254-b2a6-2bc112bb1df8")
+	)
+	(label "C8_F"
+		(at 236.22 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "efadc778-8a34-4bfd-a0b1-88fb961f1f37")
+	)
+	(label "S15"
+		(at 200.66 146.05 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f0d73f10-2b97-4366-93ba-73edcd805e37")
+	)
+	(label "S4"
+		(at 35.56 154.94 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f3a1e91c-3498-4049-b004-a97a8aecf18f")
+	)
+	(label "C6_F"
+		(at 187.96 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f4b9592b-ad14-4b33-9935-86460429a861")
+	)
+	(label "CELL10"
+		(at 111.76 138.43 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f4c9aa9f-e38a-4f28-8b29-bca4c7de2136")
 	)
 	(label "CELL18"
 		(at 142.24 168.91 90)
@@ -4688,6 +6098,36 @@
 		)
 		(uuid "f575d652-82e2-41e6-95f5-7aad90a66895")
 	)
+	(label "CELL8"
+		(at 236.22 115.57 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f584bc96-7c41-4465-9cb6-21436dc2a056")
+	)
+	(label "C8_F"
+		(at 213.36 49.53 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f722983d-ca0d-47e3-b2af-93bdb4d9dafe")
+	)
+	(label "V-"
+		(at 218.44 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f7f73f30-65f7-48e1-b1fd-2c6ba2b3cf4c")
+	)
 	(label "VREG"
 		(at 76.2 109.22 0)
 		(effects
@@ -4698,9 +6138,39 @@
 		)
 		(uuid "f8b32223-8225-4988-9f31-10dcbc73e863")
 	)
+	(label "V-"
+		(at 147.32 92.71 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f94a0817-4b86-4640-9070-012112914879")
+	)
+	(label "C1_F"
+		(at 111.76 67.31 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fd376150-34a6-466c-aa00-61dd06dd6732")
+	)
+	(label "V-"
+		(at 111.76 74.93 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ffbf0fc0-5dcc-48c1-8fe0-cef47f9ddc0c")
+	)
 	(symbol
 		(lib_id "Device:R")
-		(at 111.76 137.16 0)
+		(at 111.76 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4710,7 +6180,7 @@
 		(dnp no)
 		(uuid "018feed1-80b4-410d-b3c8-1702fa8bbb5a")
 		(property "Reference" "R210"
-			(at 114.3 135.89 0)
+			(at 114.3 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4721,7 +6191,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 114.3 138.43 0)
+			(at 114.3 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4732,7 +6202,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 111.76 137.16 0)
+			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4743,7 +6213,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 137.16 0)
+			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4754,7 +6224,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 111.76 137.16 0)
+			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4765,7 +6235,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 111.76 137.16 0)
+			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4776,7 +6246,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 111.76 137.16 0)
+			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4787,7 +6257,7 @@
 			)
 		)
 		(property "Note" "Cell 10 node (before 10 ohm) to S10. ~0.4 W at 4.2 V"
-			(at 111.76 137.16 0)
+			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4814,7 +6284,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 182.88 137.16 0)
+		(at 182.88 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4824,7 +6294,7 @@
 		(dnp no)
 		(uuid "051ed942-52bc-49cd-92a6-5ee2c2ca5265")
 		(property "Reference" "R214"
-			(at 185.42 135.89 0)
+			(at 185.42 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4835,7 +6305,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 185.42 138.43 0)
+			(at 185.42 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4846,7 +6316,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 182.88 137.16 0)
+			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4857,7 +6327,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 182.88 137.16 0)
+			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4868,7 +6338,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 182.88 137.16 0)
+			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4879,7 +6349,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 182.88 137.16 0)
+			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4890,7 +6360,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 182.88 137.16 0)
+			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4901,7 +6371,7 @@
 			)
 		)
 		(property "Note" "Cell 14 node (before 10 ohm) to S14. ~0.4 W at 4.2 V"
-			(at 182.88 137.16 0)
+			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5270,7 +6740,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 129.54 137.16 0)
+		(at 129.54 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5280,7 +6750,7 @@
 		(dnp no)
 		(uuid "0f40bf97-cece-433e-9476-3a9d83dd88a9")
 		(property "Reference" "R211"
-			(at 132.08 135.89 0)
+			(at 132.08 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5291,7 +6761,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 132.08 138.43 0)
+			(at 132.08 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5302,7 +6772,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 129.54 137.16 0)
+			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5313,7 +6783,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 129.54 137.16 0)
+			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5324,7 +6794,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 129.54 137.16 0)
+			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5335,7 +6805,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 129.54 137.16 0)
+			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5346,7 +6816,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 129.54 137.16 0)
+			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5357,7 +6827,7 @@
 			)
 		)
 		(property "Note" "Cell 11 node (before 10 ohm) to S11. ~0.4 W at 4.2 V"
-			(at 129.54 137.16 0)
+			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8437,7 +9907,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 254 137.16 0)
+		(at 254 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8447,7 +9917,7 @@
 		(dnp no)
 		(uuid "5c048b33-5899-4564-991b-c9f7de3cbbbb")
 		(property "Reference" "R218"
-			(at 256.54 135.89 0)
+			(at 256.54 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8458,7 +9928,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 256.54 138.43 0)
+			(at 256.54 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8469,7 +9939,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 254 137.16 0)
+			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8480,7 +9950,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 254 137.16 0)
+			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8491,7 +9961,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 254 137.16 0)
+			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8502,7 +9972,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 254 137.16 0)
+			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8513,7 +9983,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 254 137.16 0)
+			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8524,7 +9994,7 @@
 			)
 		)
 		(property "Note" "Cell 18 node (before 10 ohm) to S18. ~0.4 W at 4.2 V"
-			(at 254 137.16 0)
+			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13301,7 +14771,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 236.22 137.16 0)
+		(at 236.22 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13311,7 +14781,7 @@
 		(dnp no)
 		(uuid "c1e003f4-d477-4b88-85e6-f01ffd627fbb")
 		(property "Reference" "R217"
-			(at 238.76 135.89 0)
+			(at 238.76 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13322,7 +14792,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 238.76 138.43 0)
+			(at 238.76 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13333,7 +14803,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 236.22 137.16 0)
+			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13344,7 +14814,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 236.22 137.16 0)
+			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13355,7 +14825,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 236.22 137.16 0)
+			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13366,7 +14836,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 236.22 137.16 0)
+			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13377,7 +14847,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 236.22 137.16 0)
+			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13388,7 +14858,7 @@
 			)
 		)
 		(property "Note" "Cell 17 node (before 10 ohm) to S17. ~0.4 W at 4.2 V"
-			(at 236.22 137.16 0)
+			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13757,7 +15227,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 200.66 137.16 0)
+		(at 200.66 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13767,7 +15237,7 @@
 		(dnp no)
 		(uuid "cc952cea-1522-4976-b3ad-13479314af66")
 		(property "Reference" "R215"
-			(at 203.2 135.89 0)
+			(at 203.2 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13778,7 +15248,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 203.2 138.43 0)
+			(at 203.2 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13789,7 +15259,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 200.66 137.16 0)
+			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13800,7 +15270,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 200.66 137.16 0)
+			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13811,7 +15281,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 200.66 137.16 0)
+			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13822,7 +15292,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 200.66 137.16 0)
+			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13833,7 +15303,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 200.66 137.16 0)
+			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13844,7 +15314,7 @@
 			)
 		)
 		(property "Note" "Cell 15 node (before 10 ohm) to S15. ~0.4 W at 4.2 V"
-			(at 200.66 137.16 0)
+			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14099,7 +15569,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 218.44 137.16 0)
+		(at 218.44 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14109,7 +15579,7 @@
 		(dnp no)
 		(uuid "d6439753-2d47-40b7-9d33-0448c723ec6d")
 		(property "Reference" "R216"
-			(at 220.98 135.89 0)
+			(at 220.98 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14120,7 +15590,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 220.98 138.43 0)
+			(at 220.98 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14131,7 +15601,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 218.44 137.16 0)
+			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14142,7 +15612,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 218.44 137.16 0)
+			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14153,7 +15623,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 218.44 137.16 0)
+			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14164,7 +15634,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 218.44 137.16 0)
+			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14175,7 +15645,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 218.44 137.16 0)
+			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14186,7 +15656,7 @@
 			)
 		)
 		(property "Note" "Cell 16 node (before 10 ohm) to S16. ~0.4 W at 4.2 V"
-			(at 218.44 137.16 0)
+			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14290,7 +15760,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 165.1 137.16 0)
+		(at 165.1 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14300,7 +15770,7 @@
 		(dnp no)
 		(uuid "e4aaacf8-880a-4d34-8f63-cefd8f27285b")
 		(property "Reference" "R213"
-			(at 167.64 135.89 0)
+			(at 167.64 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14311,7 +15781,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 167.64 138.43 0)
+			(at 167.64 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14322,7 +15792,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 165.1 137.16 0)
+			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14333,7 +15803,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 165.1 137.16 0)
+			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14344,7 +15814,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 165.1 137.16 0)
+			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14355,7 +15825,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 165.1 137.16 0)
+			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14366,7 +15836,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 165.1 137.16 0)
+			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14377,7 +15847,7 @@
 			)
 		)
 		(property "Note" "Cell 13 node (before 10 ohm) to S13. ~0.4 W at 4.2 V"
-			(at 165.1 137.16 0)
+			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14404,7 +15874,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 147.32 137.16 0)
+		(at 147.32 142.24 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14414,7 +15884,7 @@
 		(dnp no)
 		(uuid "e57ec6d6-4f55-40d3-82d4-ef94211ffb18")
 		(property "Reference" "R212"
-			(at 149.86 135.89 0)
+			(at 149.86 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14425,7 +15895,7 @@
 			)
 		)
 		(property "Value" "33 1W"
-			(at 149.86 138.43 0)
+			(at 149.86 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14436,7 +15906,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 147.32 137.16 0)
+			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14447,7 +15917,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 147.32 137.16 0)
+			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14458,7 +15928,7 @@
 			)
 		)
 		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
-			(at 147.32 137.16 0)
+			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14469,7 +15939,7 @@
 			)
 		)
 		(property "LCSC" "C53728"
-			(at 147.32 137.16 0)
+			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14480,7 +15950,7 @@
 			)
 		)
 		(property "MPN" "25121WF330JT4E"
-			(at 147.32 137.16 0)
+			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14491,7 +15961,7 @@
 			)
 		)
 		(property "Note" "Cell 12 node (before 10 ohm) to S12. ~0.4 W at 4.2 V"
-			(at 147.32 137.16 0)
+			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
