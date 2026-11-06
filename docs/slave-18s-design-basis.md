@@ -56,8 +56,12 @@ to stack-level (100 V parts).
 
 1. **isoSPI filtering (Racc's design):** termination split into 2 × 51 Ω with 10 nF from the
    centre point to V−, plus 10 nF on the transformer chip-side centre tap. Keeps isoSPI
-   working while the motor runs. The datasheet (Figure 104) describes the same split
-   termination as a noise option.
+   working while the motor runs. This is not really a deviation from the datasheet, only
+   from the simplified Figure 112. The isoSPI text (p. 81) calls the plain 100 Ω of Figure 103
+   "inadequate for most designs" and says RM must be split and bypassed. Figure 104(B) is
+   exactly this circuit: 2 × 51 Ω, 10 nF midpoint to V−, 10 nF chip-side CT to V−, plus a
+   100 µH CMC (HM2113ZNL has the choke built in). **Don't go above 10 nF:** the datasheet
+   says larger CT caps can keep the isoSPI common mode from settling.
 2. **Regulator NPN in a big package.** Dissipation ≈ (V_stack − I·100 Ω − 5 V) × I_reg. At
    75.6 V and 20–23 mA (measure + isoSPI) that's about 1.4–1.6 W, with peaks near 35 mA.
    FZT853 (SOT-223, 3 W on 52 × 52 mm of 2 oz copper) needs generous collector copper.
