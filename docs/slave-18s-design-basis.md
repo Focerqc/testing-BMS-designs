@@ -1,8 +1,8 @@
 # ADBMS1818 18S slave: design basis
 
-Status: **parts placed, unwired, 2026-11-05.** Every part is on the root sheet with Value,
-Footprint, LCSC and MPN filled in, grouped by function. Wiring is done by hand in KiCad.
-The JLC BOM is `slave-18s/bom.csv`.
+Status: **schematic wired, 2026-11-05.** Every part is on the root sheet with Value,
+Footprint, LCSC and MPN filled in, grouped by function, and connected with net labels (see
+"Schematic nets"). kicad-cli ERC: 0 errors, 0 warnings. The JLC BOM is `slave-18s/bom.csv`.
 
 ## Scope
 
@@ -188,6 +188,34 @@ Risks to watch:
 - Hot-plug: if J5 mates before J1, C9–C18 float relative to V−. The plug order (J1 first)
   and the per-cell clamps are still open below.
 
+## Schematic nets (wired 2026-11-05)
+
+The sheet is wired with local net labels on pin ends: labels with the same name are one net.
+There are no drawn wires.
+
+| Net | What it is |
+|---|---|
+| V− | Bottom of stack: U1 59, 60, EP 65, DTEN (52), every filter/CT/GPIO cap, R402, J2 2/4/6. **CELL0 is this net**: J1 pin 1 and R100's harness side carry the `V-` label, so the netlist has no separate CELL0 |
+| CELL1 … CELL18 | Harness-side cell nodes (J1/J5 pins, R1nn and R2nn harness side). CELL18 also feeds R301 and R302 |
+| C0_F … C18_F | Filtered node at U1 pin Cn (pin 38 − 2n): R1nn output, C1nn top (n ≥ 1) |
+| S1 … S18 | R2nn output to U1 pin Sn (pin 39 − 2n) |
+| VP_F | After R301, at U1 V+ (pin 1) and C301 |
+| VCOLL | After R302, at the Q301 collector and C302 |
+| DRIVE, VREG, VREF1, VREF2, IBIAS, ICMP | Named after the U1 pin. ISOMD (55) sits on VREG |
+| IPA, IMA, IPB, IMB | U1 isoSPI pins, transformer PHY+/PHY− (pins 1/3) and the 51 Ω ends |
+| ISOA_CM, ISOB_CM | Midpoint of the 2 × 51 Ω termination, 10 nF to V− (C501, C601) |
+| ISOA_CT, ISOB_CT | Transformer chip-side centre tap (pin 2), 10 nF to V− (C502, C602) |
+| ISOA_LP / ISOA_LN, ISOB_LP / ISOB_LN | Line side: LINE+ (pin 6) to J3.1/J4.1, LINE− (pin 4) to J3.2/J4.2. Same polarity on both ports |
+| GPIO1 … GPIO4 | NTC inputs (U1 39–42) |
+
+- **PWR_FLAGs:** one each on VP_F (the net at U1 V+), VREG and V−. Nothing else needs one:
+  VREF1, VREF2 and DRIVE are chip outputs, and ERC accepts the C-pin inputs on nets of
+  passives.
+- **No-connect flags:** U1 43–47 (GPIO5–9), 53 (SDI), 54 (SDO), 56 (WDT), and T501/T601 pin 5
+  (line-side centre tap).
+- **Check:** a script compared the kicad-cli netlist with the wiring table, 272 of 272 pins
+  (262 pin → net rows and 10 no-connects), 0 mismatches. All 65 U1 pins are accounted for.
+
 ## Open items
 
 - [x] Build the ADBMS1818 symbol from the datasheet pin table (64-LQFP_EP). Done; netlist
@@ -208,9 +236,8 @@ Risks to watch:
 - [x] DTEN (pin 52) to V− (discharge timer off). See "Configuration and unused pins".
 - [x] WDT (pin 56) and SDI/SDO (53/54): no-connect flags.
 - [x] GPIO5–GPIO9: no-connect flags, internal pull-downs enabled in firmware.
-- [ ] KiCad ERC reports unconnected pins as **errors**, not warnings (299 on the unwired
-      sheet: pin_not_connected, pin_not_driven, power_pin_not_driven). They disappear as
-      the circuit is wired. V+, VREG and V− will need PWR_FLAGs.
+- [x] Wire the schematic. Done 2026-11-05: ERC 0 errors, 0 warnings, with PWR_FLAGs on
+      VP_F, VREG and V−. See "Schematic nets".
 - [ ] Hot-plug protection for the plug-and-play harness (J1-before-J5 plug order, per-cell
       clamps).
 - [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
