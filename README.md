@@ -13,6 +13,7 @@ talking to a separate master over isoSPI.
 | `slave-18s/` | KiCad 10 project for the ADBMS1818 18S slave (clean slate) |
 | `docs/slave-18s-design-basis.md` | Values, reasoning and open items for the slave |
 | `_tools/pcb_dashboard/` | Board Boxes: local KiCad dashboard (view, annotate, chip info, fresh 3D renders, copy placement prompts) |
+| `_tools/kicad_sch/` | Schematic helpers: netlist + ERC check of the slave, label fixer, region renders (see AGENTS.md) |
 | `site/` | Published GitHub Pages copy of Board Boxes plus the News page |
 | `_reference/` | Reference images. `_reference/racc/` is private and gitignored |
 
