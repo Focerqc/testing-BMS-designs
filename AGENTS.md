@@ -77,6 +77,25 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
   and for labels running into heading text.
 - `lint_offgrid` and `list_floating_labels` worked and agreed with kicad-cli.
 
+### What went wrong bringing the slave to the PCB (2026-11-05)
+
+- **Don't use MCP `sync_schematic_to_board`.** It reported success, but its nets lacked
+  the `/` prefix KiCad gives local labels (`V-` vs `/V-`), and it skipped LCSC/MPN: 289
+  parity errors. It also wrote `top_level_sheets` into the `.kicad_pro`. Ask the user to
+  press F8 in the PCB Editor (default options -> **Update PCB** -> Close -> click once to drop
+  the parts -> Ctrl+S -> close KiCad). The dialog first lists the changes; nothing is applied
+  until **Update PCB** is pressed (status bar "Pads 0" means not yet).
+- **Moving footprints:** use `_tools/kicad_sch/pcb_move.py` (edits only each footprint's
+  `(at ...)` line; pads and text inside are relative). The MCP board tools rewrite the whole
+  file through SWIG.
+- **KiCad local history:** saving creates `slave-18s/.history/` (gitignored), which holds a
+  second `.kicad_pcb`. Every board scan must skip `.history`. `export_site.py` now does.
+- **Saving from KiCad** writes its default `erc`/DRC settings into the `.kicad_pro`
+  (about 350 lines). That's harmless; re-run `check_slave18s.py` to confirm ERC is still clean.
+- **3D renders** for the dashboard: call `render_board_3d()` from
+  `_tools/pcb_dashboard/server.py` (same kicad-cli options and crop as the UI button). Run it
+  in the background, since it takes over a minute.
+
 ### Helper scripts (`_tools/kicad_sch/`)
 
 | Script | Use |
@@ -86,6 +105,8 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | `shift_group.py DX DY REF...` | Writes the file: moves parts together with their labels and no-connect flags |
 | `render_sch.py OUT.png --region X0 Y0 X1 Y1` | PNG of the sheet or a region (sheet mm) via kicad-cli PDF + PyMuPDF |
 | `kisch.py --pins REGEX` | Lists parts, pin end points (mm) and which way each pin faces |
+| `check_pcb_parity.py` | PCB vs schematic: 90 footprints and names, every pad's net vs the kicad-cli netlist, DRC schematic parity. Exit 0 = pass. Run after any PCB or schematic change |
+| `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. Close KiCad first |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
 if it timed out, wait for the file to settle -> `kicad-cli sch upgrade --force` ->

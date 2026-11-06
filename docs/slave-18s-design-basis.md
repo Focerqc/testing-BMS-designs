@@ -1,8 +1,10 @@
 # ADBMS1818 18S slave: design basis
 
-Status: **schematic wired, 2026-11-05.** Every part is on the root sheet with Value,
-Footprint, LCSC and MPN filled in, grouped by function, and connected with net labels (see
-"Schematic nets"). kicad-cli ERC: 0 errors, 0 warnings. The JLC BOM is `slave-18s/bom.csv`.
+Status: **schematic wired, PCB populated and roughly grouped, 2026-11-05.** Every part is on
+the root sheet with Value, Footprint, LCSC and MPN filled in, grouped by function, and
+connected with net labels (see "Schematic nets"). kicad-cli ERC: 0 errors, 0 warnings. All 90
+footprints are on the PCB, grouped by block, with no routing yet (see "PCB"). The JLC BOM is
+`slave-18s/bom.csv`.
 
 ## Scope
 
@@ -105,6 +107,15 @@ modules sit about 76 V apart, so that is not enough. Chosen part: **Pulse HM2113
 - Footprint `slave-18s/footprints.pretty/Pulse_HM2113ZNL.kicad_mod` was drawn from the
   Pulse land pattern: 6 × 1.02 mm pads, 2.54 mm pitch, rows 12.40 mm inner / 16.18 mm outer.
   KiCad has no stock footprint for it.
+- **Pad numbering checked 2026-11-05** against BM101.C p. 2 (mechanical drawing and HM2113ZNL
+  schematic), with the drawing rendered next to the footprint. The drawing marks pin 1 with a
+  dot and a chamfered body corner but prints no numbers. Turned 90° CW to match the
+  footprint, the dot lands at pad 1 (top left, beside the silk dot). Numbering
+  counter-clockwise from the dot gives 1-2-3 down the chip-side row and 4-5-6 up the line-side
+  row, the same as the schematic page (1-2-3 on the PHY winding, 6-5-4 on the choked line
+  winding). Pad size, pitch and row spans match the land pattern to 0.01 mm. Remaining
+  assumption: counter-clockwise numbering is the industry convention, not printed on the
+  drawing. Check one real part's marking against pad 1 at first assembly.
 
 ## Parts and JLC numbers
 
@@ -141,6 +152,12 @@ Why these values are safe at the voltages involved:
   voltages.
 - The termination and CT caps (C5xx/C6xx) and the GPIO caps sit near V− (< 6 V), so
   50 V parts are fine there.
+
+FZT853 lead order, checked 2026-11-05 against Diodes DS33175 Rev. 6-2: p. 1 "Top View
+Pin-Out" shows the tab = C and the three leads E, C, B. Turned 180° to match the footprint,
+the leads read B, C, E from pad 1, so KiCad `SOT-223-3_TabPin2` (pad 1 = B, pad 2 = C on the
+middle lead and the tab, pad 3 = E) matches the symbol `Q_NPN_BCE` (1 = B, 2 = C, 3 = E). The
+p. 6 outline gives the dimensions only, with no pin numbers.
 
 Rejected NPN options: PBSS8110Z (0 stock), NSS1C201MZ4 (93 stock), FZT493TA (0 stock),
 PZTA42 (300 V, but hFE min only 25–40; the datasheet asks for > 40 over temperature).
@@ -216,6 +233,31 @@ There are no drawn wires.
 - **Check:** a script compared the kicad-cli netlist with the wiring table, 272 of 272 pins
   (262 pin → net rows and 10 no-connects), 0 mismatches. All 65 U1 pins are accounted for.
 
+## PCB (populated 2026-11-05)
+
+- **Import:** KiCad 10 PCB Editor, Tools → Update PCB from Schematic (F8), default options.
+  The MCP `sync_schematic_to_board` was tried first and rejected: its nets lacked the `/`
+  prefix that KiCad gives local labels (`V-` instead of `/V-`), and it did not copy LCSC/MPN.
+  That gave 289 parity errors, so the board was reverted and F8 used instead.
+- **Check** (`python _tools/kicad_sch/check_pcb_parity.py`): 90 of 90 footprints, each with the
+  footprint named in the schematic; 272 numbered pads, 0 net mismatches against the kicad-cli
+  netlist (PWR_FLAGs have no footprint); U1's 25 unnumbered thermal-via/paste pads carry no
+  foreign net; `kicad-cli pcb drc --schematic-parity`: 0 parity items.
+- **Rough grouping, not placement.** Parts were moved with `_tools/kicad_sch/pcb_move.py`
+  (translation only, all at 0°) into blocks inside the 120 × 70 mm placeholder: J1/J5/J2/J3
+  along the top edge, balance R201–R218 (3 × 6), cell filters R1xx/C1xx, thermistors under J2,
+  U1 central, supply/VREF/bias (Q301, R301/R302, C301–C305, R401/R402) below U1, isoSPI A and B
+  on the right (each transformer with its R/C), and J4 bottom right. There are 0 courtyard
+  overlaps. J1's last pin and J5's first pin are 7 mm apart (≥ 1 mm required).
+- **Remaining DRC items** (expected before placement and routing; not fixed):
+  - 183 unconnected (no routing);
+  - 27 silk_overlap and 27 silk_over_copper (reference text on tight groups, and the
+    placeholder-outline text running across U1);
+  - 16 drill_out_of_range: the 0.2 mm thermal vias in U1's stock `..._ThermalVias` footprint,
+    below the board setup's 0.3 mm minimum hole. Decide with the fab rules (JLC allows
+    0.2 mm at extra cost) or use the footprint without thermal vias.
+- 3D: U1, T501 and T601 render without bodies because no 3D model is linked. This is cosmetic.
+
 ## Open items
 
 - [x] Build the ADBMS1818 symbol from the datasheet pin table (64-LQFP_EP). Done; netlist
@@ -229,10 +271,15 @@ There are no drawn wires.
 - [ ] Maximum balance current per S switch and the die thermal budget at 18 × ~110 mA. If
       it's too hot, add external balance MOSFETs (datasheet Figure 99).
 - [x] Collector cap C302: 100 nF 100 V (Basic C28233), per the datasheet text.
-- [ ] HM2113ZNL footprint: pads are numbered counter-clockwise from the pin-1 dot. Confirm
-      against a real part or the Pulse 3D model before ordering.
-- [ ] FZT853 numbering: the Diodes datasheet shows B–C–E leads (tab C) without numbers.
-      KiCad SOT-223-3_TabPin2 assumes pin 1 = B. That's standard, but check the outline page.
+- [x] HM2113ZNL footprint: checked against Pulse BM101.C p. 2. Pin-1 dot at pad 1,
+      numbered counter-clockwise, 1-2-3 on the chip side. No change needed. See "isoSPI
+      transformer".
+- [x] FZT853 numbering: Diodes DS33175 p. 1 pin-out (tab C; E-C-B) matches
+      SOT-223-3_TabPin2 (1 = B, 2 = C/tab, 3 = E). No change needed. See "Parts".
+- [ ] Q301 package and heat. About 1.4–1.6 W (peaks higher) in a SOT-223 needs large
+      collector copper: the 3 W rating assumes 52 × 52 mm of 2 oz copper. Decide at placement
+      whether that copper fits, or move to a bigger package (DPAK/TO-252 NPN, ≥ 100 V,
+      hFE > 40) or split the drop with a series resistor.
 - [x] DTEN (pin 52) to V− (discharge timer off). See "Configuration and unused pins".
 - [x] WDT (pin 56) and SDI/SDO (53/54): no-connect flags.
 - [x] GPIO5–GPIO9: no-connect flags, internal pull-downs enabled in firmware.
@@ -243,5 +290,9 @@ There are no drawn wires.
 - [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
 - [ ] Harness: match J1/J5/J2 pin order to the Funwheel pack's tap and NTC wiring.
 - [ ] Board outline (the current 120 × 70 mm rectangle is a placeholder).
+- [x] Import the schematic into the PCB. Done 2026-11-05 with F8: 90 footprints, parity 0.
+      See "PCB".
+- [ ] Final placement (Board Boxes), net classes and HV clearance rules, then routing.
+- [ ] U1 thermal vias: 0.2 mm holes vs the 0.3 mm board minimum (16 DRC items).
 - [ ] EVAL-ADBMS1818Z schematic not reviewed (not supplied). Cross-check pins and the
       transformer against it if it turns up.
