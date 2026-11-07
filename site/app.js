@@ -212,6 +212,7 @@
     ctx.lineWidth = 1.5;
     ctx.setLineDash([5, 3]);
     ctx.font = '600 11px "JetBrains Mono"';
+    const tags = [];
     FP_GROUPS.forEach((g, i) => {
       if (g[1] === 'Mounting holes') return; // spans the whole board
       let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
@@ -227,8 +228,37 @@
       const sx = Math.min(a.x, c.x) - 3, sy = Math.min(a.y, c.y) - 3, w = Math.abs(c.x - a.x) + 6, h = Math.abs(c.y - a.y) + 6;
       ctx.strokeStyle = col; ctx.globalAlpha = hot ? 1 : 0.7; ctx.lineWidth = hot ? 2.5 : 1.5;
       ctx.strokeRect(sx, sy, w, h);
-      ctx.fillStyle = col; ctx.fillText(g[1], sx + 2, sy - 4);
+      tags.push({ name: g[1], col, hot, sx, sy, w, h, cx: sx + w / 2, cy: sy + h / 2 });
     });
+    // Labels sit outside the board edge (left or right column), spread so they never
+    // overlap, with a dashed leader back to the group box.
+    const bb = S.board.bbox;
+    const tl = toScreen(bb.x, bb.y), br = toScreen(bb.x + bb.w, bb.y + bb.h);
+    const midX = (tl.x + br.x) / 2, gap = 15;
+    for (const side of ['L', 'R']) {
+      const col = tags.filter(k => (k.cx < midX) === (side === 'L')).sort((a, b) => a.cy - b.cy);
+      // place at ideal y, push down to keep spacing, then pull back up if it ran off the bottom
+      let y = -Infinity;
+      for (const k of col) { k.ly = Math.max(k.cy, y + gap); y = k.ly; }
+      let over = col.length ? col[col.length - 1].ly - (br.y + 20) : 0;
+      for (let j = col.length - 1; j >= 0 && over > 0; j--) {
+        const lim = j > 0 ? col[j].ly - col[j - 1].ly - gap : Infinity;
+        col[j].ly -= over;
+        for (let q = j + 1; q < col.length; q++) col[q].ly = Math.max(col[q].ly, col[q - 1].ly + gap);
+        over = col[col.length - 1].ly - (br.y + 20);
+        if (lim >= over) break;
+      }
+      for (const k of col) {
+        const lx = side === 'L' ? tl.x - 14 : br.x + 14;
+        const ax = side === 'L' ? k.sx : k.sx + k.w;
+        const ay = Math.min(Math.max(k.ly, k.sy), k.sy + k.h);
+        ctx.strokeStyle = k.col; ctx.globalAlpha = k.hot ? 1 : 0.75; ctx.lineWidth = k.hot ? 2 : 1;
+        ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(lx, k.ly); ctx.stroke();
+        ctx.fillStyle = k.col; ctx.textBaseline = 'middle';
+        ctx.textAlign = side === 'L' ? 'right' : 'left';
+        ctx.fillText(k.name, lx + (side === 'L' ? -4 : 4), k.ly);
+      }
+    }
     ctx.restore();
   }
 
