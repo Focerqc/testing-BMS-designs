@@ -124,6 +124,10 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
 - **Symbol field angles are relative to the symbol.** On a part rotated 270 (a vertical
   diode), Reference/Value need `(at x y 90)` to read horizontally; with 0 they come out
   vertical and on top of each other. Render and look.
+- **F8 doesn't delete removed parts by default.** Its "Delete footprints with no symbols" box is
+  off; tick it when the schematic lost parts (Lean, 2026-11-06: 58 leftovers, removed afterwards from
+  the unrouted file). KiCad also saved that board with CRLF line endings (a 71k-line diff); the
+  committed boards are LF, so convert back before committing.
 - **After F8, check the user really saved.** Run `check_pcb_parity.py` only after they say
   KiCad is closed; an unsaved F8 leaves the old board on disk. F8 drops new parts in a pile,
   partly outside the outline; group them with `pcb_move.py` and check courtyards with

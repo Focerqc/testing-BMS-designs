@@ -72,7 +72,12 @@ from U1), and the R1s are the innermost (next to their C pin, Racc's method).
 | `pcb_move.py` | Has `--pcb` | Add `--variant` as a shortcut |
 | `export_site.py`, dashboard | Already find every `.kicad_pcb` | No change needed (see "Board Boxes and the variants" below) |
 
-### 0b. Clean starting point (yours)
+### 0b. Clean starting point (done 2026-11-06, commit `PCB (Lean): F8 drops …`)
+
+**Lesson from doing it:** F8's option **"Delete footprints with no symbols"** is off by
+default. Without it, F8 updates nets and adds new parts but leaves removed parts on the board.
+Tick it whenever the schematic lost parts. (This time the 58 leftovers were removed from the
+file afterwards, and the parity check proved the result: 93/93.)
 
 1. Commit the step 0a work first, as three commits (tools, Lean schematic, docs), so the Lean
    PCB commits contain only the PCB.
