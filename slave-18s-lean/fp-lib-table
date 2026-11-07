@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "slave18s")(type "KiCad")(uri "${KIPRJMOD}/../slave-18s/footprints.pretty")(options "")(descr "Project footprints"))
+)

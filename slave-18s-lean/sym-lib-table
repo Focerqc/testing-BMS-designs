@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "ADBMS1818")(type "KiCad")(uri "${KIPRJMOD}/../slave-18s/symbols/ADBMS1818.kicad_sym")(options "")(descr "ADBMS1818 from datasheet Rev. B Fig. 2 / Table 14"))
+  (lib (name "isoSPI_XFMR")(type "KiCad")(uri "${KIPRJMOD}/../slave-18s/symbols/isoSPI_XFMR.kicad_sym")(options "")(descr "isoSPI transformers"))
+)

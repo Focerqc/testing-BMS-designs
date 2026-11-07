@@ -9,11 +9,12 @@ Runs kicad-cli (netlist + ERC) and checks:
   5. ERC (all severities) is empty.
 Exit code 0 only if everything passes. Re-run after any schematic edit.
 
-usage: python _tools/kicad_sch/check_slave18s.py [--sch FILE] [--blocks 1 2 3 4 5 6] [--erc]
+usage: python _tools/kicad_sch/check_slave18s.py [--variant guard|lean] [--sch FILE] [--blocks 1 2 3 4 5 6] [--erc]
 Wiring table source: docs/slave-18s-design-basis.md ("Schematic nets") and the datasheet.
 """
 import argparse
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -93,6 +94,24 @@ for k, net in enumerate(["V-", "V-", "VREG", "VREF1", "VREF2", "DRIVE", "IPA", "
     E[6][f"TP{k}.1"] = net
 
 
+LEAN_SCH = DEFAULT_SCH.parents[1] / "slave-18s-lean" / "adbms1818-slave-18s-lean.kicad_sch"
+LEAN_DROP = re.compile(r"^(F1\d\d|D1\d\d|D301|C1\d\d)\.")  # make_lean.py removes these
+
+
+def lean_net(net):
+    """18S Lean has no fuses: taps land on CELLn, VBAT_F is CELL18, CELL0 joins V-."""
+    m = re.fullmatch(r"TAP(\d+)", net)
+    if m:
+        net = f"CELL{m.group(1)}"
+    return {"VBAT_F": "CELL18", "CELL0": "V-"}.get(net, net)
+
+
+def to_lean():
+    for b in BLOCKS:
+        E[b] = {k: lean_net(v) for k, v in E[b].items() if not LEAN_DROP.match(k)}
+        NC[b] = {k for k in NC[b] if not LEAN_DROP.match(k)}
+
+
 def kicad(sch):
     net, erc = TMP / "check_slave18s.net", TMP / "check_slave18s.erc.json"
     r = subprocess.run([KICAD_CLI, "sch", "export", "netlist", "--format", "kicadsexpr", "--output", str(net), sch],
@@ -114,10 +133,15 @@ def kicad(sch):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sch", default=str(DEFAULT_SCH))
+    ap.add_argument("--sch", default=None)
+    ap.add_argument("--variant", choices=("guard", "lean"), default="guard",
+                    help="guard = slave-18s (hot-plug protection), lean = slave-18s-lean")
     ap.add_argument("--blocks", nargs="+", type=int, default=BLOCKS)
     ap.add_argument("--erc", action="store_true", help="print every ERC violation")
     a = ap.parse_args()
+    if a.variant == "lean":
+        to_lean()
+    a.sch = a.sch or str(LEAN_SCH if a.variant == "lean" else DEFAULT_SCH)
     full = sorted(a.blocks) == BLOCKS
 
     pin2net, net2pins, erc = kicad(a.sch)
