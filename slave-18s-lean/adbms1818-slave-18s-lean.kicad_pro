@@ -240,7 +240,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "0-draft"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -826,13 +826,18 @@
       {
         "filename": "adbms1818-slave-18s-lean.kicad_sch",
         "name": "adbms1818-slave-18s-lean",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "uuid": "6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
       }
     ],
     "used_designators": "",
     "variants": []
   },
-  "sheets": [],
+  "sheets": [
+    [
+      "6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818",
+      "adbms1818-slave-18s-lean"
+    ]
+  ],
   "text_variables": {},
   "tuning_profiles": {
     "meta": {
