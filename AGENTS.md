@@ -101,14 +101,14 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | Script | Use |
 |---|---|
 | `check_slave18s.py` | kicad-cli netlist + ERC check of the slave against its wiring table. Exit 0 = pass. Run after every schematic edit (`--blocks 1 2` for part of it, `--erc` to list violations) |
-| `make_lean.py` | Writes `slave-18s-lean/` schematic from Guard (drops fuses, clamps, TVS, C-pin caps). Never hand-edit Lean's schematic; re-run after Guard edits, then `check_slave18s.py --variant lean` |
+| `make_lean.py` | Writes `slave-18s-lean/` schematic from Guard (drops fuses, clamps, TVS, C-pin caps; F120 becomes the net tie NT1, CELL0 to V-). Never hand-edit Lean's schematic; re-run after Guard edits, then `kicad-cli sch upgrade --force` and `check_slave18s.py --variant lean` |
 | `orient_labels.py` | Writes the file: turns pin labels to face outward and rounds coordinates (`--dry` to preview) |
 | `shift_group.py DX DY REF...` | Writes the file: moves parts together with their labels and no-connect flags |
 | `render_sch.py OUT.png --region X0 Y0 X1 Y1` | PNG of the sheet or a region (sheet mm) via kicad-cli PDF + PyMuPDF |
 | `kisch.py --pins REGEX` | Lists parts, pin end points (mm) and which way each pin faces |
-| `check_pcb_parity.py` | PCB vs schematic: every footprint and its name (148 since 2026-11-06), every pad's net vs the kicad-cli netlist, DRC schematic parity. Exit 0 = pass. Run after any PCB or schematic change |
-| `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. Close KiCad first |
-| `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier, mounting-hole keep-out) from the board's nets. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
+| `check_pcb_parity.py` | PCB vs schematic: every footprint and its name, every pad's net vs the kicad-cli netlist, every footprint on F.Cu (single-sided), DRC schematic parity. `--variant lean` for Lean. Exit 0 = pass. Run after any PCB or schematic change |
+| `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. `--variant lean` for Lean. Close KiCad first |
+| `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier, mounting-hole keep-out) from the board's nets. `--variant lean` for Lean. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
 if it timed out, wait for the file to settle -> `kicad-cli sch upgrade --force` ->
