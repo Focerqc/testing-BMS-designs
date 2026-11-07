@@ -27,3 +27,5 @@ Thumbs.db
 # Regenerable outputs
 exports/*
 !exports/README.md
+# ENNOID master firmware binary (vendor build) - local only, never published
+_reference/firmware/

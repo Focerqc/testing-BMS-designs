@@ -50,10 +50,59 @@ VESC Tool settings from the sheet's 32S example (14S + 18S slaves): "First monit
 num", "Last monitoring IC cell num", "Cell num", "monitoring IC num". For one 18S slave this
 should be 18 / 18 / 18 / 1 (not yet tried).
 
+## Firmware: the ADBMS1818 should work as an LTC6813-1 (checked 2026-11-06)
+
+Sources:
+- Public source: https://github.com/EnnoidMe/ENNOID-BMS-Firmware, branch `ENNOID`
+  (commit 5811327, 2022-08-24), file `Drivers/SWDrivers/Src/driverSWLTC6804.c`, plus
+  `Modules/Src/modPowerElectronics.c` and `Modules/Src/modConfig.c`.
+- The master's binary, `ENNOID-BMS.bin` (6.06, 99,340 bytes), kept locally as
+  `_reference/firmware/ENNOID-BMS.bin`. It is ENNOID's build, so `_reference/firmware/` is
+  gitignored and never published. **The binary is newer than the public source**, so the
+  check below is about the source, not the exact code on the master.
+
+The driver supports `CELL_MON_LTC6813_1` (it then also writes configuration group B and reads
+cell groups E/F and aux group D). Every command code it sends was compared with ADBMS1818
+Table 52 (Rev. B, p. 61–62). All match:
+
+| Command | Firmware (CC, hex) | Table 52 |
+|---|---|---|
+| WRCFGA / WRCFGB / RDCFGA | 0x001 / 0x024 / 0x002 | same |
+| RDCVA–F | 0x004, 0x006, 0x008, 0x00A, 0x009, 0x00B | same |
+| RDAUXA–D | 0x00C, 0x00E, 0x00D, 0x00F | same |
+| RDSTATA / RDSTATB | 0x010 / 0x012 | same |
+| ADCV | 0x260 + MD·0x80 + DCP·0x10 + CH | same layout |
+| ADOW | 0x228 + MD·0x80 + PUP·0x40 + DCP·0x10 + CH | same layout |
+| ADAX | 0x460 + MD·0x80 + CHG | same layout |
+| ADCVAX | 0x46F + MD·0x80 + DCP·0x10 | same layout |
+| CLRCELL / CLRAUX / CLRSTAT | 0x711 / 0x712 / 0x713 | same |
+
+The configuration bytes also line up with Tables 54/55 (GPIO1–5, REFON, ADCOPT in CFGAR0;
+DCC13–16 and GPIO6–9 in CFGBR0; DCC17/18 in CFGBR1). Normal cell conversions use DCP = 0, so
+balancing pauses during measurement, as the design basis asks.
+
+**Conclusion:** no custom master firmware is expected. In VESC Tool, pick the **LTC6813-1**
+cell-monitor type. The remaining proof is a bench test with one slave.
+
+### What the firmware does with the GPIOs
+
+- `modPowerElectronicsCellMonitorsInit()` writes **GPIO1–GPIO9 = 1** (pull-down **off**, the
+  comment says "false = pull down") and leaves DCC0 = 0 (GPIO9 pull-down off). REFON = 1, so
+  VREF2 stays up for the NTC pull-ups.
+- Temperatures: ADAX with all channels; the driver converts the first *N* aux codes as NTCs,
+  where *N* is "NTC sensors per module" in VESC Tool (default 1). Aux order is GPIO1, GPIO2,
+  GPIO3 (group A), then GPIO4, GPIO5, VREF2 (group B). So **N = 4 reads GPIO1–GPIO4**, which is
+  exactly this slave's three cell NTCs plus TH701. Don't set N above 4: input 5 would be
+  GPIO5 (tied low, see below) and input 6 is VREF2, not a thermistor.
+- Default NTC settings are 100 kΩ, B 4250, 100 kΩ pull-up: the same as the slave.
+- `tempEnableMaskBattery` (default 0xFFFF) counts every aux sensor as a battery temperature.
+  To treat TH701 (GPIO4, sensor index 3) as a board temperature instead, clear bit 3 there and
+  set bit 4 in `tempEnableMaskBMS` (BMS sensor *k* = aux sensor *k − 1*). Try on the bench.
+
+Because the firmware never turns the pull-downs on, the slave's unused GPIO5–9 would float.
+Proposed fix in the design basis ("Configuration and unused pins"): tie them to V−.
+
 ## Open questions
 
-- **Monitoring IC support.** ENNOID documents LTC6811/6812/6813 slaves. This slave uses the
-  ADBMS1818, which ADI offers as the newer part next to the LTC6813-1. Command and register
-  compatibility is not yet checked against both datasheets or the ENNOID firmware source.
-- Which GPIOs the firmware reads for temperature (we use GPIO1–4).
 - Whether the last slave's port B needs anything when nothing is plugged into J4.
+- Bench test: one slave, VESC Tool set to LTC6813-1, 18 / 18 / 18 / 1, NTC sensors = 4.

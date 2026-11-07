@@ -16,7 +16,7 @@ talking to a separate master over isoSPI.
 | `_tools/pcb_dashboard/` | Board Boxes: local KiCad dashboard (view, annotate, chip info, fresh 3D renders, copy placement prompts) |
 | `_tools/kicad_sch/` | Schematic helpers: netlist + ERC check of the slave, label fixer, region renders (see AGENTS.md) |
 | `site/` | Published GitHub Pages copy of Board Boxes plus the News page |
-| `_reference/` | Reference images. `_reference/racc/` is private and gitignored |
+| `_reference/` | Reference images. `_reference/racc/`, `_reference/datasheets/` and `_reference/firmware/` are private and gitignored |
 
 ## Dashboards
 

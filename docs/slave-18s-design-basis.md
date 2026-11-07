@@ -231,7 +231,7 @@ Source: Fig. 2 and Table 14, plus the Watchdog and Discharge Timer section (Tabl
 | 53 SDI, 54 SDO | no-connect flag | Both are NC when ISOMD = VREG (Fig. 2 footnote: "IPA, IMA, NC, NC"). |
 | 55 ISOMD | VREG | isoSPI mode (unchanged from Fig. 112). |
 | 56 WDT | no-connect flag | Open-drain output; Table 14 allows it to be left disconnected. The slave has no local host to read it, and the master already sees a timeout through isoSPI. |
-| 43–47 GPIO5–GPIO9 | no-connect flag | Spare. Firmware turns on their internal pull-downs so the inputs don't float: write GPIOx = 0 for GPIO5–8 (CFGAR0 / CFGBR0) and DCC0 = 1 for GPIO9 (Table 72). A watchdog timeout restores the defaults (pull-downs off), so firmware rewrites them after each wake-up. GPIO5 can't join GPIO4 as an I²C pair because GPIO4 carries the onboard NTC. |
+| 43–47 GPIO5–GPIO9 | no-connect flag (**proposed: V−**) | Spare. The plan was for firmware to turn on their internal pull-downs (GPIOx = 0, or DCC0 = 1 for GPIO9, Table 72). **Checked 2026-11-06: the ENNOID firmware writes GPIO1–9 = 1 (pull-down off) and DCC0 = 0** (`modPowerElectronicsCellMonitorsInit()`, see `docs/master-ennoid-xlite.md`), and a watchdog timeout would restore the same defaults anyway. With no-connect flags these five inputs float. **Proposed fix (needs OK, schematic change):** tie GPIO5–9 straight to V−. No parts; a pull-down that ever turns on just pulls an already-low pin. Keep VESC Tool "NTC sensors per module" at 4 so GPIO5 (0 V) is never read as a thermistor. GPIO5 can't join GPIO4 as an I²C pair because GPIO4 carries the onboard NTC. |
 
 ## Connectors: JST PH (decided 2026-11-05)
 
@@ -511,7 +511,8 @@ when the placement is reviewed.
       JLC C460146/C157603, Extended), not yet fully checked.
 - [x] DTEN (pin 52) to V− (discharge timer off). See "Configuration and unused pins".
 - [x] WDT (pin 56) and SDI/SDO (53/54): no-connect flags.
-- [x] GPIO5–GPIO9: no-connect flags, internal pull-downs enabled in firmware.
+- [ ] GPIO5–GPIO9: the ENNOID firmware leaves the pull-downs off, so the no-connect flags
+      let them float. Proposed: tie to V− (2026-11-06, awaiting OK).
 - [x] Wire the schematic. Done 2026-11-05: ERC 0 errors, 0 warnings, with PWR_FLAGs on
       VP_F, VREG and V−. See "Schematic nets".
 - [x] Hot-plug protection for the plug-and-play harness. Done 2026-11-06: tap fuses,
@@ -521,7 +522,9 @@ when the placement is reviewed.
 - [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
 - [ ] Harness: match J1/J5/J2 pin order to the Funwheel pack's tap and NTC wiring.
 - [ ] ENNOID master fit (`docs/master-ennoid-xlite.md`): J3/J4 JST PH vs the master's GH 2P,
-      isoSPI polarity, and ADBMS1818 support in the ENNOID firmware (LTC6813 documented).
+      isoSPI polarity. Firmware: the public source's LTC6813-1 driver sends only commands that
+      match ADBMS1818 Table 52 (checked 2026-11-06); pick LTC6813-1 in VESC Tool. Remaining
+      proof: bench test with one slave.
 - [ ] Board outline (the current 120 × 70 mm rectangle is a placeholder).
 - [x] Import the schematic into the PCB. Done 2026-11-05 with F8: 90 footprints, parity 0.
       See "PCB".
