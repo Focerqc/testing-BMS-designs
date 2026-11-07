@@ -214,8 +214,17 @@ def read_board(pcb_path):
                 "net": t.GetNetname()
             })
 
+    # Board-level text (silkscreen notes): boxes only, so the dashboard can keep labels off them.
+    texts = []
+    for d in board.GetDrawings():
+        if isinstance(d, pcbnew.PCB_TEXT):
+            b = d.GetBoundingBox()
+            texts.append({"x": mm(b.GetX()), "y": mm(b.GetY()), "w": mm(b.GetWidth()), "h": mm(b.GetHeight()),
+                          "side": "B" if d.GetLayer() in (pcbnew.B_SilkS, pcbnew.B_Fab, pcbnew.B_Cu) else "F"})
+
     bbox = board.GetBoardEdgesBoundingBox()
     return {
+        "texts": texts,
         "path": pcb_path,
         "mtime": os.path.getmtime(pcb_path),
         "edges": edges,

@@ -229,13 +229,59 @@
       ctx.strokeRect(sx, sy, w, h);
       tags.push({ name: g[1], col, hot, sx, sy, w, h, cx: sx + w / 2, cy: sy + h / 2 });
     });
-    // Labels sit outside the board edge (left or right column), spread so they never
-    // overlap, with a dashed leader back to the group box.
+    // 1) Put each name in the nearest free spot by its box: touching it, then a little
+    //    further out with a short leader. Free = no pad/part/silk ref, group box or name.
+    const hits = (r, o) => r.x < o.x + o.w && r.x + r.w > o.x && r.y < o.y + o.h && r.y + r.h > o.y;
+    const obst = [];
+    const sc = S.view.scale, m = 1.3; // mm margin around parts covers their silk reference text
+    for (const fp of S.board.footprints) {
+      if (!fpOnSide(fp, pane.side)) continue;
+      const b = getFpBBox(fp);
+      const a = toScreen(b.minX - m, b.minY - m), c = toScreen(b.maxX + m, b.maxY + m);
+      obst.push({ x: Math.min(a.x, c.x), y: Math.min(a.y, c.y), w: Math.abs(c.x - a.x), h: Math.abs(c.y - a.y) });
+    }
+    for (const tx of S.board.texts || []) {
+      if ((tx.side === 'B') !== (pane.side === 'bot')) continue;
+      const a = toScreen(tx.x - 0.5, tx.y - 0.5), c = toScreen(tx.x + tx.w + 0.5, tx.y + tx.h + 0.5);
+      obst.push({ x: Math.min(a.x, c.x), y: Math.min(a.y, c.y), w: Math.abs(c.x - a.x), h: Math.abs(c.y - a.y) });
+    }
+    for (const k of tags) obst.push({ x: k.sx - 1, y: k.sy - 1, w: k.w + 2, h: k.h + 2 });
+    const cw = canvas.clientWidth || canvas.width, chh = canvas.clientHeight || canvas.height;
+    const TH = 14;
+    for (const k of [...tags].sort((a, b) => b.w * b.h - a.w * a.h)) {
+      const tw = ctx.measureText(k.name).width + 6;
+      for (const d of [2, 12, 24, 40]) {
+        const cands = [
+          [k.sx, k.sy - d - TH], [k.sx + k.w - tw, k.sy - d - TH],
+          [k.sx, k.sy + k.h + d], [k.sx + k.w - tw, k.sy + k.h + d],
+          [k.sx - d - tw, k.cy - TH / 2], [k.sx + k.w + d, k.cy - TH / 2],
+        ];
+        for (const [x, y] of cands) {
+          const r = { x, y, w: tw, h: TH };
+          if (x < 0 || y < 0 || x + tw > cw || y + TH > chh) continue;
+          if (obst.some(o => hits(r, o))) continue;
+          k.place = r; obst.push(r); break;
+        }
+        if (k.place) break;
+      }
+      if (!k.place) continue;
+      const r = k.place;
+      ctx.globalAlpha = k.hot ? 1 : 0.85; ctx.strokeStyle = k.col; ctx.lineWidth = k.hot ? 2 : 1;
+      // leader from the nearest point of the box to the nearest point of the label
+      const px = Math.min(Math.max(r.x + r.w / 2, k.sx), k.sx + k.w), py = Math.min(Math.max(r.y + r.h / 2, k.sy), k.sy + k.h);
+      const qx = Math.min(Math.max(px, r.x), r.x + r.w), qy = Math.min(Math.max(py, r.y), r.y + r.h);
+      if (Math.hypot(qx - px, qy - py) > 4) { ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(qx, qy); ctx.stroke(); }
+      ctx.fillStyle = 'rgba(10,14,18,.6)'; ctx.fillRect(r.x, r.y, r.w, r.h);
+      ctx.fillStyle = k.col; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+      ctx.fillText(k.name, r.x + 3, r.y + TH / 2);
+    }
+    // 2) Whatever found no room goes to a column outside the board edge, spread so the
+    //    names never overlap, with a dashed leader back to the group box.
     const bb = S.board.bbox;
     const tl = toScreen(bb.x, bb.y), br = toScreen(bb.x + bb.w, bb.y + bb.h);
     const midX = (tl.x + br.x) / 2, gap = 15;
     for (const side of ['L', 'R']) {
-      const col = tags.filter(k => (k.cx < midX) === (side === 'L')).sort((a, b) => a.cy - b.cy);
+      const col = tags.filter(k => !k.place && (k.cx < midX) === (side === 'L')).sort((a, b) => a.cy - b.cy);
       // place at ideal y, push down to keep spacing, then pull back up if it ran off the bottom
       let y = -Infinity;
       for (const k of col) { k.ly = Math.max(k.cy, y + gap); y = k.ly; }
