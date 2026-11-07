@@ -335,10 +335,13 @@ commit, not before (next section).
   next to Guard. Boxes (`<board>.boxes.json`), 3D renders (`<board>_3d_top/iso.png`) and the
   schematic PDF are all stored per board, so Lean gets its own annotations and renders without
   touching Guard's.
-- **Hosted site:** `export_site.py` also exports every board it finds, but the published
-  snapshot was made before Lean existed, so it only has Guard. After the Lean placement commit:
-  `export_site.py` → `node check_hosted.cjs` (it already loops over all boards) → push `site/`.
-  Wait until then: publishing now would show the stale 150-part Guard copy under Lean's name.
+- **Hosted site:** published with Lean on 2026-11-06 (step 2 state: staged parts below the
+  outline, top render made without them so it matches the outline). Re-export after each
+  placement commit: `export_site.py` → `node check_hosted.cjs` → push `site/`.
+- **Layout practice card** (left sidebar): "Lay out the 18-channel L" draws the R2xx/R1xx boxes
+  for steps 3–4 from U1's pads (pitch, top-arm count, R2 package), and a short guide covers
+  steps 3–7. On the hosted site boxes save in the browser only, so use **Save .txt** to keep
+  work and **Open .txt** to load it back (locally too, before Copy Prompt).
 - **Small improvement worth making:** the dropdown shows raw paths. A label map
   (`slave-18s/…` → "18S Guard", `slave-18s-lean/…` → "18S Lean") in `app.js` would make the
   hosted page clearer. The toolbars and features stay as they are.
