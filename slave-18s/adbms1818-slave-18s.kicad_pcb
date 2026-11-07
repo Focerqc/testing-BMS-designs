@@ -1943,6 +1943,11 @@
 			(uuid "8d568257-30ef-4cde-a540-b1d57c644c73")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/HM2113ZNL_3D.STEP"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz -90 0 -90))
+		)
 	)
 	(footprint "Resistor_SMD:R_1206_3216Metric"
 		(layer "F.Cu")
@@ -31742,6 +31747,11 @@
 			(uuid "d300a87d-50f2-44c0-9927-3aaa6a170ef9")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/HM2113ZNL_3D.STEP"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz -90 0 -90))
+		)
 	)
 	(footprint "Resistor_SMD:R_1206_3216Metric"
 		(layer "F.Cu")

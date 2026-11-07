@@ -18,4 +18,9 @@
 	(pad "4" smd rect (at 7.145 2.54) (size 1.89 1.02) (layers "F.Cu" "F.Paste" "F.Mask") (uuid "68796c90-3d7f-4fbb-86c1-0119c37d68aa"))
 	(pad "5" smd rect (at 7.145 0) (size 1.89 1.02) (layers "F.Cu" "F.Paste" "F.Mask") (uuid "7bcbb3c9-ad30-49b3-b153-95d6190e87d6"))
 	(pad "6" smd rect (at 7.145 -2.54) (size 1.89 1.02) (layers "F.Cu" "F.Paste" "F.Mask") (uuid "ac456e95-9ade-4b05-81f7-6e3a4605ad8b"))
+	(model "${KIPRJMOD}/3dmodels/HM2113ZNL_3D.STEP"
+		(offset (xyz 0 0 0))
+		(scale (xyz 1 1 1))
+		(rotate (xyz -90 0 -90))
+	)
 )
