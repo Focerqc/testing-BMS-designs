@@ -1,6 +1,7 @@
 # ADBMS1818 18S slave: design basis
 
-Status: **schematic complete for a first bench board, PCB roughly grouped, 2026-11-06.**
+Status: **schematic complete for a first bench board, PCB roughly grouped with the connector
+row and holes placed, 2026-11-06.**
 Every part is on the root sheet with Value, Footprint, LCSC and MPN filled in, grouped by
 function, and connected with net labels (see "Schematic nets"). kicad-cli ERC: 0 errors, 0
 warnings. Hot-plug protection, test points and mounting holes were added on 2026-11-06 (see
@@ -293,7 +294,7 @@ There are no drawn wires.
 
 | Net | What it is |
 |---|---|
-| V− | Chip ground, after F120: U1 59, 60, EP 65, DTEN (52), every filter/CT/GPIO cap, R402, J2 2/4/6, D301 anode, TP1/TP2. Since 2026-11-06 it is no longer the same net as CELL0 |
+| V− | Chip ground, after F120: U1 59, 60, EP 65, DTEN (52), GPIO5–9 (43–47, since 2026-11-06), every filter/CT/GPIO cap, R402, J2 2/4/6, D301 anode, TP1/TP2. Since 2026-11-06 it is no longer the same net as CELL0 |
 | TAP0 … TAP18 | Connector side of the fuses: J1.1–J1.10 = TAP0–TAP9, J5.1–J5.10 = TAP9–TAP18 (J1.10 and J5.1 both TAP9). TAP0 also feeds F120, TAP18 also feeds F119 |
 | CELL0 … CELL18 | Fused cell nodes (F1nn pin 2): R1nn and R2nn harness side. CELL0 is the C0 sense tap only (R100) |
 | VBAT_F | After F119: R301 (V+), R302 (Q301 collector), D301 cathode |
@@ -305,7 +306,7 @@ There are no drawn wires.
 | IPA, IMA, IPB, IMB | U1 isoSPI pins, transformer PHY+/PHY− (pins 1/3) and the 51 Ω ends |
 | ISOA_CM, ISOB_CM | Midpoint of the 2 × 51 Ω termination, 10 nF to V− (C501, C601) |
 | ISOA_CT, ISOB_CT | Transformer chip-side centre tap (pin 2), 10 nF to V− (C502, C602) |
-| ISOA_LP / ISOA_LN, ISOB_LP / ISOB_LN | Line side: LINE+ (pin 6) to J3.1/J4.1, LINE− (pin 4) to J3.2/J4.2. Same polarity on both ports |
+| ISOA_LP / ISOA_LN, ISOB_LP / ISOB_LN | Line side: LINE+ (pin 6) to J3.1/J4.1 and J6.1/J7.1, LINE− (pin 4) to J3.2/J4.2 and J6.2/J7.2. Same polarity on both ports |
 | GPIO1 … GPIO4 | NTC inputs (U1 39–42) |
 | Zeners | D1nn: cathode (pin 1) at Cn_F, anode (pin 2) at C(n−1)_F |
 | Test points | TP1, TP2 V−; TP3 VREG; TP4 VREF1; TP5 VREF2; TP6 DRIVE; TP7–TP10 IPA, IMA, IPB, IMB; TP11 VCOLL; TP12–TP14 C6_F, C12_F, C18_F |
@@ -313,15 +314,18 @@ There are no drawn wires.
 - **PWR_FLAGs:** one each on VP_F (the net at U1 V+), VREG and V−. Nothing else needs one:
   VREF1, VREF2 and DRIVE are chip outputs, and ERC accepts the C-pin inputs on nets of
   passives.
-- **No-connect flags:** U1 43–47 (GPIO5–9), 53 (SDI), 54 (SDO), 56 (WDT), and T501/T601 pin 5
-  (line-side centre tap).
+- **No-connect flags:** U1 53 (SDI), 54 (SDO), 56 (WDT), T501/T601 pin 5 (line-side centre
+  tap) and J3/J4 pin MP (GH hold-down tabs). U1 43–47 (GPIO5–9) are on V− since 2026-11-06.
 - **Check:** `check_slave18s.py` compares the kicad-cli netlist with the wiring table:
-  366 of 366 pins (356 pin → net rows and 10 no-connects, block 6 = protection and test
-  points), 0 mismatches, ERC 0/0 (2026-11-06). All 65 U1 pins are accounted for.
+  372 of 372 pins (365 pin → net rows and 7 no-connects, block 6 = protection and test
+  points), 0 mismatches, ERC 0/0 (2026-11-06, after the J3/J4 change). All 65 U1 pins are
+  accounted for.
+- **ERC pin map:** bidirectional vs power output is set to OK in the `.kicad_pro`, because
+  GPIO5–9 (bidirectional) sit on V−, which carries a PWR_FLAG.
 - **Sheet size:** 594 × 297 mm ("User"; A3 height, A2 width) since 2026-11-06, so the
   protection section sits beside the connectors.
 
-## PCB (populated 2026-11-05, protection added 2026-11-06)
+## PCB (populated 2026-11-05, protection added 2026-11-06, connector row 2026-11-06)
 
 - **Import:** KiCad 10 PCB Editor, Tools → Update PCB from Schematic (F8), default options.
   The MCP `sync_schematic_to_board` was tried first and rejected: its nets lacked the `/`
@@ -351,6 +355,44 @@ There are no drawn wires.
   - 61 silk_overlap and 80 silk_over_copper warnings (reference text on tight groups);
   - the 16 drill_out_of_range errors on U1's 0.2 mm thermal vias are gone since the net
     classes went in: the board minimum hole is now 0.2 mm (see "U1 thermal vias").
+- **isoSPI connectors J3/J4 → GH, J6/J7 added (2026-11-06, third F8).** `check_pcb_parity.py`:
+  150 of 150 footprints, 372 numbered pads, 0 mismatches, 0 parity items. A no-connect pin
+  with two pads (the GH tabs) gets one net per pad, `unconnected-(J3-MountPin-PadMP)` and
+  `…_1`; the parity check treats them as one net, and `make_rules.py` puts both in the line side.
+- **Connector row and holes (2026-11-06, `pcb_move.py`).** Placement of these parts is
+  deliberate; the rest is still rough grouping.
+
+  | Ref | Position (mm) | Rotation | Why |
+  |---|---|---|---|
+  | J3 (GH, IN) | 16.0, 3.5 | 180° | Opening toward the top edge (checked in a 3D render from beyond the edge) |
+  | J6 (PH alt. for J3) | 22.5, 5.0 | 0° | Next to J3 |
+  | J1 | 31.0, 5.0 | 0° | |
+  | J5 | 54.5, 5.0 | 0° | J1 pin 10 (TAP9) to J5 pin 1 (TAP9): 5.5 mm |
+  | J2 | 79.0, 5.0 | 0° | |
+  | J7 (PH alt. for J4) | 95.5, 5.0 | 0° | Next to J4 |
+  | J4 (GH, OUT) | 104.0, 3.5 | 180° | Opening toward the top edge |
+  | T501 / T601 | 20.3, 17.0 / 100.3, 17.0 | 90° | Line side (pads 4–6) up, toward the connector |
+  | H1–H4 | (3.5, 66.5), (116.5, 66.5), (116.5, 3.5), (3.5, 3.5) | — | One per corner, 3.5 mm from both edges |
+
+  - The row's courtyards span x = 12.5–107.5, so it is centred on the board centre (x = 60),
+    with silk "IN" left of J3 and "OUT" right of J4. 0.5 mm between J3/J6 and J7/J4 courtyards,
+    1.5 mm between the isoSPI pairs and the cell connectors, 0.5 mm between J1 and J5.
+  - Transformer to connector: T501 line pads to J3 pads about 4.6 mm, T601 to J7 about 5.4 mm
+    (datasheet limit 2 cm). R501/R502/C501/C502 and R601/R602/C601/C602 sit under the chip side.
+  - To make room, R201–R218 (still 3 × 6) moved right to x = 29.5–74.5, and the NTC parts
+    (R701–R704, C701–C704, TH701) moved to the right of U1, away from the balance resistors.
+  - The right edge is empty (no XT30s on the slave).
+  - Checks: 0 courtyard overlaps, all courtyards inside the outline, `check_pcb_parity.py` PASS,
+    `make_rules.py --check` OK, DRC 0 errors (64 silk_overlap and 81 silk_over_copper warnings,
+    265 unconnected).
+  - **Not solved by this placement:** the datasheet also wants U1 close to each transformer
+    (but ≥ 1–2 cm away) and no traces crossing the isoSPI lines. U1 stays at (75, 40), so the
+    chip-side run is about 5 cm for port A and about 3 cm for port B, and port A's pair has to
+    get past the J1/J5 tap traces. Deal with it at routing (or move U1 / put both ports at one
+    end).
+- `pcb_move.py` now also turns pad and text angles when it changes a footprint's rotation
+  (the file stores those angles including the footprint's own). Before the fix, a rotated
+  footprint kept its pads at 0°.
 - 3D: U1, T501 and T601 render without bodies because no 3D model is linked. This is cosmetic.
 
 ## Net classes and clearance rules (2026-11-06)
@@ -474,11 +516,15 @@ when the placement is reviewed.
       next to the collector and C303 (VREG) next to the emitter and U1 pin 48. VCOLL sits at
       the top of the stack, so this copper is bank 6: 0.6 mm from banks 0–4.
 - [ ] **isoSPI barrier.** 2.0 mm clearance and creepage from each line side (T501/T601 pins
-      4–6, J3/J4, ISO*_LP/LN) to everything else; no copper pour and no foreign tracks under
-      T501/J3 or T601/J4 (rules file). Datasheet p. 86: U1 within 1–2 cm of each
-      transformer, the transformer within 2 cm of its connector, and the line-side pairs short
-      and side by side.
-- [ ] **J1/J5 spacing.** J1's last pin (TAP9) and J5's first pin (TAP9) are the same net, but
+      4–6, J3/J4 including the GH tabs, J6/J7, ISO*_LP/LN) to everything else; no copper pour
+      and no foreign tracks under T501/J3/J6 or T601/J4/J7 (rules file). Datasheet p. 86:
+      transformer within 2 cm of its connector (**done 2026-11-06**, about 5 mm), U1 close to
+      but at least 1–2 cm from each transformer (**open**: about 5 cm / 3 cm now), no traces
+      crossing the isoSPI lines, line-side pairs short and side by side. J3 and J6 have their
+      pins in opposite order, so one line net needs a via inside the port's own area.
+- [x] **Connector row (2026-11-06).** J3 + J6 (IN), J1, J5, J2, J7 + J4 (OUT) along the top
+      edge, centred on x = 60; GH openings face the edge; silk "IN" / "OUT". See "PCB".
+- [x] **J1/J5 spacing (2026-11-06: 5.5 mm pin to pin, DRC clean).** J1's last pin (TAP9) and J5's first pin (TAP9) are the same net, but
       J1 pin 1 (TAP0) and J5 pin 10 (TAP18) are 75.6 V apart: keep the two headers' far ends
       ≥ 0.6 mm apart in copper (rules file) and leave room for the plugs and the harness. Print
       "PLUG J1 FIRST" on the silk only if the zeners are left off a build.
@@ -499,8 +545,10 @@ when the placement is reviewed.
 - [ ] **Test-point reachability.** TP1–TP10 loops on the edge, on the top side, with room
       for a hook clip (≥ 5 mm between loops), labels on the silk. TP11–TP14 HV pads also
       reachable but not next to the low-voltage loops (0.6 mm rule, and fingers).
-- [ ] **Mounting holes.** Choose positions with the outline; keep the 4.5 mm keep-out (rule)
-      and keep the screws away from HV copper and from the isoSPI barrier.
+- [x] **Mounting holes (2026-11-06).** Four, one per corner, 3.5 mm from each edge; the 4.5 mm
+      keep-out rule passes. Recheck when the final outline is drawn, and keep the screws away
+      from HV copper and the isoSPI barrier during routing.
+- [x] **No XT30s.** The right edge is left empty (the master carries the power path).
 
 ## Open items
 
