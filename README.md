@@ -10,7 +10,8 @@ talking to a separate master over isoSPI.
 
 | Path | What it is |
 |---|---|
-| `slave-18s/` | KiCad 10 project for the ADBMS1818 18S slave (clean slate) |
+| `slave-18s/` | **18S Guard**: KiCad 10 project for the ADBMS1818 18S slave with hot-plug protection |
+| `slave-18s-lean/` | **18S Lean**: the same slave without fuses, clamps, TVS or C-pin caps; schematic generated from Guard by `_tools/kicad_sch/make_lean.py` |
 | `docs/slave-18s-design-basis.md` | Values, reasoning and open items for the slave |
 | `docs/master-ennoid-xlite.md` | The bought master (ENNOID Master-XLITE-ISC) and how the slave fits under it |
 | `_tools/pcb_dashboard/` | Board Boxes: local KiCad dashboard (view, annotate, chip info, fresh 3D renders, copy placement prompts) |

@@ -101,6 +101,7 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | Script | Use |
 |---|---|
 | `check_slave18s.py` | kicad-cli netlist + ERC check of the slave against its wiring table. Exit 0 = pass. Run after every schematic edit (`--blocks 1 2` for part of it, `--erc` to list violations) |
+| `make_lean.py` | Writes `slave-18s-lean/` schematic from Guard (drops fuses, clamps, TVS, C-pin caps). Never hand-edit Lean's schematic; re-run after Guard edits, then `check_slave18s.py --variant lean` |
 | `orient_labels.py` | Writes the file: turns pin labels to face outward and rounds coordinates (`--dry` to preview) |
 | `shift_group.py DX DY REF...` | Writes the file: moves parts together with their labels and no-connect flags |
 | `render_sch.py OUT.png --region X0 Y0 X1 Y1` | PNG of the sheet or a region (sheet mm) via kicad-cli PDF + PyMuPDF |
