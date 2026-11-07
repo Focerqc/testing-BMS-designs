@@ -22,6 +22,8 @@
     showRef: true,
     show3D: false,
     showParts: true,
+    explain: false,
+    showGroups: true,
     showTopCu: false,
     showBotCu: false,
     showVias: false,
@@ -150,12 +152,84 @@
     let bandH = Infinity;
     for (const p of panes) bandH = Math.min(bandH, paneContentBox(p).height);
     const padX = 36;
-    S.view.scale = Math.min((r.width - padX * 2) / Math.max(bb.w, 1), bandH / Math.max(bb.h, 1), 80);
+    // 0.62: leave room around the board on big monitors (was edge-to-edge).
+    S.view.scale = 0.62 * Math.min((r.width - padX * 2) / Math.max(bb.w, 1), bandH / Math.max(bb.h, 1), 80);
     S.view.x = bb.x - (r.width / S.view.scale - bb.w) / 2;
     const box = paneContentBox(panes[0]);
     const boardScreenY = box.top + (box.height - bb.h * S.view.scale) / 2;
     S.view.y = bb.y - boardScreenY / S.view.scale;
     render();
+  }
+
+
+  // ---------- EXPLAIN (hover a part: what its group does) ----------
+  const FP_GROUPS = [
+    [/^U1$/, 'Monitor IC', 'ADBMS1818: measures 18 cells, runs balancing, talks isoSPI.'],
+    [/^J[15]$/, 'Cell taps', 'Harness in: cell voltages C0–C9 (J1) and C9–C18 (J5).'],
+    [/^J2$/, 'NTC header', '3 thermistors -> GPIO1–3 of U1.'],
+    [/^R2\d\d$/, 'Balance resistors', '33 Ω 1 W. Bleed a high cell when U1 closes its S switch.'],
+    [/^R1\d\d$/, 'Cell input filter R', '10 Ω, with C1nn forms the RC filter into U1 C pins.'],
+    [/^C1\d\d$/, 'Cell input filter C', '100 nF across adjacent cells; RC filter with R1nn.'],
+    [/^D1\d\d$/, 'Cell clamp zeners', '6.8 V per cell: protect U1 inputs from hot-plug spikes.'],
+    [/^F1\d\d$/, 'Tap fuses', '250 mA per harness wire: a short on the board opens it.'],
+    [/^D301$/, 'Stack TVS', 'SMAJ85A on the stack supply after F119. Eats harness transients.'],
+    [/^(Q301|R30[12]|C30[12])$/, 'Stack supply', 'FZT853 + 100 Ω filters: stack -> U1 V+ and 5 V VREG regulator.'],
+    [/^C30[345]$/, 'Reference caps', '1 µF on VREG, VREF1, VREF2.'],
+    [/^R40[12]$/, 'isoSPI bias', '1 k + 1 k divider: sets isoSPI drive current and threshold.'],
+    [/^(T501|R50\d|C50\d|J[36])$/, 'isoSPI A (IN)', 'From master / previous module. Transformer + split termination.'],
+    [/^(T601|R60\d|C60\d|J[47])$/, 'isoSPI B (OUT)', 'To next module in daisy chain. Transformer + split termination.'],
+    [/^(R70\d|C70\d|TH701)$/, 'NTC inputs', '100 k pull-ups to VREF2 + 100 nF filters on GPIO; TH701 board temp.'],
+    [/^TP([1-9]|10)$/, 'Test loops', 'Low-voltage probes: V−, VREG, VREF1/2, DRIVE, isoSPI lines.'],
+    [/^TP1[1-4]$/, 'HV test pads', 'Bare pads: VCOLL, C6, C12, C18. No exposed loop at high voltage.'],
+    [/^H\d$/, 'Mounting holes', 'M3, keep-out around them.'],
+  ];
+  function fpGroup(fp) {
+    for (const g of FP_GROUPS) if (g[0].test(fp.ref)) return g;
+    return null;
+  }
+  function showExplain(fp, e) {
+    const tip = $('explainTip');
+    if (!tip) return;
+    if (!fp || !S.explain) { tip.hidden = true; return; }
+    const g = fpGroup(fp);
+    const n = g ? S.board.footprints.filter(f => g[0].test(f.ref)).length : 1;
+    tip.innerHTML = '<b></b><span class="xt-ref"></span><div></div>';
+    tip.children[0].textContent = g ? g[1] : fp.ref;
+    tip.children[1].textContent = ' ' + fp.ref + ' · ' + fp.value + (n > 1 ? ' · ' + n + ' parts' : '');
+    tip.children[2].textContent = g ? g[2] : (fp.fpid.split(':').pop());
+    tip.hidden = false;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = e.clientX + 16, y = e.clientY + 16;
+    if (x + w > innerWidth - 8) x = e.clientX - w - 16;
+    if (y + h > innerHeight - 8) y = e.clientY - h - 16;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+
+
+  // Coloured outline around each function group (Explain > Groups).
+  function drawGroupOutlines(pane) {
+    ctx.save();
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 3]);
+    ctx.font = '600 11px "JetBrains Mono"';
+    FP_GROUPS.forEach((g, i) => {
+      if (g[1] === 'Mounting holes') return; // spans the whole board
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      for (const fp of S.board.footprints) {
+        if (!g[0].test(fp.ref) || !fpOnSide(fp, pane.side)) continue;
+        const b = getFpBBox(fp);
+        x0 = Math.min(x0, b.minX); y0 = Math.min(y0, b.minY); x1 = Math.max(x1, b.maxX); y1 = Math.max(y1, b.maxY);
+      }
+      if (x0 === Infinity) return;
+      const hot = S.hoverFp && g[0].test(S.hoverFp.ref);
+      const col = `hsl(${(i * 137.5) % 360}, 85%, 62%)`;
+      const a = toScreen(x0, y0), c = toScreen(x1, y1);
+      const sx = Math.min(a.x, c.x) - 3, sy = Math.min(a.y, c.y) - 3, w = Math.abs(c.x - a.x) + 6, h = Math.abs(c.y - a.y) + 6;
+      ctx.strokeStyle = col; ctx.globalAlpha = hot ? 1 : 0.7; ctx.lineWidth = hot ? 2.5 : 1.5;
+      ctx.strokeRect(sx, sy, w, h);
+      ctx.fillStyle = col; ctx.fillText(g[1], sx + 2, sy - 4);
+    });
+    ctx.restore();
   }
 
   // ---------- DATA MODEL ----------
@@ -1274,16 +1348,18 @@
     ctx.restore();
 
     if (S.showSides) drawSideLabels(bb, sc);
+    if (S.explain && S.showGroups) drawGroupOutlines(pane);
 
     // existing footprints (dimmed pads or color-highlighted if selected)
-    if (S.showParts || S.selectMode || S.infoMode) {
+    if (S.showParts || S.selectMode || S.infoMode || S.explain) {
       ctx.save();
       for (const fp of S.board.footprints) {
         if (!fpOnSide(fp, pane.side)) continue;
         const selB = S.doc.boxes.find(b => b.ref === fp.ref);
         const col = selB ? color(selB.c) : null;
         const hex = col ? col.hex : null;
-        const isHover = (S.selectMode || S.infoMode) && S.hoverFp === fp;
+        const hg = S.explain && S.hoverFp ? fpGroup(S.hoverFp) : null;
+        const isHover = ((S.selectMode || S.infoMode) && S.hoverFp === fp) || (S.explain && S.hoverFp && (S.hoverFp === fp || (hg && hg[0].test(fp.ref))));
         const isInfoSel = S.infoFp === fp;
 
         ctx.fillStyle = isInfoSel ? '#ffb347' : (hex ? hex + '88' : (isHover ? (S.infoMode ? 'rgba(255, 179, 71, 0.65)' : 'rgba(60, 240, 208, 0.55)') : 'rgba(255, 255, 255, 0.22)'));
@@ -1844,6 +1920,14 @@
       return;
     }
 
+    if (S.explain && !S.drag && !S.selectMode && !S.infoMode) {
+      const prev = S.hoverFp;
+      S.hoverFp = hitFootprint(m);
+      showExplain(S.hoverFp, e);
+      if (S.hoverFp !== prev) render();
+      return;
+    }
+
     if ((S.selectMode || S.infoMode) && !S.drag) {
       const prevHover = S.hoverFp;
       S.hoverFp = hitFootprint(m);
@@ -2370,6 +2454,8 @@
     canvas.addEventListener('mousedown', onDown);
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
+    const tglGroups = $('tglGroups');
+    if (tglGroups) tglGroups.onclick = () => { S.showGroups = !S.showGroups; tglGroups.classList.toggle('active', S.showGroups); render(); };
     canvas.addEventListener('mouseleave', () => {
       S.mousePos = null;
       if (S.activePreset) render();
@@ -2401,6 +2487,14 @@
         render();
       };
     }
+    const tglExplain = $('tglExplain');
+    if (tglExplain) tglExplain.onclick = () => {
+      S.explain = !S.explain; tglExplain.classList.toggle('active', S.explain);
+      const tg = $('tglGroups'); if (tg) tg.hidden = !S.explain;
+      if (!S.explain) { S.hoverFp = null; showExplain(null); }
+      render();
+    };
+    canvas.addEventListener('mouseleave', () => { if (S.explain) { S.hoverFp = null; showExplain(null); render(); } });
     $('tglParts').onclick = () => { S.showParts = !S.showParts; $('tglParts').classList.toggle('active', S.showParts); render(); };
 
     const tglTopCu = $('tglTopCu');

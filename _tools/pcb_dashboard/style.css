@@ -668,3 +668,11 @@ kbd {
   .iso-toolbar { flex-wrap: wrap; justify-content: flex-end; }
   .iso-header { flex-wrap: wrap; gap: 8px; }
 }
+
+.explain-tip { position: fixed; z-index: 50; max-width: 300px; pointer-events: none; padding: 8px 10px;
+  background: rgba(14,18,24,.96); border: 1px solid rgba(60,240,208,.5); border-radius: 8px;
+  font-size: 12px; line-height: 1.35; color: var(--text); box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+.explain-tip b { color: #3cf0d0; }
+.explain-tip .xt-ref { font-family: var(--mono); font-size: 11px; opacity: .65; }
+.explain-tip div { margin-top: 3px; }
+.dock-btn[hidden], .explain-tip[hidden] { display: none; }

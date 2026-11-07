@@ -194,6 +194,7 @@
 
     <!-- CENTER: canvas -->
     <section class="stage" id="stage">
+      <div id="explainTip" class="explain-tip" hidden></div>
       <canvas id="canvas"></canvas>
 
       <div class="loading" id="loading">
@@ -217,6 +218,8 @@
         <button class="dock-btn btn-3d" id="tgl3D" title="Toggle 3D CAD top render layer on/off">3D Top</button>
         <button class="dock-btn btn-iso-dock" id="tglIsoView" title="Open Interactive Isometric 3D Viewer">Iso 3D</button>
         <button class="dock-btn active" id="tglParts" title="Toggle existing footprint pads">Parts</button>
+        <button class="dock-btn" id="tglExplain" title="Hover a part to see what it and its group do">Explain</button>
+        <button class="dock-btn active" id="tglGroups" title="Outline every function group in its own colour" hidden>Groups</button>
         <button class="dock-btn btn-cu-top" id="tglTopCu" title="Toggle Top Copper Traces (F.Cu)">F.Cu</button>
         <button class="dock-btn btn-cu-bot" id="tglBotCu" title="Toggle Bottom Copper Traces (B.Cu)">B.Cu</button>
         <button class="dock-btn btn-vias" id="tglVias" title="Toggle Vias">Vias</button>
