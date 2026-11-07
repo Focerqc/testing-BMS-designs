@@ -90,6 +90,14 @@ to stack-level (100 V parts).
     current of cell n returning through the C(n−1) series resistor, so each 10 Ω carries
     about 89 mA (≈ 79 mW, 79 % of an 0603's 0.1 W). The 1206 is rated 0.25 W.
 11. **Test points and mounting holes (2026-11-06).** Not part of the circuit; bench access.
+12. **isoSPI connectors J3/J4 = JST GH 2P, with JST PH 2P alternates J3B/J4B (DNP) (2026-11-06).**
+    Figure 112 shows no connector. The bought ENNOID master and ENNOID's slaves use GH 2P for
+    isoSPI, so the master's cable plugs straight in. J3B/J4B are PH footprints wired in parallel
+    and left unfitted, so a PH header or two bare wires can be soldered instead. See
+    "Connectors".
+13. **GPIO5–GPIO9 tied to V− (2026-11-06).** Figure 112 leaves them open. The ENNOID firmware
+    never turns their internal pull-downs on, so they would float. See "Configuration and unused
+    pins".
 
 ## Balance resistor sizing
 
@@ -163,7 +171,8 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 | TH701 | Murata NCP18WF104F12RB, 100 k 1 % B 4250 K | 0603 | C71280 | Extended | 115 k |
 | J1, J5 | JST B10B-PH-K-S(LF)(SN), 1×10 2 mm, 100 V 2 A (cell taps) | JST_PH_B10B-PH-K_1x10_P2.00mm_Vertical | C158038 | Extended | 25,205 |
 | J2 | JST B6B-PH-K-S(LF)(SN), 1×6 (cell NTCs) | JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical | C131342 | Extended | 32,477 |
-| J3, J4 | JST B2B-PH-K-S(LF)(SN), 1×2 (isoSPI A / B) | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical | C131337 | Extended | 293,303 |
+| J3, J4 | JST SM02B-GHS-TB(LF)(SN), GH 1×2 1.25 mm, SMD side entry, 50 V 1 A (isoSPI A / B) | JST_GH_SM02B-GHS-TB_1x02-1MP_P1.25mm_Horizontal | C189893 | Extended | ~130 k (LCSC) |
+| J3B, J4B | JST B2B-PH-K-S(LF)(SN), PH 1×2, **DNP** (alternate to J3/J4) | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical | C131337 | Extended | not in the JLC BOM |
 | F100–F120 | Littelfuse 0466.250NRHF, 250 mA 125 V DC, 50 A interrupt | Fuse_1206_3216Metric | C83557 | Extended | 50,048 |
 | D101–D118 | BZT52C6V8 (CJ), 6.8 V zener 500 mW | D_SOD-123 | C2120 | Extended | 51,589 |
 | D301 | SMAJ85A (Yangjie), 85 V TVS 400 W unidirectional | D_SMA | C698956 | Extended | 4,985 |
@@ -171,8 +180,8 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 | TP11–TP14 | Bare 1.5 mm pad (no part, not in the BOM) | TestPoint_Pad_D1.5mm | — | — | — |
 | H1–H4 | M3 hole, NPTH, no copper (not in the BOM) | MountingHole_3.2mm_M3 | — | — | — |
 
-There are 12 Extended lines: U1, R201–R218, Q301, T501/T601, TH701, the three JST PH
-sizes, and (since 2026-11-06) the fuse, zener, TVS and test loop. Every capacitor is Basic.
+There are 12 Extended lines: U1, R201–R218, Q301, T501/T601, TH701, the two fitted JST PH
+sizes (J1/J5, J2), the JST GH (J3/J4, since 2026-11-06), and (since 2026-11-06) the fuse, zener, TVS and test loop. Every capacitor is Basic.
 The 2026-11-06 additions were checked on jlcpcb.com that day. The connectors are through-hole, so they need JLC's THT
 assembly or hand soldering.
 
@@ -231,11 +240,11 @@ Source: Fig. 2 and Table 14, plus the Watchdog and Discharge Timer section (Tabl
 | 53 SDI, 54 SDO | no-connect flag | Both are NC when ISOMD = VREG (Fig. 2 footnote: "IPA, IMA, NC, NC"). |
 | 55 ISOMD | VREG | isoSPI mode (unchanged from Fig. 112). |
 | 56 WDT | no-connect flag | Open-drain output; Table 14 allows it to be left disconnected. The slave has no local host to read it, and the master already sees a timeout through isoSPI. |
-| 43–47 GPIO5–GPIO9 | no-connect flag (**proposed: V−**) | Spare. The plan was for firmware to turn on their internal pull-downs (GPIOx = 0, or DCC0 = 1 for GPIO9, Table 72). **Checked 2026-11-06: the ENNOID firmware writes GPIO1–9 = 1 (pull-down off) and DCC0 = 0** (`modPowerElectronicsCellMonitorsInit()`, see `docs/master-ennoid-xlite.md`), and a watchdog timeout would restore the same defaults anyway. With no-connect flags these five inputs float. **Proposed fix (needs OK, schematic change):** tie GPIO5–9 straight to V−. No parts; a pull-down that ever turns on just pulls an already-low pin. Keep VESC Tool "NTC sensors per module" at 4 so GPIO5 (0 V) is never read as a thermistor. GPIO5 can't join GPIO4 as an I²C pair because GPIO4 carries the onboard NTC. |
+| 43–47 GPIO5–GPIO9 | **V−** (since 2026-11-06) | Spare. The plan was for firmware to turn on their internal pull-downs (GPIOx = 0, or DCC0 = 1 for GPIO9, Table 72). **Checked 2026-11-06: the ENNOID firmware writes GPIO1–9 = 1 (pull-down off) and DCC0 = 0** (`modPowerElectronicsCellMonitorsInit()`, see `docs/master-ennoid-xlite.md`), and a watchdog timeout would restore the same defaults anyway. With no-connect flags these five inputs would float, so they are **tied straight to V−** (deviation 13). No parts; a pull-down that ever turns on just pulls an already-low pin. Keep VESC Tool "NTC sensors per module" at 4 so GPIO5 (0 V) is never read as a thermistor. GPIO5 can't join GPIO4 as an I²C pair because GPIO4 carries the onboard NTC. |
 
-## Connectors: JST PH (decided 2026-11-05)
+## Connectors: JST PH for the cells, JST GH for isoSPI (decided 2026-11-05, isoSPI changed 2026-11-06)
 
-All connectors are JST PH (2 mm pitch, top-entry through-hole, rated 100 V / 2 A). PH
+The cell and NTC connectors are JST PH (2 mm pitch, top-entry through-hole, rated 100 V / 2 A). PH
 stops at 16 circuits, so the 19 cell taps split across two 10-pin headers. C9 appears on
 both, so each harness half carries its own reference.
 
@@ -244,7 +253,8 @@ both, so each harness half carries its own reference.
 | J1 CELL_TAPS_C0-C9 | 10 | pin n = C(n−1): pin 1 = C0 (V−) … pin 10 = C9 |
 | J5 CELL_TAPS_C9-C18 | 10 | pin n = C(n+8): pin 1 = C9 … pin 10 = C18 (top of stack) |
 | J2 NTC_3x2 | 6 | 1–2 NTC1 (GPIO1, V−), 3–4 NTC2 (GPIO2, V−), 5–6 NTC3 (GPIO3, V−); odd pin = GPIO |
-| J3 ISOSPI_A_IN, J4 ISOSPI_B_OUT | 2 | pin 1 = +, pin 2 = − (transformer line side); twisted pair, wired pin-to-pin |
+| J3 ISOSPI_A_IN, J4 ISOSPI_B_OUT | 2 | **JST GH** (since 2026-11-06). Pin 1 = +, pin 2 = − (transformer line side); twisted pair, wired pin-to-pin. Pad MP = metal hold-down tabs, no circuit |
+| J3B, J4B (DNP) | 2 | JST PH, same nets as J3/J4 (pin 1 = +). Fit a PH header or solder two wires instead of using the GH |
 
 Why these choices:
 
@@ -255,7 +265,19 @@ Why these choices:
 - **Shared C9:** it carries only C9's sense and balance current. If either plug is off,
   the other half still has its reference.
 - **Rejected:** a single connector would mean Micro-Fit or XH 1×20 (bigger). GH is rated
-  only 50 V.
+  only 50 V, too little for the cell taps.
+- **isoSPI is GH (2026-11-06):** JST SM02B-GHS-TB(LF)(SN), the same series as the ENNOID
+  master's isoSPI port, so its cable plugs in. Data from JST eGH.pdf: 1.0 A, 50 V AC/DC, 500 V AC
+  withstand for 1 min, AWG 30–26. The 50 V only has to hold the isoSPI signal between its two
+  pins; the up to 151 V between the line side and the module is held by the 2 mm barrier on the
+  PCB. KiCad's stock footprint matches JST's side-entry land pattern (pads 0.6 × 1.7 mm at
+  1.25 mm, tabs 1.0 × 2.7 mm, 1.35 mm from the outer pin, 5.4 / 3.7 mm overall). The plug enters
+  from the tab side, so that side faces the board edge.
+- **The GH tabs count as line side.** They sit about 1.5 mm from the signal pads, inside the 2 mm
+  barrier, so the symbol has the MP pin (no-connect) and `make_rules.py` puts the resulting
+  `unconnected-(J3-…)` net in port A's line side (port B the same), like T501's pad 5.
+- **J3B/J4B** keep the PH option: DNP, same nets, also inside the barrier and the "only isoSPI
+  inside the courtyard" rules.
 
 Risks to watch:
 
@@ -511,8 +533,8 @@ when the placement is reviewed.
       JLC C460146/C157603, Extended), not yet fully checked.
 - [x] DTEN (pin 52) to V− (discharge timer off). See "Configuration and unused pins".
 - [x] WDT (pin 56) and SDI/SDO (53/54): no-connect flags.
-- [ ] GPIO5–GPIO9: the ENNOID firmware leaves the pull-downs off, so the no-connect flags
-      let them float. Proposed: tie to V− (2026-11-06, awaiting OK).
+- [x] GPIO5–GPIO9: the ENNOID firmware leaves the pull-downs off, so they are tied to V−
+      (2026-11-06). The ERC pin map treats bidirectional vs power output as OK for this.
 - [x] Wire the schematic. Done 2026-11-05: ERC 0 errors, 0 warnings, with PWR_FLAGs on
       VP_F, VREG and V−. See "Schematic nets".
 - [x] Hot-plug protection for the plug-and-play harness. Done 2026-11-06: tap fuses,
@@ -521,8 +543,8 @@ when the placement is reviewed.
 - [x] Test points and mounting holes. Done 2026-11-06 (hole positions open).
 - [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
 - [ ] Harness: match J1/J5/J2 pin order to the Funwheel pack's tap and NTC wiring.
-- [ ] ENNOID master fit (`docs/master-ennoid-xlite.md`): J3/J4 JST PH vs the master's GH 2P,
-      isoSPI polarity. Firmware: the public source's LTC6813-1 driver sends only commands that
+- [ ] ENNOID master fit (`docs/master-ennoid-xlite.md`): J3/J4 are JST GH 2P now (done
+      2026-11-06); isoSPI polarity still to confirm. Firmware: the public source's LTC6813-1 driver sends only commands that
       match ADBMS1818 Table 52 (checked 2026-11-06); pick LTC6813-1 in VESC Tool. Remaining
       proof: bench test with one slave.
 - [ ] Board outline (the current 120 × 70 mm rectangle is a placeholder).
