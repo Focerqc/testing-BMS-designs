@@ -684,6 +684,7 @@
 		)
 	)
 	(footprint "slave18s:Pulse_HM2113ZNL"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "0c9657f3-5dc3-476a-adab-a6abe5e41ec2")
 		(at 103 46)
@@ -1298,6 +1299,7 @@
 		)
 	)
 	(footprint "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "192b3051-1977-4ea3-aa47-81d17f7284f6")
 		(at 112.5 55.5)
@@ -2316,6 +2318,7 @@
 		)
 	)
 	(footprint "MountingHole:MountingHole_3.2mm_M3"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "1ef780b9-7f22-47f9-a564-cf973f0d42bc")
 		(at 116.5 66.5)
@@ -2939,6 +2942,7 @@
 		)
 	)
 	(footprint "MountingHole:MountingHole_3.2mm_M3"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "2393df7a-738d-4a82-b9ee-78c4aa14716b")
 		(at 3.5 66.5)
@@ -3843,6 +3847,7 @@
 		)
 	)
 	(footprint "Connector_JST:JST_PH_B10B-PH-K_1x10_P2.00mm_Vertical"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "2928cc14-9522-4124-983f-664439d19e29")
 		(at 31 5)
@@ -5663,6 +5668,7 @@
 		)
 	)
 	(footprint "Package_QFP:LQFP-64-1EP_10x10mm_P0.5mm_EP5x5mm_ThermalVias"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "3ce49eca-9a2f-40c8-90b5-4a1231ed0703")
 		(at 75 40 -90)
@@ -7334,6 +7340,7 @@
 		)
 	)
 	(footprint "Connector_JST:JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "3f1c82da-d46c-4450-981f-a37ce6a680dc")
 		(at 79 5)
@@ -9861,6 +9868,7 @@
 		)
 	)
 	(footprint "MountingHole:MountingHole_3.2mm_M3"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "585fbf67-9d7b-49f3-b7b4-cdf78669b89a")
 		(at 116.5 3.5)
@@ -11561,6 +11569,7 @@
 		)
 	)
 	(footprint "Connector_JST:JST_GH_BM02B-GHS-TBT_1x02-1MP_P1.25mm_Vertical"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "7190d64f-8b9f-416a-b42e-db21b1fb1906")
 		(at 115.5 24 -90)
@@ -12040,6 +12049,7 @@
 		)
 	)
 	(footprint "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "727ce596-d859-4a08-a8e7-1fa3297c9396")
 		(at 112.5 13.5)
@@ -13768,6 +13778,7 @@
 		(embedded_fonts no)
 	)
 	(footprint "Connector_JST:JST_PH_B10B-PH-K_1x10_P2.00mm_Vertical"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "8f73e4de-c412-4697-9747-b2b9e29e0a18")
 		(at 54.5 5)
@@ -18985,13 +18996,14 @@
 		(embedded_fonts no)
 	)
 	(footprint "NetTie:NetTie-2_SMD_Pad0.5mm"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "c8a22e64-036e-479c-bb14-5d7b1f11d18d")
-		(at 60.55 33.15)
+		(at 27.2 5 180)
 		(descr "Net tie, 2 pin, 0.5mm square SMD pads")
 		(tags "net tie")
 		(property "Reference" "NT1"
-			(at 0 -1.2 0)
+			(at 0 -1.2 180)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "2d011c67-06c2-4070-a4fe-7a66a08e5737")
@@ -19003,7 +19015,7 @@
 			)
 		)
 		(property "Value" "NetTie_2"
-			(at 0 1.2 0)
+			(at 0 1.2 180)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6259a00b-dbe8-4a4a-ad85-a6e7e76ad6e3")
@@ -19015,7 +19027,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -19028,7 +19040,7 @@
 			)
 		)
 		(property "Description" "Net tie: CELL0 (C0 sense, J1.1) to V-. Place next to J1.1; the only copper where the two nets meet"
-			(at 0 0 0)
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -19041,7 +19053,7 @@
 			)
 		)
 		(property "Note" "18S Lean: replaces the V- supply fuse F120"
-			(at 0 0 0)
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -19079,7 +19091,7 @@
 			(uuid "f5386228-375b-42d0-96fd-a9a03f5b78c5")
 		)
 		(pad "1" smd circle
-			(at -0.5 0)
+			(at -0.5 0 180)
 			(size 0.5 0.5)
 			(layers "F.Cu")
 			(net "/CELL0")
@@ -19088,7 +19100,7 @@
 			(uuid "01598a12-7568-4d2d-a82f-2594c6ac89a2")
 		)
 		(pad "2" smd circle
-			(at 0.5 0)
+			(at 0.5 0 180)
 			(size 0.5 0.5)
 			(layers "F.Cu")
 			(net "/V-")
@@ -19099,6 +19111,7 @@
 		(embedded_fonts no)
 	)
 	(footprint "MountingHole:MountingHole_3.2mm_M3"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "ccbe3397-c773-4238-aafa-cd4afb80d39d")
 		(at 3.5 3.5)
@@ -19215,6 +19228,7 @@
 		(embedded_fonts no)
 	)
 	(footprint "Connector_JST:JST_GH_BM02B-GHS-TBT_1x02-1MP_P1.25mm_Vertical"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "ce762285-607c-46db-9ed4-e91049583126")
 		(at 115.5 46 -90)
@@ -20092,6 +20106,7 @@
 		)
 	)
 	(footprint "slave18s:Pulse_HM2113ZNL"
+		(locked yes)
 		(layer "F.Cu")
 		(uuid "d9b3fd3d-7248-428a-aba6-b9089c79e319")
 		(at 103 24)
