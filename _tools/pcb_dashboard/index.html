@@ -39,6 +39,9 @@
           </button>
         </div>
         <span id="saveState" class="save-state">–</span>
+        <button id="btnSaveTxt" class="btn btn-ghost btn-sm" title="Download this board's boxes and guide ticks as a plain .txt file">Save .txt</button>
+        <button id="btnOpenTxt" class="btn btn-ghost btn-sm" title="Load boxes from a .txt file saved with Save .txt (Undo puts the old ones back)">Open .txt</button>
+        <input id="openTxtFile" type="file" accept=".txt,.json,text/plain" hidden>
         <button id="btnExport" class="btn btn-primary" title="Copy prompt for agent (Ctrl+S)">
           Copy Prompt <em id="boxCount">0</em>
         </button>
@@ -98,8 +101,24 @@
           <button class="chip" data-name="1812" data-w="4.5" data-h="3.2" title="1812 (4.50 × 3.20 mm)">1812</button>
           <button class="chip" data-name="SOD-123" data-w="3.6" data-h="1.8" title="SOD-123 (3.60 × 1.80 mm)">SOD-123</button>
           <button class="chip" data-name="2410" data-w="6.1" data-h="2.6" title="2410 (6.10 × 2.60 mm)">2410</button>
+          <button class="chip" data-name="2512" data-w="6.3" data-h="3.2" title="2512 (6.30 × 3.20 mm): the balance resistors">2512</button>
         </div>
       </div>
+
+      <!-- Layout practice: auto channel L + short step guide (docs/slave-18s-lean-layout-plan.md) -->
+      <details class="presets-card guide-card" id="guideCard" open>
+        <summary class="presets-head"><span class="presets-title">Layout practice</span><span id="guideProgress" class="guide-prog"></span></summary>
+        <div class="guide-l">
+          <div class="guide-inputs">
+            <label title="Centre-to-centre spacing of the channels along each arm">Pitch mm<input id="lPitch" type="number" step="0.1" min="2" max="10" value="4.5"></label>
+            <label title="How many channels (from ch 18 down) go on the top arm; the rest go down the left arm">Top arm<input id="lTop" type="number" step="1" min="1" max="17" value="7"></label>
+            <label title="Balance resistor package">R2 size<select id="lPkg"><option>2512</option><option>2010</option><option>1210</option></select></label>
+          </div>
+          <button id="btnLayoutL" class="btn btn-ghost btn-sm wide" title="Draw R1xx/R2xx boxes for all 18 channels around U1 in pin order. Pressing it again replaces the last L">Lay out the 18-channel L</button>
+          <p id="lInfo" class="hint"></p>
+        </div>
+        <ol id="guideSteps" class="guide-steps"></ol>
+      </details>
 
       <p class="hint">Each color = one part type. Write what it is in the note.</p>
       <ul id="colorList" class="color-list"></ul>

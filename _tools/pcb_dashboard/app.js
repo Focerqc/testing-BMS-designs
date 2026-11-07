@@ -338,6 +338,13 @@
   }
   const liveCount = b => instances(b).length;
   const totalCount = () => S.doc.boxes.reduce((n, b) => n + liveCount(b), 0);
+  // Part label on a box: fixed (b.lbl) or counted along its pattern (b.tag = { p: 'R2', start: 18, step: -1 } -> R218, R217, …).
+  function tagFor(b, i) {
+    if (b.lbl) return b.lbl;
+    if (!b.tag) return '';
+    return b.tag.p + String(b.tag.start + b.tag.step * i).padStart(2, '0');
+  }
+  const keepTag = (b, i) => (tagFor(b, i) ? { lbl: tagFor(b, i), auto: b.auto } : {});
 
   function ensureColorExists() {
     // Keep at least one color group in the doc, but do not arm it for drawing.
@@ -386,7 +393,7 @@
     if (!it) return null;
     if (!b.pat || liveCount(b) <= 1) return b;
     b.pat.skip = [...(b.pat.skip || []), i];
-    const nb = { id: uid('b'), c: b.c, x: it.x, y: it.y, w: b.w, h: b.h, pat: null };
+    const nb = { id: uid('b'), c: b.c, x: it.x, y: it.y, w: b.w, h: b.h, pat: null, ...keepTag(b, i) };
     S.doc.boxes.push(nb);
     return nb;
   }
@@ -394,7 +401,7 @@
   function unlinkAll(b) {
     const its = instances(b);
     const idx = S.doc.boxes.indexOf(b);
-    const fresh = its.map(it => ({ id: uid('b'), c: b.c, x: it.x, y: it.y, w: b.w, h: b.h, pat: null }));
+    const fresh = its.map(it => ({ id: uid('b'), c: b.c, x: it.x, y: it.y, w: b.w, h: b.h, pat: null, ...keepTag(b, it.i) }));
     S.doc.boxes.splice(idx, 1, ...fresh);
     return fresh;
   }
@@ -1550,8 +1557,19 @@
         }
         // color number & component ref
         const ci = colorIndex(b.c) + 1;
-        const tagText = b.ref ? `${ci} · ${b.ref}` : String(ci);
-        if (w > 12 && h > 10) {
+        const lbl = tagFor(b, it.i);
+        const tagText = b.ref ? `${ci} · ${b.ref}` : (lbl || String(ci));
+        if (lbl && Math.max(w, h) > 18) {
+          // part label along the box's long side (vertical boxes get vertical text)
+          const tall = h > w * 1.4;
+          ctx.font = `700 ${Math.min(12, Math.max(8, Math.min(w, h) * 0.75))}px "JetBrains Mono"`;
+          ctx.fillStyle = '#fff';
+          ctx.globalAlpha = 0.95;
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.translate(p.x + w / 2, p.y + h / 2);
+          if (tall) ctx.rotate(-Math.PI / 2);
+          ctx.fillText(tagText, 0, 0);
+        } else if (w > 12 && h > 10) {
           ctx.font = `700 ${Math.min(13, Math.max(9, h * 0.55, w * 0.35))}px "JetBrains Mono"`;
           ctx.fillStyle = '#fff';
           ctx.globalAlpha = 0.95;
@@ -2304,6 +2322,174 @@
     toast('Color armed — drag on the board to draw');
   }
 
+  // ---------- LAYOUT PRACTICE (docs/slave-18s-lean-layout-plan.md, steps 3–7) ----------
+  // The 18-channel L: R2xx balance (outer) + R1xx series (inner) per channel, in U1 pin order.
+  // Top arm: ch 18 … down, right to left above U1. Left arm: the rest top to bottom, then R100 (ch 0).
+  const L_PKG = { '2512': [6.3, 3.2], '2010': [5.0, 2.5], '1210': [3.2, 2.5] };   // body L × W, mm
+  const L_R1 = [3.2, 1.6];                         // R1xx: 10 Ω 1206
+  const L_OUT_R2 = 13, L_OUT_R1 = 5, L_SHIFT = 1;  // mm out from U1's top pins; R1 sits 1 mm toward its C pin
+
+  function layoutL() {
+    if (!S.board) return;
+    const u = S.board.footprints.find(f => f.ref === 'U1');
+    const s18 = u?.pads.find(p => /\/S18$/.test(p.net));
+    const cellPins = u ? u.pads.filter(p => /\/(S\d+|C\d+(_F)?)$/.test(p.net)) : [];
+    if (!s18 || cellPins.length < 30) return toast('This board has no U1 with S/C pin nets', 'warn');
+    const pitch = Math.min(10, Math.max(2, +$('lPitch').value || 4.5));
+    const nTop = Math.min(17, Math.max(1, Math.round(+$('lTop').value || 7)));
+    const pkg = L_PKG[$('lPkg').value] ? $('lPkg').value : '2512';
+    const [r2L, r2W] = L_PKG[pkg];
+    const nLeft = 18 - nTop;                          // channels nLeft … 1 have their R2 on the left arm
+
+    // Top arm: anchored over the S18 pin, rows measured from U1's top pin row.
+    const topY = Math.min(...cellPins.map(p => p.y));
+    // Left arm: just left of the top arm, starting a little below the cell connectors.
+    const conn = S.board.footprints.filter(f => /^J[15]$/.test(f.ref)).map(f => getFpBBox(f).maxY);
+    const y0 = (conn.length ? Math.max(...conn) : topY - 26) + 5.5;
+    const armLeftEdge = s18.x - (nTop - 1) * pitch - r2W / 2;
+    const xR1 = armLeftEdge - 1.5 - L_R1[0] / 2;
+    const xR2 = xR1 - (L_OUT_R2 - L_OUT_R1);
+
+    const colorFor = (auto, hex, note) => {
+      let c = S.doc.colors.find(k => k.auto === auto);
+      if (!c) { c = { id: uid('c'), hex, note, auto }; S.doc.colors.push(c); }
+      else if (!c.note || /^R2xx balance \d+/.test(c.note)) c.note = note;
+      return c.id;
+    };
+    const c2 = colorFor('L-R2', '#ff9361', `R2xx balance ${pkg} (hot): outer row, CELLn pad out, Sn pad toward U1`);
+    const c1 = colorFor('L-R1', '#5cc8ff', 'R1xx series 10 Ω 1206: inner row, next to its C pin');
+    const mk = (c, x, y, w, h, n, dir, start) => ({
+      id: uid('b'), c, x: r2(x), y: r2(y), w, h, auto: 'L', tag: { p: c === c2 ? 'R2' : 'R1', start, step: -1 },
+      pat: n > 1 ? { n, dir, pitch: r2(pitch), skip: [] } : null,
+    });
+    const top = [
+      mk(c2, s18.x, topY - L_OUT_R2, r2W, r2L, nTop, 'left', 18),
+      mk(c1, s18.x + L_SHIFT, topY - L_OUT_R1, L_R1[1], L_R1[0], nTop, 'left', 18),
+    ];
+    const left = [
+      mk(c2, xR2, y0, r2L, r2W, nLeft, 'down', nLeft),
+      mk(c1, xR1, y0 - L_SHIFT, L_R1[0], L_R1[1], nLeft + 1, 'down', nLeft),   // ends with R100 (ch 0)
+    ];
+    S.doc.boxes = S.doc.boxes.filter(b => b.auto !== 'L').concat(top, left);
+    S.sel = null;
+    commit();
+
+    const bb = S.board.bbox;
+    const its = [...top, ...left].flatMap(instances);
+    const off = its.filter(it => it.x - it.w / 2 < bb.x || it.x + it.w / 2 > bb.x + bb.w ||
+                                 it.y - it.h / 2 < bb.y || it.y + it.h / 2 > bb.y + bb.h).length;
+    const ly = left.flatMap(instances).map(it => it.y);
+    const msg = `Top arm ch 18–${19 - nTop}, left arm ch ${nLeft}–0 (y ${fmt(Math.min(...ly))}–${fmt(Math.max(...ly))}). ` +
+      (off ? `⚠ ${off} box${off > 1 ? 'es' : ''} past the board edge.` : 'All on the board.');
+    $('lInfo').textContent = msg;
+    toast(`Laid out 37 resistors at ${fmt(pitch)} mm pitch. ${esc(msg)}`, off ? 'warn' : 'info', 6000);
+  }
+
+  const GUIDE = [
+    { n: 3, t: 'One channel by hand (ch 14)',
+      d: ['R214 (balance) and R114 (10 Ω) both vertical: harness pad up toward J5, chip pad down toward U1.',
+          'R214 in the outer row, 12–14 mm above U1\'s top pins. R114 in the inner row, 4–6 mm above, next to its C pin.',
+          'U1\'s top pins read C14, S14, C13 … right to left, so R114 sits just right of the S14 trace\'s path.',
+          'Pitch: design around the 2512 envelope. 4.5 mm leaves room for one tap trace between channels.'],
+      look: 'Highlight CELL14, then S14 (` key in KiCad): each should be one clean path.' },
+    { n: 4, t: 'All 18 channels in an L',
+      d: ['Top arm: ch 18 … 12, right to left. Left arm: ch 11 … 1, top to bottom, then R100 (ch 0) at the bottom.',
+          'R2 outermost (keeps the heat away from U1), R1 innermost (closest to its pin).',
+          'The button above draws this as linked boxes. Drag a box to move its whole row; Alt+drag moves one.'],
+      look: 'Tap lines from J1/J5 never cross. At the corner, keep ch 1–2 away from ch 12–14. At 4.5 mm the left arm is about 54 mm tall: it only just fits.' },
+    { n: 5, t: 'C0 sense: R100 and NT1',
+      d: ['NT1 right beside J1.1: its CELL0 pad toward J1.1, its V− pad toward the board.',
+          'R100 pad 1 → J1.1 on its own 0.25 mm trace. V− touches CELL0 only at NT1.'],
+      look: 'A shorting_items DRC error means V− copper touches CELL0 somewhere other than NT1.' },
+    { n: 6, t: 'Supply around U1',
+      d: ['C303 (VREG) first, at U1 pin 48. Then C304/C305 (VREF1/2) at pins 51/50, and R401/R402 at 57/58.',
+          'R301 + C301 (V+ filter) at pin 1, U1\'s top-right corner.',
+          'Q301 below U1, with R302/C302 at the collector. Keep about 25 × 25 mm of VCOLL copper round its tab.'],
+      look: 'VREG and VREF caps within about 2 mm of their pins.' },
+    { n: 7, t: 'isoSPI, NTC, test points',
+      d: ['isoSPI R/C in the column at x ≈ 90, between U1 and each transformer. Nothing else in that corridor.',
+          'R701–R704 / C701–C704 next to GPIO1–4 (pins 39–42). TH701 somewhere typical, not in the R2 band.',
+          'TP1–TP10 along the bottom edge, at least 5 mm apart. TP11–TP14 next to their nets (VCOLL, C6_F, C12_F, C18_F).'],
+      look: 'No plug blocked, every test loop reachable with a hook clip.' },
+  ];
+  let guideOpen = null;   // step the user expanded; default is the first one not ticked
+
+  function renderGuide() {
+    const ol = $('guideSteps');
+    if (!ol) return;
+    const done = new Set(S.doc.guide?.done || []);
+    const cur = GUIDE.find(g => !done.has(g.n));
+    const open = guideOpen ?? cur?.n;
+    ol.innerHTML = GUIDE.map(g => `
+      <li class="guide-step${done.has(g.n) ? ' done' : ''}${g === cur ? ' cur' : ''}${g.n === open ? ' open' : ''}" data-n="${g.n}">
+        <div class="gs-head"><input type="checkbox" data-tick="${g.n}" ${done.has(g.n) ? 'checked' : ''} title="Mark step ${g.n} done">
+          <span class="gs-n">${g.n}</span><span class="gs-t">${esc(g.t)}</span></div>
+        ${g.n === open ? `<ul>${g.d.map(x => `<li>${esc(x)}</li>`).join('')}</ul><p class="gs-look"><b>Look for:</b> ${esc(g.look)}</p>` : ''}
+      </li>`).join('');
+    $('guideProgress').textContent = `${done.size}/${GUIDE.length} done`;
+  }
+
+  function onGuideClick(e) {
+    const tick = e.target.closest('[data-tick]');
+    if (tick) {
+      const n = +tick.dataset.tick;
+      const done = new Set(S.doc.guide?.done || []);
+      tick.checked ? done.add(n) : done.delete(n);
+      S.doc.guide = { done: [...done].sort((a, b) => a - b) };
+      guideOpen = null;
+      renderGuide();
+      scheduleSave();
+      return;
+    }
+    const head = e.target.closest('.gs-head');
+    if (!head) return;
+    const n = +head.parentElement.dataset.n;
+    const cur = GUIDE.find(g => !(S.doc.guide?.done || []).includes(g.n))?.n;
+    guideOpen = (guideOpen ?? cur) === n ? -1 : n;   // click the open step again to fold it
+    renderGuide();
+  }
+
+  // ---------- SAVE / OPEN AS .TXT (work from a laptop without the local server) ----------
+  function saveTxt() {
+    if (!S.boardPath) return;
+    const { exists, ...doc } = S.doc;
+    const d = new Date(), p = v => String(v).padStart(2, '0');
+    const stamp = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+    const name = `${S.boardPath.split('/').pop().replace(/\.kicad_pcb$/i, '')}-boxes-${stamp}.txt`;
+    const body = JSON.stringify({ board: S.boardPath, saved: d.toISOString(), ...doc }, null, 1);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([body], { type: 'text/plain' }));
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast(`Saved <b>${esc(name)}</b> (${totalCount()} boxes)`);
+  }
+
+  function openTxt(file) {
+    const rd = new FileReader();
+    rd.onload = () => {
+      let d;
+      try { d = JSON.parse(rd.result); } catch { d = null; }
+      if (!d || !Array.isArray(d.colors) || !Array.isArray(d.boxes)) return toast('That file isn\'t a Board Boxes save', 'err');
+      if (d.board && d.board !== S.boardPath &&
+          !confirm(`This file was saved from ${d.board}.\nLoad its boxes onto ${S.boardPath} anyway?`)) return;
+      S.doc.colors = d.colors;
+      S.doc.boxes = d.boxes;
+      if (d.guide) S.doc.guide = d.guide;
+      $('lInfo').textContent = '';
+      S.sel = null;
+      S.activeColor = null;
+      ensureColorExists();
+      commit();
+      scheduleSave();
+      renderGuide();
+      toast(`Loaded ${d.boxes.length} boxes from <b>${esc(file.name)}</b>. Undo puts the old ones back.`);
+    };
+    rd.readAsText(file);
+  }
+
   // ---------- EXPORT ----------
   function buildPrompt() {
     const boxesFile = S.boardPath.replace(/\.kicad_pcb$/i, '.boxes.json');
@@ -2348,7 +2534,8 @@
         list.forEach((it, j) => {
           n++;
           const pat = name ? `${name} ${j + 1}/${list.length} · ${fmt(b.pat.pitch)} mm ${DIR_ARROW[b.pat.dir]}` : (b.ref ? 'Component on PCB' : '–');
-          const refStr = b.ref ? `**${b.ref}**` : `Box ${n}`;
+          const lbl = tagFor(b, it.i);
+          const refStr = b.ref ? `**${b.ref}**` : lbl ? `**${lbl}** (planned)` : `Box ${n}`;
           const valStr = b.ref ? `${b.val || '–'} / ${b.fpid || '–'}` : '–';
           lines.push(`| ${n} | ${refStr} | ${valStr} | ${fmt(it.x)} | ${fmt(it.y)} | ${fmt(it.w)}×${fmt(it.h)} | ${pat} |`);
         });
@@ -2424,6 +2611,7 @@
   // ---------- UI REFRESH ----------
   function refreshUI() {
     renderLegend();
+    renderGuide();
     fillSelbar();
     $('boxCount').textContent = totalCount();
     if ($('btnUndo')) $('btnUndo').disabled = S.undo.length === 0;
@@ -2774,6 +2962,11 @@
     $('btnRefReset').onclick = () => { S.doc.refFit = { ox: 0, oy: 0, sx: 100, sy: 100 }; fillRefFit(); render(); scheduleSave(); };
 
     $('btnExport').onclick = openPrompt;
+    $('btnSaveTxt').onclick = saveTxt;
+    $('btnOpenTxt').onclick = () => $('openTxtFile').click();
+    $('openTxtFile').onchange = e => { const f = e.target.files[0]; if (f) openTxt(f); e.target.value = ''; };
+    $('btnLayoutL').onclick = layoutL;
+    $('guideSteps').addEventListener('click', onGuideClick);
     $('btnCopy').onclick = () => copy($('modalText').textContent);
     $('btnClose').onclick = () => $('modal').classList.remove('open');
     $('modal').addEventListener('click', e => { if (e.target === $('modal')) $('modal').classList.remove('open'); });
