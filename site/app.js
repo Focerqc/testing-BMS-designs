@@ -891,6 +891,13 @@
   }
 
   // ---------- LOADING ----------
+  // Plain names in the Board menu (the path stays the value and the tooltip).
+  function boardLabel(path) {
+    if (/slave-18s-lean\//.test(path)) return '18S Lean · layout practice';
+    if (/slave-18s\//.test(path)) return '18S Guard · full protection';
+    return path;
+  }
+
   async function init() {
     resize();
     hookEvents();
@@ -901,10 +908,12 @@
         fetch('/api/images').then(r => r.json()),
       ]);
       const bSel = $('boardSelect');
-      bSel.innerHTML = boards.map(b => `<option value="${esc(b)}">${esc(b)}</option>`).join('');
+      bSel.innerHTML = boards.map(b => `<option value="${esc(b)}" title="${esc(b)}">${esc(boardLabel(b))}</option>`).join('');
       const saved = localStorage.getItem('pcb_dashboard_last_board');
+      // Open on Lean (the board being laid out) unless the user picked another one before.
       bSel.value = (saved && boards.includes(saved)) ? saved :
-                   (boards.find(b => /slave/i.test(b)) ||
+                   (boards.find(b => /lean/i.test(b)) ||
+                    boards.find(b => /slave/i.test(b)) ||
                     boards[0] || '');
 
       S.images = images;
@@ -2331,7 +2340,7 @@
   const L_OUT_R2 = 13, L_OUT_R1 = 5, L_SHIFT = 1;  // mm out from U1's top pins; R1 sits 1 mm toward its C pin
 
   function layoutL() {
-    if (!S.board) return;
+    if (!S.board || !/lean/i.test(S.boardPath)) return;
     const u = S.board.footprints.find(f => f.ref === 'U1');
     const s18 = u?.pads.find(p => /\/S18$/.test(p.net));
     const cellPins = u ? u.pads.filter(p => /\/(S\d+|C\d+(_F)?)$/.test(p.net)) : [];
@@ -2418,6 +2427,11 @@
   function renderGuide() {
     const ol = $('guideSteps');
     if (!ol) return;
+    // The card follows the Lean plan: on any other board (Guard keeps its old placement and
+    // its C1xx/D1xx/F1xx parts) it only says which board to pick.
+    const lean = /lean/i.test(S.boardPath);
+    $('guideCard').classList.toggle('not-lean', !lean);
+    $('btnLayoutL').disabled = !lean;
     const done = new Set(S.doc.guide?.done || []);
     const cur = GUIDE.find(g => !done.has(g.n));
     const open = guideOpen ?? cur?.n;

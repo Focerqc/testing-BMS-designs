@@ -704,3 +704,6 @@ kbd {
 .guide-step li li, .guide-step ul li { font-size: 11.5px; line-height: 1.4; color: var(--muted); }
 .gs-look { margin: 4px 0 2px 18px; font-size: 11.5px; line-height: 1.4; color: var(--muted); }
 .gs-look b { color: var(--cyan); font-weight: 600; }
+.guide-note { display: none; margin: 8px 0 0; }
+.guide-card.not-lean .guide-note { display: block; }
+.guide-card.not-lean .guide-l, .guide-card.not-lean .guide-steps, .guide-card.not-lean .guide-prog { display: none; }
