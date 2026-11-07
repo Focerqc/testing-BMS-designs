@@ -113,6 +113,12 @@ ratsnest of the group you're working on is easy to read.
 
 - **Check:** `check_pcb_parity.py --variant lean` (moves never change nets, but it's cheap
   and confirms the file loads).
+- **Done 2026-11-06.** Staging rows start at y = 78 mm, top to bottom: balance R201–R218
+  (2 × 9), cell series R100–R118 (2 rows), supply (Q301 first), isoSPI A then B, NTC pairs
+  + TH701, TP1–TP10 then TP11–TP14. 0 courtyard overlaps, parity PASS, DRC 0 errors.
+  **In KiCad:** hover a part and press **M** to move it. To bring a whole row, drag a
+  selection box over it on empty board (left to right selects only parts fully inside),
+  then press **M**.
 
 ## Step 3: one cell channel, done properly
 
