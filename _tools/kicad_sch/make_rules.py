@@ -1,11 +1,13 @@
 """Net classes and HV clearance rules for the ADBMS1818 18S slave.
 
 Writes the net classes and board minimums into the .kicad_pro (JSON read-modify-write)
-and generates slave-18s/adbms1818-slave-18s.kicad_dru from the nets on the board.
+and generates the .kicad_dru from the nets on the board (Guard by default,
+--variant lean for slave-18s-lean/).
 Every value and its source is in docs/slave-18s-design-basis.md, "Net classes and
 clearance rules".
 
-  python _tools/kicad_sch/make_rules.py           write both files
+  python _tools/kicad_sch/make_rules.py           write both files (Guard)
+  python _tools/kicad_sch/make_rules.py --variant lean   the same for 18S Lean
   python _tools/kicad_sch/make_rules.py --dry     print the rules, write nothing
   python _tools/kicad_sch/make_rules.py --check   exit 0 only if both files are current
                                                   AND kicad-cli really loads the rules
@@ -25,9 +27,9 @@ import sys
 import tempfile
 from pathlib import Path
 
-from kisch import DEFAULT_SCH, KICAD_CLI
+from kisch import DEFAULT_SCH, KICAD_CLI, VARIANTS
 
-PRO = DEFAULT_SCH.with_suffix(".kicad_pro")
+PRO = DEFAULT_SCH.with_suffix(".kicad_pro")   # set from --variant in main()
 PCB = DEFAULT_SCH.with_suffix(".kicad_pcb")
 DRU = DEFAULT_SCH.with_suffix(".kicad_dru")
 
@@ -70,8 +72,8 @@ HV_FAR = 0.6        # mm, IPC-2221B B2 31-150 V
 HOLE_KEEPOUT = 2.9  # mm, copper to M3 hole edge (4.5 mm from the centre)
 
 
-def board_nets(pcb=PCB):
-    text = pcb.read_text(encoding="utf-8")
+def board_nets(pcb=None):
+    text = (pcb or PCB).read_text(encoding="utf-8")
     return sorted(set(re.findall(r'\(net "([^"]*)"\)', text)) - {""})
 
 
@@ -206,7 +208,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
+                    help="guard = slave-18s, lean = slave-18s-lean")
     a = ap.parse_args()
+    global PRO, PCB, DRU
+    sch = VARIANTS[a.variant]
+    PRO, PCB, DRU = (sch.with_suffix(s) for s in (".kicad_pro", ".kicad_pcb", ".kicad_dru"))
+    print(f"{a.variant}: {PCB.relative_to(sch.parents[1]).as_posix()}")
     nets = board_nets()
     dru = dru_text(nets)
     pro_old = PRO.read_text(encoding="utf-8")

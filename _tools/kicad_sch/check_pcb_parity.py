@@ -5,11 +5,13 @@
   3. Every numbered pad: net in the .kicad_pcb == net from the netlist (exact name,
      so "/V-" vs "V-" counts as a mismatch). Unnumbered pads (thermal vias, paste)
      must have no net or the same net as the numbered pad they belong to.
-  4. kicad-cli DRC with --schematic-parity: 0 parity items.
+  4. Every footprint on the front side (F.Cu): the slave is single-sided so it can sit
+     flat on a carrier PCB.
+  5. kicad-cli DRC with --schematic-parity: 0 parity items.
 Other DRC items (unrouted, courtyards, silk) are only counted by type.
-Exit code 0 only if 2-4 pass. PWR_FLAGs have no footprint and are not in the netlist.
+Exit code 0 only if 2-5 pass. PWR_FLAGs have no footprint and are not in the netlist.
 
-usage: python _tools/kicad_sch/check_pcb_parity.py [--pcb FILE] [--no-drc]
+usage: python _tools/kicad_sch/check_pcb_parity.py [--variant guard|lean] [--sch FILE] [--pcb FILE] [--no-drc]
 """
 import argparse
 import re
@@ -20,9 +22,8 @@ import tempfile
 from collections import Counter
 from pathlib import Path
 
-from kisch import DEFAULT_SCH, KICAD_CLI, kid, kids, load
+from kisch import KICAD_CLI, VARIANTS, kid, kids, load
 
-DEFAULT_PCB = DEFAULT_SCH.with_suffix(".kicad_pcb")
 TMP = Path(tempfile.gettempdir())
 
 
@@ -42,10 +43,12 @@ def netlist(sch):
 
 def board(pcb):
     root = load(pcb)
-    fps, pads, extra = {}, {}, []
+    fps, pads, extra, back = {}, {}, [], []
     for fp in kids(root, "footprint"):
         ref = next(p[2] for p in kids(fp, "property") if p[1] == "Reference")
         fps[ref] = fp[1]
+        if kid(fp, "layer")[1] != "F.Cu":
+            back.append(ref)
         for pad in kids(fp, "pad"):
             net = kid(pad, "net")
             name = net[-1] if net else ""
@@ -58,19 +61,24 @@ def board(pcb):
                 key = f"{ref}.{pad[1]}"
                 if pads.setdefault(key, name) != name:
                     pads[key] = f"<conflict {pads[key]} / {name}>"
-    return fps, pads, extra
+    return fps, pads, extra, back
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sch", default=str(DEFAULT_SCH))
-    ap.add_argument("--pcb", default=str(DEFAULT_PCB))
+    ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
+                    help="guard = slave-18s, lean = slave-18s-lean (--sch/--pcb override it)")
+    ap.add_argument("--sch", default=None)
+    ap.add_argument("--pcb", default=None)
     ap.add_argument("--no-drc", action="store_true")
     a = ap.parse_args()
+    a.sch = a.sch or str(VARIANTS[a.variant])
+    a.pcb = a.pcb or str(Path(a.sch).with_suffix(".kicad_pcb"))
+    print(f"{a.variant if a.sch == str(VARIANTS[a.variant]) else 'custom'}: {a.pcb}")
     ok = True
 
     sfp, spin = netlist(a.sch)
-    bfp, bpad, extra = board(a.pcb)
+    bfp, bpad, extra, back = board(a.pcb)
 
     missing = sorted(set(sfp) - set(bfp))
     surplus = sorted(set(bfp) - set(sfp))
@@ -94,6 +102,10 @@ def main():
     badx = [(r, n) for r, n in extra if n and n != bpad.get(f"{r}.65", n)]
     print(f"unnumbered pads: {len(extra)} (nets off the EP: {len(badx)})")
     ok &= not badx
+
+    print(f"front side: {len(bfp) - len(back)} of {len(bfp)} footprints on F.Cu"
+          + (f"; on the back: {sorted(back)}" if back else ""))
+    ok &= not back
 
     if not a.no_drc:
         rep = TMP / "slave18s_drc.json"

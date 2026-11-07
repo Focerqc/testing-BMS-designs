@@ -5,7 +5,7 @@ needs no other change, and the diff stays one line per moved part (the MCP board
 rewrite the whole file). Rotation is kept unless the map gives one; a new rotation is
 also added to the pad and text angles (the file stores those including the footprint's).
 
-usage: python _tools/kicad_sch/pcb_move.py MOVES.json [--pcb FILE] [--dry]
+usage: python _tools/kicad_sch/pcb_move.py MOVES.json [--variant guard|lean | --pcb FILE] [--dry]
 MOVES.json: {"U1": [75, 40], "J1": [8, 5, 90], ...}   (mm, board coordinates)
 Close KiCad first: an open PCB Editor will not see the change and saving from it
 overwrites it.
@@ -15,7 +15,7 @@ import json
 import re
 import sys
 
-from kisch import DEFAULT_SCH
+from kisch import VARIANTS
 
 AT = re.compile(r"^(\t\t\(at )([-\d.]+) ([-\d.]+)(?: ([-\d.]+))?\)(?=\r?$)", re.M)
 
@@ -35,9 +35,13 @@ def fmt(v):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("moves")
-    ap.add_argument("--pcb", default=str(DEFAULT_SCH.with_suffix(".kicad_pcb")))
+    ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
+                    help="guard = slave-18s, lean = slave-18s-lean (ignored with --pcb)")
+    ap.add_argument("--pcb", default=None)
     ap.add_argument("--dry", action="store_true")
     a = ap.parse_args()
+    a.pcb = a.pcb or str(VARIANTS[a.variant].with_suffix(".kicad_pcb"))
+    print(a.pcb)
     moves = json.load(open(a.moves, encoding="utf-8"))
     text = open(a.pcb, encoding="utf-8", newline="").read()
 

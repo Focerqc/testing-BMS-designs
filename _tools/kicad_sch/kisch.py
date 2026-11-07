@@ -11,6 +11,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SCH = ROOT / "slave-18s" / "adbms1818-slave-18s.kicad_sch"
+# --variant for the scripts in this folder: the schematic of each board; the .kicad_pcb,
+# .kicad_pro and .kicad_dru sit next to it with the same stem
+VARIANTS = {"guard": DEFAULT_SCH,
+            "lean": ROOT / "slave-18s-lean" / "adbms1818-slave-18s-lean.kicad_sch"}
 KICAD_CLI = os.environ.get("KICAD_CLI", r"C:\Program Files\KiCad\10.0\bin\kicad-cli.exe")
 
 
