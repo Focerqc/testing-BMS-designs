@@ -10813,7 +10813,7 @@
 		(in_pos_files yes)
 		(dnp yes)
 		(uuid "241964cf-d3a8-436c-b52e-7b3619a882c0")
-		(property "Reference" "J4B"
+		(property "Reference" "J7"
 			(at 368.3 242.57 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10857,7 +10857,7 @@
 				)
 			)
 		)
-		(property "Description" "JST PH 2P alternate to J4 (DNP): PH header or bare wires, isoSPI B"
+		(property "Description" "JST PH 2P alternate to J4 (DNP), port B: PH header or bare wires, isoSPI B"
 			(at 365.76 243.84 0)
 			(hide yes)
 			(show_name no)
@@ -10910,7 +10910,7 @@
 		(instances
 			(project "adbms1818-slave-18s"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "J4B")
+					(reference "J7")
 					(unit 1)
 				)
 			)
@@ -20151,7 +20151,7 @@
 		(in_pos_files yes)
 		(dnp yes)
 		(uuid "a2bf299f-aaec-4f99-a0d4-19ef7e94e9ee")
-		(property "Reference" "J3B"
+		(property "Reference" "J6"
 			(at 368.3 186.69 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20195,7 +20195,7 @@
 				)
 			)
 		)
-		(property "Description" "JST PH 2P alternate to J3 (DNP): PH header or bare wires, isoSPI A"
+		(property "Description" "JST PH 2P alternate to J3 (DNP), port A: PH header or bare wires, isoSPI A"
 			(at 365.76 187.96 0)
 			(hide yes)
 			(show_name no)
@@ -20248,7 +20248,7 @@
 		(instances
 			(project "adbms1818-slave-18s"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "J3B")
+					(reference "J6")
 					(unit 1)
 				)
 			)

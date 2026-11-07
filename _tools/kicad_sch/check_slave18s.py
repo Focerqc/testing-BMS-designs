@@ -56,8 +56,8 @@ for n in range(19):
 assert E[2]["U1.38"] == "C0_F" and E[2]["U1.2"] == "C18_F" and E[2]["U1.37"] == "S1" and E[2]["U1.3"] == "S18"
 
 # Block 3: isoSPI, datasheet Fig. 104(B). Same polarity on both ports.
-for port, (ra, rb), (ccm, cct), t, j, ip, im in (("A", ("R501", "R502"), ("C501", "C502"), "T501", "J3", "62", "61"),
-                                                 ("B", ("R601", "R602"), ("C601", "C602"), "T601", "J4", "64", "63")):
+for port, (ra, rb), (ccm, cct), t, j, jb, ip, im in (("A", ("R501", "R502"), ("C501", "C502"), "T501", "J3", "J6", "62", "61"),
+                                                     ("B", ("R601", "R602"), ("C601", "C602"), "T601", "J4", "J7", "64", "63")):
     ipn, imn = f"IP{port}", f"IM{port}"
     cm, ct, lp, ln = (f"ISO{port}_{s}" for s in ("CM", "CT", "LP", "LN"))
     E[3].update({f"U1.{ip}": ipn, f"U1.{im}": imn,
@@ -65,7 +65,7 @@ for port, (ra, rb), (ccm, cct), t, j, ip, im in (("A", ("R501", "R502"), ("C501"
                  f"{ccm}.1": cm, f"{ccm}.2": "V-", f"{cct}.1": ct, f"{cct}.2": "V-",
                  f"{t}.1": ipn, f"{t}.3": imn, f"{t}.2": ct, f"{t}.6": lp, f"{t}.4": ln,
                  f"{j}.1": lp, f"{j}.2": ln,           # JST GH 2P (master cable)
-                 f"{j}B.1": lp, f"{j}B.2": ln})        # JST PH 2P alternate, DNP
+                 f"{jb}.1": lp, f"{jb}.2": ln})        # JST PH 2P alternate (J6/J7), DNP
     NC[3] |= {f"{t}.5", f"{j}.MP"}                       # GH hold-down tabs: no circuit
 
 # Block 4: thermistors
