@@ -59,6 +59,7 @@
         <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Hot-plug protection and test points</h3><p>A 250 mA fuse on every cell tap, a 6.8 V zener across each cell input pair, an 85 V TVS on the supply, 14 test points and 4 mounting holes, following ADI's own slave reference design (AN-2093). 58 parts, all checked into the PCB.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Master firmware checked</h3><p>The ENNOID master's public firmware sends only commands that match the ADBMS1818 datasheet when set to LTC6813-1, so no custom firmware is expected. It leaves the spare GPIO pull-downs off, so GPIO5–9 are now tied to V− instead of floating. A bench test with one slave is the real proof.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>isoSPI on JST GH, connector row placed</h3><p>J3/J4 are now JST GH 2P like the master, with not-fitted JST PH footprints J6/J7 beside them for a PH header or bare wires. All connectors sit in one row centred on the top edge, IN on the left and OUT on the right, each transformer about 5 mm from its plug, and a mounting hole in every corner.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Vertical GH, isoSPI ports beside U1</h3><p>J3/J4 are now the top-entry JST GH (BM02B-GHS-TBT), so the plugs come in from above and the ports no longer need the board edge. Both ports moved to the right edge next to U1, which turned 270° so its isoSPI pins face them: each transformer is about 3.4 mm from its plug and about 1.5–2 cm from the chip, and the two pairs don't cross. U1 now renders with its 3D body.</p></div></li>
         <li class="now"><span class="dot"></span><div><span class="when">Now</span><h3>Placement, outline and routing</h3><p>The rest of the placement in Board Boxes, the real board outline, copper for heat, then traces.</p></div></li>
         <li><span class="dot"></span><div><span class="when">Later</span><h3>Bench test, carrier and master</h3><p>A resistor-ladder cell simulator and isoSPI dongle on the bench, a carrier for two slaves on the Funwheel harness, then the master in its own box.</p></div></li>
       </ol>
@@ -66,7 +67,7 @@
 
     <section id="board" class="section board-section">
       <div class="section-head">
-        <div><p class="eyebrow">02 / The board today</p><h2>Connectors in a row, the rest still grouped.</h2></div>
+        <div><p class="eyebrow">02 / The board today</p><h2>isoSPI ports beside U1, the rest still grouped.</h2></div>
         <span class="snapshot">Top view · KiCad 10 render</span>
       </div>
       <div class="board-grid">
@@ -74,15 +75,16 @@
         <div class="board-notes">
           <h3>What you're looking at</h3>
           <ul class="legend">
-            <li><b>Top row</b> IN (J3 GH + J6 PH), J1 + J5 cell taps (C0–C9, C9–C18), J2 thermistors, OUT (J7 PH + J4 GH)</li>
-            <li><b>Under the row</b> isoSPI transformers at each end, 18 × 33 Ω balance resistors (2512) between them</li>
+            <li><b>Top row</b> J1 + J5 cell taps (C0–C9, C9–C18), J2 thermistors</li>
+            <li><b>Under the row</b> 18 × 33 Ω balance resistors (2512)</li>
+            <li><b>Right edge</b> OUT (T601, J4 GH + J7 PH) above IN (T501, J3 GH + J6 PH), terminations between them and U1</li>
             <li><b>Left</b> cell filters 10 Ω + 100 nF</li>
             <li><b>Lower left</b> 18 zener clamps under the filters, then 21 tap and supply fuses and the TVS</li>
-            <li><b>Centre</b> U1 ADBMS1818, 64-lead LQFP with exposed pad; thermistor parts to its right</li>
+            <li><b>Centre</b> U1 ADBMS1818, 64-lead LQFP with exposed pad; thermistor parts below it</li>
             <li><b>Bottom</b> Q301 regulator NPN, V+ filter, VREF and bias parts</li>
             <li><b>Bottom edge</b> 10 probe loops; 4 bare high-voltage pads beside Q301; M3 holes in the corners</li>
           </ul>
-          <div class="honest"><span>Honest status</span><p>No traces yet (265 connections to route). The 120 × 70 mm outline is a placeholder; only the connector row, transformers and holes are placed, the other groups are rough. Port A's transformer sits about 5 cm from U1, which routing will have to handle. DRC has 0 errors; only silkscreen warnings and the unrouted connections remain.</p></div>
+          <div class="honest"><span>Honest status</span><p>No traces yet (265 connections to route). The 120 × 70 mm outline is a placeholder; only the connector row, transformers and holes are placed, the other groups are rough. The isoSPI ports are placed to the datasheet's layout rules; the cell filter rows still have to follow U1's new rotation. DRC has 0 errors; only silkscreen warnings and the unrouted connections remain.</p></div>
           <a class="button primary small" href="./">Inspect in Board Boxes <span>→</span></a>
         </div>
       </div>
