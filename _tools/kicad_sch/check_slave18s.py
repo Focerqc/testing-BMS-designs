@@ -41,7 +41,9 @@ E[1].update({"R301.1": "VBAT_F", "R301.2": "VP_F", "U1.1": "VP_F", "C301.1": "VP
              "R401.1": "IBIAS", "R401.2": "ICMP", "R402.1": "ICMP", "R402.2": "V-",
              "U1.57": "IBIAS", "U1.58": "ICMP", "U1.55": "VREG", "U1.52": "V-",
              "U1.59": "V-", "U1.60": "V-", "U1.65": "V-"})
-NC[1] |= {"U1.53", "U1.54", "U1.56", "U1.43", "U1.44", "U1.45", "U1.46", "U1.47"}
+NC[1] |= {"U1.53", "U1.54", "U1.56"}
+# GPIO5-9 spare: tied to V- because the ENNOID firmware leaves the internal pull-downs off
+E[1].update({f"U1.{p}": "V-" for p in range(43, 48)})
 
 # Block 2: cell inputs. Cn = pin 38-2n, Sn = pin 39-2n
 for n in range(19):
@@ -62,8 +64,9 @@ for port, (ra, rb), (ccm, cct), t, j, ip, im in (("A", ("R501", "R502"), ("C501"
                  f"{ra}.1": ipn, f"{ra}.2": cm, f"{rb}.1": cm, f"{rb}.2": imn,
                  f"{ccm}.1": cm, f"{ccm}.2": "V-", f"{cct}.1": ct, f"{cct}.2": "V-",
                  f"{t}.1": ipn, f"{t}.3": imn, f"{t}.2": ct, f"{t}.6": lp, f"{t}.4": ln,
-                 f"{j}.1": lp, f"{j}.2": ln})
-    NC[3].add(f"{t}.5")
+                 f"{j}.1": lp, f"{j}.2": ln,           # JST GH 2P (master cable)
+                 f"{j}B.1": lp, f"{j}B.2": ln})        # JST PH 2P alternate, DNP
+    NC[3] |= {f"{t}.5", f"{j}.MP"}                       # GH hold-down tabs: no circuit
 
 # Block 4: thermistors
 for k, pin in zip((1, 2, 3, 4), (39, 40, 41, 42)):

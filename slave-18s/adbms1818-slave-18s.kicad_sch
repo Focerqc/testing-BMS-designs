@@ -2879,6 +2879,203 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector_Generic_MountingPin:Conn_01x02_MountingPin"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x02_MountingPin"
+				(at 1.27 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connectable mounting pin connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??-1MP*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x02_MountingPin_1_1"
+				(rectangle
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 -4.572) (xy 1.016 -4.572)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(text "Mounting"
+					(at 0 -4.191 0)
+					(effects
+						(font
+							(size 0.381 0.381)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 90)
+					(length 3.048)
+					(name "MountPin"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -4907,28 +5104,12 @@
 		(uuid "d9947530-afcf-4f67-8324-c9be454ff671")
 	)
 	(no_connect
-		(at 76.2 137.16)
-		(uuid "0adb080b-fb35-4585-b6af-ac423e531ee1")
-	)
-	(no_connect
 		(at 241.3 205.74)
 		(uuid "12cb835c-ec33-4057-8996-0a2d7105a335")
 	)
 	(no_connect
 		(at 76.2 104.14)
 		(uuid "139033de-7afc-423c-8088-f5b0c1786d26")
-	)
-	(no_connect
-		(at 76.2 134.62)
-		(uuid "156f6672-272a-40e2-b82d-c1a9b3cc626b")
-	)
-	(no_connect
-		(at 76.2 144.78)
-		(uuid "79ab7b6c-0257-47bc-a318-7121b26faaa8")
-	)
-	(no_connect
-		(at 76.2 142.24)
-		(uuid "8b37e129-27d9-4559-8c97-253d52d866c7")
 	)
 	(no_connect
 		(at 121.92 205.74)
@@ -4939,8 +5120,12 @@
 		(uuid "ca11d470-dab5-45c3-bf8a-9cef78dfbb74")
 	)
 	(no_connect
-		(at 76.2 139.7)
-		(uuid "d526f832-6a2c-4d45-9e7f-f5b49ea39611")
+		(at 365.76 236.22)
+		(uuid "e200552a-54ef-4a78-8ce6-92b6946c24c5")
+	)
+	(no_connect
+		(at 365.76 180.34)
+		(uuid "f5e4e624-dee6-42ef-893e-83b37b3b2b1b")
 	)
 	(no_connect
 		(at 76.2 114.3)
@@ -5135,6 +5320,16 @@
 			(justify right bottom)
 		)
 		(uuid "0fac0ab6-f674-4388-b532-c45d9200a6da")
+	)
+	(label "V-"
+		(at 76.2 139.7 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "10fe3acc-3da6-4a30-8d44-113f2207c552")
 	)
 	(label "TAP1"
 		(at 447.04 41.91 90)
@@ -6256,6 +6451,16 @@
 		)
 		(uuid "648a64ef-e791-459b-bb73-3c0d72f16275")
 	)
+	(label "ISOA_LP"
+		(at 360.68 187.96 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6615cec1-4db0-4422-a885-bae4f20e98bf")
+	)
 	(label "S7"
 		(at 35.56 139.7 180)
 		(effects
@@ -6285,6 +6490,16 @@
 			(justify right bottom)
 		)
 		(uuid "669e6d4d-54a8-4e27-b26c-8cb4f713c595")
+	)
+	(label "V-"
+		(at 76.2 144.78 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "66faa704-fe62-4cbf-84be-1b53b8bbd722")
 	)
 	(label "VREG"
 		(at 246.38 170.18 270)
@@ -6365,6 +6580,16 @@
 			(justify right bottom)
 		)
 		(uuid "6b6de7f8-4b0b-4ee0-9380-11a1e6143d30")
+	)
+	(label "ISOB_LN"
+		(at 360.68 246.38 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6c7d5df8-1be5-4529-ae93-eb034d93bd56")
 	)
 	(label "C11_F"
 		(at 251.46 49.53 270)
@@ -6846,6 +7071,16 @@
 		)
 		(uuid "88bd6243-fa38-47b0-830f-9319c1e8ef8b")
 	)
+	(label "V-"
+		(at 76.2 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "89271a2f-7e6e-4cae-a170-aa4ad50d04d5")
+	)
 	(label "C18_F"
 		(at 254 85.09 90)
 		(effects
@@ -6865,6 +7100,16 @@
 			(justify right bottom)
 		)
 		(uuid "8d0047c3-b935-459e-bdde-3389a52a7413")
+	)
+	(label "ISOB_LP"
+		(at 360.68 243.84 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8dc65499-a187-4d74-ab9a-62141b401f19")
 	)
 	(label "IMB"
 		(at 76.2 99.06 0)
@@ -7195,6 +7440,16 @@
 			(justify right bottom)
 		)
 		(uuid "a4bfd319-7429-4b15-adca-43703b1f9f88")
+	)
+	(label "V-"
+		(at 76.2 137.16 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a4fa9d57-0b4b-4741-bafc-d8c1ccea7a0b")
 	)
 	(label "C16_F"
 		(at 523.24 176.53 270)
@@ -8266,6 +8521,16 @@
 		)
 		(uuid "eb322dcb-42ac-4254-b2a6-2bc112bb1df8")
 	)
+	(label "V-"
+		(at 76.2 134.62 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "eb5ba67d-3c18-472c-926f-146de85dd0af")
+	)
 	(label "CELL12"
 		(at 447.04 80.01 270)
 		(effects
@@ -8305,6 +8570,16 @@
 			(justify right bottom)
 		)
 		(uuid "eff0feff-7edf-40f6-bee9-f2a9658aeb20")
+	)
+	(label "ISOA_LN"
+		(at 360.68 190.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f037fcb6-9234-44ae-b8e4-fb5b4796b833")
 	)
 	(label "S15"
 		(at 200.66 146.05 270)
@@ -10522,6 +10797,120 @@
 			(project "adbms1818-slave-18s"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "#FLG03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 365.76 243.84 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "241964cf-d3a8-436c-b52e-7b3619a882c0")
+		(property "Reference" "J4B"
+			(at 368.3 242.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "ISOSPI_B_OUT_PH"
+			(at 368.3 245.11 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+			(at 365.76 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 365.76 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "JST PH 2P alternate to J4 (DNP): PH header or bare wires, isoSPI B"
+			(at 365.76 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C131337"
+			(at 365.76 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "B2B-PH-K-S(LF)(SN)"
+			(at 365.76 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "isoSPI port B (next module)"
+			(at 365.76 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0fc90fcf-3622-4182-8b79-ae9f40a0a255")
+		)
+		(pin "2"
+			(uuid "2b2456fe-2a93-42c0-98c2-7a733d1793ff")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "J4B")
 					(unit 1)
 				)
 			)
@@ -13896,7 +14285,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
+		(lib_id "Connector_Generic_MountingPin:Conn_01x02_MountingPin")
 		(at 365.76 228.6 0)
 		(unit 1)
 		(body_style 1)
@@ -13928,7 +14317,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+		(property "Footprint" "Connector_JST:JST_GH_SM02B-GHS-TB_1x02-1MP_P1.25mm_Horizontal"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -13950,7 +14339,7 @@
 				)
 			)
 		)
-		(property "Description" "Placeholder - harness not decided"
+		(property "Description" "JST GH 2P side entry (ENNOID master cable), isoSPI B OUT, to next slave"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -13961,7 +14350,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C131337"
+		(property "LCSC" "C189893"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -13972,7 +14361,7 @@
 				)
 			)
 		)
-		(property "MPN" "B2B-PH-K-S(LF)(SN)"
+		(property "MPN" "SM02B-GHS-TB(LF)(SN)"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -13999,6 +14388,9 @@
 		)
 		(pin "2"
 			(uuid "7d1676e4-954f-426a-bce4-fdca13359b34")
+		)
+		(pin "MP"
+			(uuid "bc43b2ef-cb00-4718-8cdd-ba142ea0b688")
 		)
 		(instances
 			(project "adbms1818-slave-18s"
@@ -19632,7 +20024,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
+		(lib_id "Connector_Generic_MountingPin:Conn_01x02_MountingPin")
 		(at 365.76 172.72 0)
 		(unit 1)
 		(body_style 1)
@@ -19664,7 +20056,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+		(property "Footprint" "Connector_JST:JST_GH_SM02B-GHS-TB_1x02-1MP_P1.25mm_Horizontal"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -19686,7 +20078,7 @@
 				)
 			)
 		)
-		(property "Description" "Placeholder - harness not decided"
+		(property "Description" "JST GH 2P side entry (ENNOID master cable), isoSPI A IN, from master"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -19697,7 +20089,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C131337"
+		(property "LCSC" "C189893"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -19708,7 +20100,7 @@
 				)
 			)
 		)
-		(property "MPN" "B2B-PH-K-S(LF)(SN)"
+		(property "MPN" "SM02B-GHS-TB(LF)(SN)"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -19736,10 +20128,127 @@
 		(pin "2"
 			(uuid "a4cbd51e-dbf0-4d29-9780-e19dbf85fe6f")
 		)
+		(pin "MP"
+			(uuid "758a0a2c-6565-4020-ade0-9b6482f52a81")
+		)
 		(instances
 			(project "adbms1818-slave-18s"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 365.76 187.96 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "a2bf299f-aaec-4f99-a0d4-19ef7e94e9ee")
+		(property "Reference" "J3B"
+			(at 368.3 186.69 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "ISOSPI_A_IN_PH"
+			(at 368.3 189.23 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+			(at 365.76 187.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 365.76 187.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "JST PH 2P alternate to J3 (DNP): PH header or bare wires, isoSPI A"
+			(at 365.76 187.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C131337"
+			(at 365.76 187.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "B2B-PH-K-S(LF)(SN)"
+			(at 365.76 187.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "isoSPI port A (toward master)"
+			(at 365.76 187.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fe04b6e5-fc0e-478a-b8ff-5d31e64e0297")
+		)
+		(pin "2"
+			(uuid "d0ef226d-bca4-4211-9c9a-05ae837f7ac0")
+		)
+		(instances
+			(project "adbms1818-slave-18s"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "J3B")
 					(unit 1)
 				)
 			)
