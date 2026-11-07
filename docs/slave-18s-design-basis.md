@@ -404,6 +404,28 @@ There are no drawn wires.
     chip-side run is about 5 cm for port A and about 3 cm for port B, and port A's pair has to
     get past the J1/J5 tap traces. Deal with it at routing (or move U1 / put both ports at one
     end).
+- **isoSPI ports moved next to U1 (2026-11-06, after J3/J4 became vertical GH).** This replaces the
+  J3/J6, J7/J4 and T501/T601 rows of the table above.
+
+  | Ref | Position (mm) | Rotation | Why |
+  |---|---|---|---|
+  | U1 | 75, 40 | 270° | Pins 61–64 (IMA, IPA, IMB, IPB) now face the empty right side |
+  | T601 / J4 / J7 (port B, OUT) | (103, 24) / (115.5, 24) / (112.5, 13.5) | 0 / 270 / 0 | Upper: U1's port B pins sit above port A's, so the pairs don't cross |
+  | T501 / J3 / J6 (port A, IN) | (103, 46) / (115.5, 46) / (112.5, 55.5) | 0 / 270 / 0 | Lower |
+  | R5xx/C5xx, R6xx/C6xx | column at x = 90 | 0 | Between U1 and each transformer's chip side |
+  | R701–R704, C701–C704, TH701 | y = 55–58, x = 86–104 | 0 | Moved below U1 to make room |
+
+  - Distances: connector pads to transformer line pads about 3.4 mm (limit 2 cm); transformer chip
+    pads to U1 pins 61–64 about 1.5 cm across, about 2 cm along the run (p. 86: close, but ≥ 1–2 cm).
+  - Nothing sits between U1 and the transformers or between the transformers and connectors;
+    each line pair runs straight with no crossing (LP above LN on both). Silk "OUT" at (115.5, 30),
+    "IN" at (115.5, 40). The vertical GH and PH plugs enter from above.
+  - Checks: 0 courtyard overlaps, all inside the outline, `check_pcb_parity.py` PASS,
+    `make_rules.py --check` OK, DRC 0 errors (265 unconnected, silk warnings only).
+  - U1's 3D model now points at KiCad's `LQFP-64-1EP_10x10mm_P0.5mm_EP6.5x6.5mm.step` (same body;
+    the 5 × 5 EP model isn't shipped). T501/T601 and TP1–TP10 still have no 3D model.
+  - Turning U1 moves its cell pins to the top and left; the cell filter/zener rows follow in the
+    Step 3 placement pass.
 - `pcb_move.py` now also turns pad and text angles when it changes a footprint's rotation
   (the file stores those angles including the footprint's own). Before the fix, a rotated
   footprint kept its pads at 0°.
@@ -532,8 +554,8 @@ when the placement is reviewed.
 - [ ] **isoSPI barrier.** 2.0 mm clearance and creepage from each line side (T501/T601 pins
       4–6, J3/J4 including the GH tabs, J6/J7, ISO*_LP/LN) to everything else; no copper pour
       and no foreign tracks under T501/J3/J6 or T601/J4/J7 (rules file). Datasheet p. 86:
-      transformer within 2 cm of its connector (**done 2026-11-06**, about 5 mm), U1 close to
-      but at least 1–2 cm from each transformer (**open**: about 5 cm / 3 cm now), no traces
+      transformer within 2 cm of its connector (**done 2026-11-06**, about 3.4 mm), U1 close to
+      but at least 1–2 cm from each transformer (**done 2026-11-06**: about 1.5–2 cm, ports on the right edge), no traces
       crossing the isoSPI lines, line-side pairs short and side by side. J3 and J6 have their
       pins in opposite order, so one line net needs a via inside the port's own area.
 - [x] **Connector row (2026-11-06).** J3 + J6 (IN), J1, J5, J2, J7 + J4 (OUT) along the top
