@@ -91,9 +91,12 @@ to stack-level (100 V parts).
     current of cell n returning through the C(n−1) series resistor, so each 10 Ω carries
     about 89 mA (≈ 79 mW, 79 % of an 0603's 0.1 W). The 1206 is rated 0.25 W.
 11. **Test points and mounting holes (2026-11-06).** Not part of the circuit; bench access.
-12. **isoSPI connectors J3/J4 = JST GH 2P, with JST PH 2P alternates J6/J7 (DNP) (2026-11-06).**
+12. **isoSPI connectors J3/J4 = JST GH 2P vertical (BM02B-GHS-TBT), with JST PH 2P alternates
+    J6/J7 (DNP) (2026-11-06).**
     Figure 112 shows no connector. The bought ENNOID master and ENNOID's slaves use GH 2P for
-    isoSPI, so the master's cable plugs straight in. J6/J7 are PH footprints wired in parallel
+    isoSPI, so the master's cable plugs straight in. The top-entry (vertical) header replaced the
+    side-entry SM02B-GHS-TB the same day, so the ports no longer have to sit on the board edge
+    with their openings facing out. J6/J7 are PH footprints wired in parallel
     and left unfitted, so a PH header or two bare wires can be soldered instead. See
     "Connectors".
 13. **GPIO5–GPIO9 tied to V− (2026-11-06).** Figure 112 leaves them open. The ENNOID firmware
@@ -172,7 +175,7 @@ All picks were checked on jlcpcb.com/partdetail on 2026-11-05 (Basic/Extended fl
 | TH701 | Murata NCP18WF104F12RB, 100 k 1 % B 4250 K | 0603 | C71280 | Extended | 115 k |
 | J1, J5 | JST B10B-PH-K-S(LF)(SN), 1×10 2 mm, 100 V 2 A (cell taps) | JST_PH_B10B-PH-K_1x10_P2.00mm_Vertical | C158038 | Extended | 25,205 |
 | J2 | JST B6B-PH-K-S(LF)(SN), 1×6 (cell NTCs) | JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical | C131342 | Extended | 32,477 |
-| J3, J4 | JST SM02B-GHS-TB(LF)(SN), GH 1×2 1.25 mm, SMD side entry, 50 V 1 A (isoSPI A / B) | JST_GH_SM02B-GHS-TB_1x02-1MP_P1.25mm_Horizontal | C189893 | Extended | ~130 k (LCSC) |
+| J3, J4 | JST BM02B-GHS-TBT(LF)(SN), GH 1×2 1.25 mm, SMD top entry (vertical), 50 V 1 A (isoSPI A / B) | JST_GH_BM02B-GHS-TBT_1x02-1MP_P1.25mm_Vertical | C161690 | Extended | **130 (LCSC), JLC pre-order ~13 days** |
 | J6, J7 | JST B2B-PH-K-S(LF)(SN), PH 1×2, **DNP** (alternate to J3/J4) | JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical | C131337 | Extended | not in the JLC BOM |
 | F100–F120 | Littelfuse 0466.250NRHF, 250 mA 125 V DC, 50 A interrupt | Fuse_1206_3216Metric | C83557 | Extended | 50,048 |
 | D101–D118 | BZT52C6V8 (CJ), 6.8 V zener 500 mW | D_SOD-123 | C2120 | Extended | 51,589 |
@@ -254,7 +257,7 @@ both, so each harness half carries its own reference.
 | J1 CELL_TAPS_C0-C9 | 10 | pin n = C(n−1): pin 1 = C0 (V−) … pin 10 = C9 |
 | J5 CELL_TAPS_C9-C18 | 10 | pin n = C(n+8): pin 1 = C9 … pin 10 = C18 (top of stack) |
 | J2 NTC_3x2 | 6 | 1–2 NTC1 (GPIO1, V−), 3–4 NTC2 (GPIO2, V−), 5–6 NTC3 (GPIO3, V−); odd pin = GPIO |
-| J3 ISOSPI_A_IN, J4 ISOSPI_B_OUT | 2 | **JST GH** (since 2026-11-06). Pin 1 = +, pin 2 = − (transformer line side); twisted pair, wired pin-to-pin. Pad MP = metal hold-down tabs, no circuit |
+| J3 ISOSPI_A_IN, J4 ISOSPI_B_OUT | 2 | **JST GH vertical** (BM02B-GHS-TBT, since 2026-11-06). Pin 1 = +, pin 2 = − (transformer line side); twisted pair, wired pin-to-pin. Pad MP = metal hold-down tabs, no circuit |
 | J6, J7 (DNP) | 2 | JST PH: J6 = alternate to J3 (port A), J7 = alternate to J4 (port B), same nets (pin 1 = +). Named J6/J7 because KiCad treats a reference that does not end in a digit (J3B) as unannotated and blocks F8. Fit a PH header or solder two wires instead of using the GH |
 
 Why these choices:
@@ -267,14 +270,25 @@ Why these choices:
   the other half still has its reference.
 - **Rejected:** a single connector would mean Micro-Fit or XH 1×20 (bigger). GH is rated
   only 50 V, too little for the cell taps.
-- **isoSPI is GH (2026-11-06):** JST SM02B-GHS-TB(LF)(SN), the same series as the ENNOID
-  master's isoSPI port, so its cable plugs in. Data from JST eGH.pdf: 1.0 A, 50 V AC/DC, 500 V AC
-  withstand for 1 min, AWG 30–26. The 50 V only has to hold the isoSPI signal between its two
-  pins; the up to 151 V between the line side and the module is held by the 2 mm barrier on the
-  PCB. KiCad's stock footprint matches JST's side-entry land pattern (pads 0.6 × 1.7 mm at
-  1.25 mm, tabs 1.0 × 2.7 mm, 1.35 mm from the outer pin, 5.4 / 3.7 mm overall). The plug enters
-  from the tab side, so that side faces the board edge.
-- **The GH tabs count as line side.** They sit about 1.5 mm from the signal pads, inside the 2 mm
+- **isoSPI is GH (2026-11-06):** the same series as the ENNOID master's isoSPI port, so its
+  cable plugs in. Data from JST eGH.pdf: 1.0 A, 50 V AC/DC, 500 V AC withstand for 1 min,
+  AWG 30–26. The 50 V only has to hold the isoSPI signal between its two pins; the up to 151 V
+  between the line side and the module is held by the 2 mm barrier on the PCB.
+- **Vertical GH, BM02B-GHS-TBT(LF)(SN) (changed 2026-11-06, was the side-entry SM02B-GHS-TB,
+  C189893).** eGH.pdf p. 2 lists BM02B-GHS-TBT under "Top entry type". The plug comes in from
+  above (7.3 mm mated height), so the connector can sit anywhere on the board instead of on the
+  edge facing out, which frees the isoSPI ports to move next to U1 (Step 2 of the placement).
+  JLC: C161690, Extended, checked on jlcpcb.com 2026-11-06. **Stock is thin:** LCSC 130, JLC
+  shows 133 as a pre-order (about 13 days). Recheck before ordering; GH-compatible 1.25 mm
+  vertical headers from HDGC, JUSHUO or BOOMELE are in stock at LCSC but their land patterns are
+  not checked.
+- **Footprint check (2026-11-06):** stock KiCad
+  `Connector_JST:JST_GH_BM02B-GHS-TBT_1x02-1MP_P1.25mm_Vertical` against eGH.pdf p. 2 "Top entry
+  type": signal pads 0.6 × 1.7 mm at 1.25 mm, tabs 1.0 × 2.8 mm with the inner edge 1.35 mm from
+  the outer pin, 5.6 mm overall, 1.1 mm from signal pad to tab. All match. JST draws the pattern
+  from the mounting side with No. 1 circuit on the right; KiCad's top view is that drawing turned
+  180°, so pad 1 (left) is the same pin. Pad 1 = +, pad 2 = −, as before. KiCad ships the STEP model.
+- **The GH tabs count as line side.** They sit about 1.1 mm from the signal pads, inside the 2 mm
   barrier, so the symbol has the MP pin (no-connect) and `make_rules.py` puts the resulting
   `unconnected-(J3-…)` net in port A's line side (port B the same), like T501's pad 5.
 - **J6/J7** keep the PH option: DNP, same nets, also inside the barrier and the "only isoSPI

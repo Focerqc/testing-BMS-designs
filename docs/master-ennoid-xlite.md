@@ -38,7 +38,7 @@ Sources:
 
 | Item | ENNOID | This slave | Status |
 |---|---|---|---|
-| isoSPI connector | JST GH 2P on master and ENNOID 18S slaves | J3/J4 JST GH 2P (SM02B-GHS-TB), PH 2P alternates J6/J7 (DNP) | Done 2026-11-06 |
+| isoSPI connector | JST GH 2P on master and ENNOID 18S slaves | J3/J4 JST GH 2P vertical (BM02B-GHS-TBT, C161690), PH 2P alternates J6/J7 (DNP) | Done 2026-11-06 |
 | isoSPI pin polarity | labelled on master silk (not readable in the PDF) | pin 1 = +, pin 2 = − | **Open:** confirm with the master's cable / footprint |
 | Thermistor default | NTC 100 kΩ, B 4250 | 100 kΩ pull-ups + TH701 NCP18WF104F12RB (100 k, B 4250) | Matches |
 | C0 | "C0 correspond to the slave negative voltage reference" | TAP0 / V− | Matches |
