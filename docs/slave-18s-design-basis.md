@@ -14,7 +14,9 @@ is `slave-18s/bom.csv`.
 - isoSPI daisy chain: port A in, port B out (ISOMD tied to VREG).
 - Passive balancing through the internal S-pin switches.
 - Thermistor inputs on GPIOs.
-- No power switching and no charge control. Those live in the master.
+- No power switching and no charge control. Those live in the master, a bought ENNOID
+  Master-XLITE-ISC (decision 2026-11-06, see `docs/master-ennoid-xlite.md`). No XT30s on
+  the slave.
 
 ## The chip (from the datasheet, Rev. B)
 
@@ -518,6 +520,8 @@ when the placement is reviewed.
 - [x] Test points and mounting holes. Done 2026-11-06 (hole positions open).
 - [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
 - [ ] Harness: match J1/J5/J2 pin order to the Funwheel pack's tap and NTC wiring.
+- [ ] ENNOID master fit (`docs/master-ennoid-xlite.md`): J3/J4 JST PH vs the master's GH 2P,
+      isoSPI polarity, and ADBMS1818 support in the ENNOID firmware (LTC6813 documented).
 - [ ] Board outline (the current 120 × 70 mm rectangle is a placeholder).
 - [x] Import the schematic into the PCB. Done 2026-11-05 with F8: 90 footprints, parity 0.
       See "PCB".

@@ -12,6 +12,7 @@ talking to a separate master over isoSPI.
 |---|---|
 | `slave-18s/` | KiCad 10 project for the ADBMS1818 18S slave (clean slate) |
 | `docs/slave-18s-design-basis.md` | Values, reasoning and open items for the slave |
+| `docs/master-ennoid-xlite.md` | The bought master (ENNOID Master-XLITE-ISC) and how the slave fits under it |
 | `_tools/pcb_dashboard/` | Board Boxes: local KiCad dashboard (view, annotate, chip info, fresh 3D renders, copy placement prompts) |
 | `_tools/kicad_sch/` | Schematic helpers: netlist + ERC check of the slave, label fixer, region renders (see AGENTS.md) |
 | `site/` | Published GitHub Pages copy of Board Boxes plus the News page |
@@ -37,4 +38,4 @@ Then push `site/` to `main`; `.github/workflows/pages.yml` publishes it.
 1. 18S slave schematic from the ADBMS1818 typical application.
 2. Slave PCB, bench test with a resistor-ladder cell simulator + LTC6820/ESP32 dongle.
 3. Carrier PCB taking two slaves for a plug-and-play Funwheel harness.
-4. Master (separate box): isoSPI bridge, MCU, charge control.
+4. Master: bought, not designed here. ENNOID Master-XLITE-ISC (see `docs/master-ennoid-xlite.md`).
