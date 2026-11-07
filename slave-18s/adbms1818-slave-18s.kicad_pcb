@@ -1944,7 +1944,7 @@
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/3dmodels/HM2113ZNL_3D.STEP"
-			(offset (xyz 0 0 0))
+			(offset (xyz 0 0 3.25))
 			(scale (xyz 1 1 1))
 			(rotate (xyz -90 0 -90))
 		)
@@ -31748,7 +31748,7 @@
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/3dmodels/HM2113ZNL_3D.STEP"
-			(offset (xyz 0 0 0))
+			(offset (xyz 0 0 3.25))
 			(scale (xyz 1 1 1))
 			(rotate (xyz -90 0 -90))
 		)
