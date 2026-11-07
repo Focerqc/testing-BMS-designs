@@ -12,6 +12,7 @@ Exit code 0 only if 2-4 pass. PWR_FLAGs have no footprint and are not in the net
 usage: python _tools/kicad_sch/check_pcb_parity.py [--pcb FILE] [--no-drc]
 """
 import argparse
+import re
 import json
 import subprocess
 import sys
@@ -48,6 +49,9 @@ def board(pcb):
         for pad in kids(fp, "pad"):
             net = kid(pad, "net")
             name = net[-1] if net else ""
+            if name.startswith("unconnected-"):
+                # a no-connect pin with several pads (J3/J4 MP tabs) gets one net per pad: X, X_1
+                name = re.sub(r"_\d+$", "", name)
             if pad[1] == "":
                 extra.append((ref, name))
             else:

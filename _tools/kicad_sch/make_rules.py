@@ -57,11 +57,14 @@ LOW = re.compile(r"/(V-|DRIVE|VREG|VREF[12]|IBIAS|ICMP|GPIO\d+|IP[AB]|IM[AB]|ISO
                  r"|unconnected-\(U1-")           # <= 6 V above V-
 TAPPED = re.compile(r"/(?:CELL|TAP)(\d+)$|/C(\d+)_F$|/S(\d+)$")
 TOP = {"/VP_F", "/VCOLL", "/VBAT_F"}              # top of stack, after R301/R302
-LINE = {"A": re.compile(r"/ISOA_L[PN]$|unconnected-\(T501-"),
-        "B": re.compile(r"/ISOB_L[PN]$|unconnected-\(T601-")}
+# Line side includes the transformer's unconnected LINE_CT pad 5 and the GH connector's
+# hold-down tabs (J3/J4 pad MP, no circuit, about 1.5 mm from the signal pads)
+LINE = {"A": re.compile(r"/ISOA_L[PN]$|unconnected-\((T501|J3)-"),
+        "B": re.compile(r"/ISOB_L[PN]$|unconnected-\((T601|J4)-")}
 # isoSPI nets allowed inside the transformer and connector courtyards, per port
-PORT = {"A": (("T501", "J3"), re.compile(r"/(IPA|IMA|ISOA_\w+)$|unconnected-\(T501-")),
-        "B": (("T601", "J4"), re.compile(r"/(IPB|IMB|ISOB_\w+)$|unconnected-\(T601-"))}
+# (J6/J7: JST PH alternates to J3/J4, DNP, in parallel with the GH)
+PORT = {"A": (("T501", "J3", "J6"), re.compile(r"/(IPA|IMA|ISOA_\w+)$|unconnected-\((T501|J3)-")),
+        "B": (("T601", "J4", "J7"), re.compile(r"/(IPB|IMB|ISOB_\w+)$|unconnected-\((T601|J4)-"))}
 BARRIER = 2.0       # mm, clearance and creepage, line side vs everything else
 HV_FAR = 0.6        # mm, IPC-2221B B2 31-150 V
 HOLE_KEEPOUT = 2.9  # mm, copper to M3 hole edge (4.5 mm from the centre)
