@@ -14317,7 +14317,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_GH_SM02B-GHS-TB_1x02-1MP_P1.25mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_GH_BM02B-GHS-TBT_1x02-1MP_P1.25mm_Vertical"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -14339,7 +14339,7 @@
 				)
 			)
 		)
-		(property "Description" "JST GH 2P side entry (ENNOID master cable), isoSPI B OUT, to next slave"
+		(property "Description" "JST GH 2P vertical, top entry (ENNOID master cable), isoSPI B OUT, to next slave"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -14350,7 +14350,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C189893"
+		(property "LCSC" "C161690"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -14361,7 +14361,7 @@
 				)
 			)
 		)
-		(property "MPN" "SM02B-GHS-TB(LF)(SN)"
+		(property "MPN" "BM02B-GHS-TBT(LF)(SN)"
 			(at 365.76 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -20056,7 +20056,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_GH_SM02B-GHS-TB_1x02-1MP_P1.25mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_GH_BM02B-GHS-TBT_1x02-1MP_P1.25mm_Vertical"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -20078,7 +20078,7 @@
 				)
 			)
 		)
-		(property "Description" "JST GH 2P side entry (ENNOID master cable), isoSPI A IN, from master"
+		(property "Description" "JST GH 2P vertical, top entry (ENNOID master cable), isoSPI A IN, from master"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -20089,7 +20089,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C189893"
+		(property "LCSC" "C161690"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -20100,7 +20100,7 @@
 				)
 			)
 		)
-		(property "MPN" "SM02B-GHS-TB(LF)(SN)"
+		(property "MPN" "BM02B-GHS-TBT(LF)(SN)"
 			(at 365.76 172.72 0)
 			(hide yes)
 			(show_name no)
