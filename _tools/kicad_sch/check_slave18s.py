@@ -21,7 +21,7 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
-from kisch import DEFAULT_SCH, KICAD_CLI, kid, kids, load, no_connects, parse, symbols
+from kisch import DEFAULT_SCH, KICAD_CLI, VARIANTS, kid, kids, load, no_connects, parse, symbols
 
 TMP = Path(tempfile.gettempdir())
 E = {b: {} for b in range(1, 7)}      # block -> {ref.pin: net}
@@ -94,20 +94,22 @@ for k, net in enumerate(["V-", "V-", "VREG", "VREF1", "VREF2", "DRIVE", "IPA", "
     E[6][f"TP{k}.1"] = net
 
 
-LEAN_SCH = DEFAULT_SCH.parents[1] / "slave-18s-lean" / "adbms1818-slave-18s-lean.kicad_sch"
+LEAN_SCH = VARIANTS["lean"]
 LEAN_DROP = re.compile(r"^(F1\d\d|D1\d\d|D301|C1\d\d)\.")  # make_lean.py removes these
 
 
 def lean_net(net):
-    """18S Lean has no fuses: taps land on CELLn, VBAT_F is CELL18, CELL0 joins V-."""
+    """18S Lean has no fuses: taps land on CELLn (J1.1 on CELL0), VBAT_F is CELL18."""
     m = re.fullmatch(r"TAP(\d+)", net)
     if m:
         net = f"CELL{m.group(1)}"
-    return {"VBAT_F": "CELL18", "CELL0": "V-"}.get(net, net)
+    return {"VBAT_F": "CELL18"}.get(net, net)
 
 
 def to_lean():
     for b in BLOCKS:
+        # F120 (V- supply fuse) becomes the net tie NT1: pin 1 on TAP0 -> CELL0, pin 2 on V-
+        E[b] = {re.sub(r"^F120\.", "NT1.", k): v for k, v in E[b].items()}
         E[b] = {k: lean_net(v) for k, v in E[b].items() if not LEAN_DROP.match(k)}
         NC[b] = {k for k in NC[b] if not LEAN_DROP.match(k)}
 

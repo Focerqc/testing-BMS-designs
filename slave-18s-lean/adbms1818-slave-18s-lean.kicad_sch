@@ -3549,6 +3549,148 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:NetTie_2"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "NT"
+				(at 0 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "NetTie_2"
+				(at 0 -1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Net tie, 2 pins"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "net tie short"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Net*Tie*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "NetTie_2_0_1"
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "NetTie_2_1_1"
+				(pin passive line
+					(at -2.54 0 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 0 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:R"
 			(pin_numbers
 				(hide yes)
@@ -4948,7 +5090,7 @@
 		)
 		(uuid "5fada218-09f2-4239-95ab-42c0bd72a90e")
 	)
-	(text "Wired with net labels: labels with the same name are one net. 18S Lean: no fuses, clamps or C-pin caps; generated from slave-18s by make_lean.py, do not edit by hand. C0 sense and V- share the bottom tap (J1.1).\nADBMS1818 Figure 112, isoSPI filtering per Fig. 104(B). See ../docs/slave-18s-design-basis.md."
+	(text "Wired with net labels: labels with the same name are one net. 18S Lean: no fuses, clamps or C-pin caps; generated from slave-18s by make_lean.py, do not edit by hand. C0 sense (CELL0, J1.1) and V- meet only at net tie NT1, which replaces F120.\nADBMS1818 Figure 112, isoSPI filtering per Fig. 104(B). See ../docs/slave-18s-design-basis.md."
 		(exclude_from_sim no)
 		(at 15.24 15.24 0)
 		(effects
@@ -5402,6 +5544,16 @@
 			(justify right bottom)
 		)
 		(uuid "2d281a9e-fd82-493c-abbb-0f16977d92d9")
+	)
+	(label "CELL0"
+		(at 447.04 109.22 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2e2b10b4-faea-4788-b65d-c15ab384d9d8")
 	)
 	(label "CELL2"
 		(at 137.16 41.91 90)
@@ -6393,6 +6545,16 @@
 		)
 		(uuid "8f50ee52-5b88-4c7b-9504-cc90b5b1c64e")
 	)
+	(label "V-"
+		(at 447.04 114.3 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8fc09bc6-ec9c-466c-ac78-3a193884035b")
+	)
 	(label "VREF2"
 		(at 142.24 240.03 90)
 		(effects
@@ -6823,7 +6985,7 @@
 		)
 		(uuid "af06dc0f-da2f-495d-89e8-010331561a0f")
 	)
-	(label "V-"
+	(label "CELL0"
 		(at 111.76 41.91 90)
 		(effects
 			(font
@@ -7283,7 +7445,7 @@
 		)
 		(uuid "dcbe26c9-7db8-48d6-b8ba-bcf8648bce70")
 	)
-	(label "V-"
+	(label "CELL0"
 		(at 360.68 58.42 180)
 		(effects
 			(font
@@ -9133,6 +9295,98 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "#FLG03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 447.04 111.76 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "23ac50f5-5abd-5124-b881-ac3a173886b3")
+		(property "Reference" "NT1"
+			(at 449.58 110.49 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 449.58 113.03 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
+			(at 447.04 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 447.04 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Net tie: CELL0 (C0 sense, J1.1) to V-. Place next to J1.1; the only copper where the two nets meet"
+			(at 447.04 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "18S Lean: replaces the V- supply fuse F120"
+			(at 447.04 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b165a272-b5a3-523e-90f0-1e64aa24f7d3")
+		)
+		(pin "2"
+			(uuid "ad0314b0-28b5-58e9-9892-109c0047f2a9")
+		)
+		(instances
+			(project "adbms1818-slave-18s-lean"
+				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
+					(reference "NT1")
 					(unit 1)
 				)
 			)
