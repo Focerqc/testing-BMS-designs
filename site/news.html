@@ -22,25 +22,25 @@
   <main id="top">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="pulse"></span> Update · November 6, 2026</p>
-        <h1>The 18S slave is<br><em>ready for placement.</em></h1>
-        <p class="intro">An ADBMS1818 cell monitor for 18 Li-ion cells, with passive balancing and an isoSPI daisy chain to a separate master. The schematic is complete for a first bench board, with hot-plug protection and test points. The isoSPI ports now use the same JST GH plug as the bought ENNOID master, the connector row and mounting holes are placed, and the master's public firmware should drive the chip as an LTC6813-1. Next come the rest of the placement and routing.</p>
+        <p class="eyebrow"><span class="pulse"></span> Update · November 8, 2026</p>
+        <h1>The Lean slave<br><em>shrinks to 70&nbsp;mm.</em></h1>
+        <p class="intro">An ADBMS1818 cell monitor for 18 Li-ion cells, with passive balancing and an isoSPI daisy chain to a separate master. One schematic now makes two boards: <b>Guard</b>, with hot-plug protection for the bench, and <b>Lean</b>, without it. Lean is being shrunk toward a 70 × 35 mm module, so that one day two of them can share a 156.5 × 37 mm battery slot. First try: 70 × 50 mm, with smaller balance resistors and isoSPI transformers.</p>
         <div class="hero-actions">
           <a class="button primary" href="./">Explore the board <span>→</span></a>
-          <a class="button secondary" href="./files/adbms1818-slave-18s-schematic.pdf">Schematic PDF <span>↗</span></a>
+          <a class="button secondary" href="./files/adbms1818-slave-18s-lean-schematic.pdf">Lean schematic PDF <span>↗</span></a>
         </div>
       </div>
       <figure class="hero-board">
-        <img src="./files/adbms1818-slave-18s-3d-iso.png" alt="3D render of the ADBMS1818 slave PCB with all parts placed, no traces yet" width="1400" height="910">
-        <figcaption><span class="tag">3D render</span> Connector row and holes placed, the rest in rough groups · no traces yet</figcaption>
+        <img src="./files/lean-try1-70x50-top.jpg" alt="Top-down 3D render of the 18S Lean slave at 70 by 50 mm: two cell plugs on top, a staggered row of 37 resistors, the ADBMS1818 and one isoSPI port, no traces yet" width="1400" height="1000">
+        <figcaption><span class="tag">3D render</span> 18S Lean, try 1 at 70 × 50 mm · no traces yet</figcaption>
       </figure>
     </section>
 
     <section class="stats" aria-label="Key numbers">
       <div><strong>18</strong><span>cells per slave</span></div>
       <div><strong>75.6 V</strong><span>stack at 4.2 V/cell</span></div>
-      <div><strong>150</strong><span>parts on the PCB</span></div>
-      <div><strong>372/372</strong><span>pins match the wiring table</span></div>
+      <div><strong>70 × 50</strong><span>mm, Lean try 1 (was 120 × 70)</span></div>
+      <div><strong>93</strong><span>parts on Lean (Guard: 150)</span></div>
       <div><strong>0</strong><span>ERC errors or warnings</span></div>
       <div><strong>0</strong><span>PCB ↔ schematic mismatches</span></div>
     </section>
@@ -48,7 +48,7 @@
     <section id="progress" class="section">
       <div class="section-head">
         <div><p class="eyebrow">01 / Progress</p><h2>Where things stand</h2></div>
-        <span class="snapshot">Snapshot · Nov 6, 2026</span>
+        <span class="snapshot">Snapshot · Nov 8, 2026</span>
       </div>
       <ol class="timeline">
         <li class="done"><span class="dot"></span><div><span class="when">Nov 4</span><h3>Design basis</h3><p>Values from the ADBMS1818 typical application (Figure 112), plus isoSPI noise filtering and thermistor setup from a working reference board. Every deviation is written down with its reason.</p></div></li>
@@ -60,31 +60,32 @@
         <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Master firmware checked</h3><p>The ENNOID master's public firmware sends only commands that match the ADBMS1818 datasheet when set to LTC6813-1, so no custom firmware is expected. It leaves the spare GPIO pull-downs off, so GPIO5–9 are now tied to V− instead of floating. A bench test with one slave is the real proof.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>isoSPI on JST GH, connector row placed</h3><p>J3/J4 are now JST GH 2P like the master, with not-fitted JST PH footprints J6/J7 beside them for a PH header or bare wires. All connectors sit in one row centred on the top edge, IN on the left and OUT on the right, each transformer about 5 mm from its plug, and a mounting hole in every corner.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Vertical GH, isoSPI ports beside U1</h3><p>J3/J4 are now the top-entry JST GH (BM02B-GHS-TBT), so the plugs come in from above and the ports no longer need the board edge. Both ports moved to the right edge next to U1, which turned 270° so its isoSPI pins face them: each transformer is about 3.4 mm from its plug and about 1.5–2 cm from the chip, and the two pairs don't cross. U1 now renders with its 3D body.</p></div></li>
-        <li class="now"><span class="dot"></span><div><span class="when">Now</span><h3>Placement, outline and routing</h3><p>The rest of the placement in Board Boxes, the real board outline, copper for heat, then traces.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Two variants: Guard and Lean</h3><p>A script turns the Guard schematic into Lean: no tap fuses, zener clamps, TVS or cell-input caps, 93 parts instead of 150. A net tie keeps the C0 sense wire on its own trace, and DRC flags any other copper joining it to ground.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 7</span><h3>Layout practice in Board Boxes</h3><p>A card in the dashboard lays out all 18 channels as one staggered row under the cell plugs, in the chip's pin order, so no tap trace has to cross another. The long-term battery slot is drawn on the board as a dashed outline.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 8</span><h3>Lean shrink, try 1: 70 × 50 mm</h3><p>Balance resistors went from 2512 to 2010, so the row shrinks from 77 to 62 mm, and the isoSPI transformers to the Bourns SM91502AL: half the area, still 1000 VDC working. A script places the whole board from a few numbers, so each try takes seconds. Everything fits except isoSPI port A.</p></div></li>
+        <li class="now"><span class="dot"></span><div><span class="when">Now</span><h3>Fit port A, then route</h3><p>Find room for the second isoSPI port (a taller board, moved test points, or a new spot), then copper for heat and traces. After that, squeeze toward 35 mm tall.</p></div></li>
         <li><span class="dot"></span><div><span class="when">Later</span><h3>Bench test, carrier and master</h3><p>A resistor-ladder cell simulator and isoSPI dongle on the bench, a carrier for two slaves on the Funwheel harness, then the master in its own box.</p></div></li>
       </ol>
     </section>
 
     <section id="board" class="section board-section">
       <div class="section-head">
-        <div><p class="eyebrow">02 / The board today</p><h2>isoSPI ports beside U1, the rest still grouped.</h2></div>
+        <div><p class="eyebrow">02 / The board today</p><h2>18S Lean at 70 × 50 mm, try 1.</h2></div>
         <span class="snapshot">Top view · KiCad 10 render</span>
       </div>
       <div class="board-grid">
-        <figure class="board-shot"><img src="./files/adbms1818-slave-18s-3d-top.png" alt="Top-down render of the slave PCB showing the connector row, balance resistors, cell filters, U1, the regulator and both isoSPI transformers" loading="lazy" width="1400" height="816"></figure>
+        <figure class="board-shot"><img src="./files/lean-try1-70x50-top.jpg" alt="Top-down render of the 18S Lean slave at 70 by 50 mm showing the cell plugs, the staggered resistor row, U1, isoSPI port B, the test loops and the regulator" loading="lazy" width="1400" height="1000"></figure>
         <div class="board-notes">
           <h3>What you're looking at</h3>
           <ul class="legend">
-            <li><b>Top row</b> J1 + J5 cell taps (C0–C9, C9–C18), J2 thermistors</li>
-            <li><b>Under the row</b> 18 × 33 Ω balance resistors (2512)</li>
-            <li><b>Right edge</b> OUT (T601, J4 GH + J7 PH) above IN (T501, J3 GH + J6 PH), terminations between them and U1</li>
-            <li><b>Left</b> cell filters 10 Ω + 100 nF</li>
-            <li><b>Lower left</b> 18 zener clamps under the filters, then 21 tap and supply fuses and the TVS</li>
-            <li><b>Centre</b> U1 ADBMS1818, 64-lead LQFP with exposed pad; thermistor parts below it</li>
-            <li><b>Bottom</b> Q301 regulator NPN, V+ filter, VREF and bias parts</li>
-            <li><b>Bottom edge</b> 10 probe loops; 4 bare high-voltage pads beside Q301; M3 holes in the corners</li>
+            <li><b>Top edge</b> J1 + J5 cell taps (C0–C9, C9–C18) centred, J2 thermistors standing on the right edge, M3 holes in the corners</li>
+            <li><b>Under the plugs</b> 18 × 33 Ω balance resistors (2010, outer row) and 19 × 10 Ω (1206, inner row), half a pitch apart, in the chip's pin order</li>
+            <li><b>Centre right</b> U1 ADBMS1818, cell pins facing the row; the empty band above and left of it is kept for the tap traces</li>
+            <li><b>Right of U1</b> isoSPI port B (OUT): T601 SM91502AL, J4 GH + J7 PH, terminations</li>
+            <li><b>Under U1</b> VREG and VREF caps, isoSPI bias, thermistor filters</li>
+            <li><b>Bottom left</b> 10 probe loops, Q301 regulator NPN, 4 bare high-voltage pads</li>
           </ul>
-          <div class="honest"><span>Honest status</span><p>No traces yet (265 connections to route). The 120 × 70 mm outline is a placeholder; only the connector row, transformers and holes are placed, the other groups are rough. The isoSPI ports are placed to the datasheet's layout rules; the cell filter rows still have to follow U1's new rotation. DRC has 0 errors; only silkscreen warnings and the unrouted connections remain.</p></div>
+          <div class="honest"><span>Honest status</span><p>No traces yet. isoSPI port A (IN) doesn't fit yet and waits beside the board. The new transformer has no 3D model, so the render shows only its pads. DRC has no courtyard or clearance errors; silkscreen overlaps and the unrouted connections remain. Guard stays at 120 × 70 mm with its protection parts.</p></div>
           <a class="button primary small" href="./">Inspect in Board Boxes <span>→</span></a>
         </div>
       </div>
@@ -97,11 +98,13 @@
       </div>
       <div class="part-list">
         <details class="part-row"><summary><span class="part-ref">U1</span><span class="part-name">ADI ADBMS1818</span><span class="part-status chosen">Chosen · pins checked</span><span class="chevron">+</span></summary><div class="part-detail"><p>An 18-cell monitor with isoSPI and internal balance switches (4 Ω typ, 10 Ω max). The exposed pad is V− and must be soldered. The symbol was built from the datasheet pin table, and the netlist was checked pin by pin.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#the-chip-from-the-datasheet-rev-b">The chip ↗</a></div></details>
-        <details class="part-row"><summary><span class="part-ref">R201–R218</span><span class="part-name">33 Ω balance resistors, 2512 1 W</span><span class="part-status chosen">~89 mA per cell</span><span class="chevron">+</span></summary><div class="part-detail"><p>Corrected on Nov 6: the balance current also flows through the next cell's 10 Ω filter resistor (datasheet Fig. 99), so it is about 89 mA, 0.26 W each at 4.2 V, 26 % of the rating. All 18 at once is about 6.7 W, so firmware should balance odd and even cells alternately. The die thermal budget is still open.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#balance-resistor-sizing">Sizing table ↗</a></div></details>
+        <details class="part-row"><summary><span class="part-ref">R201–R218 (Lean)</span><span class="part-name">33 Ω balance resistors, 2010 0.75 W</span><span class="part-status chosen">Changed Nov 8</span><span class="chevron">+</span></summary><div class="part-detail"><p>Stood on end, a 2010 is 2.5 mm wide, so the 18 channels fit a 3.3 mm pitch and the row shrinks from 77 to about 62 mm. Each runs at 0.26 W, 35 % of its rating. The heat now sits in a narrower strip, so alternating odd and even cells matters more. Guard keeps the 2512s.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#variants-18s-guard-and-18s-lean-split-2026-11-06">Variants and reasons ↗</a></div></details>
+        <details class="part-row"><summary><span class="part-ref">T501, T601 (Lean)</span><span class="part-name">Bourns SM91502AL isoSPI transformers</span><span class="part-status chosen">Changed Nov 8</span><span class="chevron">+</span></summary><div class="part-detail"><p>Half the area of the HM2113ZNL (10 × 8 mm footprint, 5.7 mm tall), with the choke built in and the same 1000 VDC working rating that the ~76 V between modules needs. Its pins match the old part one for one, so no wiring changed. The tiny 4.5 × 3.2 mm LAN transformers were rejected: they state no working voltage.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#variants-18s-guard-and-18s-lean-split-2026-11-06">Variants and reasons ↗</a></div></details>
+        <details class="part-row"><summary><span class="part-ref">R201–R218 (Guard)</span><span class="part-name">33 Ω balance resistors, 2512 1 W</span><span class="part-status chosen">~89 mA per cell</span><span class="chevron">+</span></summary><div class="part-detail"><p>Corrected on Nov 6: the balance current also flows through the next cell's 10 Ω filter resistor (datasheet Fig. 99), so it is about 89 mA, 0.26 W each at 4.2 V, 26 % of the rating. All 18 at once is about 6.7 W, so firmware should balance odd and even cells alternately. The die thermal budget is still open.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#balance-resistor-sizing">Sizing table ↗</a></div></details>
         <details class="part-row"><summary><span class="part-ref">Q301</span><span class="part-name">FZT853 regulator NPN, SOT-223</span><span class="part-status chosen">Kept · needs copper</span><span class="chevron">+</span></summary><div class="part-detail"><p>Drops the stack to the 5 V VREG: about 1.4–1.6 W at 75.6 V. Its 3 W rating holds on 52 × 52 mm of 2 oz collector copper (junction ≈ 92 °C at 1.6 W), so placement must leave it a large copper area. Reviewed and kept on Nov 6. A DPAK part is the fallback.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#open-items">Decision and numbers ↗</a></div></details>
-        <details class="part-row"><summary><span class="part-ref">T501, T601</span><span class="part-name">Pulse HM2113ZNL isoSPI transformers</span><span class="part-status chosen">1000 VDC working</span><span class="chevron">+</span></summary><div class="part-detail"><p>The datasheet's HX1188FNL is rated only about 60 V working, and adjacent 18S modules sit about 76 V apart. The HM2113ZNL has a built-in choke and is AEC-Q200. The 2 × 51 Ω split termination and 10 nF centre-tap caps keep the link working while the motor runs.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#isospi-transformer">Transformer notes ↗</a></div></details>
+        <details class="part-row"><summary><span class="part-ref">T501, T601 (Guard)</span><span class="part-name">Pulse HM2113ZNL isoSPI transformers</span><span class="part-status chosen">1000 VDC working</span><span class="chevron">+</span></summary><div class="part-detail"><p>The datasheet's HX1188FNL is rated only about 60 V working, and adjacent 18S modules sit about 76 V apart. The HM2113ZNL has a built-in choke and is AEC-Q200. The 2 × 51 Ω split termination and 10 nF centre-tap caps keep the link working while the motor runs.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#isospi-transformer">Transformer notes ↗</a></div></details>
         <details class="part-row"><summary><span class="part-ref">J1, J2, J5</span><span class="part-name">JST PH connectors</span><span class="part-status chosen">100 V · 2 A</span><span class="chevron">+</span></summary><div class="part-detail"><p>Two 10-pin cell-tap headers sharing C9, so each harness half keeps its own reference, and a 6-pin header for three cell NTCs. The friction lock may need RTV against vibration.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#connectors-jst-ph-for-the-cells-jst-gh-for-isospi-decided-2026-11-05-isospi-changed-2026-11-06">Connector pinout ↗</a></div></details>
-        <details class="part-row"><summary><span class="part-ref">J3, J4 (+ J6, J7)</span><span class="part-name">JST GH 2P isoSPI, PH alternates</span><span class="part-status chosen">Changed Nov 6</span><span class="chevron">+</span></summary><div class="part-detail"><p>The bought ENNOID master uses JST GH 2P for isoSPI, so J3 (in) and J4 (out) are now SM02B-GHS-TB side-entry headers and its cable plugs straight in. GH is rated 50 V, which only has to hold the small signal between its two pins; the 2 mm isolation gap on the PCB holds the rest. J6/J7 are JST PH footprints wired in parallel and left empty, for a PH header or two soldered wires.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#connectors-jst-ph-for-the-cells-jst-gh-for-isospi-decided-2026-11-05-isospi-changed-2026-11-06">Connector notes ↗</a></div></details>
+        <details class="part-row"><summary><span class="part-ref">J3, J4 (+ J6, J7)</span><span class="part-name">JST GH 2P isoSPI, PH alternates</span><span class="part-status chosen">Changed Nov 6</span><span class="chevron">+</span></summary><div class="part-detail"><p>The bought ENNOID master uses JST GH 2P for isoSPI, so J3 (in) and J4 (out) are BM02B-GHS-TBT top-entry headers and its cable plugs straight in from above. GH is rated 50 V, which only has to hold the small signal between its two pins; the 2 mm isolation gap on the PCB holds the rest. J6/J7 are JST PH footprints wired in parallel and left empty, for a PH header or two soldered wires.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#connectors-jst-ph-for-the-cells-jst-gh-for-isospi-decided-2026-11-05-isospi-changed-2026-11-06">Connector notes ↗</a></div></details>
         <details class="part-row"><summary><span class="part-ref">F100–F120, D101–D118, D301</span><span class="part-name">Hot-plug protection</span><span class="part-status chosen">Added Nov 6</span><span class="chevron">+</span></summary><div class="part-detail"><p>The harness pins mate in random order, and the chip allows only 8 V between neighbouring cell inputs. A 6.8 V zener across each pair keeps it there. A 250 mA fuse on every tap means a shorted part or a slipped scope probe can't pull pack current through the board. The top and bottom supply get their own fuses, so the chip's current doesn't show up as error on cells 1 and 18. An 85 V TVS protects V+ and the regulator NPN. The 10 Ω filter resistors moved to 1206 because they carry the balance current.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#protection-and-test-points-added-2026-11-06">Protection and sources ↗</a></div></details>
         <details class="part-row"><summary><span class="part-ref">TH701 + J2</span><span class="part-name">100 kΩ NTC thermistors</span><span class="part-status chosen">4 channels</span><span class="chevron">+</span></summary><div class="part-detail"><p>100 kΩ pull-up to VREF2 and 100 nF on each GPIO. Three cell NTCs on GPIO1–3 and one onboard 0603 NTC on GPIO4.</p><a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md#deviations-from-figure-112">Deviations ↗</a></div></details>
       </div>
@@ -110,9 +113,9 @@
     <section id="review" class="section review-section">
       <div class="section-head"><div><p class="eyebrow">04 / Review focus</p><h2>Where a second pair of eyes helps most</h2></div></div>
       <div class="review-grid">
-        <article><span class="num">01</span><h3>Q301 copper</h3><p>Is 52 × 52 mm of collector copper realistic on this board, or should the drop be shared with a bigger R302?</p></article>
-        <article><span class="num">02</span><h3>Balancing heat</h3><p>18 × ~89 mA through the internal switches, about 6.7 W on the board: the die budget, and whether external MOSFETs are needed.</p></article>
-        <article><span class="num">03</span><h3>isoSPI layout</h3><p>IN sits at the far left, so port A's pair runs about 5 cm to U1 and must get past the cell-tap traces without crossing them. Is that acceptable, or should U1 move?</p></article>
+        <article><span class="num">01</span><h3>Q301 heat on a small board</h3><p>The regulator NPN drops up to 1.6 W, and its 52 × 52 mm of collector copper doesn't exist on a 70 × 50 board. Share the drop with a bigger R302, move to a DPAK, or lower the supply current?</p></article>
+        <article><span class="num">02</span><h3>Balancing heat</h3><p>18 × ~89 mA, about 6.7 W on the board, now with the 0.26 W resistors packed at 3.3 mm. Alternate odd and even cells, lower the balance current, or both?</p></article>
+        <article><span class="num">03</span><h3>Where does port A go?</h3><p>On a 70 mm board only one isoSPI port fits beside U1. A taller board, the bottom edge, or left of U1 past the cell-tap bus?</p></article>
         <article><span class="num">04</span><h3>Harness and protection</h3><p>Are the tap fuses, zener clamps and TVS enough for plug-and-play? And the pin order against the Funwheel pack.</p></article>
       </div>
     </section>
