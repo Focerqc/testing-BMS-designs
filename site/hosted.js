@@ -1,7 +1,8 @@
 // Transport for the shared Board Boxes UI on static GitHub Pages hosting.
 (() => {
   let snapshot;
-  const ready = fetch('data/dashboard.json').then(r => {
+  // no-cache: ask Pages each load (a 304 if unchanged), so the snapshot is never older than app.js.
+  const ready = fetch('data/dashboard.json', { cache: 'no-cache' }).then(r => {
     if (!r.ok) throw new Error('Published board snapshot unavailable');
     return r.json();
   }).then(data => (snapshot = data));
