@@ -359,9 +359,19 @@ commit, not before (next section).
 - **Hosted site:** published with Lean on 2026-11-06 (step 2 state: staged parts below the
   outline, top render made without them so it matches the outline). Re-export after each
   placement commit: `export_site.py` → `node check_hosted.cjs` → push `site/`.
-- **Layout practice card** (left sidebar): "Lay out the 18-channel row" draws the R2xx/R1xx boxes
-  for steps 3–4 from U1's pads (pitch, which row is outer, R2 package) and says how long the row
-  is, whether it fits and which pitch would. A short guide covers steps 3–7.
+- **Layout practice card** (left sidebar, reworked 2026-11-08 for the shrink trial): seven steps
+  (read the try, ch 14, the row, supply parts at their pins, port A onto the board, toward 35 mm,
+  route ch 14 and C0). Each step has a check measured from the board file (✓ passes, ! fails,
+  i = info only), so a new `lean_place.py` run updates them after a dashboard reload. Try 1:
+  2 of 5 pass; the VREG/VREF caps are 7–10 mm from their pins, C301 28 mm from pin 1, and
+  port A is parked. "Preview the 18-channel row" draws R2xx/R1xx boxes the way `lean_place.py`
+  lays out the row, on the placed row's centre line, for another pitch, R2 package or row order,
+  and says which knob or `SWAP` entry would make it real. With the same numbers the boxes sit on
+  the parts.
+- **Top render with parked parts:** the dashboard finds the board itself in the render (the
+  long unbroken opaque runs), puts that on the outline and draws the rest around it at the same
+  scale. Parked parts then show where they are. Until 2026-11-08 it stretched the whole opaque
+  area onto the outline, which squashed try 1's render sideways.
 - **XR slot overlay (long-term goal):** the Lean PCB has a group on Dwgs.User, "XR slot overlay
   (long-term)": the 156.5 × 37 mm XR BMS slot drawn from the board's top-left corner, two
   ~70 × 35 mm slaves and the plug strip at the right end. Drawing only, no copper; DRC and the
