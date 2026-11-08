@@ -1439,6 +1439,33 @@
     }
     ctx.restore();
 
+    // Planning drawings from the board's Dwgs.User layer (the long-term XR slot overlay): dashed, labelled.
+    if ((S.board.user_lines || []).length || (S.board.user_texts || []).length) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(190, 150, 255, 0.7)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([6, 4]);
+      for (const seg of S.board.user_lines || []) {
+        if (seg.length < 2) continue;
+        ctx.beginPath();
+        seg.forEach((pt, k) => { const s = toScreen(pt[0], pt[1]); k ? ctx.lineTo(s.x, s.y) : ctx.moveTo(s.x, s.y); });
+        ctx.stroke();
+      }
+      ctx.fillStyle = 'rgba(190, 150, 255, 0.9)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      for (const t of S.board.user_texts || []) {
+        const p = toScreen(t.x, t.y);
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(-(t.angle || 0) * Math.PI / 180);
+        ctx.font = `600 ${Math.min(14, Math.max(9, (t.size || 1.5) * sc * 0.9))}px "JetBrains Mono"`;
+        ctx.fillText(t.text, 0, 0);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+
     if (S.showSides) drawSideLabels(bb, sc);
     if (S.explain && S.showGroups) drawGroupOutlines(pane);
 
@@ -2333,80 +2360,90 @@
   }
 
   // ---------- LAYOUT PRACTICE (docs/slave-18s-lean-layout-plan.md, steps 3–7) ----------
-  // The 18-channel L: R2xx balance (outer) + R1xx series (inner) per channel, in U1 pin order.
-  // Top arm: ch 18 … down, right to left above U1. Left arm: the rest top to bottom, then R100 (ch 0).
+  // The 18-channel row: one straight row under J1/J5, ch 0 at the left and ch 18 at the right, in U1 pin
+  // order. Two rows of parts, both vertical (harness pad up), the R1 row half a pitch right of the R2 row
+  // (Racc's 12S board staggers its columns the same way). Read left to right, the chip-end pads then go
+  // C0, S1, C1, S2 … S18, C18: the order of U1's pins walking clockwise from C0 (bottom side, pin 38)
+  // along the bottom, up the left side and along the top to C18 (pin 2).
+  // Each gap in a row carries one trace: the CELLn link through the outer row, the chip-end trace of the
+  // outer part through the inner row.
   const L_PKG = { '2512': [6.3, 3.2], '2010': [5.0, 2.5], '1210': [3.2, 2.5] };   // body L × W, mm
-  const L_R1 = [3.2, 1.6];                         // R1xx: 10 Ω 1206
-  const L_OUT_R2 = 13, L_OUT_R1 = 5, L_SHIFT = 1;  // mm out from U1's top pins; R1 sits 1 mm toward its C pin
+  const L_R1 = [3.2, 1.6];                          // R1xx: 10 Ω 1206
+  const ROW_TAP = 5, ROW_GAP = 1.6, ROW_EDGE = 1;   // mm: tap band under the plugs, rows apart (courtyards clear), board-edge margin
+  // Smallest pitch with room for one 0.25 mm trace between neighbouring R2 pads (pad ≈ body W + 0.15 mm,
+  // 0.2 mm clearance each side), or for the 0.30 mm S trace between 1206 pads (1.75 mm).
+  const rowMinPitch = r2W => Math.max(r2W + 0.15 + 0.65, 1.75 + 0.7);
 
-  function layoutL() {
+  function layoutRow() {
     if (!S.board || !/lean/i.test(S.boardPath)) return;
     const u = S.board.footprints.find(f => f.ref === 'U1');
-    const s18 = u?.pads.find(p => /\/S18$/.test(p.net));
+    const c18 = u?.pads.find(p => /\/C18_F$/.test(p.net));
     const cellPins = u ? u.pads.filter(p => /\/(S\d+|C\d+(_F)?)$/.test(p.net)) : [];
-    if (!s18 || cellPins.length < 30) return toast('This board has no U1 with S/C pin nets', 'warn');
-    const pitch = Math.min(10, Math.max(2, +$('lPitch').value || 4.5));
-    const nTop = Math.min(17, Math.max(1, Math.round(+$('lTop').value || 7)));
+    if (!c18 || cellPins.length < 30) return toast('This board has no U1 with S/C pin nets', 'warn');
+    const pitch = Math.min(10, Math.max(2, +$('lPitch').value || 4.2));
     const pkg = L_PKG[$('lPkg').value] ? $('lPkg').value : '2512';
+    const r1Out = $('lOuter').value === 'R1';         // Racc's order: 10 Ω on the plug side
     const [r2L, r2W] = L_PKG[pkg];
-    const nLeft = 18 - nTop;                          // channels nLeft … 1 have their R2 on the left arm
 
-    // Top arm: anchored over the S18 pin, rows measured from U1's top pin row.
+    // Rows: the outer one ROW_TAP below the plugs, the inner one ROW_GAP below that.
     const topY = Math.min(...cellPins.map(p => p.y));
-    // Left arm: just left of the top arm, starting a little below the cell connectors.
     const conn = S.board.footprints.filter(f => /^J[15]$/.test(f.ref)).map(f => getFpBBox(f).maxY);
-    const y0 = (conn.length ? Math.max(...conn) : topY - 26) + 5.5;
-    const armLeftEdge = s18.x - (nTop - 1) * pitch - r2W / 2;
-    const xR1 = armLeftEdge - 1.5 - L_R1[0] / 2;
-    const xR2 = xR1 - (L_OUT_R2 - L_OUT_R1);
+    const outerTop = (conn.length ? Math.max(...conn) : topY - 26) + ROW_TAP;
+    const [hOut, hIn] = r1Out ? [L_R1[0], r2L] : [r2L, L_R1[0]];
+    const yOut = outerTop + hOut / 2, yIn = outerTop + hOut + ROW_GAP + hIn / 2;
+    const [yR2, yR1] = r1Out ? [yIn, yOut] : [yOut, yIn];
+    // Columns: R118 right over the C18 pin, each R2 half a pitch left of its R1.
+    const xR1 = c18.x, xR2 = c18.x - pitch / 2;
 
     const colorFor = (auto, hex, note) => {
       let c = S.doc.colors.find(k => k.auto === auto);
       if (!c) { c = { id: uid('c'), hex, note, auto }; S.doc.colors.push(c); }
-      else if (!c.note || /^R2xx balance \d+/.test(c.note)) c.note = note;
+      else if (!c.note || /^R[12]xx (balance|series) /.test(c.note)) c.note = note;
       return c.id;
     };
-    const c2 = colorFor('L-R2', '#ff9361', `R2xx balance ${pkg} (hot): outer row, CELLn pad out, Sn pad toward U1`);
-    const c1 = colorFor('L-R1', '#5cc8ff', 'R1xx series 10 Ω 1206: inner row, next to its C pin');
-    const mk = (c, x, y, w, h, n, dir, start) => ({
-      id: uid('b'), c, x: r2(x), y: r2(y), w, h, auto: 'L', tag: { p: c === c2 ? 'R2' : 'R1', start, step: -1 },
-      pat: n > 1 ? { n, dir, pitch: r2(pitch), skip: [] } : null,
+    // The color keys still say L-: saved docs from the old L layout keep their two colors.
+    const c2 = colorFor('L-R2', '#ff9361', `R2xx balance ${pkg} (hot): ${r1Out ? 'inner' : 'outer'} row, CELLn pad up, Sn pad toward U1`);
+    const c1 = colorFor('L-R1', '#5cc8ff', `R1xx series 10 Ω 1206: ${r1Out ? 'outer' : 'inner'} row, half a pitch right of its R2`);
+    const mk = (c, x, y, w, h, n, start) => ({
+      id: uid('b'), c, x: r2(x), y: r2(y), w, h, auto: 'row', tag: { p: c === c2 ? 'R2' : 'R1', start, step: -1 },
+      pat: { n, dir: 'left', pitch: r2(pitch), skip: [] },
     });
-    const top = [
-      mk(c2, s18.x, topY - L_OUT_R2, r2W, r2L, nTop, 'left', 18),
-      mk(c1, s18.x + L_SHIFT, topY - L_OUT_R1, L_R1[1], L_R1[0], nTop, 'left', 18),
+    const rows = [
+      mk(c2, xR2, yR2, r2W, r2L, 18, 18),
+      mk(c1, xR1, yR1, L_R1[1], L_R1[0], 19, 18),   // R118 … R101, then R100 (ch 0) at the left end
     ];
-    const left = [
-      mk(c2, xR2, y0, r2L, r2W, nLeft, 'down', nLeft),
-      mk(c1, xR1, y0 - L_SHIFT, L_R1[0], L_R1[1], nLeft + 1, 'down', nLeft),   // ends with R100 (ch 0)
-    ];
-    S.doc.boxes = S.doc.boxes.filter(b => b.auto !== 'L').concat(top, left);
+    S.doc.boxes = S.doc.boxes.filter(b => b.auto !== 'L' && b.auto !== 'row').concat(rows);
     S.sel = null;
     commit();
 
     const bb = S.board.bbox;
-    const its = [...top, ...left].flatMap(instances);
+    const its = rows.flatMap(instances);
     const off = its.filter(it => it.x - it.w / 2 < bb.x || it.x + it.w / 2 > bb.x + bb.w ||
                                  it.y - it.h / 2 < bb.y || it.y + it.h / 2 > bb.y + bb.h).length;
-    const ly = left.flatMap(instances).map(it => it.y);
-    const msg = `Top arm ch 18–${19 - nTop}, left arm ch ${nLeft}–0 (y ${fmt(Math.min(...ly))}–${fmt(Math.max(...ly))}). ` +
-      (off ? `⚠ ${off} box${off > 1 ? 'es' : ''} past the board edge.` : 'All on the board.');
+    const left = Math.min(...its.map(it => it.x - it.w / 2)), right = Math.max(...its.map(it => it.x + it.w / 2));
+    const fan = topY - (yIn + hIn / 2);
+    const pMin = rowMinPitch(r2W);
+    const pFit = Math.min((xR1 - L_R1[1] / 2 - bb.x - ROW_EDGE) / 18, (xR1 - r2W / 2 - bb.x - ROW_EDGE) / 17.5);
+    const msg = `Row ch 0–18: ${fmt(right - left)} mm long (x ${fmt(left)}–${fmt(right)}), ${fmt(fan)} mm above U1 for the fan-in. ` +
+      (pitch < pMin - 1e-6 ? `⚠ Under ${fmt(pMin)} mm there's no room for a trace between the ${pkg}s. ` : '') +
+      (off ? `⚠ ${off} box${off > 1 ? 'es' : ''} past the board edge: ${fmt(Math.floor(pFit * 20) / 20)} mm pitch fits.` : 'All on the board.');
     $('lInfo').textContent = msg;
-    toast(`Laid out 37 resistors at ${fmt(pitch)} mm pitch. ${esc(msg)}`, off ? 'warn' : 'info', 6000);
+    toast(`Laid out 37 resistors at ${fmt(pitch)} mm pitch. ${esc(msg)}`, off || pitch < pMin - 1e-6 ? 'warn' : 'info', 6000);
   }
 
   const GUIDE = [
     { n: 3, t: 'One channel by hand (ch 14)',
       d: ['R214 (balance) and R114 (10 Ω) both vertical: harness pad up toward J5, chip pad down toward U1.',
-          'R214 in the outer row, 12–14 mm above U1\'s top pins. R114 in the inner row, 4–6 mm above, next to its C pin.',
-          'U1\'s top pins read C14, S14, C13 … right to left, so R114 sits just right of the S14 trace\'s path.',
-          'Pitch: design around the 2512 envelope. 4.5 mm leaves room for one tap trace between channels.'],
+          'R214 in the outer row, about 5 mm under the plugs. R114 in the inner row just below it, half a pitch to the right.',
+          'The tap reaches R114 through the gap right of R214; S14 leaves R214 straight down through the gap left of R114.',
+          'Read left to right, the chip pads then go S14, C14, S15, C15 …: the same order as U1\'s pins.',
+          'Pitch: 4.2 mm fits this outline. 4.0 mm is the least for 2512s (one 0.25 mm trace between pads).'],
       look: 'Highlight CELL14, then S14 (` key in KiCad): each should be one clean path.' },
-    { n: 4, t: 'All 18 channels in an L',
-      d: ['Top arm: ch 18 … 12, right to left. Left arm: ch 11 … 1, top to bottom, then R100 (ch 0) at the bottom.',
-          'R2 outermost (keeps the heat away from U1), R1 innermost (closest to its pin).',
+    { n: 4, t: 'All 18 channels in one row',
+      d: ['One straight row under J1/J5: ch 0 (R100 alone) at the left end, ch 18 at the right, over U1\'s top-right pins.',
+          'Balance row outer (heat away from U1), 10 Ω row inner. "Outer row: 10 Ω" swaps them, as on Racc\'s 12S board.',
           'The button above draws this as linked boxes. Drag a box to move its whole row; Alt+drag moves one.'],
-      look: 'Tap lines from J1/J5 never cross. At the corner, keep ch 1–2 away from ch 12–14. At 4.5 mm the left arm is about 54 mm tall: it only just fits.' },
+      look: 'Tap lines from J1/J5 never cross. Ch 11–18 drop onto U1\'s top pins; ch 0–10 run down its left side to the left and bottom pins.' },
     { n: 5, t: 'C0 sense: R100 and NT1',
       d: ['NT1 right beside J1.1: its CELL0 pad toward J1.1, its V− pad toward the board.',
           'R100 pad 1 → J1.1 on its own 0.25 mm trace. V− touches CELL0 only at NT1.'],
@@ -2431,7 +2468,7 @@
     // its C1xx/D1xx/F1xx parts) it only says which board to pick.
     const lean = /lean/i.test(S.boardPath);
     $('guideCard').classList.toggle('not-lean', !lean);
-    $('btnLayoutL').disabled = !lean;
+    $('btnLayoutRow').disabled = !lean;
     const done = new Set(S.doc.guide?.done || []);
     const cur = GUIDE.find(g => !done.has(g.n));
     const open = guideOpen ?? cur?.n;
@@ -2980,7 +3017,7 @@
     $('btnSaveTxt').onclick = saveTxt;
     $('btnOpenTxt').onclick = () => $('openTxtFile').click();
     $('openTxtFile').onchange = e => { const f = e.target.files[0]; if (f) openTxt(f); e.target.value = ''; };
-    $('btnLayoutL').onclick = layoutL;
+    $('btnLayoutRow').onclick = layoutRow;
     $('guideSteps').addEventListener('click', onGuideClick);
     $('btnCopy').onclick = () => copy($('modalText').textContent);
     $('btnClose').onclick = () => $('modal').classList.remove('open');
