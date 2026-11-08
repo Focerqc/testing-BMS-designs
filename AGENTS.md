@@ -109,6 +109,7 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | `check_pcb_parity.py` | PCB vs schematic: every footprint and its name, every pad's net vs the kicad-cli netlist, every footprint on F.Cu (single-sided), DRC schematic parity. `--variant lean` for Lean. Exit 0 = pass. Run after any PCB or schematic change |
 | `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. `--variant lean` for Lean. Close KiCad first |
 | `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier, mounting-hole keep-out) from the board's nets. `--variant lean` for Lean. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
+| `lean_place.py` | Writes the Lean PCB: outline + every footprint from the knobs at its top (shrink trial). Run with KiCad's Python (`"C:\Program Files\KiCad\10.0\bin\python.exe"`), KiCad closed. `--dry` to report only, `--drc` for a kicad-cli DRC count. Reports courtyard overlaps and parts off the outline |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
 if it timed out, wait for the file to settle -> `kicad-cli sch upgrade --force` ->
@@ -148,3 +149,18 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
   `creepage` all work in kicad-cli 10. `disallow zone` flags copper zones, not keepout areas.
 - NC pins get nets named `unconnected-(T501-LINE_CT-Pad5)` on the board. Rules that say "every
   other net" must account for them.
+
+### Shrink trial (2026-11-08)
+
+- **F8 does not replace the footprint of a locked part.** It updates the fields (Value, LCSC)
+  and leaves the old footprint. Unlock first: delete `(locked yes)` from that footprint in the
+  `.kicad_pcb` (KiCad closed), then F8 again.
+- **KiCad saved the board with CRLF line endings again.** Convert to LF before committing.
+  (`grep -c $'\r'` miscounts in this shell; count `\r` bytes with Python instead.)
+- **pcbnew keeps the board file open on Windows.** Writing it from the same KiCad Python process
+  after `LoadBoard` fails with Errno 22; drop the board object first (`lean_place.py` does).
+- **Part swaps for Lean only** go in `make_lean.py`'s `SWAP` table, not in the Lean schematic.
+- **The MCP's JLCPCB parts DB** (`~/.kicad-mcp/data/jlcpcb_parts.db`) was an empty 48 kB file.
+  `download_jlcpcb_database` fetched CDFER's catalog but couldn't replace the file because other
+  sessions' MCP servers hold it open (WinError 32); it was filled in place instead (501k in-stock
+  parts, 2026-11-08). It lists only parts in stock, so a missing LCSC number may just be out of stock.
