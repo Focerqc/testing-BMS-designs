@@ -25,7 +25,12 @@ vm.runInContext(fs.readFileSync(path.join(site, 'hosted.js'), 'utf8'), context);
  for (const asset of Object.values(snapshot.assets)) assert.ok(fs.existsSync(path.join(site, asset)), asset);
  for (const file of ['news.html', 'news.css']) assert.ok(fs.existsSync(path.join(site, file)), file);
  assert.ok(!fs.readFileSync(path.join(site, 'app.js'), 'utf8').includes('`/api/image'));
- assert.ok(fs.readFileSync(path.join(site, 'index.html'), 'utf8').includes('href="news.html"'));
+ const page = fs.readFileSync(path.join(site, 'index.html'), 'utf8');
+ assert.ok(page.includes('href="news.html"'));
+ for (const file of ['style.css', 'hosted.js', 'app.js']) {
+  const digest = require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(site, file))).digest('hex').slice(0, 10);
+  assert.ok(page.includes(`"${file}?v=${digest}"`), `index.html must load ${file}?v=${digest} (re-run export_site.py)`);
+ }
  assert.ok(!JSON.stringify(snapshot).includes('racc'), 'private racc folder must not be published');
- console.log('Passed: board snapshots, renders, schematics, browser saves, assets, News, no private files.');
+ console.log('Passed: board snapshots, renders, schematics, browser saves, assets, News, hashed script/style URLs, no private files.');
 })();
