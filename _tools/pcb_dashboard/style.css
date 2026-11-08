@@ -677,7 +677,7 @@ kbd {
 .explain-tip div { margin-top: 3px; }
 .dock-btn[hidden], .explain-tip[hidden] { display: none; }
 
-/* ---------- LAYOUT PRACTICE (channel L + step guide) ---------- */
+/* ---------- LAYOUT PRACTICE (channel row + step guide) ---------- */
 .guide-card { display: block; }
 .guide-card > summary { cursor: pointer; list-style: none; }
 .guide-card > summary::-webkit-details-marker { display: none; }
