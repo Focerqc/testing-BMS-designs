@@ -358,11 +358,9 @@ commit, not before (next section).
   (long-term)": the 156.5 × 37 mm XR BMS slot drawn from the board's top-left corner, two
   ~70 × 35 mm slaves and the plug strip at the right end. Drawing only, no copper; DRC and the
   parity check ignore it. The dashboard draws Dwgs.User lines dashed. Select the group in KiCad
-  and delete it if it gets in the way. On the hosted site boxes save in the browser only, so use **Save .txt** to keep
-  work and **Open .txt** to load it back (locally too, before Copy Prompt).
-- **Small improvement worth making:** the dropdown shows raw paths. A label map
-  (`slave-18s/…` → "18S Guard", `slave-18s-lean/…` → "18S Lean") in `app.js` would make the
-  hosted page clearer. The toolbars and features stay as they are.
+  and delete it if it gets in the way.
+- **Saving boxes on the hosted site:** there they save in the browser only, so use **Save .txt**
+  to keep work and **Open .txt** to load it back (locally too, before Copy Prompt).
 
 ## Step 10 (later): the shrink pass
 
