@@ -105,17 +105,17 @@
         </div>
       </div>
 
-      <!-- Layout practice: auto channel row + short step guide (docs/slave-18s-lean-layout-plan.md) -->
+      <!-- Layout practice: row preview + step guide with checks measured from the board (docs/slave-18s-lean-layout-plan.md) -->
       <details class="presets-card guide-card" id="guideCard" open>
         <summary class="presets-head"><span class="presets-title">Layout practice</span><span id="guideProgress" class="guide-prog"></span></summary>
         <p class="hint guide-note">This card follows the <b>Lean</b> layout plan. Pick <b>18S Lean</b> in the Board menu at the top.</p>
         <div class="guide-l">
           <div class="guide-inputs">
-            <label title="Centre-to-centre spacing of the channels along the row. 4.2 mm fits this outline; 4.0 mm is the least for 2512s">Pitch mm<input id="lPitch" type="number" step="0.1" min="2" max="10" value="4.2"></label>
+            <label title="Centre-to-centre spacing of the channels along the row (PITCH in lean_place.py). 3.3 mm is the least for 2010s, 4.0 mm for 2512s">Pitch mm<input id="lPitch" type="number" step="0.1" min="2" max="10" value="3.3"></label>
             <label title="Which row sits on the plug side. Balance outer keeps its heat away from U1; Racc's 12S board puts the 10 Ω outer">Outer row<select id="lOuter"><option value="R2">Balance</option><option value="R1">10 Ω</option></select></label>
-            <label title="Balance resistor package">R2 size<select id="lPkg"><option>2512</option><option>2010</option><option>1210</option></select></label>
+            <label title="Balance resistor package (Lean uses 2010 since the shrink trial)">R2 size<select id="lPkg"><option>2010</option><option>2512</option><option>1210</option><option>1206</option></select></label>
           </div>
-          <button id="btnLayoutRow" class="btn btn-ghost btn-sm wide" title="Draw R1xx/R2xx boxes for all 18 channels in one staggered row under J1/J5, in U1 pin order. Pressing it again replaces the last row">Lay out the 18-channel row</button>
+          <button id="btnLayoutRow" class="btn btn-ghost btn-sm wide" title="Draw R1xx/R2xx boxes for all 18 channels the way lean_place.py lays out the row, on the placed row's centre line. With the same numbers the boxes sit on the parts. Pressing it again replaces the last preview">Preview the 18-channel row</button>
           <p id="lInfo" class="hint"></p>
         </div>
         <ol id="guideSteps" class="guide-steps"></ol>
