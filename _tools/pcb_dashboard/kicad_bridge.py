@@ -180,6 +180,18 @@ def read_board(pcb_path):
         if isinstance(d, pcbnew.PCB_SHAPE) and d.GetLayer() == pcbnew.Edge_Cuts:
             edges.extend(shape_segments(d))
 
+    # Planning drawings on Dwgs.User (e.g. the long-term XR slot overlay): lines plus their labels.
+    user_lines, user_texts = [], []
+    for d in board.GetDrawings():
+        if d.GetLayer() != pcbnew.Dwgs_User:
+            continue
+        if isinstance(d, pcbnew.PCB_TEXT):
+            c = d.GetBoundingBox().GetCenter()
+            user_texts.append({"x": mm(c.x), "y": mm(c.y), "text": d.GetText(),
+                               "size": mm(d.GetTextHeight()), "angle": round(d.GetTextAngle().AsDegrees(), 1)})
+        elif isinstance(d, pcbnew.PCB_SHAPE):
+            user_lines.extend(shape_segments(d))
+
     tracks = []
     vias = []
     for t in board.GetTracks():
@@ -217,7 +229,7 @@ def read_board(pcb_path):
     # Board-level text (silkscreen notes): boxes only, so the dashboard can keep labels off them.
     texts = []
     for d in board.GetDrawings():
-        if isinstance(d, pcbnew.PCB_TEXT):
+        if isinstance(d, pcbnew.PCB_TEXT) and d.GetLayer() != pcbnew.Dwgs_User:
             b = d.GetBoundingBox()
             texts.append({"x": mm(b.GetX()), "y": mm(b.GetY()), "w": mm(b.GetWidth()), "h": mm(b.GetHeight()),
                           "side": "B" if d.GetLayer() in (pcbnew.B_SilkS, pcbnew.B_Fab, pcbnew.B_Cu) else "F"})
@@ -228,6 +240,8 @@ def read_board(pcb_path):
         "path": pcb_path,
         "mtime": os.path.getmtime(pcb_path),
         "edges": edges,
+        "user_lines": user_lines,
+        "user_texts": user_texts,
         "bbox": {"x": mm(bbox.GetX()), "y": mm(bbox.GetY()), "w": mm(bbox.GetWidth()), "h": mm(bbox.GetHeight())},
         "footprints": footprints,
         "tracks": tracks,
