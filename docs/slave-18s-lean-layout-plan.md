@@ -4,6 +4,11 @@ Status: **plan only, 2026-11-06.** Nothing in this file has been placed or route
 the placement and routing in KiCad. Each step says what to do, why, what to look for, and
 which check to run. Tick the boxes as you go.
 
+**Changed 2026-11-07:** the 18 channels go in **one straight, staggered row** under J1/J5
+(steps 3–4), not the earlier L around U1's corner. The L only came from fitting 4.5 mm pitch into
+the placeholder outline; the row at 4.2 mm fits, reads like every other BMS, and copies the
+half-step stagger of Racc's 12S board.
+
 Read with: `AGENTS.md`, `docs/slave-18s-design-basis.md` ("Variants", "Balance resistor
 sizing", "Net classes and clearance rules", "Placement checklist").
 
@@ -33,32 +38,33 @@ sizing", "Net classes and clearance rules", "Placement checklist").
 - **The connector row is fixed** (top edge): J1 (C0 at x = 31 … C9 at x = 49), J5 (C9 at 54.5 …
   C18 at 72.5), J2 at 79. Cell numbers rise left to right.
 
-**The key insight for placement:** walk anticlockwise around U1 from the bottom-left corner:
-C0 → up the left side → along the top → C18 at the top right. That is the **same order** as the
-connector pins left to right. So if the 18 channels sit in an "L" around U1's top-left corner,
-in order, with their harness ends facing out, every tap trace nests inside the one before it and
-**no ratsnest line has to cross another**. C0's tap is the outermost (longest) and C18's the
-innermost (shortest).
+**The key insight for placement:** start at C0 on U1's bottom side and walk **clockwise**: S1, C1
+… S3 along the bottom, C3 … S11 up the left side, C11 … C18 along the top to V+ at the top-right
+corner. (Pin numbers count the other way, anticlockwise from pin 1.) That is the **same order** as
+the connector pins left to right. So if the 18 channels sit in **one straight row** under J1/J5,
+in order, with their harness ends up, every tap trace nests inside the next and **no ratsnest
+line has to cross another**. Ch 11–18 drop onto U1's top pins; ch 0–10 run as a bus down U1's
+left side to its left and bottom pins, with C0 outermost.
 
 ```
  y=0 ┌──────────────────────────────────────────────────────────────────────┐
      │ H4     [J1  C0 ……… C9][J5  C9 ……… C18]  [J2 NTC]                 H3  │ connectors (fixed)
-     │  C0┐ C1┐…   tap traces nest, C0 outermost                            │
- ~12 │    │   │      ┌─ top row: ch 18…12, harness end UP ─┐                │
-     │    │   │      │  R2 (hot) outer row                 │                │
-     │  left column  │  R1 inner row                       │        T601 J4 │ port B, OUT
-     │  ch 11…1, 0   │          ┌──────────┐               │                │
-     │  harness end  │          │ U1 (75,40)│               │        T501 J3 │ port A, IN
-     │  LEFT: R2 out,│          └──────────┘                                │
-     │  R1 in, → U1  │  bottom: GPIO caps, VREG/VREF caps, R401/R402        │
-     │               Q301 + VCOLL copper      NTC parts (R7xx/C7xx/TH701)    │
- 70  │ H1                   TP1…TP10 along the bottom edge               H2  │
+     │   taps fan out from the plugs: C0 outermost, C18 innermost           │
+ ~13 │   R2 row (balance, hot), harness end UP:  ch 1 ………………………… ch 18      │
+     │   R1 row (10 Ω), half a pitch right:     ch 0 ………………………… ch 18       │
+     │                          ch 11–18 drop onto U1's top pins  T601 J4   │ port B, OUT
+     │   ch 0–10: bus down U1's left side ─┐  ┌───────────┐                 │
+     │                                     └> │ U1 (75,40)│        T501 J3  │ port A, IN
+     │   (ch 0–2 and S3 wrap to the bottom)   └───────────┘                 │
+     │   bottom: GPIO caps, VREG/VREF caps, R401/R402                       │
+     │             Q301 + VCOLL copper (clear of the ch 0–3 bus)   NTC parts│
+ 70  │ H1                   TP1…TP10 along the bottom edge               H2 │
      └──────────────────────────────────────────────────────────────────────┘
 ```
 
 This is a starting floorplan, not a rule. You'll move it around in step 3. What has to stay
-true: the channels follow the anticlockwise order, the R2s are the outermost parts (heat away
-from U1), and the R1s are the innermost (next to their C pin, Racc's method).
+true: the channels follow the pin order, and the row's chip-end pads alternate S and C the same
+way U1's pins do (the half-step stagger in step 3).
 
 ## Step 0: prerequisites
 
@@ -122,35 +128,40 @@ ratsnest of the group you're working on is easy to read.
 
 ## Step 3: one cell channel, done properly
 
-Pick **channel 14** (top row, middle of J5). It sits in the simple straight part of the L, away
-from the corner.
+Pick **channel 14** (under J5, right of the row's middle).
 
-1. Drag R114 and R214 onto the board, between J5 pin 6 (C14, x ≈ 64.5) and U1's top side
-   (pins 10/11: C14_F, S14).
+1. Drag R214 and R114 onto the board, a little left of J5 pin 6 (C14, x ≈ 64.5). With the
+   card's defaults R214 lands at x ≈ 59.4 and R114 at x ≈ 61.5.
 2. **Orientation:** both resistors vertical (rotate 90°), harness pad (CELL14) **up** toward
    the connector, chip pad **down** toward U1.
-3. **Position:** R214 (balance, hot) in the outer row, about 12–14 mm above U1's top pins.
-   R114 (10 Ω) in the inner row, about 4–6 mm above the pins, next to its C pin.
-4. **Left/right order:** along U1's top edge, going right to left, the pins read C14, S14, C13,
-   S13 … So in each channel the R1 (C) sits to the **right** of the Sn trace's path, and the
-   next channel down (13) sits to the left. Get this right once and the 17 copies inherit it.
-5. **Pitch:** the channel's width along the row sets the pitch for all 18. Design it around
-   the **2512 envelope** (6.3 × 3.2 mm body, about 7.3 × 3.9 mm courtyard), even if you later fit a
-   47 Ω 1210 or 2010. Starting point: **4.5 mm pitch**. That leaves about 0.6 mm between
-   neighbouring 2512 courtyards for one tap trace to pass. Write the pitch down: step 4 uses it.
-6. **Route this one channel** (front layer): tap trace J5.6 → R214 harness pad → down to
-   R114 harness pad (both CELL14, HV_CELL 0.25 mm). Then R114 → C14_F pin (0.25 mm) and
-   R214 → S14 (BALANCE 0.30 mm, neck to 0.3 at the pin, which is already the pad width).
+3. **Position:** R214 (balance, hot) in the **outer row**, its body about 5 mm under the connector
+   courtyards (y ≈ 13–19). R114 (10 Ω) in the **inner row** about 1.6 mm below it (y ≈ 21–24, so
+   the courtyards just clear), and **half a pitch to the right** of R214.
+4. **Why half a pitch:** read left to right, U1's top pins go … S13, C13, S14, C14, S15 … With R114
+   offset to the right, the row's chip-end pads go S14 (R214), C14 (R114), S15 (R215) … in the
+   same order. The tap reaches R114 through the gap right of R214, and S14 leaves R214 straight
+   down through the gap left of R114: **one trace per gap**. Racc's 12S board staggers its two
+   resistor columns the same way. Get this right once and the 17 copies inherit it.
+5. **Pitch:** the channel's width along the row sets the pitch for all 18. Design it around the
+   **2512 envelope** (6.3 × 3.2 mm body, pads 3.35 mm wide, courtyard 7.7 × 3.9 mm), even if you
+   later fit a 1210 or 2010. One 0.25 mm trace between neighbouring 2512 pads with 0.2 mm each
+   side needs at least **4.0 mm**. **4.2 mm** fits this outline: ch 0 to ch 18 is then 77 mm
+   (x ≈ 1.9–79), with R118 over the C18 pin and about 10 mm left above U1 for the fan-in.
+   4.3 mm would run off the left edge. Write the pitch down: step 4 uses it.
+6. **Route this one channel** (front layer): tap trace J5.6 → R214 harness pad → down through
+   the gap to R114's harness pad (both CELL14, HV_CELL 0.25 mm). Then R114 → C14_F pin (0.25 mm)
+   and R214 → S14 (BALANCE 0.30 mm, neck to 0.3 at the pin, which is already the pad width).
    Ratsnest for this channel: zero lines left.
 
 **Why this shape:**
-- R1 sits next to the C pin (Racc's method): in Guard the R1/C1 pair is the anti-alias filter
-  and it only works close to the pin. Lean has no C1, but keeping R1 close keeps the
-  high-impedance node short. Stay in the habit for when the C1 caps come back.
-- R2 outermost: 0.22–0.26 W each. The heat should spread into the board, not into U1
-  (balancing is derated to 80 mA once the die is above 85 °C).
-- The Sn trace carries the balance current. Cn_F carries µA. So the long fan-in leg belongs to
-  Sn (wide), and the short one to Cn_F.
+- One straight row reads like every BMS you've seen, and every channel is the same cell with
+  the same orientation.
+- Balance row outer: 0.22–0.26 W each at 33–47 Ω. The heat should spread into the board, not
+  into U1 (balancing is derated to 80 mA once the die is above 85 °C).
+- Racc's 12S board does the opposite: 10 Ω on the plug side, balance resistor next to the chip.
+  At his 120 Ω (0.12 W) the heat hardly matters, and on Lean (no C-pin caps) the R1 position
+  doesn't change the circuit. The card's **Outer row: 10 Ω** draws his order. (Until 2026-11-07
+  this plan called "R1 next to the C pin" Racc's method; his board shows otherwise.)
 
 **What to look for:** press **`** (backtick, highlight net) on CELL14 and S14 in turn: each should
 be one clean path. Check the courtyards in 3D: the 2512 is visibly the big part.
@@ -165,11 +176,11 @@ Three ways to do it:
 |---|---|---|
 | Manual | Move each part with **M**, or use Edit → Move Exactly (Shift+M) with the offset typed in | Fine for 3 parts, error-prone for 36, and has to be redone when the package changes |
 | KiCad's own tools | "Create array" makes **new** copies (unannotated, no nets): wrong for parts that already exist. Multichannel / "Repeat layout" needs one hierarchical sheet per channel, and our schematic is flat | Not usable here |
-| **Script → `pcb_move.py` JSON** | I read the position and rotation of R114/R214 from the board, then generate positions for all 36 resistors: top row ch 18…12 at your pitch along x, left column ch 11…1 at the same pitch along y (the channel cell turned 90°, harness end left), and a 45° corner cell for ch 11/12 | **Recommended** |
+| **Script → `pcb_move.py` JSON** | I read the position and rotation of R114/R214 from the board, then generate positions for all 37 resistors: the R2 row ch 18…1 and the R1 row ch 18…0 at your pitch along x, keeping the half-pitch offset | **Recommended** |
 
 **Why the script:** it is exact and repeatable. It also lives in the repo as one function of
-(pitch, row y, column x), so when the balance package or pitch changes in the shrink pass you
-change one number and re-run it, rather than re-placing 36 parts. That's the whole reason to plan
+(pitch, row y, row x), so when the balance package or pitch changes in the shrink pass you
+change one number and re-run it, rather than re-placing 37 parts. That's the whole reason to plan
 for a package change now.
 
 Workflow: close KiCad → I run it with `--dry` and show you the list → `pcb_move.py` → you
@@ -177,18 +188,20 @@ reopen and look. **Placement repeats; routing doesn't.** Every channel's fan-in 
 different length and angle, so you route those by hand. Only the short in-cell link
 (R2 harness pad → R1 harness pad) repeats exactly.
 
-**Channel 0 (R100 only)** goes at the bottom of the left column, next to U1 pin 38, harness
-pad toward J1.1. There is no R2 for channel 0. NT1 goes beside J1.1 (step 5).
+**Channel 0 (R100 only)** is the left end of the R1 row, half a pitch left of R201. There is no
+R2 for channel 0. Its tap from J1.1 is the outermost, and its C0_F trace is the outermost of the
+bus that wraps under U1 to pin 38. NT1 goes beside J1.1 (step 5).
 
 **What to look for:**
-- Ratsnest: the tap lines from J1/J5 fan into the L **without crossing**. A crossing means two
+- Ratsnest: the tap lines from J1/J5 fan out to the row **without crossing**. A crossing means two
   channels are swapped or one is flipped (rotate it 180°).
-- Banks: channels sit next to adjacent cells, so neighbours are ≤ 25 V apart (0.2 mm). The one
-  place far-apart nets meet is the **corner** where the left column turns into the top row:
-  keep ch 1–2 (bank 0) and ch 12–14 (bank 4) apart. Their outer ends shouldn't be neighbours.
-- The left column (ch 1–11 + ch 0) at 4.5 mm is about 54 mm tall: y ≈ 12–66. That fits, just.
-  If it doesn't, the corner cells can fan at 45°, or a few low channels (0–2) can fold onto U1's
-  bottom side, where their pins already are.
+- Fan-in: ch 11–18 drop onto U1's top pins; ch 0–10 leave the row as one bus down U1's left side,
+  ch 0–2 wrapping round to the bottom pins. The bus is in pin order, so nothing crosses.
+- Banks: every neighbour in the row and in the bus is the adjacent cell (≤ 25 V, 0.2 mm). The
+  far-apart nets to watch are below U1: keep Q301's VCOLL copper (bank 6) clear of the ch 0–3
+  bus (bank 0), or the 0.6 mm rule will push the pour back.
+- Length: at 4.2 mm the row is 77 mm (x ≈ 1.9–79). The card says which pitch fits if you try
+  another.
 
 **Check:** `check_pcb_parity.py --variant lean`, then DRC. Expect 0 clearance/courtyard
 errors. **Commit:** `PCB (Lean): cell channels placed`.
@@ -251,7 +264,7 @@ the back V− pour beside each cap's V− pad.
   temperature, but **not** in the R2 band: next to it, it reads balance heat, not cell heat.
 - **Test points:** TP1–TP10 along the bottom edge, ≥ 5 mm apart (hook clips), silk labels.
   Lean keeps TP11–TP14 (bare HV pads on VCOLL, C6_F, C12_F, C18_F): put them by their nets,
-  in the channel L and in the Q301 copper, away from the low-voltage loops.
+  in the channel row and in the Q301 copper, away from the low-voltage loops.
 
 **Check:** `check_pcb_parity.py --variant lean`, DRC, then a **3D render** (dashboard button,
 or I run `render_board_3d()` in the background). Look for: TP loops reachable, plugs not
@@ -338,9 +351,14 @@ commit, not before (next section).
 - **Hosted site:** published with Lean on 2026-11-06 (step 2 state: staged parts below the
   outline, top render made without them so it matches the outline). Re-export after each
   placement commit: `export_site.py` → `node check_hosted.cjs` → push `site/`.
-- **Layout practice card** (left sidebar): "Lay out the 18-channel L" draws the R2xx/R1xx boxes
-  for steps 3–4 from U1's pads (pitch, top-arm count, R2 package), and a short guide covers
-  steps 3–7. On the hosted site boxes save in the browser only, so use **Save .txt** to keep
+- **Layout practice card** (left sidebar): "Lay out the 18-channel row" draws the R2xx/R1xx boxes
+  for steps 3–4 from U1's pads (pitch, which row is outer, R2 package) and says how long the row
+  is, whether it fits and which pitch would. A short guide covers steps 3–7.
+- **XR slot overlay (long-term goal):** the Lean PCB has a group on Dwgs.User, "XR slot overlay
+  (long-term)": the 156.5 × 37 mm XR BMS slot drawn from the board's top-left corner, two
+  ~70 × 35 mm slaves and the plug strip at the right end. Drawing only, no copper; DRC and the
+  parity check ignore it. The dashboard draws Dwgs.User lines dashed. Select the group in KiCad
+  and delete it if it gets in the way. On the hosted site boxes save in the browser only, so use **Save .txt** to keep
   work and **Open .txt** to load it back (locally too, before Copy Prompt).
 - **Small improvement worth making:** the dropdown shows raw paths. A label map
   (`slave-18s/…` → "18S Guard", `slave-18s-lean/…` → "18S Lean") in `app.js` would make the
@@ -353,15 +371,16 @@ measurements below is guessing.
 
 **What shrinks the board most, roughly in order:**
 
-1. **Balance package and channel pitch.** The L of 18 channels is the largest block on the
-   board. Going from 2512 (4.5 mm pitch) to a 1210 or 2010 (about 3.2–3.5 mm pitch) shortens
-   both arms by roughly a quarter. With 47 Ω the per-resistor power is 0.22 W: that's 90 % of a
-   1206 (no), 45 % of a 1210 (0.5 W), about 30 % of a 2010 (0.75 W). A wide-terminal 1218/0612
+1. **Balance package and channel pitch.** The row of 18 channels is the largest block on the
+   board. Going from 2512 (4.2 mm pitch, 77 mm) to a 1210 or 2010 (3.3 mm pitch, about 61 mm)
+   shortens it by about a fifth, short enough to run along one ~70 mm XR slave. With 47 Ω the
+   per-resistor power is 0.22 W: that's 90 % of a 1206 (no), 45 % of a 1210 (0.5 W), about 30 %
+   of a 2010 (0.75 W). A wide-terminal 1218/0612
    (1 W, heat goes out through the long side) is worth a look for heat per mm². Changing the
    package is a Guard schematic edit → `make_lean.py` → F8. KiCad footprints are centred, so
    the parts stay put and only the pitch number in the step-4 script changes.
 2. **Connectors.** J1 + J5 side by side take about 45 mm of edge. Options: put them on two
-   edges (J5 on the right edge feeding the top row), or a 2-row header (check its voltage
+   edges (J5 on the right edge), or a 2-row header (check its voltage
    rating against 75.6 V and the 1 mm J1/J5 rule). Drop the DNP PH alternates J6/J7 if the
    GH cables work.
 3. **Q301 copper.** This one sets a floor: the copper can only shrink as far as the measured
