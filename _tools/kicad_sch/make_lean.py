@@ -9,6 +9,12 @@ Lean = Guard minus:
   D301       V+ TVS (no fuse ahead of it any more, so a shorted TVS would short the stack)
   C101-C118  C-pin filter caps (the 10 ohm series resistors R100-R118 stay)
 
+and with these parts swapped (SWAP below, same value and nets, smaller footprint):
+  R201-R218  balance 33 ohm 2512 (1 W) -> 2010 (0.75 W), so the 18-channel row fits a 70 mm
+             wide board at 3.3 mm pitch (2026-11-08 shrink trial)
+  T501, T601 isoSPI transformer Pulse HM2113ZNL -> Bourns SM91502AL (same pin functions:
+             chip 1-2CT-3, line 6-5CT-4 through the built-in choke; 1000 VDC working; half the area)
+
 Labels sitting on a removed part's pin ends are deleted with it. The Guard file is never
 written. Re-run after any Guard schematic change, then:
   kicad-cli sch upgrade --force <lean sch>
@@ -37,6 +43,35 @@ TIE, TIE_REF = "F120", "NT1"
 TIE_FP = "NetTie:NetTie-2_SMD_Pad0.5mm"
 TIE_HALF = 2.54          # Device:NetTie_2 pin ends at +-2.54 mm (Device:Fuse: +-3.81 mm)
 DEVICE_SYM = Path(KICAD_CLI).parents[1] / "share" / "kicad" / "symbols" / "Device.kicad_sym"
+
+
+# Lean-only part swaps: ref -> {property: (Guard value, Lean value)}. The Guard value must match,
+# so a Guard change can't slip through unnoticed.
+R2_2010 = {
+    "Value": ("33 1W", "33 0.75W"),
+    "Footprint": ("Resistor_SMD:R_2512_6332Metric", "Resistor_SMD:R_2010_5025Metric"),
+    "Description": ("33 ohm 1% 1 W 2512 thick film (Extended)", "33 ohm 1% 0.75 W 2010 thick film (Extended)"),
+    "LCSC": ("C53728", "C421858"),
+    "MPN": ("25121WF330JT4E", "201007F330JT4E"),
+}
+XFMR_BOURNS = {
+    "Value": ("HM2113ZNL", "SM91502AL"),
+    "Footprint": ("slave18s:Pulse_HM2113ZNL", "slave18s:Bourns_SM91502AL"),
+    "Description": ("Pulse BMS transformer 1:1, CT, CMC, 4300 Vrms, 1000 VDC working (Extended)",
+                    "Bourns BMS transformer 1:1, CT, CMC, 4300 VDC hi-pot, 1000 VDC working (Extended)"),
+    "LCSC": ("C5730533", "C915690"),
+    "MPN": ("HM2113ZNLT", "SM91502ALE"),
+}
+SWAP = {f"R2{n:02d}": R2_2010 for n in range(1, 19)} | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS}
+
+
+def swap_part(blk, ref):
+    for prop, (old, new) in SWAP[ref].items():
+        o = f'(property "{prop}" "{old}"'
+        if o not in blk:
+            sys.exit(f"{ref}: {o} not found in Guard; update SWAP")
+        blk = blk.replace(o, f'(property "{prop}" "{new}"')
+    return blk
 
 
 DROP_TEXT = tuple(f'(text "{h}' for h in ("ZENER CLAMPS", "TAP FUSES", "C101-C118", "SUPPLY FUSES"))
@@ -137,6 +172,10 @@ def main():
                 out.append(text[last:s]); out.append(tie_symbol(blk)); last = e
                 continue
             drop = bool(m and m.group(1) in REMOVE)
+            if m and m.group(1) in SWAP:
+                out.append(text[last:s]); out.append(swap_part(blk, m.group(1))); last = e
+                gone["swapped"] = gone.get("swapped", 0) + 1
+                continue
         elif head == "label":
             m = re.search(r"\(at ([-\d.]+) ([-\d.]+)", blk)
             drop = (round(float(m.group(1)), 2), round(float(m.group(2)), 2)) in dead_ends

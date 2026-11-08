@@ -32,19 +32,8 @@ def fmt(v):
     return f"{round(float(v), 4):g}"
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("moves")
-    ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
-                    help="guard = slave-18s, lean = slave-18s-lean (ignored with --pcb)")
-    ap.add_argument("--pcb", default=None)
-    ap.add_argument("--dry", action="store_true")
-    a = ap.parse_args()
-    a.pcb = a.pcb or str(VARIANTS[a.variant].with_suffix(".kicad_pcb"))
-    print(a.pcb)
-    moves = json.load(open(a.moves, encoding="utf-8"))
-    text = open(a.pcb, encoding="utf-8", newline="").read()
-
+def apply_moves(text, moves):
+    """Return (new text, set of refs moved). moves: {"REF": [x, y(, rot)]}."""
     starts = [m.start() for m in re.finditer(r"^\t\(footprint ", text, re.M)] + [len(text)]
     out, last, done = [], 0, set()
     for s, e in zip(starts, starts[1:]):
@@ -65,12 +54,28 @@ def main():
         last = e
         done.add(ref)
     out.append(text[last:])
+    return "".join(out), done
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("moves")
+    ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
+                    help="guard = slave-18s, lean = slave-18s-lean (ignored with --pcb)")
+    ap.add_argument("--pcb", default=None)
+    ap.add_argument("--dry", action="store_true")
+    a = ap.parse_args()
+    a.pcb = a.pcb or str(VARIANTS[a.variant].with_suffix(".kicad_pcb"))
+    print(a.pcb)
+    moves = json.load(open(a.moves, encoding="utf-8"))
+    text = open(a.pcb, encoding="utf-8", newline="").read()
+    new, done = apply_moves(text, moves)
     missing = sorted(set(moves) - done)
     if missing:
         sys.exit(f"not on the board: {missing}")
     print(f"moved {len(done)} footprints" + (" (dry run)" if a.dry else ""))
     if not a.dry:
-        open(a.pcb, "w", encoding="utf-8", newline="").write("".join(out))
+        open(a.pcb, "w", encoding="utf-8", newline="").write(new)
 
 
 if __name__ == "__main__":
