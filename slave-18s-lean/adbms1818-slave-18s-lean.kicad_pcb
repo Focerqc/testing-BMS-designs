@@ -21976,5 +21976,98 @@
 			)
 		)
 	)
+	(gr_rect
+		(start 0 0)
+		(end 156.5 37)
+		(stroke
+			(width 0.3)
+			(type dash)
+		)
+		(fill no)
+		(layer "Dwgs.User")
+		(uuid "b1e47bb5-1ba6-4f07-a47f-d3658abd2226")
+	)
+	(gr_rect
+		(start 1 1)
+		(end 71 36)
+		(stroke
+			(width 0.2)
+			(type dash)
+		)
+		(fill no)
+		(layer "Dwgs.User")
+		(uuid "af29d6c3-0851-4d52-8f8f-020b33c40509")
+	)
+	(gr_rect
+		(start 73 1)
+		(end 143 36)
+		(stroke
+			(width 0.2)
+			(type dash)
+		)
+		(fill no)
+		(layer "Dwgs.User")
+		(uuid "4d9ce38d-a27f-4724-8f7c-ad4faec6c717")
+	)
+	(gr_rect
+		(start 144.5 1)
+		(end 155.5 36)
+		(stroke
+			(width 0.2)
+			(type dash)
+		)
+		(fill no)
+		(layer "Dwgs.User")
+		(uuid "d738deb3-efd9-42b7-a6b0-048dca89b2e4")
+	)
+	(gr_text "XR BMS slot 156.5 x 37 mm, 10 mm tall (long-term goal)"
+		(at 0 -1.2 0)
+		(layer "Dwgs.User")
+		(uuid "0155f682-2964-40b0-870e-3b3d8b6876b7")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.2)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "Slave A ~70 x 35"
+		(at 36 34 0)
+		(layer "Dwgs.User")
+		(uuid "980f395b-14c8-4057-be8e-008a45fdc378")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.2)
+			)
+		)
+	)
+	(gr_text "Slave B ~70 x 35"
+		(at 108 34 0)
+		(layer "Dwgs.User")
+		(uuid "e2800750-e9e1-4f3d-9254-320867ad5fce")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.2)
+			)
+		)
+	)
+	(gr_text "Plugs"
+		(at 150 18.5 90)
+		(layer "Dwgs.User")
+		(uuid "2818fd55-aa4f-4b2c-a448-0e5858449fa8")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.2)
+			)
+		)
+	)
+	(group "XR slot overlay (long-term)"
+		(uuid "486ef759-9354-4ebf-8d9a-d4082701bef9")
+		(members "b1e47bb5-1ba6-4f07-a47f-d3658abd2226" "af29d6c3-0851-4d52-8f8f-020b33c40509" "4d9ce38d-a27f-4724-8f7c-ad4faec6c717" "d738deb3-efd9-42b7-a6b0-048dca89b2e4" "0155f682-2964-40b0-870e-3b3d8b6876b7" "980f395b-14c8-4057-be8e-008a45fdc378" "e2800750-e9e1-4f3d-9254-320867ad5fce" "2818fd55-aa4f-4b2c-a448-0e5858449fa8")
+	)
 	(embedded_fonts no)
 )
