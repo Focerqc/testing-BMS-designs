@@ -7787,7 +7787,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 114.3 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7798,7 +7798,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7820,7 +7820,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7831,7 +7831,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7842,7 +7842,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7901,7 +7901,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 185.42 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7912,7 +7912,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7934,7 +7934,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7945,7 +7945,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7956,7 +7956,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8015,7 +8015,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 238.76 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8026,7 +8026,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8048,7 +8048,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8059,7 +8059,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8070,7 +8070,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8243,7 +8243,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 114.3 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8254,7 +8254,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8276,7 +8276,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8287,7 +8287,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8298,7 +8298,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8357,7 +8357,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 132.08 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8368,7 +8368,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8390,7 +8390,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8401,7 +8401,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8412,7 +8412,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8471,7 +8471,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 167.64 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8482,7 +8482,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8504,7 +8504,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8515,7 +8515,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8526,7 +8526,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8890,7 +8890,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 203.2 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8901,7 +8901,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8923,7 +8923,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8934,7 +8934,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8945,7 +8945,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11412,7 +11412,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 256.54 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11423,7 +11423,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11445,7 +11445,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11456,7 +11456,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11467,7 +11467,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11982,7 +11982,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 132.08 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11993,7 +11993,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -12015,7 +12015,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -12026,7 +12026,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -12037,7 +12037,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -13081,7 +13081,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 256.54 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13092,7 +13092,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -13114,7 +13114,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -13125,7 +13125,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -13136,7 +13136,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15946,7 +15946,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 220.98 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15957,7 +15957,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15979,7 +15979,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15990,7 +15990,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -16001,7 +16001,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -16174,7 +16174,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 238.76 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16185,7 +16185,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16207,7 +16207,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16218,7 +16218,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16229,7 +16229,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16584,7 +16584,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 203.2 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16595,7 +16595,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16617,7 +16617,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16628,7 +16628,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16639,7 +16639,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16899,7 +16899,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 220.98 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16910,7 +16910,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16932,7 +16932,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16943,7 +16943,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16954,7 +16954,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17199,7 +17199,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 167.64 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17210,7 +17210,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17232,7 +17232,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17243,7 +17243,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17254,7 +17254,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17313,7 +17313,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 149.86 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17324,7 +17324,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17346,7 +17346,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17357,7 +17357,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17368,7 +17368,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -17500,7 +17500,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 185.42 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17511,7 +17511,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17533,7 +17533,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17544,7 +17544,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17555,7 +17555,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17842,7 +17842,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "HM2113ZNL"
+		(property "Value" "SM91502AL"
 			(at 228.6 214.63 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17853,7 +17853,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "slave18s:Pulse_HM2113ZNL"
+		(property "Footprint" "slave18s:Bourns_SM91502AL"
 			(at 231.14 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -17875,7 +17875,7 @@
 				)
 			)
 		)
-		(property "Description" "Pulse BMS transformer 1:1, CT, CMC, 4300 Vrms, 1000 VDC working (Extended)"
+		(property "Description" "Bourns BMS transformer 1:1, CT, CMC, 4300 VDC hi-pot, 1000 VDC working (Extended)"
 			(at 231.14 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -17886,7 +17886,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C5730533"
+		(property "LCSC" "C915690"
 			(at 231.14 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -17897,7 +17897,7 @@
 				)
 			)
 		)
-		(property "MPN" "HM2113ZNLT"
+		(property "MPN" "SM91502ALE"
 			(at 231.14 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -18191,7 +18191,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 1W"
+		(property "Value" "33 0.75W"
 			(at 149.86 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18202,7 +18202,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -18224,7 +18224,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 1 W 2512 thick film (Extended)"
+		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -18235,7 +18235,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C53728"
+		(property "LCSC" "C421858"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -18246,7 +18246,7 @@
 				)
 			)
 		)
-		(property "MPN" "25121WF330JT4E"
+		(property "MPN" "201007F330JT4E"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -18419,7 +18419,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "HM2113ZNL"
+		(property "Value" "SM91502AL"
 			(at 109.22 214.63 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18430,7 +18430,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "slave18s:Pulse_HM2113ZNL"
+		(property "Footprint" "slave18s:Bourns_SM91502AL"
 			(at 111.76 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -18452,7 +18452,7 @@
 				)
 			)
 		)
-		(property "Description" "Pulse BMS transformer 1:1, CT, CMC, 4300 Vrms, 1000 VDC working (Extended)"
+		(property "Description" "Bourns BMS transformer 1:1, CT, CMC, 4300 VDC hi-pot, 1000 VDC working (Extended)"
 			(at 111.76 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -18463,7 +18463,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C5730533"
+		(property "LCSC" "C915690"
 			(at 111.76 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -18474,7 +18474,7 @@
 				)
 			)
 		)
-		(property "MPN" "HM2113ZNLT"
+		(property "MPN" "SM91502ALE"
 			(at 111.76 205.74 0)
 			(hide yes)
 			(show_name no)
