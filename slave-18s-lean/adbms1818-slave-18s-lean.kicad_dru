@@ -52,21 +52,21 @@
 #    (item 3). Courtyards stand in for 'under'; the gap between transformer and
 #    connector is on the placement checklist.
 
-(rule "No copper pour under T501 or J3 or J6"
+(rule "No copper pour under T501 or J3"
   (constraint disallow zone)
-  (condition "A.intersectsCourtyard('T501') || A.intersectsCourtyard('J3') || A.intersectsCourtyard('J6')"))
+  (condition "A.intersectsCourtyard('T501') || A.intersectsCourtyard('J3')"))
 
-(rule "Only isoSPI A tracks and vias inside T501 and J3 and J6"
+(rule "Only isoSPI A tracks and vias inside T501 and J3"
   (constraint disallow track via)
-  (condition "(A.intersectsCourtyard('T501') || A.intersectsCourtyard('J3') || A.intersectsCourtyard('J6')) && !(A.NetName == '/IMA' || A.NetName == '/IPA' || A.NetName == '/ISOA_CM' || A.NetName == '/ISOA_CT' || A.NetName == '/ISOA_LN' || A.NetName == '/ISOA_LP' || A.NetName == 'unconnected-(J3-MountPin-PadMP)' || A.NetName == 'unconnected-(J3-MountPin-PadMP)_1' || A.NetName == 'unconnected-(T501-LINE_CT-Pad5)')"))
+  (condition "(A.intersectsCourtyard('T501') || A.intersectsCourtyard('J3')) && !(A.NetName == '/IMA' || A.NetName == '/IPA' || A.NetName == '/ISOA_CM' || A.NetName == '/ISOA_CT' || A.NetName == '/ISOA_LN' || A.NetName == '/ISOA_LP' || A.NetName == 'unconnected-(J3-MountPin-PadMP)' || A.NetName == 'unconnected-(J3-MountPin-PadMP)_1' || A.NetName == 'unconnected-(T501-LINE_CT-Pad5)')"))
 
-(rule "No copper pour under T601 or J4 or J7"
+(rule "No copper pour under T601 or J4"
   (constraint disallow zone)
-  (condition "A.intersectsCourtyard('T601') || A.intersectsCourtyard('J4') || A.intersectsCourtyard('J7')"))
+  (condition "A.intersectsCourtyard('T601') || A.intersectsCourtyard('J4')"))
 
-(rule "Only isoSPI B tracks and vias inside T601 and J4 and J7"
+(rule "Only isoSPI B tracks and vias inside T601 and J4"
   (constraint disallow track via)
-  (condition "(A.intersectsCourtyard('T601') || A.intersectsCourtyard('J4') || A.intersectsCourtyard('J7')) && !(A.NetName == '/IMB' || A.NetName == '/IPB' || A.NetName == '/ISOB_CM' || A.NetName == '/ISOB_CT' || A.NetName == '/ISOB_LN' || A.NetName == '/ISOB_LP' || A.NetName == 'unconnected-(J4-MountPin-PadMP)' || A.NetName == 'unconnected-(J4-MountPin-PadMP)_1' || A.NetName == 'unconnected-(T601-LINE_CT-Pad5)')"))
+  (condition "(A.intersectsCourtyard('T601') || A.intersectsCourtyard('J4')) && !(A.NetName == '/IMB' || A.NetName == '/IPB' || A.NetName == '/ISOB_CM' || A.NetName == '/ISOB_CT' || A.NetName == '/ISOB_LN' || A.NetName == '/ISOB_LP' || A.NetName == 'unconnected-(J4-MountPin-PadMP)' || A.NetName == 'unconnected-(J4-MountPin-PadMP)_1' || A.NetName == 'unconnected-(T601-LINE_CT-Pad5)')"))
 
 # 4. Mounting holes H1-H4 (M3, NPTH, 3.2 mm): keep copper 4.5 mm from the hole centre so
 #    an M3 screw head or nylon washer (about 7 mm across) never touches copper. 2.9 mm
