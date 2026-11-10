@@ -9673,9 +9673,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "35630662-d401-4994-b3fc-12c454e8178c")
 		(property "Reference" "TP1"
@@ -9688,7 +9688,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 434.34 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9698,7 +9698,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 434.34 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -9720,29 +9720,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 434.34 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 434.34 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 434.34 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -10461,9 +10439,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "43b30a12-17f0-4851-bdb8-9de94adfe2fa")
 		(property "Reference" "TP4"
@@ -10476,7 +10454,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 464.82 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10486,7 +10464,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 464.82 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -10508,29 +10486,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 464.82 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 464.82 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 464.82 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -10684,9 +10640,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "48aff1d4-d73b-43b2-a56f-3d99c2b0397d")
 		(property "Reference" "TP8"
@@ -10699,7 +10655,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 505.46 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10709,7 +10665,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 505.46 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -10731,29 +10687,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 505.46 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 505.46 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 505.46 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -10907,9 +10841,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "4cda121c-9185-477e-95e2-00416332c1d4")
 		(property "Reference" "TP2"
@@ -10922,7 +10856,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 444.5 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10932,7 +10866,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 444.5 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -10954,29 +10888,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 444.5 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 444.5 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 444.5 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -11133,9 +11045,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "51c4281e-4a10-49a0-a13d-ac6807602825")
 		(property "Reference" "TP7"
@@ -11148,7 +11060,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 495.3 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11158,7 +11070,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 495.3 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -11180,29 +11092,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 495.3 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 495.3 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 495.3 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -14024,9 +13914,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "9dffa52c-6364-4560-9146-b30f743437f7")
 		(property "Reference" "TP9"
@@ -14039,7 +13929,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 515.62 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14049,7 +13939,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 515.62 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -14071,29 +13961,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 515.62 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 515.62 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 515.62 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -15211,9 +15079,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "b0be50f0-3131-4c7f-8fad-28b8a3775686")
 		(property "Reference" "TP10"
@@ -15226,7 +15094,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 525.78 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15236,7 +15104,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 525.78 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -15258,29 +15126,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 525.78 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 525.78 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 525.78 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -16004,9 +15850,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "c26846c2-7427-4728-ae23-9689ed5b5e26")
 		(property "Reference" "TP5"
@@ -16019,7 +15865,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 474.98 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16029,7 +15875,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 474.98 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -16051,29 +15897,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 474.98 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 474.98 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 474.98 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -16729,9 +16553,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "d656d0c6-a7f7-4474-80eb-cdea1fec6bc9")
 		(property "Reference" "TP6"
@@ -16744,7 +16568,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 485.14 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16754,7 +16578,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 485.14 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -16776,29 +16600,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 485.14 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 485.14 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 485.14 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -17684,9 +17486,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "f022f33e-b48e-4fe9-b03b-a972153b3462")
 		(property "Reference" "TP3"
@@ -17699,7 +17501,7 @@
 				)
 			)
 		)
-		(property "Value" "5015"
+		(property "Value" "pad"
 			(at 454.66 208.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17709,7 +17511,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
 			(at 454.66 213.36 0)
 			(hide yes)
 			(show_name no)
@@ -17731,29 +17533,7 @@
 				)
 			)
 		)
-		(property "Description" "Test loop, SMD micro mini, Keystone 5015 (Extended)"
-			(at 454.66 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2906768"
-			(at 454.66 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "5015"
+		(property "Description" "Bare 1.5 mm SMD pad, no part"
 			(at 454.66 213.36 0)
 			(hide yes)
 			(show_name no)
