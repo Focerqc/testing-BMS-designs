@@ -5054,7 +5054,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "R201-R218: 33 ohm 1 W balance, cell n node (before 10 ohm) to Sn"
+	(text "R201-R218: 120 ohm 1206 balance, cell n node (before 10 ohm) to Sn"
 		(exclude_from_sim no)
 		(at 106.68 109.22 0)
 		(effects
@@ -5101,18 +5101,6 @@
 		)
 		(uuid "79970fdc-5dd3-472a-87a0-228a2b4a521b")
 	)
-	(text "TEST POINTS  TP1-TP10 Keystone 5015 loops, TP11-TP14 bare 1.5 mm pads (HV, no loop)"
-		(exclude_from_sim no)
-		(at 429.26 195.58 0)
-		(effects
-			(font
-				(size 2 2)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "981b4556-9e7e-438a-a219-76a0cb2dec66")
-	)
 	(text "THERMISTORS: 100k to VREF2 + 100 nF, GPIO1-3 cell NTC, GPIO4 onboard"
 		(exclude_from_sim no)
 		(at 106.68 231.14 0)
@@ -5149,7 +5137,7 @@
 		)
 		(uuid "a71e4a06-4db6-4bfb-9baf-d287d25ff7ca")
 	)
-	(text "MOUNTING HOLES  H1-H4: M3, no copper, positions set with the board outline"
+	(text "MOUNTING HOLES  H1-H4: M2, no copper, positions set with the board outline"
 		(exclude_from_sim no)
 		(at 429.26 236.22 0)
 		(effects
@@ -5485,16 +5473,6 @@
 		)
 		(uuid "2725f065-6bd0-42c4-9e58-8ca0b7f6f837")
 	)
-	(label "C6_F"
-		(at 546.1 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "273db331-2b7d-4244-95b6-1317eed6e600")
-	)
 	(label "V-"
 		(at 127 247.65 270)
 		(effects
@@ -5534,16 +5512,6 @@
 			(justify left bottom)
 		)
 		(uuid "2cba6557-0d33-4835-b0f6-e6e3d5ff55a0")
-	)
-	(label "V-"
-		(at 434.34 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "2d281a9e-fd82-493c-abbb-0f16977d92d9")
 	)
 	(label "CELL0"
 		(at 447.04 109.22 90)
@@ -5705,16 +5673,6 @@
 		)
 		(uuid "41d64bfb-c14e-4c65-aeff-674649595fa8")
 	)
-	(label "DRIVE"
-		(at 485.14 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "438e7447-396d-4212-b8b4-831932482ac9")
-	)
 	(label "CELL10"
 		(at 360.68 91.44 180)
 		(effects
@@ -5805,16 +5763,6 @@
 		)
 		(uuid "4beaf9a0-e934-468d-b94d-1915f3935f54")
 	)
-	(label "C18_F"
-		(at 566.42 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4de59f83-0ddf-42b8-9559-80cf1a99c28a")
-	)
 	(label "CELL2"
 		(at 360.68 63.5 180)
 		(effects
@@ -5904,16 +5852,6 @@
 			(justify right bottom)
 		)
 		(uuid "5a42e6da-8e8c-447c-a4af-c3fecd4ee128")
-	)
-	(label "VCOLL"
-		(at 535.94 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "5b4e0df5-fec9-45ad-8308-33c888af748b")
 	)
 	(label "CELL9"
 		(at 360.68 81.28 180)
@@ -6214,16 +6152,6 @@
 			(justify right bottom)
 		)
 		(uuid "7132c860-ff8f-4beb-acd2-f6e8267be84a")
-	)
-	(label "IMB"
-		(at 525.78 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "7264d610-5a8c-4333-bbf0-210671f2e34a")
 	)
 	(label "C16_F"
 		(at 314.96 49.53 270)
@@ -6685,16 +6613,6 @@
 		)
 		(uuid "9ba5286a-3158-4504-84a7-90edef66c2bc")
 	)
-	(label "IPA"
-		(at 495.3 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "9d8b8724-d882-4f3c-a164-3d4cca71b6cd")
-	)
 	(label "S15"
 		(at 35.56 99.06 180)
 		(effects
@@ -6854,16 +6772,6 @@
 			(justify right bottom)
 		)
 		(uuid "a9cc2b3b-7f0b-45c3-bbdb-12289cc61e76")
-	)
-	(label "VREF2"
-		(at 474.98 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "a9d5b88a-a171-4ca0-9c25-3c8c87bfc892")
 	)
 	(label "ISOB_CT"
 		(at 312.42 201.93 90)
@@ -7115,16 +7023,6 @@
 		)
 		(uuid "c2c1f948-226f-415f-87fd-3d4b724fe25b")
 	)
-	(label "IMA"
-		(at 505.46 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c35ebb20-5d97-42a0-b51c-30fc6de800ab")
-	)
 	(label "S11"
 		(at 129.54 146.05 270)
 		(effects
@@ -7134,26 +7032,6 @@
 			(justify right bottom)
 		)
 		(uuid "c496cd20-8c53-44ee-ace9-d95e76f321a6")
-	)
-	(label "VREG"
-		(at 454.66 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c6a4bc68-5d04-43d6-915f-c017b6406477")
-	)
-	(label "VREF1"
-		(at 464.82 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c730e6ad-4e5c-42e5-8e16-c4d51b3d5dcc")
 	)
 	(label "GPIO4"
 		(at 76.2 132.08 0)
@@ -7194,16 +7072,6 @@
 			(justify right bottom)
 		)
 		(uuid "c8db9f31-6fda-4a35-bc46-6efd52e52a88")
-	)
-	(label "V-"
-		(at 444.5 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c8e0e3e5-ddd4-4a1c-9a1e-43a77e397ed8")
 	)
 	(label "GPIO1"
 		(at 111.76 247.65 270)
@@ -7314,16 +7182,6 @@
 			(justify right bottom)
 		)
 		(uuid "d526eb55-3776-4e2f-ada6-67dc8841a7e9")
-	)
-	(label "C12_F"
-		(at 556.26 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "d5cb97d1-f5a9-4710-a3c4-30242c751ab0")
 	)
 	(label "CELL18"
 		(at 111.76 168.91 90)
@@ -7715,16 +7573,6 @@
 		)
 		(uuid "fdffd024-461a-4e6d-91ee-2ee3c870125a")
 	)
-	(label "IPB"
-		(at 515.62 213.36 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "ff123680-18bc-4ad1-91fa-1837e8a9bbbc")
-	)
 	(symbol
 		(lib_id "Device:R")
 		(at 111.76 142.24 0)
@@ -7747,7 +7595,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 114.3 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7758,7 +7606,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7780,7 +7628,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7791,7 +7639,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7802,7 +7650,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7813,7 +7661,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 10 node (before 10 ohm) to S10. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 10 node (before 10 ohm) to S10. ~0.12 W at 4.2 V"
 			(at 111.76 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7861,7 +7709,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 185.42 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7872,7 +7720,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7894,7 +7742,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7905,7 +7753,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7916,7 +7764,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7927,7 +7775,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 14 node (before 10 ohm) to S14. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 14 node (before 10 ohm) to S14. ~0.12 W at 4.2 V"
 			(at 182.88 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -7975,7 +7823,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 238.76 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7986,7 +7834,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8008,7 +7856,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8019,7 +7867,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8030,7 +7878,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8041,7 +7889,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 8 node (before 10 ohm) to S8. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 8 node (before 10 ohm) to S8. ~0.12 W at 4.2 V"
 			(at 236.22 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8100,7 +7948,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8122,7 +7970,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8133,7 +7981,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8144,7 +7992,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8203,7 +8051,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 114.3 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8214,7 +8062,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8236,7 +8084,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8247,7 +8095,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8258,7 +8106,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8269,7 +8117,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 1 node (before 10 ohm) to S1. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 1 node (before 10 ohm) to S1. ~0.12 W at 4.2 V"
 			(at 111.76 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8317,7 +8165,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 132.08 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8328,7 +8176,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8350,7 +8198,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8361,7 +8209,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8372,7 +8220,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8383,7 +8231,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 11 node (before 10 ohm) to S11. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 11 node (before 10 ohm) to S11. ~0.12 W at 4.2 V"
 			(at 129.54 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8431,7 +8279,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 167.64 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8442,7 +8290,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8464,7 +8312,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8475,7 +8323,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8486,7 +8334,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8497,7 +8345,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 4 node (before 10 ohm) to S4. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 4 node (before 10 ohm) to S4. ~0.12 W at 4.2 V"
 			(at 165.1 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8633,7 +8481,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8655,7 +8503,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8666,7 +8514,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8677,7 +8525,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8747,7 +8595,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8769,7 +8617,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8780,7 +8628,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8791,7 +8639,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8850,7 +8698,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 203.2 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8861,7 +8709,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8883,7 +8731,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8894,7 +8742,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8905,7 +8753,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -8916,7 +8764,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 6 node (before 10 ohm) to S6. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 6 node (before 10 ohm) to S6. ~0.12 W at 4.2 V"
 			(at 200.66 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -9385,7 +9233,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9407,7 +9255,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9418,7 +9266,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9429,7 +9277,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9461,93 +9309,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "R118")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 535.94 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "2d9b9569-6285-4413-8542-528008a29d5d")
-		(property "Reference" "TP11"
-			(at 535.94 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 535.94 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 535.94 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 535.94 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 535.94 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for VCOLL"
-			(at 535.94 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "071397c3-af26-4cfa-a93d-fecb1dc24325")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP11")
 					(unit 1)
 				)
 			)
@@ -9662,93 +9423,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "R704")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 434.34 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "35630662-d401-4994-b3fc-12c454e8178c")
-		(property "Reference" "TP1"
-			(at 434.34 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 434.34 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 434.34 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 434.34 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 434.34 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for V-"
-			(at 434.34 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0b9a535d-1b64-406b-a939-c0fac1bb151f")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP1")
 					(unit 1)
 				)
 			)
@@ -10381,7 +10055,7 @@
 				)
 			)
 		)
-		(property "Value" "M3"
+		(property "Value" "M2"
 			(at 434.34 243.205 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10391,7 +10065,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
 			(at 434.34 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -10413,7 +10087,7 @@
 				)
 			)
 		)
-		(property "Description" "Mounting hole 3.2 mm, M3, NPTH, no annular ring"
+		(property "Description" "Mounting hole 2.2 mm, M2, NPTH, no annular ring"
 			(at 434.34 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -10428,93 +10102,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "H1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 464.82 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "43b30a12-17f0-4851-bdb8-9de94adfe2fa")
-		(property "Reference" "TP4"
-			(at 464.82 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 464.82 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 464.82 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 464.82 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 464.82 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for VREF1"
-			(at 464.82 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1ed59788-6c4a-4ab0-8b9e-9b2d1635cf46")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP4")
 					(unit 1)
 				)
 			)
@@ -10553,7 +10140,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10575,7 +10162,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10586,7 +10173,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10597,7 +10184,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10629,93 +10216,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "R100")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 505.46 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "48aff1d4-d73b-43b2-a56f-3d99c2b0397d")
-		(property "Reference" "TP8"
-			(at 505.46 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 505.46 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 505.46 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 505.46 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 505.46 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for IMA"
-			(at 505.46 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "df58da25-b0ff-441a-9e59-056e47f3730b")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP8")
 					(unit 1)
 				)
 			)
@@ -10830,93 +10330,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "C703")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 444.5 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "4cda121c-9185-477e-95e2-00416332c1d4")
-		(property "Reference" "TP2"
-			(at 444.5 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 444.5 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 444.5 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 444.5 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 444.5 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for V-"
-			(at 444.5 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "690a1d78-1bc5-4083-bef6-48f83485209f")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP2")
 					(unit 1)
 				)
 			)
@@ -11040,93 +10453,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 495.3 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "51c4281e-4a10-49a0-a13d-ac6807602825")
-		(property "Reference" "TP7"
-			(at 495.3 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 495.3 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 495.3 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 495.3 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 495.3 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for IPA"
-			(at 495.3 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f0ed5311-0ebc-40a5-8112-9aaf5663725e")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 254 142.24 0)
 		(unit 1)
@@ -11148,7 +10474,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 256.54 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11159,7 +10485,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11181,7 +10507,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11192,7 +10518,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11203,7 +10529,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11214,7 +10540,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 18 node (before 10 ohm) to S18. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 18 node (before 10 ohm) to S18. ~0.12 W at 4.2 V"
 			(at 254 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -11387,7 +10713,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11409,7 +10735,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11420,7 +10746,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11431,7 +10757,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11501,7 +10827,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11523,7 +10849,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11534,7 +10860,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11545,7 +10871,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11718,7 +11044,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 132.08 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11729,7 +11055,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11751,7 +11077,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11762,7 +11088,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11773,7 +11099,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11784,7 +11110,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 2 node (before 10 ohm) to S2. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 2 node (before 10 ohm) to S2. ~0.12 W at 4.2 V"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11945,7 +11271,7 @@
 				)
 			)
 		)
-		(property "Value" "M3"
+		(property "Value" "M2"
 			(at 447.04 243.205 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11955,7 +11281,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
 			(at 447.04 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -11977,7 +11303,7 @@
 				)
 			)
 		)
-		(property "Description" "Mounting hole 3.2 mm, M3, NPTH, no annular ring"
+		(property "Description" "Mounting hole 2.2 mm, M2, NPTH, no annular ring"
 			(at 447.04 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -12030,7 +11356,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12052,7 +11378,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12063,7 +11389,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12074,7 +11400,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12372,7 +11698,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12394,7 +11720,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12405,7 +11731,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12416,7 +11742,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12600,7 +11926,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12622,7 +11948,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12633,7 +11959,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12644,7 +11970,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12817,7 +12143,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 256.54 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12828,7 +12154,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -12850,7 +12176,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -12861,7 +12187,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -12872,7 +12198,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -12883,7 +12209,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 9 node (before 10 ohm) to S9. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 9 node (before 10 ohm) to S9. ~0.12 W at 4.2 V"
 			(at 254 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -13170,7 +12496,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13192,7 +12518,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13203,7 +12529,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13214,7 +12540,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13284,7 +12610,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13306,7 +12632,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13317,7 +12643,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13328,7 +12654,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13398,7 +12724,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13420,7 +12746,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13431,7 +12757,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13442,7 +12768,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13708,93 +13034,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 566.42 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "91a756eb-f689-4ea6-96c7-2e66569ee181")
-		(property "Reference" "TP14"
-			(at 566.42 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 566.42 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 566.42 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 566.42 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 566.42 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for C18_F"
-			(at 566.42 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c80e0755-b8a7-4f26-953c-589b217f3985")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP14")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 226.06 45.72 0)
 		(unit 1)
@@ -13827,7 +13066,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13849,7 +13088,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13860,7 +13099,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13871,7 +13110,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13903,93 +13142,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "R109")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 515.62 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "9dffa52c-6364-4560-9146-b30f743437f7")
-		(property "Reference" "TP9"
-			(at 515.62 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 515.62 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 515.62 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 515.62 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 515.62 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for IPB"
-			(at 515.62 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "03c8afad-7cb9-48d1-815b-9da8b2b89675")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP9")
 					(unit 1)
 				)
 			)
@@ -14446,7 +13598,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14468,7 +13620,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14479,7 +13631,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14490,7 +13642,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14987,180 +14139,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 556.26 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "b077e3a1-75ab-449a-b001-a0808c6db882")
-		(property "Reference" "TP13"
-			(at 556.26 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 556.26 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 556.26 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 556.26 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 556.26 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for C12_F"
-			(at 556.26 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bea29cc8-0ad9-439a-a0ed-d3b6414c998c")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 525.78 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "b0be50f0-3131-4c7f-8fad-28b8a3775686")
-		(property "Reference" "TP10"
-			(at 525.78 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 525.78 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 525.78 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 525.78 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 525.78 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for IMB"
-			(at 525.78 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "348c2d35-cd5b-4943-abde-0f90a7a7a674")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 276.86 45.72 0)
 		(unit 1)
@@ -15193,7 +14171,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15215,7 +14193,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15226,7 +14204,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15237,7 +14215,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15524,7 +14502,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 220.98 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15535,7 +14513,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15557,7 +14535,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15568,7 +14546,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15579,7 +14557,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15590,7 +14568,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 7 node (before 10 ohm) to S7. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 7 node (before 10 ohm) to S7. ~0.12 W at 4.2 V"
 			(at 218.44 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15649,7 +14627,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15671,7 +14649,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15682,7 +14660,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15693,7 +14671,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15752,7 +14730,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 238.76 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15763,7 +14741,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -15785,7 +14763,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -15796,7 +14774,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -15807,7 +14785,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -15818,7 +14796,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 17 node (before 10 ohm) to S17. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 17 node (before 10 ohm) to S17. ~0.12 W at 4.2 V"
 			(at 236.22 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -15839,93 +14817,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "R217")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 474.98 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "c26846c2-7427-4728-ae23-9689ed5b5e26")
-		(property "Reference" "TP5"
-			(at 474.98 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 474.98 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 474.98 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 474.98 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 474.98 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for VREF2"
-			(at 474.98 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "24405fc1-248a-4898-9cf1-4e1542297ec7")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP5")
 					(unit 1)
 				)
 			)
@@ -16066,7 +14957,7 @@
 				)
 			)
 		)
-		(property "Value" "M3"
+		(property "Value" "M2"
 			(at 472.44 243.205 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16076,7 +14967,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
 			(at 472.44 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -16098,7 +14989,7 @@
 				)
 			)
 		)
-		(property "Description" "Mounting hole 3.2 mm, M3, NPTH, no annular ring"
+		(property "Description" "Mounting hole 2.2 mm, M2, NPTH, no annular ring"
 			(at 472.44 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -16140,7 +15031,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 203.2 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16151,7 +15042,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16173,7 +15064,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16184,7 +15075,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16195,7 +15086,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16206,7 +15097,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 15 node (before 10 ohm) to S15. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 15 node (before 10 ohm) to S15. ~0.12 W at 4.2 V"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16227,93 +15118,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "R215")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 546.1 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "d356482a-8d94-4e11-9704-5a345e8c3901")
-		(property "Reference" "TP12"
-			(at 546.1 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 546.1 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 546.1 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 546.1 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 546.1 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for C6_F"
-			(at 546.1 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "46646cd5-a493-486d-a2e3-dc5ce0df38e7")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP12")
 					(unit 1)
 				)
 			)
@@ -16352,7 +15156,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -16374,7 +15178,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -16385,7 +15189,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -16396,7 +15200,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -16455,7 +15259,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 220.98 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16466,7 +15270,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16488,7 +15292,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16499,7 +15303,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16510,7 +15314,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16521,7 +15325,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 16 node (before 10 ohm) to S16. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 16 node (before 10 ohm) to S16. ~0.12 W at 4.2 V"
 			(at 218.44 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16542,93 +15346,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "R216")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 485.14 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "d656d0c6-a7f7-4474-80eb-cdea1fec6bc9")
-		(property "Reference" "TP6"
-			(at 485.14 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 485.14 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 485.14 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 485.14 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 485.14 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for DRIVE"
-			(at 485.14 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5790b4f2-7d50-4321-90bd-99f4e7be00cc")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP6")
 					(unit 1)
 				)
 			)
@@ -16733,7 +15450,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 167.64 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16744,7 +15461,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16766,7 +15483,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16777,7 +15494,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16788,7 +15505,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16799,7 +15516,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 13 node (before 10 ohm) to S13. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 13 node (before 10 ohm) to S13. ~0.12 W at 4.2 V"
 			(at 165.1 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16847,7 +15564,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 149.86 143.51 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16858,7 +15575,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16880,7 +15597,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16891,7 +15608,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16902,7 +15619,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16913,7 +15630,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 12 node (before 10 ohm) to S12. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 12 node (before 10 ohm) to S12. ~0.12 W at 4.2 V"
 			(at 147.32 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -16960,7 +15677,7 @@
 				)
 			)
 		)
-		(property "Value" "M3"
+		(property "Value" "M2"
 			(at 459.74 243.205 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16970,7 +15687,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
 			(at 459.74 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -16992,7 +15709,7 @@
 				)
 			)
 		)
-		(property "Description" "Mounting hole 3.2 mm, M3, NPTH, no annular ring"
+		(property "Description" "Mounting hole 2.2 mm, M2, NPTH, no annular ring"
 			(at 459.74 246.38 0)
 			(hide yes)
 			(show_name no)
@@ -17034,7 +15751,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 185.42 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17045,7 +15762,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17067,7 +15784,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17078,7 +15795,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17089,7 +15806,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17100,7 +15817,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 5 node (before 10 ohm) to S5. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 5 node (before 10 ohm) to S5. ~0.12 W at 4.2 V"
 			(at 182.88 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17159,7 +15876,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -17181,7 +15898,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 250 mW 1206 thick film (Basic)"
+		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -17192,7 +15909,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17903"
+		(property "LCSC" "C22859"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -17203,7 +15920,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F100JT5E"
+		(property "MPN" "0603WAF100JT5E"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -17481,93 +16198,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 454.66 213.36 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "f022f33e-b48e-4fe9-b03b-a972153b3462")
-		(property "Reference" "TP3"
-			(at 454.66 206.502 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "pad"
-			(at 454.66 208.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 454.66 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 454.66 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Bare 1.5 mm SMD pad, no part"
-			(at 454.66 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Probe point for VREG"
-			(at 454.66 213.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "abe82900-daea-44c5-a6c6-911ac0177719")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "TP3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 203.2 172.72 0)
 		(unit 1)
@@ -17703,7 +16333,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "33 0.75W"
+		(property "Value" "120"
 			(at 149.86 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17714,7 +16344,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_2010_5025Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17736,7 +16366,7 @@
 				)
 			)
 		)
-		(property "Description" "33 ohm 1% 0.75 W 2010 thick film (Extended)"
+		(property "Description" "120 ohm 1% 250 mW 1206 thick film (Basic)"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17747,7 +16377,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C421858"
+		(property "LCSC" "C17909"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17758,7 +16388,7 @@
 				)
 			)
 		)
-		(property "MPN" "201007F330JT4E"
+		(property "MPN" "1206W4F1200T5E"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17769,7 +16399,7 @@
 				)
 			)
 		)
-		(property "Note" "Cell 3 node (before 10 ohm) to S3. ~0.4 W at 4.2 V"
+		(property "Note" "Cell 3 node (before 10 ohm) to S3. ~0.12 W at 4.2 V"
 			(at 147.32 119.38 0)
 			(hide yes)
 			(show_name no)
