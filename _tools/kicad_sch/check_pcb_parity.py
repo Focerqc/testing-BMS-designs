@@ -6,7 +6,8 @@
      so "/V-" vs "V-" counts as a mismatch). Unnumbered pads (thermal vias, paste)
      must have no net or the same net as the numbered pad they belong to.
   4. Every footprint on the front side (F.Cu): the slave is single-sided so it can sit
-     flat on a carrier PCB.
+     flat on a carrier PCB. Exception (Lean, 2026-11-09): test points TP<n> are bare copper
+     pads, no part, and sit on the back; they must be on B.Cu there and on F.Cu on Guard.
   5. kicad-cli DRC with --schematic-parity: 0 parity items.
 Other DRC items (unrouted, courtyards, silk) are only counted by type.
 Exit code 0 only if 2-5 pass. PWR_FLAGs have no footprint and are not in the netlist.
@@ -103,9 +104,13 @@ def main():
     print(f"unnumbered pads: {len(extra)} (nets off the EP: {len(badx)})")
     ok &= not badx
 
+    lean = a.variant == "lean"
+    tp = lambda r: re.fullmatch(r"TP\d+", r)
+    wrong = [r for r in back if not (lean and tp(r))] + [r for r in bfp if lean and tp(r) and r not in back]
     print(f"front side: {len(bfp) - len(back)} of {len(bfp)} footprints on F.Cu"
-          + (f"; on the back: {sorted(back)}" if back else ""))
-    ok &= not back
+          + (f"; on the back: {sorted(back)}" if back else "")
+          + (f"; WRONG SIDE: {sorted(wrong)}" if wrong else (" (Lean test points are on the back)" if lean else "")))
+    ok &= not wrong
 
     if not a.no_drc:
         rep = TMP / "slave18s_drc.json"

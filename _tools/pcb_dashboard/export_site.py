@@ -51,7 +51,7 @@ for source in board_files:
     boxes = json.loads(boxfile.read_text(encoding='utf-8')) if boxfile.exists() else {}
     boxes['exists'] = boxfile.exists()
     renders = {}
-    for kind in ['top', 'iso']:
+    for kind in ['top', 'iso', 'bottom']:
         render = source.with_name(source.stem + '_3d_' + kind + '.png')
         entry = {'exists': render.exists()}
         if render.exists():

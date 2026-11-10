@@ -36,6 +36,9 @@
     render3dImg: null,
     render3dBounds: null,   // the board's own rect inside render3dImg (pixels): parked parts and margins lie outside it
     render3dPath: null,
+    render3dBotImg: null,    // render of the back (mirrored by the server so it lies on the board outline)
+    render3dBotBounds: null,
+    render3dBotPath: null,
     renderIsoPath: null,
     isoView: { x: 0, y: 0, scale: 1 },
     isoDrag: null,
@@ -1024,6 +1027,26 @@
         if ($('tgl3D')) $('tgl3D').classList.remove('active');
       }
 
+      // Bottom status: the back of the board, for parts on B.Cu (Lean's test pads)
+      const botInfo = res.bottom;
+      if (botInfo && botInfo.exists) {
+        if ($('renderBotTimeBadge')) {
+          $('renderBotTimeBadge').textContent = `Bottom: ${botInfo.timestamp}`;
+          $('renderBotTimeBadge').classList.add('fresh');
+        }
+        S.render3dBotPath = botInfo.image;
+        await load3DRender(botInfo.image, 'bot');
+      } else {
+        if ($('renderBotTimeBadge')) {
+          $('renderBotTimeBadge').textContent = 'Bottom: –';
+          $('renderBotTimeBadge').classList.remove('fresh');
+        }
+        S.render3dBotPath = null;
+        S.render3dBotImg = null;
+        S.render3dBotBounds = null;
+      }
+      syncSideButtons();
+
       // Iso status
       const isoInfo = res.iso;
       if (isoInfo && isoInfo.exists) {
@@ -1095,24 +1118,25 @@
     }
   }
 
-  function load3DRender(path) {
+  function load3DRender(path, slot = 'top') {
+    const [imgKey, boundsKey] = slot === 'bot' ? ['render3dBotImg', 'render3dBotBounds'] : ['render3dImg', 'render3dBounds'];
     return new Promise(resolve => {
       if (!path) {
-        S.render3dImg = null;
-        S.render3dBounds = null;
+        S[imgKey] = null;
+        S[boundsKey] = null;
         render();
         return resolve();
       }
       const img = new Image();
       img.onload = () => {
-        S.render3dImg = img;
-        S.render3dBounds = boardImageBounds(img) || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
+        S[imgKey] = img;
+        S[boundsKey] = boardImageBounds(img) || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
         render();
         resolve();
       };
       img.onerror = () => {
-        S.render3dImg = null;
-        S.render3dBounds = null;
+        S[imgKey] = null;
+        S[boundsKey] = null;
         resolve();
       };
       img.src = `/api/image?path=${encodeURIComponent(path)}&t=${Date.now()}`;
@@ -1121,15 +1145,16 @@
 
   async function triggerRender3D(kind = 'top') {
     if (!S.boardPath) return toast('No board selected', 'warn');
-    const isIso = kind === 'iso';
-    const btn = isIso ? $('btnIsoRender3D') : $('btnTopRender3D');
-    const badge = isIso ? $('renderIsoTimeBadge') : $('renderTimeBadge');
+    const isIso = kind === 'iso', isBot = kind === 'bottom';
+    const label = isIso ? 'Iso' : (isBot ? 'Bottom' : 'Top');
+    const btn = isIso ? $('btnIsoRender3D') : (isBot ? $('btnBotRender3D') : $('btnTopRender3D'));
+    const badge = isIso ? $('renderIsoTimeBadge') : (isBot ? $('renderBotTimeBadge') : $('renderTimeBadge'));
     const oldHtml = btn ? btn.innerHTML : '';
 
     if (btn) {
       btn.disabled = true;
       btn.classList.add('btn-spinning');
-      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Rendering ${isIso ? 'Iso' : 'Top'}…`;
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Rendering ${label}…`;
     }
     if (badge) {
       badge.textContent = 'Rendering…';
@@ -1152,6 +1177,18 @@
         if ($('tglIsoView')) $('tglIsoView').classList.add('active');
         toast(`⚡ Isometric 3D render generated! (${res.timestamp})`);
         openIsoViewer();
+      } else if (isBot) {
+        S.render3dBotPath = res.image;
+        await load3DRender(res.image, 'bot');
+        S.show3D = true;
+        if ($('tgl3D')) $('tgl3D').classList.add('active');
+        if (badge) {
+          badge.textContent = `Bottom: ${res.timestamp}`;
+          badge.classList.add('fresh');
+        }
+        syncSideButtons();
+        toast(`⚡ 3D Bottom render generated! (${res.timestamp})`);
+        render();
       } else {
         S.render3dPath = res.image;
         await load3DRender(res.image);
@@ -1166,7 +1203,7 @@
       }
     } catch (err) {
       toast(`3D Render failed: ${esc(err.message)}`, 'err');
-      if (badge) badge.textContent = `${isIso ? 'Iso' : 'Top'}: Failed`;
+      if (badge) badge.textContent = `${label}: Failed`;
     } finally {
       if (btn) {
         btn.disabled = false;
@@ -1348,18 +1385,26 @@
     }).join('');
     sel.value = chosen && [...sel.options].some(o => o.value === chosen) ? chosen : '';
   }
+  // The back can be shown whenever there is something to show: a bottom photo, a bottom 3D render, or
+  // a part on B.Cu (Lean's test pads), so Board Boxes works on the back without any photo.
+  function hasBack() {
+    return !!(S.doc.refBot || S.render3dBotImg || (S.board && S.board.footprints.some(fp => fp.side === 'B')));
+  }
+  function hasFront() {
+    return !!(S.doc.ref || S.render3dImg || !S.board || S.board.footprints.some(fp => fp.side !== 'B'));
+  }
   function syncSideButtons() {
     document.querySelectorAll('#sideView button').forEach(b => {
       b.classList.toggle('on', b.dataset.side === S.sideView);
-      if (b.dataset.side === 'both') b.disabled = !(S.doc.ref && S.doc.refBot);
-      if (b.dataset.side === 'bottom') b.disabled = !S.doc.refBot;
-      if (b.dataset.side === 'top') b.disabled = !S.doc.ref;
+      if (b.dataset.side === 'both') b.disabled = !(hasFront() && hasBack());
+      if (b.dataset.side === 'bottom') b.disabled = !hasBack();
+      if (b.dataset.side === 'top') b.disabled = !hasFront();
     });
   }
   function setSideView(mode, refit) {
-    if (mode === 'both' && !(S.doc.ref && S.doc.refBot)) mode = S.doc.refBot && !S.doc.ref ? 'bottom' : 'top';
-    if (mode === 'bottom' && !S.doc.refBot) mode = 'top';
-    if (mode === 'top' && !S.doc.ref && S.doc.refBot) mode = 'bottom';
+    if (mode === 'both' && !(hasFront() && hasBack())) mode = hasBack() && !hasFront() ? 'bottom' : 'top';
+    if (mode === 'bottom' && !hasBack()) mode = 'top';
+    if (mode === 'top' && !hasFront() && hasBack()) mode = 'bottom';
     S.sideView = mode;
     syncSideButtons();
     if (refit && S.board) fit();
@@ -1401,7 +1446,8 @@
     const sc = S.view.scale;
     const refImg = pane.side === 'bot' ? S.refBotImg : S.refImg;
     const hasRef = S.showRef && refImg;
-    const has3D = pane.side === 'top' && S.show3D && S.render3dImg;
+    const img3D = pane.side === 'bot' ? S.render3dBotImg : S.render3dImg;
+    const has3D = S.show3D && !!img3D;
 
     // Layer 1: Reference image (photo). Top render never covers the bottom photo.
     if (hasRef) {
@@ -1418,8 +1464,8 @@
     // outline; the rest of the image (parts parked off the board) is drawn around it at the same scale.
     if (has3D) {
       const p = toScreen(bb.x, bb.y);
-      const img = S.render3dImg;
-      const src = S.render3dBounds || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
+      const img = img3D;
+      const src = (pane.side === 'bot' ? S.render3dBotBounds : S.render3dBounds) || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
       const kx = bb.w * sc / src.w, ky = bb.h * sc / src.h;
       ctx.save();
       ctx.globalAlpha = S.opacity;
@@ -2508,7 +2554,7 @@
     { id: 'try', t: 'Read this try',
       d: ['lean_place.py placed every part from the knobs at its top: plugs centred on the top edge, the 18-channel row under them, U1 under the row, isoSPI port B right of U1, test points and Q301 bottom-left.',
           'Each run places everything from scratch. A part you move by hand in KiCad stays only until the next run, so once a move works, put it in the script.',
-          'What doesn\'t fit is parked right of the outline. Turn on 3D Top and Parts: the render and the pads line up, parked parts included.'],
+          'What doesn\'t fit is parked right of the outline. Turn on 3D and Parts: the render and the pads line up, parked parts included.'],
       look: 'lean_place.py --drc: only silk warnings and unrouted nets. A clearance or courtyard error means two parts collide.',
       check: () => {
         const ob = outlineBox();
@@ -2709,6 +2755,9 @@
     if (S.doc.refBot) lines.push(`Bottom reference image: \`${S.doc.refBot}\``);
     if (S.render3dPath) {
       lines.push(`Top-Down 3D CAD render: \`${S.render3dPath}\``);
+    }
+    if (S.render3dBotPath) {
+      lines.push(`Bottom 3D CAD render (mirrored to board coordinates): \`${S.render3dBotPath}\``);
     }
     if (S.renderIsoPath) {
       lines.push(`Isometric 3D CAD render: \`${S.renderIsoPath}\``);
@@ -2950,7 +2999,7 @@
     const tgl3D = $('tgl3D');
     if (tgl3D) {
       tgl3D.onclick = () => {
-        if (!S.render3dImg) {
+        if (!S.render3dImg && !S.render3dBotImg) {
           toast('No 3D render yet. Click <b>Render 3D</b> in the top bar to generate one.', 'info');
           return;
         }
@@ -3026,6 +3075,8 @@
 
     const btnTop = $('btnTopRender3D');
     if (btnTop) btnTop.onclick = () => triggerRender3D('top');
+    const btnBot = $('btnBotRender3D');
+    if (btnBot) btnBot.onclick = () => triggerRender3D('bottom');
     const btnSchematic = $('btnSchematic');
     if (btnSchematic) btnSchematic.onclick = triggerRenderSchematic;
     const btnFullSchematic = $('btnFullSchematic');

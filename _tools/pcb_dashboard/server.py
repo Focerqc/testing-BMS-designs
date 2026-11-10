@@ -14,7 +14,7 @@ import os
 import socketserver
 import subprocess
 import urllib.parse
-from PIL import Image
+from PIL import Image, ImageOps
 from pypdf import PdfReader, PdfWriter
 import tempfile
 
@@ -31,7 +31,7 @@ _board_cache = {}  # abs_path -> (mtime, data)
 
 
 def render_3d_file(board_full, kind="top"):
-    suffix = "_3d_iso.png" if kind == "iso" else "_3d_top.png"
+    suffix = {"iso": "_3d_iso.png", "bottom": "_3d_bottom.png"}.get(kind, "_3d_top.png")
     return os.path.splitext(board_full)[0] + suffix
 
 
@@ -51,7 +51,7 @@ def crop_render_png(out_png, kind="top", force=False):
         margins = (bbox[0], bbox[1], w - bbox[2], h - bbox[3])
         # Skip rewrite when already tight (top) or already padded (iso).
         if not force:
-            if kind == "top" and max(margins) <= 1:
+            if kind in ("top", "bottom") and max(margins) <= 1:
                 return False
             if kind == "iso" and max(margins) <= pad + 1 and min(margins) >= max(0, pad - 2):
                 return False
@@ -102,9 +102,11 @@ def render_board_3d(board_full, kind="top"):
             board_full
         ]
     else:
+        # "bottom" looks at the back of the board; mirrored below so it sits on the board outline
+        # the same way the top render does (the dashboard draws both in board coordinates)
         cmd = [
             KICAD_CLI, "pcb", "render",
-            "--side", "top",
+            "--side", "bottom" if kind == "bottom" else "top",
             "--width", "4000",
             "--height", "2000",
             "--background", "transparent",
@@ -116,6 +118,8 @@ def render_board_3d(board_full, kind="top"):
         raise RuntimeError(f"kicad-cli render failed: {res.stderr or res.stdout}")
 
     crop_render_png(out_png, kind=kind, force=True)
+    if kind == "bottom":
+        ImageOps.mirror(Image.open(out_png).convert("RGBA")).save(out_png)
 
     mtime = os.path.getmtime(out_png)
     dt = datetime.datetime.fromtimestamp(mtime)
@@ -174,17 +178,20 @@ def render_full_schematic(board_full):
 
 
 def get_render_3d_status(board_full, kind=None):
-    if kind in ("top", "iso"):
+    if kind in ("top", "iso", "bottom"):
         return render_status_entry(render_3d_file(board_full, kind=kind), kind)
     top_png = render_3d_file(board_full, "top")
     iso_png = render_3d_file(board_full, "iso")
+    bot_png = render_3d_file(board_full, "bottom")
     res = {
         "top": render_status_entry(top_png, "top"),
         "iso": render_status_entry(iso_png, "iso"),
+        "bottom": render_status_entry(bot_png, "bottom"),
     }
     # Nested entries historically omit kind; keep that shape for the UI.
     res["top"].pop("kind", None)
     res["iso"].pop("kind", None)
+    res["bottom"].pop("kind", None)
     res["exists"] = res["top"]["exists"]
     res["image"] = res["top"].get("image")
     res["timestamp"] = res["top"].get("timestamp")

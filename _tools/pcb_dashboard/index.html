@@ -61,6 +61,10 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
         Top-Down Render
       </button>
+      <button id="btnBotRender3D" class="btn btn-ghost btn-sm" title="Generate a fresh 3D render of the back of the board from KiCad (parts on B.Cu)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15h18M9 3v12"/></svg>
+        Bottom Render
+      </button>
       <button id="btnIsoRender3D" class="btn btn-ghost btn-sm btn-iso" title="Generate fresh isometric 3D render from KiCad">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         Isometric Render
@@ -70,6 +74,7 @@
         View Iso
       </button>
       <span id="renderTimeBadge" class="render-badge" title="Timestamp of top-down 3D render">Top: –</span>
+      <span id="renderBotTimeBadge" class="render-badge" title="Timestamp of the bottom 3D render">Bottom: –</span>
       <span id="renderIsoTimeBadge" class="render-badge hidden" title="Timestamp of isometric 3D render">Iso: –</span>
     </div>
   </header>
@@ -229,13 +234,13 @@
       </div>
 
       <div class="dock">
-        <div class="dock-view" id="sideView" title="Show the top photo, the bottom photo, or both at once">
+        <div class="dock-view" id="sideView" title="Show the top, the bottom (photo, 3D render or B.Cu parts), or both at once">
           <button type="button" data-side="top">Top</button>
           <button type="button" data-side="both">Both</button>
           <button type="button" data-side="bottom">Bottom</button>
         </div>
         <button class="dock-btn active" id="tglRef" title="Toggle reference photos">Ref</button>
-        <button class="dock-btn btn-3d" id="tgl3D" title="Toggle 3D CAD top render layer on/off">3D Top</button>
+        <button class="dock-btn btn-3d" id="tgl3D" title="Toggle the 3D CAD render layer (top and bottom) on/off">3D</button>
         <button class="dock-btn btn-iso-dock" id="tglIsoView" title="Open Interactive Isometric 3D Viewer">Iso 3D</button>
         <button class="dock-btn active" id="tglParts" title="Toggle existing footprint pads">Parts</button>
         <button class="dock-btn" id="tglExplain" title="Hover a part to see what it and its group do">Explain</button>

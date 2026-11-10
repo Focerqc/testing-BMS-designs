@@ -54,7 +54,7 @@ placed = {}
 
 def court(fp):
     fp.BuildCourtyardCaches()
-    bb = fp.GetCourtyard(pcbnew.F_CrtYd).BBox()
+    bb = fp.GetCourtyard(pcbnew.B_CrtYd if fp.GetLayer() == pcbnew.B_Cu else pcbnew.F_CrtYd).BBox()
     return bb if bb.GetWidth() > 0 else fp.GetBoundingBox(False)
 
 
@@ -164,12 +164,14 @@ def floorplan():
 
     # bottom-left, below the bus: test loops, then the supply
     left = HOLE_INSET * 2 + 0.9          # Q301's pads clear H1's 2.9 mm copper keep-out
-    pack([f"TP{i}" for i in range(1, 11)], 1.0, 36.0, 5)
+    # test points are bare pads on the BACK (flip_back.py, run at the end); the front stays free.
+    # rot=None keeps their rotation, a back footprint's stored angle is not the front's.
+    pack([f"TP{i}" for i in range(1, 11)], 1.0, 36.0, 5, None)
     q_w, q_h = size("Q301", 0)
     put("Q301", left + q_w / 2, H - 0.5 - q_h / 2, 0)
     qx1 = box(["Q301"])[2]
     pack(["R302", "C302", "R301", "C301"], qx1 + 0.5, H - 0.5 - q_h, 2)
-    pack(["TP11", "TP12", "TP13", "TP14"], box(["C301"])[2] + 0.5, H - 0.5 - q_h, 2)
+    pack(["TP11", "TP12", "TP13", "TP14"], box(["C301"])[2] + 0.5, H - 0.5 - q_h, 2, None)
 
     # isoSPI ports (U1's isoSPI pins are on its right side, port B's above port A's). Each port is
     # one strip, left to right: termination R/C column, transformer (chip side left), GH plug.
@@ -197,6 +199,8 @@ def port_block(port, x, y, parked=False):
     gx = tx + tw + ISO_GAP
     put(jg, gx + gw / 2, y + gh / 2, -90)
     if jp not in FP:                     # J6/J7 are gone from Lean since 2026-11-09
+        return box(rc + [t, jg])[3]
+    if jp not in FP:                    # J6/J7 are gone from Lean since 2026-11-09 (F8 deleted them)
         return box(rc + [t, jg])[3]
     pw, ph = size(jp, 0)
     if ISO_PH or parked:
@@ -285,6 +289,9 @@ def main():
     with open(PCB, "w", encoding="utf-8", newline="") as f:
         f.write(text)
     print(f"wrote {PCB.relative_to(ROOT)}: outline {W:g} x {H:g}, {len(done)} footprints")
+    flip = subprocess.run([sys.executable, str(Path(__file__).with_name("flip_back.py")), "--test-points"],
+                          capture_output=True, text=True)
+    print(flip.stdout.strip().splitlines()[-1] if flip.stdout.strip() else flip.stderr[-300:])
     if a.drc:
         drc()
 

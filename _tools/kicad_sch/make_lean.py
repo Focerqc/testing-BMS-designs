@@ -16,6 +16,8 @@ and with these parts swapped (SWAP below, same value and nets, smaller footprint
              wide board at 3.3 mm pitch (2026-11-08 shrink trial)
   T501, T601 isoSPI transformer Pulse HM2113ZNL -> Bourns SM91502AL (same pin functions:
              chip 1-2CT-3, line 6-5CT-4 through the built-in choke; 1000 VDC working; half the area)
+  TP1-TP10   Keystone 5015 probe loops -> bare 1.5 mm pads like TP11-TP14 (no part, not in the BOM);
+             lean_place.py puts every test point on the back of the board (2026-11-09)
 
 Labels sitting on a removed part's pin ends are deleted with it. The Guard file is never
 written. Re-run after any Guard schematic change, then:
@@ -64,7 +66,17 @@ XFMR_BOURNS = {
     "LCSC": ("C5730533", "C915690"),
     "MPN": ("HM2113ZNLT", "SM91502ALE"),
 }
-SWAP = {f"R2{n:02d}": R2_2010 for n in range(1, 19)} | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS}
+# TP1-TP10: Guard's Keystone 5015 probe loops become the same bare 1.5 mm pad as TP11-TP14 (no part,
+# not in the BOM, no LCSC/MPN), placed on the back side by lean_place.py (2026-11-09)
+TP_PAD = {
+    "Value": ("5015", "pad"),
+    "Footprint": ("TestPoint:TestPoint_Keystone_5015_Micro_Mini", "TestPoint:TestPoint_Pad_D1.5mm"),
+    "Description": ("Test loop, SMD micro mini, Keystone 5015 (Extended)", "Bare 1.5 mm SMD pad, no part"),
+}
+TP_DROP = ("LCSC", "MPN")
+TP_REFS = {f"TP{n}" for n in range(1, 11)}
+SWAP = ({f"R2{n:02d}": R2_2010 for n in range(1, 19)} | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS}
+        | {r: TP_PAD for r in TP_REFS})
 
 
 def swap_part(blk, ref):
@@ -73,6 +85,13 @@ def swap_part(blk, ref):
         if o not in blk:
             sys.exit(f"{ref}: {o} not found in Guard; update SWAP")
         blk = blk.replace(o, f'(property "{prop}" "{new}"')
+    if ref in TP_REFS:
+        for prop in TP_DROP:
+            blk, n = re.subn(rf'\n\t\t\(property "{prop}" "[^"]*".*?\n\t\t\)', "", blk, flags=re.S)
+            if n != 1:
+                sys.exit(f"{ref}: property {prop} not found in Guard; update SWAP")
+        for k in ("in_bom", "in_pos_files"):
+            blk = blk.replace(f"({k} yes)", f"({k} no)")
     return blk
 
 
