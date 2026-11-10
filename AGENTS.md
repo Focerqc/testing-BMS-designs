@@ -101,7 +101,7 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | Script | Use |
 |---|---|
 | `check_slave18s.py` | kicad-cli netlist + ERC check of the slave against its wiring table. Exit 0 = pass. Run after every schematic edit (`--blocks 1 2` for part of it, `--erc` to list violations) |
-| `make_lean.py` | Writes `slave-18s-lean/` schematic from Guard (drops fuses, clamps, TVS, C-pin caps; F120 becomes the net tie NT1, CELL0 to V-). Never hand-edit Lean's schematic; re-run after Guard edits, then `kicad-cli sch upgrade --force` and `check_slave18s.py --variant lean` |
+| `make_lean.py` | Writes `slave-18s-lean/` schematic from Guard (drops fuses, clamps, TVS, C-pin caps, J6/J7; F120 becomes the net tie NT1, CELL0 to V-). Never hand-edit Lean's schematic; re-run after Guard edits, then `kicad-cli sch upgrade --force` and `check_slave18s.py --variant lean` |
 | `orient_labels.py` | Writes the file: turns pin labels to face outward and rounds coordinates (`--dry` to preview) |
 | `shift_group.py DX DY REF...` | Writes the file: moves parts together with their labels and no-connect flags |
 | `render_sch.py OUT.png --region X0 Y0 X1 Y1` | PNG of the sheet or a region (sheet mm) via kicad-cli PDF + PyMuPDF |
@@ -159,6 +159,10 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
   (`grep -c $'\r'` miscounts in this shell; count `\r` bytes with Python instead.)
 - **pcbnew keeps the board file open on Windows.** Writing it from the same KiCad Python process
   after `LoadBoard` fails with Errno 22; drop the board object first (`lean_place.py` does).
+- **Check which project the F8 was run in (2026-11-09).** An F8 meant for Lean was run in Guard. The
+  F8 report shows it: Guard's lists F1xx/D1xx and `Pulse_HM2113ZNL`, Lean's lists NT1 and
+  `Bourns_SM91502AL`. A no-change F8 save still rewrites the board (CRLF, formatting) and reorders
+  the net classes in the `.kicad_pro`, which makes `make_rules.py --check` fail; `git checkout` both.
 - **Part swaps for Lean only** go in `make_lean.py`'s `SWAP` table, not in the Lean schematic.
 - **The MCP's JLCPCB parts DB** (`~/.kicad-mcp/data/jlcpcb_parts.db`) was an empty 48 kB file.
   `download_jlcpcb_database` fetched CDFER's catalog but couldn't replace the file because other

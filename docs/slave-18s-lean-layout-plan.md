@@ -17,12 +17,18 @@ knob at the top (outline, pitch, row shift, U1 x, isoSPI port spots), run it wit
 in the dashboard. The steps below still describe what each part of the layout has to achieve; their
 120 × 70 coordinates are out of date.
 
+**Changed 2026-11-09: try 2.** Lean has no J6/J7 any more (`make_lean.py` drops them), so it is
+**91 footprints**. `lean_place.py` now puts both isoSPI ports on the board as strips right of U1
+(R/C column, transformer, GH plug; port B above port A), with nothing parked. Where the steps
+below mention J6/J7, 93 footprints or port A being parked, that is the older state. The
+dashboard's practice card still describes try 1.
+
 Read with: `AGENTS.md`, `docs/slave-18s-design-basis.md` ("Variants", "Balance resistor
 sizing", "Net classes and clearance rules", "Placement checklist").
 
 ## What the Lean board is (facts this plan relies on)
 
-- **93 footprints** after F8: the 92 circuit parts plus the net tie NT1 (step 5). The board
+- **93 footprints** after F8 (91 since 2026-11-09, without J6/J7): the 92 circuit parts plus the net tie NT1 (step 5). The board
   file still holds Guard's 150, because F8 hasn't been run on it yet.
 - **One cell channel is just two resistors:** R1nn (10 Ω 1206, CELLn → Cn_F → U1 C pin) and
   R2nn (balance, CELLn → Sn → U1 S pin). There are no C1xx caps, zeners or fuses. Tap traces run
@@ -285,7 +291,7 @@ commit, separate).
 ### Order (most constrained first)
 
 1. **isoSPI pairs**: chip side (IPA/IMA, IPB/IMB) and line side. Short, side by side, front
-   layer, no vias except the one J3/J6 needs (their pins are in opposite order, so one line net
+   layer, no vias except the one J3/J6 needs on Guard (Lean has no J6/J7, so none) (their pins are in opposite order, so one line net
    has to change layer **inside** the port's own area). Use the differential-pair router (6).
 2. **U1 fan-out**: 0.5 mm pitch. One trace leaves each pad straight out about 1 mm before it
    turns. The router follows the net class: HV_CELL 0.25 and BALANCE 0.30 at the pads. A 0.30
@@ -305,7 +311,7 @@ commit, separate).
   spreader and a low-impedance return. Short back-side jumps are fine (two vias, a few mm) where
   something must cross, but every back-side trace cuts the pour. Keep jumps short and run them
   in the same direction.
-- **No pour, no foreign tracks** under T501/J3/J6 or T601/J4/J7 (the rules file flags it).
+- **No pour, no foreign tracks** under T501/J3 or T601/J4 (the rules file flags it; on Guard also J6/J7).
   Draw a **keepout area** (no copper pour, no tracks) on both layers over each port's line side.
   DRC then shows the barrier as a shape, and the pour won't creep in.
 - **The V− pour** must keep 0.6 mm from banks 2+ and 2.0 mm from the isoSPI line side. The custom
@@ -397,8 +403,8 @@ measurements below is guessing.
    the parts stay put and only the pitch number in the step-4 script changes.
 2. **Connectors.** J1 + J5 side by side take about 45 mm of edge. Options: put them on two
    edges (J5 on the right edge), or a 2-row header (check its voltage
-   rating against 75.6 V and the 1 mm J1/J5 rule). Drop the DNP PH alternates J6/J7 if the
-   GH cables work.
+   rating against 75.6 V and the 1 mm J1/J5 rule). The DNP PH alternates J6/J7
+   are gone since 2026-11-09.
 3. **Q301 copper.** This one sets a floor: the copper can only shrink as far as the measured
    Q301 temperature allows (or use the DPAK fallback ZXTN4004K, 33 °C/W on 50 × 50 mm).
 4. **Outline and holes.** Fit to the carrier and the ENNOID master's mounting, then re-place
