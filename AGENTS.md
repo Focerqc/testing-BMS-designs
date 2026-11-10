@@ -106,9 +106,10 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | `shift_group.py DX DY REF...` | Writes the file: moves parts together with their labels and no-connect flags |
 | `render_sch.py OUT.png --region X0 Y0 X1 Y1` | PNG of the sheet or a region (sheet mm) via kicad-cli PDF + PyMuPDF |
 | `kisch.py --pins REGEX` | Lists parts, pin end points (mm) and which way each pin faces |
-| `check_pcb_parity.py` | PCB vs schematic: every footprint and its name, every pad's net vs the kicad-cli netlist, every footprint on F.Cu (single-sided), DRC schematic parity. `--variant lean` for Lean. Exit 0 = pass. Run after any PCB or schematic change |
+| `check_pcb_parity.py` | PCB vs schematic: every footprint and its name, every pad's net vs the kicad-cli netlist, every footprint on F.Cu (single-sided; on Lean the test-point pads TP1-TP14 must be on B.Cu), DRC schematic parity. `--variant lean` for Lean. Exit 0 = pass. Run after any PCB or schematic change |
 | `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. `--variant lean` for Lean. Close KiCad first |
 | `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier, mounting-hole keep-out) from the board's nets. `--variant lean` for Lean. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
+| `flip_back.py REF... \| --test-points` | Writes the PCB: flips footprints to B.Cu in place through pcbnew and splices only their blocks into the file (the diff stays those parts; a whole-file pcbnew save re-formats 5000 lines). Idempotent. `lean_place.py` runs it for TP1-TP14. KiCad's Python, KiCad closed |
 | `lean_place.py` | Writes the Lean PCB: outline + every footprint from the knobs at its top (shrink trial). Run with KiCad's Python (`"C:\Program Files\KiCad\10.0\bin\python.exe"`), KiCad closed. `--dry` to report only, `--drc` for a kicad-cli DRC count. Reports courtyard overlaps and parts off the outline |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
@@ -164,6 +165,11 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
   `Bourns_SM91502AL`. A no-change F8 save still rewrites the board (CRLF, formatting) and reorders
   the net classes in the `.kicad_pro`, which makes `make_rules.py --check` fail; `git checkout` both.
 - **Part swaps for Lean only** go in `make_lean.py`'s `SWAP` table, not in the Lean schematic.
+- **Lean test points are bare pads on the back (2026-11-09).** `SWAP` turns TP1-TP10 (Keystone loops)
+  into the TP11-TP14 pad; the board needs an F8 after `make_lean.py`. Two traps found while flipping:
+  slicing footprint blocks "up to the next footprint" makes the last one swallow the file's tail, and
+  pcbnew gives uuid-less items ids another part already owns, after which KiCad silently drops 9
+  footprints on load (count them with pcbnew, not just by grep).
 - **The MCP's JLCPCB parts DB** (`~/.kicad-mcp/data/jlcpcb_parts.db`) was an empty 48 kB file.
   `download_jlcpcb_database` fetched CDFER's catalog but couldn't replace the file because other
   sessions' MCP servers hold it open (WinError 32); it was filled in place instead (501k in-stock

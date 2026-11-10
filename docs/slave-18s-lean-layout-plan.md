@@ -276,7 +276,11 @@ the back V− pour beside each cap's V− pad.
 - **NTC:** R701–R704 and C701–C704 next to GPIO1–4 (pins 39–42, U1's bottom side). J2's traces
   run down from the top edge. **TH701** (onboard NTC) somewhere representative of board
   temperature, but **not** in the R2 band: next to it, it reads balance heat, not cell heat.
-- **Test points:** TP1–TP10 along the bottom edge, ≥ 5 mm apart (hook clips), silk labels.
+- **Test points (changed 2026-11-09):** Lean's TP1–TP14 are all bare 1.5 mm pads on the **back**
+  (`make_lean.py` swaps the loops, `lean_place.py` places them and runs `flip_back.py`), so
+  none of the front is used. Keep them ≥ 3 mm apart with labels on the back silk and run their
+  nets with a via from the front. The rest of this bullet is the Guard plan: TP1–TP10 along the
+  bottom edge, ≥ 5 mm apart (hook clips), silk labels.
   Lean keeps TP11–TP14 (bare HV pads on VCOLL, C6_F, C12_F, C18_F): put them by their nets,
   in the channel row and in the Q301 copper, away from the low-voltage loops.
 
@@ -343,7 +347,7 @@ cycle track widths (leave on "use net class"), **`** highlight net, **B** refill
 
 | When | Run | Pass means |
 |---|---|---|
-| After every session in KiCad (KiCad closed, saved) | `check_pcb_parity.py --variant lean` | PASS: footprints, pad nets, parity, all on F.Cu |
+| After every session in KiCad (KiCad closed, saved) | `check_pcb_parity.py --variant lean` | PASS: footprints, pad nets, parity, all on F.Cu (Lean: except TP1–TP14, which must be on B.Cu) |
 | After F8 or any net change | `make_rules.py --variant lean` then `--check` | rules: OK (canary fired) |
 | After each placement step | DRC in KiCad, or `kicad-cli pcb drc --severity-all` | 0 errors. Unconnected and silk warnings allowed until the end |
 | After placement, and at the end of routing | 3D render (top + iso) | Eyeballed: plugs, TPs, clearances, labels |

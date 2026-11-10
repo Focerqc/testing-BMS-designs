@@ -79,6 +79,19 @@ is `slave-18s/bom.csv`.
   - **J6/J7 removed from Lean (2026-11-09).** `make_lean.py` drops the DNP PH alternates;
     Guard keeps them. Reason: both isoSPI ports only fit the 70 mm board without them. Lean's
     isoSPI cable is GH only (the ENNOID master uses GH anyway). Lean is now 91 footprints.
+  - **TP1–TP10: Keystone 5015 loops → bare 1.5 mm pads, and every test point on the back
+    (2026-11-09).** `make_lean.py` swaps TP1–TP10 to the same `TestPoint_Pad_D1.5mm` as TP11–TP14
+    (no part, not in the BOM, no LCSC/MPN), so Lean has no test-point parts to order. Reason: the
+    loops were never asked for (VESC-style BMS boards use bare pads), and the loops plus their
+    ≥ 5 mm hook-clip spacing took about 23 × 6 mm of front copper on a board that has to shrink to
+    35 mm. All 14 pads sit on B.Cu, so the front keeps its room for the circuit. Cost: probing is
+    from the underside with a tip or spring pin, the back needs standoffs (TP11–TP14 carry
+    25–75 V), and the pour on the back has small cut-outs round each pad. This is a deviation from
+    the single-sided rule, limited to bare pads (no assembly step, no height): `check_pcb_parity.py`
+    expects Lean's `TP<n>` on B.Cu and everything else on F.Cu. `lean_place.py` runs
+    `flip_back.py --test-points` after placing. isoSPI pads TP7–TP10 hang a short stub on the chip
+    side lines when routed; keep it under the pad (via-in-pad is not needed at 1.5 mm) or leave
+    them off the final board. Guard keeps the loops on the front.
   - **Try 2 (2026-11-09): everything is on the 70 × 50 board, nothing parked.** Each port is one
     strip right of U1, left to right: R/C column (4 × 0603), transformer (chip side toward U1),
     GH plug at the right edge, courtyards 0.3 mm apart. Port B (T601, J4) on top, 1 mm under the
@@ -654,9 +667,10 @@ when the placement is reviewed.
       once (see "Balance resistor sizing"). Spread them, give them copper, keep them away
       from U1 (die limit 80 mA above 85 °C), TH701 (it would read board heat, not cell heat),
       the fuses and the zeners.
-- [ ] **Test-point reachability.** TP1–TP10 loops on the edge, on the top side, with room
-      for a hook clip (≥ 5 mm between loops), labels on the silk. TP11–TP14 HV pads also
-      reachable but not next to the low-voltage loops (0.6 mm rule, and fingers).
+- [ ] **Test-point reachability.** Guard: TP1–TP10 loops on the edge, on the top side, with room
+      for a hook clip (≥ 5 mm between loops), labels on the silk. Lean (2026-11-09): all of TP1–TP14
+      are bare pads on the back, ≥ 3 mm apart, labels on the back silk; TP11–TP14 HV pads
+      not next to the low-voltage pads (0.6 mm rule, and fingers).
 - [x] **Mounting holes (2026-11-06).** Four, one per corner, 3.5 mm from each edge; the 4.5 mm
       keep-out rule passes. Recheck when the final outline is drawn, and keep the screws away
       from HV copper and the isoSPI barrier during routing.
