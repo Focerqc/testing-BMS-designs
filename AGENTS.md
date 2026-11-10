@@ -101,7 +101,7 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | Script | Use |
 |---|---|
 | `check_slave18s.py` | kicad-cli netlist + ERC check of the slave against its wiring table. Exit 0 = pass. Run after every schematic edit (`--blocks 1 2` for part of it, `--erc` to list violations) |
-| `make_lean.py` | Writes `slave-18s-lean/` schematic from Guard (drops fuses, clamps, TVS, C-pin caps, J6/J7; F120 becomes the net tie NT1, CELL0 to V-). Never hand-edit Lean's schematic; re-run after Guard edits, then `kicad-cli sch upgrade --force` and `check_slave18s.py --variant lean` |
+| `make_lean.py` | Writes `slave-18s-lean/` schematic from Guard (drops fuses, clamps, TVS, C-pin caps, J6/J7 and, since 2026-11-10, the test points; swaps in 120 ohm 1206 balance, 0603 series resistors, M2 holes; F120 becomes the net tie NT1, CELL0 to V-). Never hand-edit Lean's schematic; re-run after Guard edits, then `kicad-cli sch upgrade --force` and `check_slave18s.py --variant lean` |
 | `orient_labels.py` | Writes the file: turns pin labels to face outward and rounds coordinates (`--dry` to preview) |
 | `shift_group.py DX DY REF...` | Writes the file: moves parts together with their labels and no-connect flags |
 | `render_sch.py OUT.png --region X0 Y0 X1 Y1` | PNG of the sheet or a region (sheet mm) via kicad-cli PDF + PyMuPDF |
@@ -165,7 +165,8 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
   `Bourns_SM91502AL`. A no-change F8 save still rewrites the board (CRLF, formatting) and reorders
   the net classes in the `.kicad_pro`, which makes `make_rules.py --check` fail; `git checkout` both.
 - **Part swaps for Lean only** go in `make_lean.py`'s `SWAP` table, not in the Lean schematic.
-- **Lean test points are bare pads on the back (2026-11-09).** `SWAP` turns TP1-TP10 (Keystone loops)
+- **Lean test points were bare pads on the back (2026-11-09; removed from Lean 2026-11-10, the
+  flipping traps below still hold).** `SWAP` turns TP1-TP10 (Keystone loops)
   into the TP11-TP14 pad; the board needs an F8 after `make_lean.py`. Two traps found while flipping:
   slicing footprint blocks "up to the next footprint" makes the last one swallow the file's tail, and
   pcbnew gives uuid-less items ids another part already owns, after which KiCad silently drops 9
