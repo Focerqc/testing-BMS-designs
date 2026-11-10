@@ -10,14 +10,17 @@ Lean = Guard minus:
   C101-C118  C-pin filter caps (the 10 ohm series resistors R100-R118 stay)
   J6, J7     DNP JST PH alternates to the isoSPI GH plugs J3/J4: both ports only fit the
              70 mm board without them (2026-11-09 shrink trial, try 2)
+  TP1-TP14   test points: the working reference board has none, the nets can be probed on a
+             resistor or capacitor pad, and the board sits flat on a carrier (2026-11-10, try 3)
 
-and with these parts swapped (SWAP below, same value and nets, smaller footprint):
-  R201-R218  balance 33 ohm 2512 (1 W) -> 2010 (0.75 W), so the 18-channel row fits a 70 mm
-             wide board at 3.3 mm pitch (2026-11-08 shrink trial)
+and with these parts swapped (SWAP below, same nets):
+  R201-R218  balance 33 ohm 2512 (1 W) -> 120 ohm 1206 (0.25 W): about 31 mA and 0.12 W per
+             cell instead of 89 mA and 0.26 W (2026-11-10, try 3; was 33 ohm 2010 in tries 1-2)
+  R100-R118  10 ohm series 1206 -> 0603: they carry the balance current, now about 10 mW each
+             (2026-11-10, try 3)
   T501, T601 isoSPI transformer Pulse HM2113ZNL -> Bourns SM91502AL (same pin functions:
              chip 1-2CT-3, line 6-5CT-4 through the built-in choke; 1000 VDC working; half the area)
-  TP1-TP10   Keystone 5015 probe loops -> bare 1.5 mm pads like TP11-TP14 (no part, not in the BOM);
-             lean_place.py puts every test point on the back of the board (2026-11-09)
+  H1-H4      mounting holes M3 (3.2 mm) -> M2 (2.2 mm) (2026-11-10, try 3)
 
 Labels sitting on a removed part's pin ends are deleted with it. The Guard file is never
 written. Re-run after any Guard schematic change, then:
@@ -39,7 +42,8 @@ LEAN_DIR = ROOT / "slave-18s-lean"
 LEAN = LEAN_DIR / "adbms1818-slave-18s-lean.kicad_sch"
 
 REMOVE = ({f"F1{n:02d}" for n in range(21)} | {f"D1{n:02d}" for n in range(1, 19)}
-          | {"D301"} | {f"C1{n:02d}" for n in range(1, 19)} | {"J6", "J7"})
+          | {"D301"} | {f"C1{n:02d}" for n in range(1, 19)} | {"J6", "J7"}
+          | {f"TP{n}" for n in range(1, 15)})
 
 # F120 (V- supply fuse) becomes the net tie NT1 at the same spot. KiCad keeps CELL0 and V- as
 # two nets; on the PCB the net-tie footprint is the only place they may touch.
@@ -51,12 +55,23 @@ DEVICE_SYM = Path(KICAD_CLI).parents[1] / "share" / "kicad" / "symbols" / "Devic
 
 # Lean-only part swaps: ref -> {property: (Guard value, Lean value)}. The Guard value must match,
 # so a Guard change can't slip through unnoticed.
-R2_2010 = {
-    "Value": ("33 1W", "33 0.75W"),
-    "Footprint": ("Resistor_SMD:R_2512_6332Metric", "Resistor_SMD:R_2010_5025Metric"),
-    "Description": ("33 ohm 1% 1 W 2512 thick film (Extended)", "33 ohm 1% 0.75 W 2010 thick film (Extended)"),
-    "LCSC": ("C53728", "C421858"),
-    "MPN": ("25121WF330JT4E", "201007F330JT4E"),
+R2_1206 = {
+    "Value": ("33 1W", "120"),
+    "Footprint": ("Resistor_SMD:R_2512_6332Metric", "Resistor_SMD:R_1206_3216Metric"),
+    "Description": ("33 ohm 1% 1 W 2512 thick film (Extended)", "120 ohm 1% 250 mW 1206 thick film (Basic)"),
+    "LCSC": ("C53728", "C17909"),
+    "MPN": ("25121WF330JT4E", "1206W4F1200T5E"),
+}
+R1_0603 = {
+    "Footprint": ("Resistor_SMD:R_1206_3216Metric", "Resistor_SMD:R_0603_1608Metric"),
+    "Description": ("10 ohm 1% 250 mW 1206 thick film (Basic)", "10 ohm 1% 100 mW 0603 thick film (Basic)"),
+    "LCSC": ("C17903", "C22859"),
+    "MPN": ("1206W4F100JT5E", "0603WAF100JT5E"),
+}
+HOLE_M2 = {
+    "Value": ("M3", "M2"),
+    "Footprint": ("MountingHole:MountingHole_3.2mm_M3", "MountingHole:MountingHole_2.2mm_M2"),
+    "Description": ("Mounting hole 3.2 mm, M3, NPTH, no annular ring", "Mounting hole 2.2 mm, M2, NPTH, no annular ring"),
 }
 XFMR_BOURNS = {
     "Value": ("HM2113ZNL", "SM91502AL"),
@@ -66,17 +81,10 @@ XFMR_BOURNS = {
     "LCSC": ("C5730533", "C915690"),
     "MPN": ("HM2113ZNLT", "SM91502ALE"),
 }
-# TP1-TP10: Guard's Keystone 5015 probe loops become the same bare 1.5 mm pad as TP11-TP14 (no part,
-# not in the BOM, no LCSC/MPN), placed on the back side by lean_place.py (2026-11-09)
-TP_PAD = {
-    "Value": ("5015", "pad"),
-    "Footprint": ("TestPoint:TestPoint_Keystone_5015_Micro_Mini", "TestPoint:TestPoint_Pad_D1.5mm"),
-    "Description": ("Test loop, SMD micro mini, Keystone 5015 (Extended)", "Bare 1.5 mm SMD pad, no part"),
-}
-TP_DROP = ("LCSC", "MPN")
-TP_REFS = {f"TP{n}" for n in range(1, 11)}
-SWAP = ({f"R2{n:02d}": R2_2010 for n in range(1, 19)} | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS}
-        | {r: TP_PAD for r in TP_REFS})
+SWAP = ({f"R2{n:02d}": R2_1206 for n in range(1, 19)} | {f"R1{n:02d}": R1_0603 for n in range(19)}
+        | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS} | {f"H{n}": HOLE_M2 for n in range(1, 5)})
+# R2's Note carries the Guard power figure (which itself ignores the 10 ohm in the loop)
+NOTE_SUB = {f"R2{n:02d}": ("~0.4 W at 4.2 V", "~0.12 W at 4.2 V") for n in range(1, 19)}
 
 
 def swap_part(blk, ref):
@@ -85,18 +93,20 @@ def swap_part(blk, ref):
         if o not in blk:
             sys.exit(f"{ref}: {o} not found in Guard; update SWAP")
         blk = blk.replace(o, f'(property "{prop}" "{new}"')
-    if ref in TP_REFS:
-        for prop in TP_DROP:
-            blk, n = re.subn(rf'\n\t\t\(property "{prop}" "[^"]*".*?\n\t\t\)', "", blk, flags=re.S)
-            if n != 1:
-                sys.exit(f"{ref}: property {prop} not found in Guard; update SWAP")
-        for k in ("in_bom", "in_pos_files"):
-            blk = blk.replace(f"({k} yes)", f"({k} no)")
+    if ref in NOTE_SUB:
+        old, new = NOTE_SUB[ref]
+        if blk.count(old) != 1:
+            sys.exit(f"{ref}: Note text {old!r} not found in Guard; update NOTE_SUB")
+        blk = blk.replace(old, new)
     return blk
 
 
-DROP_TEXT = tuple(f'(text "{h}' for h in ("ZENER CLAMPS", "TAP FUSES", "C101-C118", "SUPPLY FUSES"))
+DROP_TEXT = tuple(f'(text "{h}' for h in ("ZENER CLAMPS", "TAP FUSES", "C101-C118", "SUPPLY FUSES",
+                                             "TEST POINTS"))
 RETEXT = {
+    '"R201-R218: 33 ohm 1 W balance, cell n node (before 10 ohm) to Sn"':
+        '"R201-R218: 120 ohm 1206 balance, cell n node (before 10 ohm) to Sn"',
+    '"MOUNTING HOLES  H1-H4: M3, no copper': '"MOUNTING HOLES  H1-H4: M2, no copper',
     '"ADBMS1818 18S slave module"': '"ADBMS1818 18S slave module - Lean (no hot-plug protection)"',
     "TAPn = connector side of fuse F1nn, CELLn = after it. V- (chip ground) has its own fuse F120.":
         "18S Lean: no fuses, clamps or C-pin caps; generated from slave-18s by make_lean.py, do not edit by hand. "

@@ -95,7 +95,7 @@ for k, net in enumerate(["V-", "V-", "VREG", "VREF1", "VREF2", "DRIVE", "IPA", "
 
 
 LEAN_SCH = VARIANTS["lean"]
-LEAN_DROP = re.compile(r"^(F1\d\d|D1\d\d|D301|C1\d\d|J6|J7)\.")  # make_lean.py removes these
+LEAN_DROP = re.compile(r"^(F1\d\d|D1\d\d|D301|C1\d\d|J6|J7|TP\d+)\.")  # make_lean.py removes these
 
 
 def lean_net(net):
