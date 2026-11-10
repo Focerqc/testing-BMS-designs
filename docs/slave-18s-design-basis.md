@@ -144,6 +144,22 @@ is `slave-18s/bom.csv`.
       to about 35 mm with the plugs on the top edge, with no margin for the supply parts.
     - **Not designed in:** solder jumpers for fewer than 18 cells (Racc's JP4–JP12). Lean is
       18S only; a smaller pack would need the unused inputs shorted in the harness.
+  - **Try 3 placed (2026-11-10): 70 × 37 mm, 77 footprints, all on the front, nothing routed.**
+    37 mm is the XR slot's own height; 35 mm is still not reached with the plugs on the top edge.
+    From `lean_place.py`: cell plugs top-left, the 18-channel row under them at **2.4 mm pitch**
+    (44.8 mm long, about as wide as the plugs, so the tap room is 2 mm), U1 under the row's right
+    half, both isoSPI ports top-right (GH plug at the top edge, transformer under it with the chip
+    side down, its four R/C parts under the transformer), supply column and Q301 right of U1,
+    J2 and the NTC parts bottom-left. H3 is on the right edge, not in its corner. The F8 left the
+    14 test pads (delete box not ticked) and the locked M3 holes; both were fixed in the board
+    file. 0 courtyard overlaps, parity PASS, DRC: silkscreen items and 153 unconnected only.
+    - Pad to U1 pin: C304/C305 (VREF) 2.2/2.3 mm, R401/R402 2.2 mm, C303 (VREG) 4.1 mm, C301
+      (V+) 4.7 mm, Q301 6–8 mm (try 2: 7–10, 8–9, 10, 28 and 37 mm).
+    - Transformer courtyard to U1's: T601 6.5 mm, T501 14.1 mm (try 2: 3.7 mm both).
+    - The slot that blocked ch 14–18 on try 2 is gone: nothing sits between the row and U1.
+    - **Not good yet:** the NTC filter parts are 34 mm from GPIO1–4 and their nets have to cross
+      the ch 0–10 bus (needs an inner layer); Q301 has no reserved copper; the hole keep-out for
+      M2 (2.75 mm from the centre, `make_rules.py`) is my figure for a 5 mm washer.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
