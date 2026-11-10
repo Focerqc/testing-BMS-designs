@@ -6055,16 +6055,6 @@
 		)
 		(uuid "648a64ef-e791-459b-bb73-3c0d72f16275")
 	)
-	(label "ISOA_LP"
-		(at 360.68 187.96 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "6615cec1-4db0-4422-a885-bae4f20e98bf")
-	)
 	(label "S7"
 		(at 35.56 139.7 180)
 		(effects
@@ -6174,16 +6164,6 @@
 			(justify right bottom)
 		)
 		(uuid "6b6de7f8-4b0b-4ee0-9380-11a1e6143d30")
-	)
-	(label "ISOB_LN"
-		(at 360.68 246.38 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "6c7d5df8-1be5-4529-ae93-eb034d93bd56")
 	)
 	(label "C11_F"
 		(at 251.46 49.53 270)
@@ -6504,16 +6484,6 @@
 			(justify right bottom)
 		)
 		(uuid "8d0047c3-b935-459e-bdde-3389a52a7413")
-	)
-	(label "ISOB_LP"
-		(at 360.68 243.84 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "8dc65499-a187-4d74-ab9a-62141b401f19")
 	)
 	(label "IMB"
 		(at 76.2 99.06 0)
@@ -7604,16 +7574,6 @@
 			(justify right bottom)
 		)
 		(uuid "edb50884-273b-47b4-9610-6a7f6fc15545")
-	)
-	(label "ISOA_LN"
-		(at 360.68 190.5 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "f037fcb6-9234-44ae-b8e4-fb5b4796b833")
 	)
 	(label "S15"
 		(at 200.66 146.05 270)
@@ -9387,120 +9347,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "NT1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 365.76 243.84 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "241964cf-d3a8-436c-b52e-7b3619a882c0")
-		(property "Reference" "J7"
-			(at 368.3 242.57 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "ISOSPI_B_OUT_PH"
-			(at 368.3 245.11 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
-			(at 365.76 243.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 365.76 243.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "JST PH 2P alternate to J4 (DNP), port B: PH header or bare wires, isoSPI B"
-			(at 365.76 243.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C131337"
-			(at 365.76 243.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "B2B-PH-K-S(LF)(SN)"
-			(at 365.76 243.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "isoSPI port B (next module)"
-			(at 365.76 243.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0fc90fcf-3622-4182-8b79-ae9f40a0a255")
-		)
-		(pin "2"
-			(uuid "2b2456fe-2a93-42c0-98c2-7a733d1793ff")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "J7")
 					(unit 1)
 				)
 			)
@@ -14393,120 +14239,6 @@
 			(project "adbms1818-slave-18s-lean"
 				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
 					(reference "J3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 365.76 187.96 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "a2bf299f-aaec-4f99-a0d4-19ef7e94e9ee")
-		(property "Reference" "J6"
-			(at 368.3 186.69 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "ISOSPI_A_IN_PH"
-			(at 368.3 189.23 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
-			(at 365.76 187.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 365.76 187.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "JST PH 2P alternate to J3 (DNP), port A: PH header or bare wires, isoSPI A"
-			(at 365.76 187.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C131337"
-			(at 365.76 187.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "B2B-PH-K-S(LF)(SN)"
-			(at 365.76 187.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "isoSPI port A (toward master)"
-			(at 365.76 187.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fe04b6e5-fc0e-478a-b8ff-5d31e64e0297")
-		)
-		(pin "2"
-			(uuid "d0ef226d-bca4-4211-9c9a-05ae837f7ac0")
-		)
-		(instances
-			(project "adbms1818-slave-18s-lean"
-				(path "/6b1f3c52-8d0e-4f4a-9a77-2f1c18a1e818"
-					(reference "J6")
 					(unit 1)
 				)
 			)
