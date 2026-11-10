@@ -1,8 +1,12 @@
 # 18S Lean: PCB layout plan
 
-Status: **plan only, 2026-11-06.** Nothing in this file has been placed or routed yet. You do
-the placement and routing in KiCad. Each step says what to do, why, what to look for, and
-which check to run. Tick the boxes as you go.
+Status (2026-11-10): **placed by script, not routed.** Lean is at shrink try 2: 70 × 50 mm,
+91 footprints, every part on the board, 0 courtyard overlaps, no tracks. The placement comes
+from `_tools/kicad_sch/lean_place.py`, not from the hand steps below. Read this file in two
+layers: the "Changed" notes here and "Where try 2 stands" are current; steps 0–9 were written
+on 2026-11-06 for the 120 × 70 board and still say what each part of the layout has to
+achieve, but their coordinates and part counts are from that board. Routing (step 8) and the
+checks (step 9) apply as written.
 
 **Changed 2026-11-07:** the 18 channels go in **one straight, staggered row** under J1/J5
 (steps 3–4), not the earlier L around U1's corner. The L only came from fitting 4.5 mm pitch into
@@ -21,15 +25,15 @@ in the dashboard. The steps below still describe what each part of the layout ha
 **91 footprints**. `lean_place.py` now puts both isoSPI ports on the board as strips right of U1
 (R/C column, transformer, GH plug; port B above port A), with nothing parked. Where the steps
 below mention J6/J7, 93 footprints or port A being parked, that is the older state. The
-dashboard's practice card still describes try 1.
+dashboard's practice card describes try 2 since 2026-11-10.
 
 Read with: `AGENTS.md`, `docs/slave-18s-design-basis.md` ("Variants", "Balance resistor
 sizing", "Net classes and clearance rules", "Placement checklist").
 
 ## What the Lean board is (facts this plan relies on)
 
-- **93 footprints** after F8 (91 since 2026-11-09, without J6/J7): the 92 circuit parts plus the net tie NT1 (step 5). The board
-  file still holds Guard's 150, because F8 hasn't been run on it yet.
+- **91 footprints** (since 2026-11-09; 93 before J6/J7 were dropped): the circuit parts plus the
+  net tie NT1 (step 5). 77 are on the front; the 14 test pads TP1–TP14 are on the back.
 - **One cell channel is just two resistors:** R1nn (10 Ω 1206, CELLn → Cn_F → U1 C pin) and
   R2nn (balance, CELLn → Sn → U1 S pin). There are no C1xx caps, zeners or fuses. Tap traces run
   straight from J1/J5 to the channel.
@@ -38,7 +42,9 @@ sizing", "Net classes and clearance rules", "Placement checklist").
   next to J1.1. Because they are two nets, KiCad's DRC flags any other copper joining them as a
   short. So the rule "C0 sense on its own trace" is enforced by DRC while you route (step 5).
   (Until 2026-11-06, `make_lean.py` merged CELL0 into V−, and DRC couldn't see the difference.)
-- **U1 stays where it is** (75, 40), rotated 270°. The isoSPI ports on the right were placed on
+- *(120 × 70 board; on try 2 U1's centre is at x = 42, courtyard y 30.7–44.2, same rotation,
+  so the pin order below still holds but the coordinates don't.)*
+  **U1 stays where it is** (75, 40), rotated 270°. The isoSPI ports on the right were placed on
   purpose (design basis, "isoSPI ports moved next to U1"). With that rotation U1's cell pins sit
   like this (pad centres, mm):
 
@@ -76,7 +82,36 @@ left side to its left and bottom pins, with C0 outermost.
      └──────────────────────────────────────────────────────────────────────┘
 ```
 
-This is a starting floorplan, not a rule. You'll move it around in step 3. What has to stay
+### Where try 2 stands (70 × 50, 2026-11-09)
+
+```
+ y=0 ┌────────────────────────────────────────────────────┐ x=70
+     │ H4    [J1 C0 … C9][J5 C9 … C18]                 H3 │ plugs, pin row at y = 5
+     │                                              [J2]  │ J2 stands on the right edge
+  13 │ R2 row (2010, hot):  ch 1 ……………………… ch 18    [J2]  │ row x 2.1–63.9, pitch 3.3
+  25 │ R1 row (1206), half a pitch right: ch 0 … ch 18    │
+     │                               R/C [T601] [J4]      │ port B (OUT)
+  31 │  (free: the test loops        ┌────┐                │
+     │   left the front)             │ U1 │ R/C [T501] [J3]│ port A (IN)
+  44 │                               └────┘                │
+     │ H1  Q301 R30x C30x     C30x R40x R70x C70x TH701 H2│ supply and NTC parts, packed
+  50 └────────────────────────────────────────────────────┘
+ back: TP1–TP10 in two rows under the free band (bottom left), TP11–TP14 right of Q301
+```
+
+What the dashboard's practice card measures on this try (3 of 5 checks pass):
+
+- **Pass:** ch 14 stagger, the 18-channel row (in order, 3.3 mm pitch, on the board), both
+  isoSPI ports on the board.
+- **Fail: supply parts at their pins.** `lean_place.py` packs C303–C305, R401/R402 and C301 in
+  rows; the VREG/VREF caps want to be within about 3 mm of their pins.
+- **Fail: height.** 50 mm, 15 over the 35 mm goal. The stack-up (plugs 5.6, tap room 5, two
+  resistor rows 11.4, fan-in 6, U1 13.5) is about 41.5 mm before the supply parts, so 35 mm
+  needs the cell plugs off the top edge, not tighter knobs.
+- **Open and not measured by the card:** each transformer is about 3.7 mm from U1 (datasheet:
+  1–2 cm); Q301's collector copper has no reserved area; nothing is routed.
+
+The floorplan above the try 2 one is the 120 × 70 starting point, not a rule. You'll move it around in step 3. What has to stay
 true: the channels follow the pin order, and the row's chip-end pads alternate S and C the same
 way U1's pins do (the half-step stagger in step 3).
 
@@ -370,11 +405,12 @@ commit, not before (next section).
   outline, top render made without them so it matches the outline). Re-export after each
   placement commit: `export_site.py` → `node check_hosted.cjs` → push `site/`.
 - **Layout practice card** (left sidebar, reworked 2026-11-08 for the shrink trial): seven steps
-  (read the try, ch 14, the row, supply parts at their pins, port A onto the board, toward 35 mm,
+  (read the try, ch 14, the row, supply parts at their pins, both isoSPI ports beside U1, toward 35 mm,
   route ch 14 and C0). Each step has a check measured from the board file (✓ passes, ! fails,
   i = info only), so a new `lean_place.py` run updates them after a dashboard reload. Try 1:
   2 of 5 pass; the VREG/VREF caps are 7–10 mm from their pins, C301 28 mm from pin 1, and
-  port A is parked. "Preview the 18-channel row" draws R2xx/R1xx boxes the way `lean_place.py`
+  port A is parked. Try 2 (2026-11-09): 3 of 5 pass; both ports are on the board, the supply
+  parts and the height still fail. "Preview the 18-channel row" draws R2xx/R1xx boxes the way `lean_place.py`
   lays out the row, on the placed row's centre line, for another pitch, R2 package or row order,
   and says which knob or `SWAP` entry would make it real. With the same numbers the boxes sit on
   the parts.
@@ -390,10 +426,18 @@ commit, not before (next section).
 - **Saving boxes on the hosted site:** there they save in the browser only, so use **Save .txt**
   to keep work and **Open .txt** to load it back (locally too, before Copy Prompt).
 
-## Step 10 (later): the shrink pass
+## Step 10: the shrink pass (started early, 2026-11-08)
 
-Do this after the first Lean board has been on the bench, not before. Shrinking without the
-measurements below is guessing.
+This step was written as "after the first Lean board has been on the bench, not before". On
+2026-11-08 the shrink was started anyway, as quick trial and error with `lean_place.py`, to
+find out what fits before any board is ordered. None of the measurements at the end of this
+step exist yet, so every heat answer here (balance resistors, Q301) is still a guess until a
+board is on the bench.
+
+**Done:** item 1 (2010 at 3.3 mm pitch, row about 62 mm), smaller isoSPI transformers
+(SM91502AL), J6/J7 dropped, test points off the front. Width is at the 70 mm goal.
+**Not done:** item 2 (the cell plugs set the height), item 3 (Q301 copper), item 4 (outline
+and holes for the carrier), and the balance resistor value.
 
 **What shrinks the board most, roughly in order:**
 

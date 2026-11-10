@@ -11,12 +11,12 @@ talking to a separate master over isoSPI.
 | Path | What it is |
 |---|---|
 | `slave-18s/` | **18S Guard**: KiCad 10 project for the ADBMS1818 18S slave with hot-plug protection |
-| `slave-18s-lean/` | **18S Lean**: the same slave without fuses, clamps, TVS or C-pin caps; schematic generated from Guard by `_tools/kicad_sch/make_lean.py` |
+| `slave-18s-lean/` | **18S Lean**: the same slave without fuses, clamps, TVS, C-pin caps or the PH isoSPI alternates, with bare test pads on the back; schematic generated from Guard by `_tools/kicad_sch/make_lean.py`. Being shrunk: 70 × 50 mm so far (try 2, placed, not routed) |
 | `docs/slave-18s-design-basis.md` | Values, reasoning and open items for the slave |
 | `docs/slave-18s-lean-layout-plan.md` | Step-by-step placement and routing plan for the 18S Lean PCB, with the check to run after each step |
 | `docs/master-ennoid-xlite.md` | The bought master (ENNOID Master-XLITE-ISC) and how the slave fits under it |
-| `_tools/pcb_dashboard/` | Board Boxes: local KiCad dashboard (view, annotate, chip info, fresh 3D renders, copy placement prompts) |
-| `_tools/kicad_sch/` | Schematic helpers: netlist + ERC check of the slave, label fixer, region renders (see AGENTS.md) |
+| `_tools/pcb_dashboard/` | Board Boxes: local KiCad dashboard (top and bottom view, annotate, chip info, fresh 3D renders, copy placement prompts) |
+| `_tools/kicad_sch/` | Schematic and PCB helpers: netlist + ERC check, PCB parity check, design rules, Lean generator and trial placement (see AGENTS.md) |
 | `site/` | Published GitHub Pages copy of Board Boxes plus the News page |
 | `_reference/` | Reference images. `_reference/racc/`, `_reference/datasheets/` and `_reference/firmware/` are private and gitignored |
 
