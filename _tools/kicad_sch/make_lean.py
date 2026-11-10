@@ -8,6 +8,8 @@ Lean = Guard minus:
   D101-D118  zener clamps between neighbouring C pins
   D301       V+ TVS (no fuse ahead of it any more, so a shorted TVS would short the stack)
   C101-C118  C-pin filter caps (the 10 ohm series resistors R100-R118 stay)
+  J6, J7     DNP JST PH alternates to the isoSPI GH plugs J3/J4: both ports only fit the
+             70 mm board without them (2026-11-09 shrink trial, try 2)
 
 and with these parts swapped (SWAP below, same value and nets, smaller footprint):
   R201-R218  balance 33 ohm 2512 (1 W) -> 2010 (0.75 W), so the 18-channel row fits a 70 mm
@@ -35,7 +37,7 @@ LEAN_DIR = ROOT / "slave-18s-lean"
 LEAN = LEAN_DIR / "adbms1818-slave-18s-lean.kicad_sch"
 
 REMOVE = ({f"F1{n:02d}" for n in range(21)} | {f"D1{n:02d}" for n in range(1, 19)}
-          | {"D301"} | {f"C1{n:02d}" for n in range(1, 19)})
+          | {"D301"} | {f"C1{n:02d}" for n in range(1, 19)} | {"J6", "J7"})
 
 # F120 (V- supply fuse) becomes the net tie NT1 at the same spot. KiCad keeps CELL0 and V- as
 # two nets; on the PCB the net-tie footprint is the only place they may touch.

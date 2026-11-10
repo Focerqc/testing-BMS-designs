@@ -77,6 +77,10 @@ def board_nets(pcb=None):
     return sorted(set(re.findall(r'\(net "([^"]*)"\)', text)) - {""})
 
 
+def board_refs(pcb=None):
+    return set(re.findall(r'\(property "Reference" "([^"]+)"', (pcb or PCB).read_text(encoding="utf-8")))
+
+
 def classify(nets):
     """-> ({net: bank}, {port: [line nets]}); exits on a net it can't place."""
     bank, line, unknown = {}, {"A": [], "B": []}, []
@@ -148,7 +152,9 @@ def dru_text(nets):
             "#    transformer or the connector (item 2), no foreign traces across the isoSPI lines",
             "#    (item 3). Courtyards stand in for 'under'; the gap between transformer and",
             "#    connector is on the placement checklist."]
+    on_board = board_refs()
     for p, (refs, rx) in PORT.items():
+        refs = [r for r in refs if r in on_board]      # Lean has no J6/J7
         inside = " || ".join(f"A.intersectsCourtyard('{r}')" for r in refs)
         own = [n for n in nets if rx.search(n)]
         out += ["",

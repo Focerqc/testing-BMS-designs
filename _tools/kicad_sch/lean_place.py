@@ -39,7 +39,10 @@ FAN = 6.0                # R1 row courtyards -> U1 courtyard: fan-in of ch 11-18
 U1_X = 42.0              # U1 centre x (rotation stays 270: cell pins top and left)
 GAP = 0.3                # between parts packed into a block
 ISO_B = "right of U1"    # isoSPI port B (OUT: T601, J4, J7): "right of U1", (x, y) top-left, or None
-ISO_A = None             # isoSPI port A (IN: T501, J3, J6); None = parked right of the board
+ISO_A = "under port B"   # isoSPI port A (IN: T501, J3, J6): "under port B", (x, y), or None = parked
+ISO_PH = False           # only while J6/J7 are still on the board: False parks them (make_lean.py drops them)
+ISO_Y = 1.0              # R1 row courtyards -> port B block
+ISO_GAP = 0.3            # U1 -> R/C column -> transformer -> GH plug, and port B -> port A
 PARK_X = W + 6           # where parked parts wait
 
 # ---------------------------------------------------------------- helpers
@@ -168,26 +171,39 @@ def floorplan():
     pack(["R302", "C302", "R301", "C301"], qx1 + 0.5, H - 0.5 - q_h, 2)
     pack(["TP11", "TP12", "TP13", "TP14"], box(["C301"])[2] + 0.5, H - 0.5 - q_h, 2)
 
-    # isoSPI ports (U1's isoSPI pins are on its right side). Each port is one block: transformer,
-    # GH plug right of it with the PH alternate below, termination R/C under the transformer.
-    # None = parked right of the board.
+    # isoSPI ports (U1's isoSPI pins are on its right side, port B's above port A's). Each port is
+    # one strip, left to right: termination R/C column, transformer (chip side left), GH plug.
+    # The PH alternate goes under the GH plug if ISO_PH, else it is parked. None = port parked.
     spots = {"6": ISO_B, "5": ISO_A}
+    bottom = None
     for port, park_y in (("6", 2.0), ("5", 22.0)):
         spot = spots[port]
         if spot == "right of U1":
-            spot = (ux1 + 0.5, row_bottom + 4.0)
-        port_block(port, *(spot or (PARK_X, park_y)))
+            spot = (ux1 + ISO_GAP, row_bottom + ISO_Y)
+        elif spot == "under port B":
+            spot = (ux1 + ISO_GAP, bottom + ISO_GAP)
+        bottom = port_block(port, *(spot or (PARK_X, park_y)), parked=spot is None)
 
 
-def port_block(port, x, y):
+def port_block(port, x, y, parked=False):
+    """Places one port, top-left courtyard corner at (x, y); returns the strip's bottom y."""
     t, jg, jp = f"T{port}01", ("J4" if port == "6" else "J3"), ("J7" if port == "6" else "J6")
+    rc = [f"R{port}01", f"R{port}02", f"C{port}01", f"C{port}02"]
+    pack(rc, x, y, 1)
+    tx = box(rc)[2] + ISO_GAP
     tw, th = size(t, 0)
-    put(t, x + tw / 2, y + th / 2, 0)
+    put(t, tx + tw / 2, y + th / 2, 0)
     gw, gh = size(jg, -90)
-    put(jg, x + tw + 0.5 + gw / 2, y + gh / 2, -90)
+    gx = tx + tw + ISO_GAP
+    put(jg, gx + gw / 2, y + gh / 2, -90)
+    if jp not in FP:                     # J6/J7 are gone from Lean since 2026-11-09
+        return box(rc + [t, jg])[3]
     pw, ph = size(jp, 0)
-    put(jp, x + tw + 0.5 + pw / 2, y + gh + GAP + ph / 2, 0)
-    pack([f"R{port}01", f"R{port}02", f"C{port}01", f"C{port}02"], x, y + th + 0.5, 2)
+    if ISO_PH or parked:
+        put(jp, gx + pw / 2, y + gh + GAP + ph / 2, 0)
+    else:
+        put(jp, PARK_X + pw / 2, 2.0 + (0 if port == "6" else ph + 1) + ph / 2, 0)
+    return max(box(rc + [t, jg])[3], box([jp])[3] if ISO_PH else 0)
 
 
 # ---------------------------------------------------------------- write + report
