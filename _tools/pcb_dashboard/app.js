@@ -181,7 +181,7 @@
     [/^(T501|R50\d|C50\d|J[36])$/, 'isoSPI A (IN)', 'From master / previous module. Transformer + split termination.'],
     [/^(T601|R60\d|C60\d|J[47])$/, 'isoSPI B (OUT)', 'To next module in daisy chain. Transformer + split termination.'],
     [/^(R70\d|C70\d|TH701)$/, 'NTC inputs', '100 k pull-ups to VREF2 + 100 nF filters on GPIO; TH701 board temp.'],
-    [/^TP([1-9]|10)$/, 'Test loops', 'Low-voltage probes: V−, VREG, VREF1/2, DRIVE, isoSPI lines.'],
+    [/^TP([1-9]|10)$/, 'Test points', 'Low-voltage probes: V−, VREG, VREF1/2, DRIVE, isoSPI lines. Loops on Guard, bare pads on the back on Lean.'],
     [/^TP1[1-4]$/, 'HV test pads', 'Bare pads: VCOLL, C6, C12, C18. No exposed loop at high voltage.'],
     [/^H\d$/, 'Mounting holes', 'M3, keep-out around them.'],
   ];
@@ -2548,13 +2548,13 @@
   // Each step: what to look at, why, and a check measured from the board (ok: true / false, or null = info only).
   const SUPPLY = [['C303', '/VREG', 3], ['C304', '/VREF1', 3], ['C305', '/VREF2', 3],
                   ['R401', '/IBIAS', 4], ['R402', '/ICMP', 4], ['C301', '/VP_F', 4]];
-  const PORT_A = ['T501', 'J3', 'J6', 'R501', 'R502', 'C501', 'C502'];
+  const PORT_A = ['T501', 'J3', 'R501', 'R502', 'C501', 'C502'];
   const ROUTE_NETS = ['/CELL14', '/S14', '/C14_F', '/CELL0'];
   const GUIDE = [
     { id: 'try', t: 'Read this try',
-      d: ['lean_place.py placed every part from the knobs at its top: plugs centred on the top edge, the 18-channel row under them, U1 under the row, isoSPI port B right of U1, test points and Q301 bottom-left.',
+      d: ['lean_place.py placed every part from the knobs at its top: plugs centred on the top edge, the 18-channel row under them, U1 under the row, both isoSPI ports right of U1 (port B above port A), Q301 bottom-left, and the 14 test pads on the back (Bottom view).',
           'Each run places everything from scratch. A part you move by hand in KiCad stays only until the next run, so once a move works, put it in the script.',
-          'What doesn\'t fit is parked right of the outline. Turn on 3D and Parts: the render and the pads line up, parked parts included.'],
+          'A part that doesn\'t fit is parked right of the outline; in try 2 nothing is. Turn on 3D and Parts: the render and the pads line up.'],
       look: 'lean_place.py --drc: only silk warnings and unrouted nets. A clearance or courtyard error means two parts collide.',
       check: () => {
         const ob = outlineBox();
@@ -2607,10 +2607,10 @@
           text: rows.map(r => `${r.ref} ${f1(r.d)}`).join(', ') + ' mm from their U1 pins' +
             (far.length ? ` (want caps ≤ 3, R401/R402/C301 ≤ 4).` : '.') };
       } },
-    { id: 'portA', t: 'isoSPI port A onto the board',
-      d: ['Port A (IN) is T501, J3 (GH plug), J6 (PH alternate, not fitted), R501/R502 and C501/C502. lean_place.py parks it while ISO_A = None.',
-          'Its block is about 16 × 12 mm. Port B (OUT) already sits right of U1, next to U1\'s isoSPI pins (61–64).',
-          'Ways to make room: give ISO_A a spot (x, y), move the test points, or drop the PH alternates J6/J7 if the GH cables work (layout plan, step 10).',
+    { id: 'portA', t: 'Both isoSPI ports beside U1',
+      d: ['Each port is one strip right of U1: an R/C column (4 × 0603), the transformer, then the GH plug at the board edge. Port B (OUT: T601, J4) on top, port A (IN: T501, J3) under it.',
+          'Both fit since try 2 because Lean dropped the PH alternates J6/J7. Knobs: ISO_B, ISO_A (a spot (x, y), or None to park the port), ISO_Y and ISO_GAP.',
+          'Still open: each transformer\'s courtyard is about 3.7 mm from U1\'s, and the datasheet wants 1–2 cm.',
           'Nothing else in the U1 → transformer → plug corridor, and no pour under the line side.'],
       look: 'lean_place.py lists nothing parked and no courtyard overlaps.',
       check: () => {
@@ -2622,7 +2622,7 @@
       } },
     { id: 'height', t: 'Toward 35 mm tall',
       d: ['A slave in the XR slot is about 70 × 35 mm (the dashed overlay). The first tries are 50 tall to leave room to work.',
-          'In try 1 the plugs and the row end at y ≈ 25, and U1 under them at y ≈ 43. So 35 mm needs a different shape, not just tighter knobs.',
+          'In try 2 the plugs and the row end at y ≈ 25, and U1 under them at y ≈ 44. Plugs 5.6, tap room 5, the two resistor rows 11.4, fan-in 6 and U1 13.5 come to about 41.5 mm, so 35 mm needs the plugs off the top edge, not just tighter knobs.',
           'Q301\'s copper sets a floor: measure Q301 at 75.6 V first (layout plan, step 10).'],
       look: 'The check counts the parts that still reach below y = 35.',
       check: () => {
