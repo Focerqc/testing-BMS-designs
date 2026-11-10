@@ -85,6 +85,7 @@ a:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-off
 .board-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:26px;align-items:start}
 .board-shot{margin:0;background:var(--night);border-radius:12px;padding:14px;box-shadow:0 18px 40px #17231f25}
 .board-shot img{border-radius:6px}
+.board-shot img+img{margin-top:14px}
 .board-notes h3{margin:0 0 10px;font-size:18px;letter-spacing:-.02em}
 .legend{list-style:none;padding:0;margin:0 0 18px;display:grid;gap:8px}
 .legend li{font-size:13px;color:var(--muted);padding-left:12px;border-left:3px solid var(--line)}

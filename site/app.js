@@ -37,6 +37,9 @@
     render3dImg: null,
     render3dBounds: null,   // the board's own rect inside render3dImg (pixels): parked parts and margins lie outside it
     render3dPath: null,
+    render3dBotImg: null,    // render of the back (mirrored by the server so it lies on the board outline)
+    render3dBotBounds: null,
+    render3dBotPath: null,
     renderIsoPath: null,
     isoView: { x: 0, y: 0, scale: 1 },
     isoDrag: null,
@@ -179,7 +182,7 @@
     [/^(T501|R50\d|C50\d|J[36])$/, 'isoSPI A (IN)', 'From master / previous module. Transformer + split termination.'],
     [/^(T601|R60\d|C60\d|J[47])$/, 'isoSPI B (OUT)', 'To next module in daisy chain. Transformer + split termination.'],
     [/^(R70\d|C70\d|TH701)$/, 'NTC inputs', '100 k pull-ups to VREF2 + 100 nF filters on GPIO; TH701 board temp.'],
-    [/^TP([1-9]|10)$/, 'Test loops', 'Low-voltage probes: V−, VREG, VREF1/2, DRIVE, isoSPI lines.'],
+    [/^TP([1-9]|10)$/, 'Test points', 'Low-voltage probes: V−, VREG, VREF1/2, DRIVE, isoSPI lines. Loops on Guard, bare pads on the back on Lean.'],
     [/^TP1[1-4]$/, 'HV test pads', 'Bare pads: VCOLL, C6, C12, C18. No exposed loop at high voltage.'],
     [/^H\d$/, 'Mounting holes', 'M3, keep-out around them.'],
   ];
@@ -1025,6 +1028,26 @@
         if ($('tgl3D')) $('tgl3D').classList.remove('active');
       }
 
+      // Bottom status: the back of the board, for parts on B.Cu (Lean's test pads)
+      const botInfo = res.bottom;
+      if (botInfo && botInfo.exists) {
+        if ($('renderBotTimeBadge')) {
+          $('renderBotTimeBadge').textContent = `Bottom: ${botInfo.timestamp}`;
+          $('renderBotTimeBadge').classList.add('fresh');
+        }
+        S.render3dBotPath = botInfo.image;
+        await load3DRender(botInfo.image, 'bot');
+      } else {
+        if ($('renderBotTimeBadge')) {
+          $('renderBotTimeBadge').textContent = 'Bottom: –';
+          $('renderBotTimeBadge').classList.remove('fresh');
+        }
+        S.render3dBotPath = null;
+        S.render3dBotImg = null;
+        S.render3dBotBounds = null;
+      }
+      syncSideButtons();
+
       // Iso status
       const isoInfo = res.iso;
       if (isoInfo && isoInfo.exists) {
@@ -1096,24 +1119,25 @@
     }
   }
 
-  function load3DRender(path) {
+  function load3DRender(path, slot = 'top') {
+    const [imgKey, boundsKey] = slot === 'bot' ? ['render3dBotImg', 'render3dBotBounds'] : ['render3dImg', 'render3dBounds'];
     return new Promise(resolve => {
       if (!path) {
-        S.render3dImg = null;
-        S.render3dBounds = null;
+        S[imgKey] = null;
+        S[boundsKey] = null;
         render();
         return resolve();
       }
       const img = new Image();
       img.onload = () => {
-        S.render3dImg = img;
-        S.render3dBounds = boardImageBounds(img) || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
+        S[imgKey] = img;
+        S[boundsKey] = boardImageBounds(img) || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
         render();
         resolve();
       };
       img.onerror = () => {
-        S.render3dImg = null;
-        S.render3dBounds = null;
+        S[imgKey] = null;
+        S[boundsKey] = null;
         resolve();
       };
       img.src = window.dashboardAsset(path);
@@ -1122,15 +1146,16 @@
 
   async function triggerRender3D(kind = 'top') {
     if (!S.boardPath) return toast('No board selected', 'warn');
-    const isIso = kind === 'iso';
-    const btn = isIso ? $('btnIsoRender3D') : $('btnTopRender3D');
-    const badge = isIso ? $('renderIsoTimeBadge') : $('renderTimeBadge');
+    const isIso = kind === 'iso', isBot = kind === 'bottom';
+    const label = isIso ? 'Iso' : (isBot ? 'Bottom' : 'Top');
+    const btn = isIso ? $('btnIsoRender3D') : (isBot ? $('btnBotRender3D') : $('btnTopRender3D'));
+    const badge = isIso ? $('renderIsoTimeBadge') : (isBot ? $('renderBotTimeBadge') : $('renderTimeBadge'));
     const oldHtml = btn ? btn.innerHTML : '';
 
     if (btn) {
       btn.disabled = true;
       btn.classList.add('btn-spinning');
-      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Rendering ${isIso ? 'Iso' : 'Top'}…`;
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Rendering ${label}…`;
     }
     if (badge) {
       badge.textContent = 'Rendering…';
@@ -1153,6 +1178,18 @@
         if ($('tglIsoView')) $('tglIsoView').classList.add('active');
         toast(`⚡ Isometric 3D render generated! (${res.timestamp})`);
         openIsoViewer();
+      } else if (isBot) {
+        S.render3dBotPath = res.image;
+        await load3DRender(res.image, 'bot');
+        S.show3D = true;
+        if ($('tgl3D')) $('tgl3D').classList.add('active');
+        if (badge) {
+          badge.textContent = `Bottom: ${res.timestamp}`;
+          badge.classList.add('fresh');
+        }
+        syncSideButtons();
+        toast(`⚡ 3D Bottom render generated! (${res.timestamp})`);
+        render();
       } else {
         S.render3dPath = res.image;
         await load3DRender(res.image);
@@ -1167,7 +1204,7 @@
       }
     } catch (err) {
       toast(`3D Render failed: ${esc(err.message)}`, 'err');
-      if (badge) badge.textContent = `${isIso ? 'Iso' : 'Top'}: Failed`;
+      if (badge) badge.textContent = `${label}: Failed`;
     } finally {
       if (btn) {
         btn.disabled = false;
@@ -1349,18 +1386,26 @@
     }).join('');
     sel.value = chosen && [...sel.options].some(o => o.value === chosen) ? chosen : '';
   }
+  // The back can be shown whenever there is something to show: a bottom photo, a bottom 3D render, or
+  // a part on B.Cu (Lean's test pads), so Board Boxes works on the back without any photo.
+  function hasBack() {
+    return !!(S.doc.refBot || S.render3dBotImg || (S.board && S.board.footprints.some(fp => fp.side === 'B')));
+  }
+  function hasFront() {
+    return !!(S.doc.ref || S.render3dImg || !S.board || S.board.footprints.some(fp => fp.side !== 'B'));
+  }
   function syncSideButtons() {
     document.querySelectorAll('#sideView button').forEach(b => {
       b.classList.toggle('on', b.dataset.side === S.sideView);
-      if (b.dataset.side === 'both') b.disabled = !(S.doc.ref && S.doc.refBot);
-      if (b.dataset.side === 'bottom') b.disabled = !S.doc.refBot;
-      if (b.dataset.side === 'top') b.disabled = !S.doc.ref;
+      if (b.dataset.side === 'both') b.disabled = !(hasFront() && hasBack());
+      if (b.dataset.side === 'bottom') b.disabled = !hasBack();
+      if (b.dataset.side === 'top') b.disabled = !hasFront();
     });
   }
   function setSideView(mode, refit) {
-    if (mode === 'both' && !(S.doc.ref && S.doc.refBot)) mode = S.doc.refBot && !S.doc.ref ? 'bottom' : 'top';
-    if (mode === 'bottom' && !S.doc.refBot) mode = 'top';
-    if (mode === 'top' && !S.doc.ref && S.doc.refBot) mode = 'bottom';
+    if (mode === 'both' && !(hasFront() && hasBack())) mode = hasBack() && !hasFront() ? 'bottom' : 'top';
+    if (mode === 'bottom' && !hasBack()) mode = 'top';
+    if (mode === 'top' && !hasFront() && hasBack()) mode = 'bottom';
     S.sideView = mode;
     syncSideButtons();
     if (refit && S.board) fit();
@@ -1402,7 +1447,8 @@
     const sc = S.view.scale;
     const refImg = pane.side === 'bot' ? S.refBotImg : S.refImg;
     const hasRef = S.showRef && refImg;
-    const has3D = pane.side === 'top' && S.show3D && S.render3dImg;
+    const img3D = pane.side === 'bot' ? S.render3dBotImg : S.render3dImg;
+    const has3D = S.show3D && !!img3D;
 
     // Layer 1: Reference image (photo). Top render never covers the bottom photo.
     if (hasRef) {
@@ -1419,8 +1465,8 @@
     // outline; the rest of the image (parts parked off the board) is drawn around it at the same scale.
     if (has3D) {
       const p = toScreen(bb.x, bb.y);
-      const img = S.render3dImg;
-      const src = S.render3dBounds || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
+      const img = img3D;
+      const src = (pane.side === 'bot' ? S.render3dBotBounds : S.render3dBounds) || { x: 0, y: 0, w: img.naturalWidth, h: img.naturalHeight };
       const kx = bb.w * sc / src.w, ky = bb.h * sc / src.h;
       ctx.save();
       ctx.globalAlpha = S.opacity;
@@ -2503,13 +2549,13 @@
   // Each step: what to look at, why, and a check measured from the board (ok: true / false, or null = info only).
   const SUPPLY = [['C303', '/VREG', 3], ['C304', '/VREF1', 3], ['C305', '/VREF2', 3],
                   ['R401', '/IBIAS', 4], ['R402', '/ICMP', 4], ['C301', '/VP_F', 4]];
-  const PORT_A = ['T501', 'J3', 'J6', 'R501', 'R502', 'C501', 'C502'];
+  const PORT_A = ['T501', 'J3', 'R501', 'R502', 'C501', 'C502'];
   const ROUTE_NETS = ['/CELL14', '/S14', '/C14_F', '/CELL0'];
   const GUIDE = [
     { id: 'try', t: 'Read this try',
-      d: ['lean_place.py placed every part from the knobs at its top: plugs centred on the top edge, the 18-channel row under them, U1 under the row, isoSPI port B right of U1, test points and Q301 bottom-left.',
+      d: ['lean_place.py placed every part from the knobs at its top: plugs centred on the top edge, the 18-channel row under them, U1 under the row, both isoSPI ports right of U1 (port B above port A), Q301 bottom-left, and the 14 test pads on the back (Bottom view).',
           'Each run places everything from scratch. A part you move by hand in KiCad stays only until the next run, so once a move works, put it in the script.',
-          'What doesn\'t fit is parked right of the outline. Turn on 3D Top and Parts: the render and the pads line up, parked parts included.'],
+          'A part that doesn\'t fit is parked right of the outline; in try 2 nothing is. Turn on 3D and Parts: the render and the pads line up.'],
       look: 'lean_place.py --drc: only silk warnings and unrouted nets. A clearance or courtyard error means two parts collide.',
       check: () => {
         const ob = outlineBox();
@@ -2562,10 +2608,10 @@
           text: rows.map(r => `${r.ref} ${f1(r.d)}`).join(', ') + ' mm from their U1 pins' +
             (far.length ? ` (want caps ≤ 3, R401/R402/C301 ≤ 4).` : '.') };
       } },
-    { id: 'portA', t: 'isoSPI port A onto the board',
-      d: ['Port A (IN) is T501, J3 (GH plug), J6 (PH alternate, not fitted), R501/R502 and C501/C502. lean_place.py parks it while ISO_A = None.',
-          'Its block is about 16 × 12 mm. Port B (OUT) already sits right of U1, next to U1\'s isoSPI pins (61–64).',
-          'Ways to make room: give ISO_A a spot (x, y), move the test points, or drop the PH alternates J6/J7 if the GH cables work (layout plan, step 10).',
+    { id: 'portA', t: 'Both isoSPI ports beside U1',
+      d: ['Each port is one strip right of U1: an R/C column (4 × 0603), the transformer, then the GH plug at the board edge. Port B (OUT: T601, J4) on top, port A (IN: T501, J3) under it.',
+          'Both fit since try 2 because Lean dropped the PH alternates J6/J7. Knobs: ISO_B, ISO_A (a spot (x, y), or None to park the port), ISO_Y and ISO_GAP.',
+          'Still open: each transformer\'s courtyard is about 3.7 mm from U1\'s, and the datasheet wants 1–2 cm.',
           'Nothing else in the U1 → transformer → plug corridor, and no pour under the line side.'],
       look: 'lean_place.py lists nothing parked and no courtyard overlaps.',
       check: () => {
@@ -2577,7 +2623,7 @@
       } },
     { id: 'height', t: 'Toward 35 mm tall',
       d: ['A slave in the XR slot is about 70 × 35 mm (the dashed overlay). The first tries are 50 tall to leave room to work.',
-          'In try 1 the plugs and the row end at y ≈ 25, and U1 under them at y ≈ 43. So 35 mm needs a different shape, not just tighter knobs.',
+          'In try 2 the plugs and the row end at y ≈ 25, and U1 under them at y ≈ 44. Plugs 5.6, tap room 5, the two resistor rows 11.4, fan-in 6 and U1 13.5 come to about 41.5 mm, so 35 mm needs the plugs off the top edge, not just tighter knobs.',
           'Q301\'s copper sets a floor: measure Q301 at 75.6 V first (layout plan, step 10).'],
       look: 'The check counts the parts that still reach below y = 35.',
       check: () => {
@@ -2710,6 +2756,9 @@
     if (S.doc.refBot) lines.push(`Bottom reference image: \`${S.doc.refBot}\``);
     if (S.render3dPath) {
       lines.push(`Top-Down 3D CAD render: \`${S.render3dPath}\``);
+    }
+    if (S.render3dBotPath) {
+      lines.push(`Bottom 3D CAD render (mirrored to board coordinates): \`${S.render3dBotPath}\``);
     }
     if (S.renderIsoPath) {
       lines.push(`Isometric 3D CAD render: \`${S.renderIsoPath}\``);
@@ -2951,7 +3000,7 @@
     const tgl3D = $('tgl3D');
     if (tgl3D) {
       tgl3D.onclick = () => {
-        if (!S.render3dImg) {
+        if (!S.render3dImg && !S.render3dBotImg) {
           toast('No 3D render yet. Click <b>Render 3D</b> in the top bar to generate one.', 'info');
           return;
         }
@@ -3027,6 +3076,8 @@
 
     const btnTop = $('btnTopRender3D');
     if (btnTop) btnTop.onclick = () => triggerRender3D('top');
+    const btnBot = $('btnBotRender3D');
+    if (btnBot) btnBot.onclick = () => triggerRender3D('bottom');
     const btnSchematic = $('btnSchematic');
     if (btnSchematic) btnSchematic.onclick = triggerRenderSchematic;
     const btnFullSchematic = $('btnFullSchematic');
