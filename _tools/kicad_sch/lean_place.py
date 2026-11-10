@@ -10,6 +10,11 @@ like pcb_move.py does: the four Edge.Cuts lines and each footprint's (at ...) li
 placed by courtyard centre, so connectors (whose origin is pin 1) land where you'd expect.
 Afterwards it lists courtyard overlaps and parts outside the outline; --drc also runs
 kicad-cli DRC and counts the violations by type (unrouted nets are expected at this stage).
+
+Try 3 floorplan (2026-11-10, 70 x 37: 120 ohm 1206 balance, 0603 series, M2 holes, no test points):
+cell plugs top-left with the 18-channel row under them at 2.4 mm pitch, U1 under the row's right
+half, both isoSPI ports top-right (GH plug at the top edge, transformer under it, chip side down),
+supply parts and Q301 right of U1, NTC plug and its parts bottom-left.
 """
 import argparse
 import json
@@ -28,21 +33,19 @@ from pcb_move import apply_moves  # noqa: E402
 PCB = ROOT / "slave-18s-lean" / "adbms1818-slave-18s-lean.kicad_pcb"
 
 # ---------------------------------------------------------------- KNOBS (mm, board coordinates)
-W, H = 70.0, 50.0        # board outline, top-left corner at (0, 0)
-HOLE_INSET = 3.5         # M3 hole centres this far in from each corner
-PLUG_Y = 5.0             # J1/J5 pin row; the pair is centred left-right on the top edge
-PITCH = 3.3              # channel pitch along the row (2010 R2: 3.3 is the least)
-ROW_SHIFT = -2.0         # row centre minus board centre; negative leaves room for J2 on the right
-TAP = 5.0                # plug courtyards -> R2 (outer) row courtyards: room for the tap traces
+W, H = 70.0, 37.0        # board outline, top-left corner at (0, 0); 37 is the XR slot's height
+EDGE = 0.3               # courtyards stay this far inside the outline
+HOLE_INSET = 2.5         # M2 hole centres this far in from the corner
+HOLE_H3 = (W - 2.5, 24.5)  # H3 is not in its corner: isoSPI port A's plug is there
+PLUG_X = 5.25            # left courtyard edge of J1 (clear of H4)
+PITCH = 2.4              # channel pitch along the row (1206 R2 pad 1.75 + 0.2 + 0.25 + 0.2)
+ROW_SHIFT = 0.0          # row centre minus plug-pin centre
+TAP = 2.0                # plug courtyards -> R2 (outer) row courtyards: room for the tap traces
 ROW_GAP = 0.25           # R2 row courtyards -> R1 (inner) row courtyards
 FAN = 6.0                # R1 row courtyards -> U1 courtyard: fan-in of ch 11-18 to U1's top pins
-U1_X = 42.0              # U1 centre x (rotation stays 270: cell pins top and left)
+U1_X = 41.0              # U1 centre x (rotation stays 270: cell pins top and left)
 GAP = 0.3                # between parts packed into a block
-ISO_B = "right of U1"    # isoSPI port B (OUT: T601, J4, J7): "right of U1", (x, y) top-left, or None
-ISO_A = "under port B"   # isoSPI port A (IN: T501, J3, J6): "under port B", (x, y), or None = parked
-ISO_PH = False           # only while J6/J7 are still on the board: False parks them (make_lean.py drops them)
-ISO_Y = 1.0              # R1 row courtyards -> port B block
-ISO_GAP = 0.3            # U1 -> R/C column -> transformer -> GH plug, and port B -> port A
+ISO_X = 52.6             # left courtyard edge of port B (T601 + J4); port A (T501 + J3) is right of it
 PARK_X = W + 6           # where parked parts wait
 
 # ---------------------------------------------------------------- helpers
@@ -119,29 +122,44 @@ def harness_up(ref):
     sys.exit(f"{ref}: no CELL pad")
 
 
+def chip_down(ref):
+    """Transformer rotation (90 or 270) that puts the chip-side pads (1-3) below the line side."""
+    fp = FP[ref]
+    for rot in (90, 270):
+        fp.SetOrientationDegrees(rot)
+        y = {pd.GetNumber(): pd.GetPosition().y for pd in fp.Pads()}
+        if y["1"] > y["6"]:
+            return rot
+    sys.exit(f"{ref}: no rotation puts the chip side down")
+
+
+def tl(ref, x, y, rot=0):
+    """Top-left courtyard corner of REF to (x, y); returns (right, bottom)."""
+    w, h = size(ref, rot)
+    put(ref, x + w / 2, y + h / 2, rot)
+    return x + w, y + h
+
+
 # ---------------------------------------------------------------- the floorplan
 def floorplan():
-    # holes in the corners: H4 top-left, H3 top-right, H1 bottom-left, H2 bottom-right
-    for ref, x, y in (("H4", HOLE_INSET, HOLE_INSET), ("H3", W - HOLE_INSET, HOLE_INSET),
-                      ("H1", HOLE_INSET, H - HOLE_INSET), ("H2", W - HOLE_INSET, H - HOLE_INSET)):
+    # holes: H4 top-left, H1 bottom-left, H2 bottom-right in their corners, H3 on the right edge
+    for ref, x, y in (("H4", HOLE_INSET, HOLE_INSET), ("H1", HOLE_INSET, H - HOLE_INSET),
+                      ("H2", W - HOLE_INSET, H - HOLE_INSET), ("H3", *HOLE_H3)):
         put_anchor(ref, x, y)
 
-    # cell plugs: J1 and J5 keep their 23.5 mm pin-1 spacing, the pair centred on the top edge;
-    # NT1 stays 3.8 mm left of J1.1 (C0)
-    put_anchor("J1", 0, PLUG_Y); put_anchor("J5", 23.5, PLUG_Y)
-    x0, _, x1, _ = box(["J1", "J5"])
-    dx = W / 2 - (x0 + x1) / 2
-    put_anchor("J1", dx, PLUG_Y); put_anchor("J5", dx + 23.5, PLUG_Y)
-    put_anchor("NT1", dx - 3.8, PLUG_Y, 180)
+    # cell plugs on the top edge, left: J1 and J5 keep their 23.5 mm pin-1 spacing;
+    # NT1 stands just under J1.1 (C0), CELL0 pad up, left of the C0 tap
+    put_anchor("J1", 0, 0); put_anchor("J5", 23.5, 0)
+    x0, y0, _, _ = box(["J1", "J5"])
+    jx, jy = PLUG_X - x0, EDGE - y0
+    put_anchor("J1", jx, jy); put_anchor("J5", jx + 23.5, jy)
     plug_bottom = box(["J1", "J5"])[3]
-
-    # NTC plug J2: vertical on the right edge, under H3
-    w, h = size("J2", 90)
-    put("J2", W - 0.3 - w / 2, HOLE_INSET + 3.8 + h / 2, 90)
+    put("NT1", jx - 1.3, plug_bottom + 1.0, harness_up("NT1"))
+    pins_mid = jx + (23.5 + 9 * 2.0) / 2             # middle of C0 ... C18 on the plugs
 
     # the 18-channel row: R2 (balance) outer, R1 (10 ohm) inner and half a pitch right,
     # ch 0 at the left, harness pads up
-    xc = W / 2 + ROW_SHIFT - 9 * PITCH            # R100 (ch 0)
+    xc = pins_mid + ROW_SHIFT - 9 * PITCH + PITCH / 4   # R100 (ch 0); the two rows together centred
     h2 = size("R201", harness_up("R201"))[1]
     h1 = size("R101", harness_up("R101"))[1]
     y2 = plug_bottom + TAP + h2 / 2
@@ -152,62 +170,45 @@ def floorplan():
             put(f"R2{n:02d}", xc + n * PITCH - PITCH / 2, y2, harness_up(f"R2{n:02d}"))
     row_bottom = y1 + h1 / 2
 
-    # U1 under the row; ch 0-10 bus down its left side
+    # U1 under the row's right half (ch 11-18 drop onto its top pins); ch 0-10 bus down its left side
     u = size("U1", -90)[1]
     put("U1", U1_X, row_bottom + FAN + u / 2, -90)
-    ux0, _, ux1, uy1 = box(["U1"])
+    ux0, uy0, ux1, uy1 = box(["U1"])
 
-    # under U1: reference caps, isoSPI bias, NTC filter (VREG, VREF1/2, IBIAS and GPIO1-3 are on
-    # its bottom side). The area left of U1 and between the row and U1 is kept for the ch 0-10 bus.
-    pack(["C303", "C304", "C305", "R401", "R402", "R701", "R702", "R703", "R704", "TH701",
-          "C701", "C702", "C703", "C704"], ux0, uy1 + 0.5, 8)
+    # isoSPI ports, top-right: GH plug at the top edge, transformer under it with the chip side
+    # down, the four termination parts as a 2 x 2 block under the transformer. Port B left, A right.
+    x = ISO_X
+    for port, jg in (("6", "J4"), ("5", "J3")):
+        t = f"T{port}01"
+        tw, th = size(t, chip_down(t))
+        gw, gh = size(jg, 0)                         # rot 0: pins toward the transformer
+        put(jg, x + tw / 2, EDGE + gh / 2, 0)
+        put(t, x + tw / 2, EDGE + gh + GAP + th / 2)
+        pack([f"R{port}01", f"R{port}02", f"C{port}01", f"C{port}02"], x, EDGE + gh + GAP + th + GAP, 2)
+        x += tw + GAP
 
-    # bottom-left, below the bus: test loops, then the supply
-    left = HOLE_INSET * 2 + 0.9          # Q301's pads clear H1's 2.9 mm copper keep-out
-    # test points are bare pads on the BACK (flip_back.py, run at the end); the front stays free.
-    # rot=None keeps their rotation, a back footprint's stored angle is not the front's.
-    pack([f"TP{i}" for i in range(1, 11)], 1.0, 36.0, 5, None)
-    q_w, q_h = size("Q301", 0)
-    put("Q301", left + q_w / 2, H - 0.5 - q_h / 2, 0)
-    qx1 = box(["Q301"])[2]
-    pack(["R302", "C302", "R301", "C301"], qx1 + 0.5, H - 0.5 - q_h, 2)
-    pack(["TP11", "TP12", "TP13", "TP14"], box(["C301"])[2] + 0.5, H - 0.5 - q_h, 2, None)
+    # right of U1, at their pins (U1's right side, top to bottom: isoSPI 64-61, ICMP 58, IBIAS 57,
+    # VREF1 51, VREF2 50, DRIVE 49; VREG 48 is the bottom-right corner)
+    sx = ux1 + GAP
+    col = ["R402", "R401", "C304", "C305", "C303"]
+    ch = sum(size(r, 0)[1] for r in col) + GAP * (len(col) - 1)
+    pack(col, sx, uy1 - ch, 1)
+    sx2 = box(col)[2] + GAP
+    # V+ filter at pin 1 (U1's top-right corner), right of the ch 18 fan-in
+    _, b = tl("R301", sx + 0.25, uy0 - 3.6)
+    tl("C301", sx + 0.25, b + GAP)
+    # Q301 right of the supply column, pins toward U1 (VREG pin at the bottom, next to C303)
+    qw, qh = size("Q301", 0)
+    put("Q301", sx2 + qw / 2, H - EDGE - qh / 2, 0)
+    pack(["R302", "C302"], sx2, H - EDGE - qh - GAP - size("R302", 0)[1], 2)
 
-    # isoSPI ports (U1's isoSPI pins are on its right side, port B's above port A's). Each port is
-    # one strip, left to right: termination R/C column, transformer (chip side left), GH plug.
-    # The PH alternate goes under the GH plug if ISO_PH, else it is parked. None = port parked.
-    spots = {"6": ISO_B, "5": ISO_A}
-    bottom = None
-    for port, park_y in (("6", 2.0), ("5", 22.0)):
-        spot = spots[port]
-        if spot == "right of U1":
-            spot = (ux1 + ISO_GAP, row_bottom + ISO_Y)
-        elif spot == "under port B":
-            spot = (ux1 + ISO_GAP, bottom + ISO_GAP)
-        bottom = port_block(port, *(spot or (PARK_X, park_y)), parked=spot is None)
-
-
-def port_block(port, x, y, parked=False):
-    """Places one port, top-left courtyard corner at (x, y); returns the strip's bottom y."""
-    t, jg, jp = f"T{port}01", ("J4" if port == "6" else "J3"), ("J7" if port == "6" else "J6")
-    rc = [f"R{port}01", f"R{port}02", f"C{port}01", f"C{port}02"]
-    pack(rc, x, y, 1)
-    tx = box(rc)[2] + ISO_GAP
-    tw, th = size(t, 0)
-    put(t, tx + tw / 2, y + th / 2, 0)
-    gw, gh = size(jg, -90)
-    gx = tx + tw + ISO_GAP
-    put(jg, gx + gw / 2, y + gh / 2, -90)
-    if jp not in FP:                     # J6/J7 are gone from Lean since 2026-11-09
-        return box(rc + [t, jg])[3]
-    if jp not in FP:                    # J6/J7 are gone from Lean since 2026-11-09 (F8 deleted them)
-        return box(rc + [t, jg])[3]
-    pw, ph = size(jp, 0)
-    if ISO_PH or parked:
-        put(jp, gx + pw / 2, y + gh + GAP + ph / 2, 0)
-    else:
-        put(jp, PARK_X + pw / 2, 2.0 + (0 if port == "6" else ph + 1) + ph / 2, 0)
-    return max(box(rc + [t, jg])[3], box([jp])[3] if ISO_PH else 0)
+    # bottom-left: NTC plug along the bottom edge (right of H1), its filter parts above it
+    w, h = size("J2", 0)
+    put("J2", 2 * HOLE_INSET + 0.25 + w / 2, H - EDGE - h / 2, 0)
+    jx0, jy0, _, _ = box(["J2"])
+    ntc = ["R701", "C701", "R702", "C702", "R703", "C703", "R704", "C704", "TH701"]
+    rows = -(-len(ntc) // 4)
+    pack(ntc, jx0, jy0 - GAP - rows * (size("R701", 0)[1] + GAP), 4)
 
 
 # ---------------------------------------------------------------- write + report
@@ -289,9 +290,6 @@ def main():
     with open(PCB, "w", encoding="utf-8", newline="") as f:
         f.write(text)
     print(f"wrote {PCB.relative_to(ROOT)}: outline {W:g} x {H:g}, {len(done)} footprints")
-    flip = subprocess.run([sys.executable, str(Path(__file__).with_name("flip_back.py")), "--test-points"],
-                          capture_output=True, text=True)
-    print(flip.stdout.strip().splitlines()[-1] if flip.stdout.strip() else flip.stderr[-300:])
     if a.drc:
         drc()
 

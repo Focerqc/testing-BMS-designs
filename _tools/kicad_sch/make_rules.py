@@ -69,7 +69,10 @@ PORT = {"A": (("T501", "J3", "J6"), re.compile(r"/(IPA|IMA|ISOA_\w+)$|unconnecte
         "B": (("T601", "J4", "J7"), re.compile(r"/(IPB|IMB|ISOB_\w+)$|unconnected-\((T601|J4)-"))}
 BARRIER = 2.0       # mm, clearance and creepage, line side vs everything else
 HV_FAR = 0.6        # mm, IPC-2221B B2 31-150 V
-HOLE_KEEPOUT = 2.9  # mm, copper to M3 hole edge (4.5 mm from the centre)
+# mounting holes per variant: screw, hole diameter, copper keep-out radius from the hole centre,
+# what that radius clears (Lean is M2 since 2026-11-10)
+HOLES = {"guard": ("M3", 3.2, 4.5, "about 7 mm"), "lean": ("M2", 2.2, 2.75, "about 5 mm")}
+HOLE = HOLES["guard"]   # set from --variant in main()
 
 
 def board_nets(pcb=None):
@@ -166,12 +169,12 @@ def dru_text(nets):
                 "  (constraint disallow track via)",
                 f'  (condition "({inside}) && !{any_net("A", own)}"))']
     out += ["",
-            "# 4. Mounting holes H1-H4 (M3, NPTH, 3.2 mm): keep copper 4.5 mm from the hole centre so",
-            f"#    an M3 screw head or nylon washer (about 7 mm across) never touches copper. {HOLE_KEEPOUT} mm",
-            "#    from the hole edge = 4.5 mm - 1.6 mm hole radius.",
+            f"# 4. Mounting holes H1-H4 ({HOLE[0]}, NPTH, {HOLE[1]:g} mm): keep copper {HOLE[2]:g} mm from the hole centre so",
+            f"#    an {HOLE[0]} screw head or nylon washer ({HOLE[3]} across) never touches copper. {HOLE[2] - HOLE[1] / 2:g} mm",
+            f"#    from the hole edge = {HOLE[2]:g} mm - {HOLE[1] / 2:g} mm hole radius.",
             "",
             '(rule "Mounting hole copper keep-out"',
-            f"  (constraint hole_clearance (min {HOLE_KEEPOUT}mm))",
+            f"  (constraint hole_clearance (min {HOLE[2] - HOLE[1] / 2:g}mm))",
             "  (condition \"A.memberOfFootprint('H*')\"))"]
     return "\n".join(out) + "\n"
 
@@ -217,7 +220,8 @@ def main():
     ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
                     help="guard = slave-18s, lean = slave-18s-lean")
     a = ap.parse_args()
-    global PRO, PCB, DRU
+    global PRO, PCB, DRU, HOLE
+    HOLE = HOLES[a.variant]
     sch = VARIANTS[a.variant]
     PRO, PCB, DRU = (sch.with_suffix(s) for s in (".kicad_pro", ".kicad_pcb", ".kicad_dru"))
     print(f"{a.variant}: {PCB.relative_to(sch.parents[1]).as_posix()}")
