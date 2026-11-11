@@ -29,7 +29,8 @@ is `slave-18s/bom.csv`.
 | V+ TVS D301 | yes | no: with no F119 ahead of it, a shorted TVS would short the whole stack |
 | C-pin filter caps C101–C118 | yes | no (Racc's board has none; the 10 ohm resistors stay) |
 | Balance resistors R201–R218 | 33 Ω, 2512, 1 W | **120 Ω, 1206, 0.25 W** (since 2026-11-10, try 3; 33 Ω 2010 in tries 1–2) |
-| Series resistors R100–R118 (10 Ω) | 1206 | 0603 (since 2026-11-10, try 3) |
+| Series resistors R100–R118 (10 Ω) | 1206 | **0402** (since 2026-11-11, try 4; 0603 in try 3) |
+| Board outline | 120 × 70 mm | **70 × 32 mm** (since 2026-11-11, try 4) |
 | isoSPI transformers T501/T601 | Pulse HM2113ZNL | Bourns SM91502AL (since 2026-11-08, shrink trial) |
 | isoSPI PH alternates J6/J7 (DNP) | yes | no (since 2026-11-09, shrink trial): GH plugs J3/J4 only |
 | Test points TP1–TP14 | 10 loops + 4 bare pads | none (since 2026-11-10, try 3) |
@@ -215,6 +216,48 @@ is `slave-18s/bom.csv`.
       37 mm is plugs 5.6 + tap room 1 + rows 7.9 + fan-in 5.3 + U1 13.5 + wrap 3.4. Taking the
       cell plugs off the slave removes 6.6 mm (about 30.4 mm left); nothing else in the stack
       gives that much. Not decided.
+  - **Try 4 (2026-11-11): 70 × 32 mm, placed, nothing routed.** The user: the cell plugs stay
+    on the slave, and 5 mm should come off the height so the carrier (37 mm) can hold connectors
+    above the slaves. Try 3c (70 × 37) is commit `5306098`. From `lean_place.py`:
+    - **Where the 5 mm came from.** With the try 3c parts only 3.7 mm was left for the fan-in
+      above U1 plus the room below it (8.7 mm at 37 mm). So:
+      R100–R118 **0603 standing → 0402 lying** (row 3.05 → 1.03 mm, 2 mm); tap room 1.0 → 0.5 mm;
+      room under U1 3.4 → 1.3 mm. The fan-in gap is 4.9 mm (was 5.3).
+    - **R100–R118: 10 Ω 1 % 0402, UNI-ROYAL 0402WGF100JTCE, LCSC C25077, Basic** (about 4 M in
+      stock, local parts DB). They carry the balance current: about 10 mW at 31 mA, 16 % of the
+      62.5 mW rating (about 20 mW if the balance resistors later go down to 82 Ω). Lying, a
+      part is 1.95 mm wide at the 2.4 mm pitch; Sn comes down through the 0.9 mm between the
+      pads of two neighbours. Lean has no C-pin caps, so no inrush runs through them.
+      `make_lean.py` `SWAP`; Guard keeps 1206.
+    - **U1 centre x 36.0**, courtyard 1.3 mm from the bottom edge. One trace fits under it, so
+      only VREG (pin 48 to C303) runs there. **S3…C0 and GPIO1–4 have to leave the bottom pins
+      through vias under the chip** (between the pad row and the EP) and continue on inner
+      layers. GPIO5–9 go to the EP (V−).
+    - Right of U1, a bottom-aligned column 0.6 mm from U1 in pin order: R402, R401, C304, C305,
+      a 0.9 mm gap, C303. C301 and R301 lie at pin 1. The two isoSPI pairs leave through the
+      2.8 mm between C301 and the column.
+    - **Q301 stands right of the column: pins at the bottom edge, tab up.** The 6 mm under the
+      termination rows is too low for it lying (7.3 mm). U1 sits at 36 and not 37 so Q301 ends
+      just left of R601. Its pins run DRIVE, VCOLL, VREG from the left: VREG (22 mA) comes back
+      under the body and through the column gap to C303; **DRIVE (1 mA) has to hop over it on an
+      inner layer** (two vias). C302 stands right of Q301 with its VCOLL pad up at the tab; R302
+      stays a 2512, lying right of C302 on the bottom edge.
+    - **VCOLL copper: one zone `VCOLL_Q301` on all four layers,** outline 119 mm² each, round
+      Q301 and under C302/R302, with 31 vias. Try 3c had 113 mm² on the front and 183 mm² on each
+      of the other three layers, so Q301 will run hotter here. Still an estimate until measured.
+    - **The port A pair has no path on the front** past Q301 and port B's termination row: inner
+      layer from near U1 to port A's row.
+    - Fan-in: ch 18 runs 11.2 mm sideways (R118 at x 50.4 to pin 2 at 39.25) in 4.9 mm. About
+      ten traces cross the busiest line (4.5 mm at 0.25/0.2 mm), so part of it will probably
+      need a second layer. Calculated, not routed.
+    - Pad to U1 pin: C303 4.5, C304 2.4, C305 2.7, R401 2.6, R402 2.4, C301 4.1, Q301 DRIVE 6.9,
+      Q301 VREG 12.9 mm. T601's courtyard is 10.1 mm from U1's; the NTC parts are about 32 mm
+      from GPIO1.
+    - Checks: 0 courtyard overlaps, parity PASS, `make_rules.py --variant lean --check` OK, DRC
+      with the zones filled: silkscreen items and 150 unconnected, no clearance errors.
+    - **What makes 32 mm harder than 37 mm, all unproven:** five things need inner layers (U1's
+      bottom pins, DRIVE, the port A pair, CELL18 to R302, the NTC nets), the VCOLL copper is
+      smaller, and the fan-in has less room. If routing fails, go back to `5306098`.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).

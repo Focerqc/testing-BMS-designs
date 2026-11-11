@@ -187,3 +187,8 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
   For a picture, fill a scratch copy with `--refill-zones --save-board` and export that.
 - **pcbnew `SaveBoard` writes CRLF on Windows.** The text helpers match LF only; convert a
   pcbnew-saved copy to LF before running them on it.
+- **Try a new size on a scratch copy before the schematic change (2026-11-11).** Copy the board,
+  swap the footprints with pcbnew (`FootprintLoad`, keep each pad's net), convert to LF, and run
+  `lean_place.py --pcb COPY`. The 70 x 32 try was proven that way, so the user pressed F8 once.
+- **`lean_place.py` is the current try only** (try 4, 70 x 32). Older floorplans are in git
+  (try 3c, 70 x 37: `5306098`), not behind knobs.
