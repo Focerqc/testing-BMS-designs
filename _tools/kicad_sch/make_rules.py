@@ -51,7 +51,17 @@ DEFAULT_CLEARANCE = 0.20
 # Board minimums (Board Setup > Constraints). JLCPCB capabilities page, read 2026-11-06:
 # 2 oz outer copper 0.16/0.16 mm trace/space; 2-layer via hole 0.15 mm min, 0.2 mm
 # preferred, no surcharge for a 0.2 mm hole when the via is >= 0.45 mm across.
+# Multilayer (Lean is 4 layers since 2026-11-10; same page, read 2026-11-10): trace/space
+# 0.09 mm at 1 oz and 0.15 mm at 2 oz; via hole 0.15 mm min, 0.2 mm preferred, via >= hole +
+# 0.1 mm; outer copper 1 or 2 oz, inner 0.5 oz by default (1 or 2 oz on request). So the same
+# two minimums hold on both boards and leave 2 oz outer copper open for Lean.
 BOARD_RULES = {"min_clearance": 0.16, "min_through_hole_diameter": 0.2}
+# Copper layers per variant. The custom rules below name no layer, so they apply on every
+# copper layer: the 0.6 mm stack clearance (IPC-2221B column B2, external) is kept on the inner
+# layers too. Column B1 (internal) would allow 0.1 mm there for 31-100 V, but every via has
+# pads on the outer layers anyway, and the VCOLL copper under Q301 is on all four.
+COPPER_LAYERS = {"guard": 2, "lean": 4}
+LAYERS = COPPER_LAYERS["guard"]   # set from --variant in main()
 
 # ---------------------------------------------------------------- stack levels
 # level = tap number: V- = 0, top of stack = 18. bank = level // 3.
@@ -78,6 +88,10 @@ HOLE = HOLES["guard"]   # set from --variant in main()
 def board_nets(pcb=None):
     text = (pcb or PCB).read_text(encoding="utf-8")
     return sorted(set(re.findall(r'\(net "([^"]*)"\)', text)) - {""})
+
+
+def copper_layers(pcb=None):
+    return len(re.findall(r'^		\(\d+ "[\w.]+\.Cu" \w+', (pcb or PCB).read_text(encoding="utf-8"), re.M))
 
 
 def board_refs(pcb=None):
@@ -128,6 +142,9 @@ def dru_text(nets):
         "#    its tap while balancing): 6 x 4.2 V = 25.2 V < 30 V. Two or more banks apart they",
         "#    can differ by 31-75.6 V, so they get 0.6 mm. Items with no net count as bank 0.",
     ]
+    if LAYERS > 2:
+        out += [f"#    {LAYERS} copper layers: no rule names a layer, so the inner layers and the zone fills",
+                "#    (the VCOLL copper under Q301) keep the same 0.6 mm."]
     for b in range(top - 1):
         far = [n for n, k in bank.items() if k >= b + 2]
         lo, hi = 3 * b, min(3 * b + 2, 18)
@@ -220,11 +237,16 @@ def main():
     ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
                     help="guard = slave-18s, lean = slave-18s-lean")
     a = ap.parse_args()
-    global PRO, PCB, DRU, HOLE
-    HOLE = HOLES[a.variant]
+    global PRO, PCB, DRU, HOLE, LAYERS
+    HOLE, LAYERS = HOLES[a.variant], COPPER_LAYERS[a.variant]
     sch = VARIANTS[a.variant]
     PRO, PCB, DRU = (sch.with_suffix(s) for s in (".kicad_pro", ".kicad_pcb", ".kicad_dru"))
     print(f"{a.variant}: {PCB.relative_to(sch.parents[1]).as_posix()}")
+    have = copper_layers()
+    if have != LAYERS:
+        print(f"FAIL: the board has {have} copper layers, {a.variant} is {LAYERS}"
+              + (" (run lean_place.py)" if a.variant == "lean" else ""))
+        return 1
     nets = board_nets()
     dru = dru_text(nets)
     pro_old = PRO.read_text(encoding="utf-8")

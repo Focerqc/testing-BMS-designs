@@ -3,10 +3,11 @@
 Change the KNOBS below and run again; every run places every part from scratch, so a try is
 cheap and nothing depends on the previous one. Close KiCad first.
 
-  "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" _tools/kicad_sch/lean_place.py [--dry] [--drc]
+  "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" _tools/kicad_sch/lean_place.py [--dry] [--drc] [--pcb FILE]
 
 pcbnew only reads pads and courtyards here; it never saves. The board file is edited as text,
-like pcb_move.py does: the four Edge.Cuts lines and each footprint's (at ...) line. Parts are
+like pcb_move.py does: the copper layer list, the four Edge.Cuts lines, each footprint's (at ...)
+line, and the VCOLL zones and vias for Q301 (written unfilled; KiCad fills them, key B). Parts are
 placed by courtyard centre, so connectors (whose origin is pin 1) land where you'd expect.
 Afterwards it lists courtyard overlaps and parts outside the outline; --drc also runs
 kicad-cli DRC and counts the violations by type (unrouted nets are expected at this stage).
@@ -20,7 +21,12 @@ routing on the front layer:
   - ch 0-10 run diagonally down to a bus on U1's left side; S3...C0 wrap under U1 from the left.
   - right of U1, top to bottom, in U1's pin order: isoSPI B pair, isoSPI A pair (it passes under
     port B's termination row), ICMP/IBIAS resistors, VREF caps, DRIVE, VREG. C303 sits under pin 48.
-  - Q301 bottom-right with its pins toward U1.
+  - Q301 bottom-right with its pins toward U1 (2026-11-10, four copper layers): C302 above its
+    tab, R302 (1 kohm 2512, about 0.5 W) right of it above H2 with its VCOLL pad toward the tab.
+    A VCOLL copper area is reserved round the tab on the front and, larger, on In1, In2 and the
+    back, stitched with vias. VCOLL is top of stack: 0.6 mm to banks 0-4 (the fill follows the
+    .kicad_dru), so the area starts 0.7 mm right of Q301's DRIVE/VREG pads and 1.3 mm under the
+    isoSPI termination rows, where the port A pair runs.
   - NTC filter parts under J2. GPIO1-4 and VREF2 need an inner layer to reach them (4-layer board).
 """
 import argparse
@@ -28,6 +34,7 @@ import json
 import re
 import subprocess
 import sys
+import uuid
 from collections import Counter
 from pathlib import Path
 
@@ -38,6 +45,8 @@ from kisch import KICAD_CLI, ROOT  # noqa: E402
 from pcb_move import apply_moves  # noqa: E402
 
 PCB = ROOT / "slave-18s-lean" / "adbms1818-slave-18s-lean.kicad_pcb"
+if "--pcb" in sys.argv:          # a scratch copy for trials (needed before the board is loaded below)
+    PCB = Path(sys.argv[sys.argv.index("--pcb") + 1]).resolve()
 
 # ---------------------------------------------------------------- KNOBS (mm, board coordinates)
 W, H = 70.0, 37.0        # board outline, top-left corner at (0, 0); 37 is the XR slot's height
@@ -55,12 +64,19 @@ GAP = 0.3                # between parts packed into a block
 ISO_X = 52.82            # left courtyard edge of port B (T601 + J4); port A (T501 + J3) is right of it
 ISO_Y = 5.07             # top courtyard edge of the GH plugs J4/J3 (clear of H3)
 PARK_X = W + 6           # where parked parts wait
+LAYERS = 4               # copper layers: F, In1, In2, B (decided 2026-11-10)
+HOLE_KEEP = 2.75         # copper keep-out radius round an M2 hole centre (make_rules.py HOLES)
+HV = 0.6                 # top-of-stack copper to banks 0-4 (make_rules.py HV_FAR)
+PAIR = 1.3               # room under the isoSPI termination rows for the port A pair + HV to VCOLL
+VIA = (0.6, 0.3)         # stitching via pad / hole
+VIA_PITCH = 1.15         # stitching via pitch
 
 # ---------------------------------------------------------------- helpers
 mm, nm = pcbnew.ToMM, pcbnew.FromMM
 board = pcbnew.LoadBoard(str(PCB))
 FP = {f.GetReference(): f for f in board.GetFootprints()}
 placed = {}
+copper = {"zones": [], "vias": []}      # Q301's VCOLL area, filled in by floorplan()
 
 
 def court(fp):
@@ -141,6 +157,24 @@ def chip_down(ref):
     sys.exit(f"{ref}: no rotation puts the chip side down")
 
 
+def pad_box(ref, net):
+    """(x0, y0, x1, y1) over REF's pads on NET."""
+    bbs = [pd.GetBoundingBox() for pd in FP[ref].Pads() if pd.GetNetname() == net]
+    return (min(mm(b.GetLeft()) for b in bbs), min(mm(b.GetTop()) for b in bbs),
+            max(mm(b.GetRight()) for b in bbs), max(mm(b.GetBottom()) for b in bbs))
+
+
+def net_left(ref, net):
+    """Horizontal rotation (0 or 180) that puts REF's NET pad on the left."""
+    fp = FP[ref]
+    for rot in (0, 180):
+        fp.SetOrientationDegrees(rot)
+        xs = {pd.GetNetname(): pd.GetPosition().x for pd in fp.Pads()}
+        if xs[net] == min(xs.values()):
+            return rot
+    sys.exit(f"{ref}: no pad on {net}")
+
+
 def tl(ref, x, y, rot=0):
     """Top-left courtyard corner of REF to (x, y); returns (right, bottom)."""
     w, h = size(ref, rot)
@@ -215,14 +249,54 @@ def floorplan():
     # V+ filter beside pin 1 (U1's top-right corner), right of the ch 18 fan-in, both standing
     _, b = tl("R301", sx + 0.35, row_bottom + 1.35, 90)
     tl("C301", sx + 0.05, b + GAP, 90)
-    # Q301 bottom-right, pins toward U1 (DRIVE top, VREG bottom); collector parts above it
-    qw, qh = size("Q301", 0)
-    put("Q301", sx2 + qw / 2, H - EDGE - qh / 2, 0)
-    pack(["R302", "C302"], sx2, H - EDGE - qh - GAP - size("R302", 0)[1], 2)
-
     # NTC filter parts under J2, three per row (pull-up, cap per channel; TH701 last)
     pack(["R701", "C701", "R702", "C702", "R703", "C703", "R704", "C704", "TH701"],
          J2_XY[0] + 0.25, j2y1 + 1.6, 3)
+
+    # Q301 bottom-right, pins toward U1 (DRIVE top, VREG bottom), tab to the right
+    qw, qh = size("Q301", 0)
+    put("Q301", sx2 + qw / 2, H - EDGE - qh / 2, 0)
+    qx1 = box(["Q301"])[2]
+    top = rc_bottom + PAIR                           # nothing on VCOLL above this line
+    # C302 above the tab, R302 (2512) right of Q301 above H2; both with the VCOLL pad at the tab
+    rot = (net_left("C302", "/VCOLL") + 180) % 360
+    cw2, ch2 = size("C302", rot)
+    put("C302", qx1 - cw2 / 2, top + 0.1 + ch2 / 2, rot)
+    rot = net_left("R302", "/VCOLL")
+    rw, rh = size("R302", rot)
+    put("R302", W - EDGE - rw / 2, top + 0.3 + rh / 2, rot)
+    vcoll_area(top, box(col)[2])
+
+
+def vcoll_area(top, col_right):
+    """Reserved VCOLL copper for Q301 (collector = tab): one zone on the front, a larger one on
+    the other layers, stitched with vias under the body and right of the tab."""
+    low = [pad_box("Q301", n) for n in ("/DRIVE", "/VREG")]
+    tab = max((pd.GetBoundingBox() for pd in FP["Q301"].Pads() if pd.GetNetname() == "/VCOLL"),
+              key=lambda b: b.GetWidth() * b.GetHeight())
+    tab = (mm(tab.GetLeft()), mm(tab.GetTop()), mm(tab.GetRight()), mm(tab.GetBottom()))
+    qy0 = box(["Q301"])[1]
+    fx0 = max(b[2] for b in low) + HV + 0.1          # right of the DRIVE/VREG pads
+    xa = pad_box("C302", "/V-")[2] + HV              # right of C302's V- pad
+    xr = pad_box("R302", "/CELL18")[0] - 0.8         # under R302's body, short of its CELL18 pad
+    hx = W - HOLE_INSET - HOLE_KEEP - 0.15           # left of H2's keep-out
+    hy = H - HOLE_INSET - HOLE_KEEP - 0.25           # above it
+    bot, right = H - 0.5, W - 0.5                    # board-edge clearance (.kicad_pro)
+    ix0 = col_right + HV                             # inner layers: right of the supply column
+    r = lambda pts: [(round(x, 2), round(y, 2)) for x, y in pts]
+    copper["zones"] = [
+        ("VCOLL_Q301_front", ["F.Cu"],
+         r([(fx0, qy0 + 0.1), (xa, qy0 + 0.1), (xa, top), (xr, top), (xr, hy), (hx, hy), (hx, bot), (fx0, bot)])),
+        ("VCOLL_Q301_inner_back", ["In1.Cu", "In2.Cu", "B.Cu"],
+         r([(ix0, top), (right, top), (right, hy), (hx, hy), (hx, bot), (ix0, bot)])),
+    ]
+    vias = []
+    grid = lambda a, b: [round(a + i * VIA_PITCH, 2) for i in range(int((b - a) / VIA_PITCH + 1e-6) + 1)]
+    for x in grid(fx0 + 0.7, tab[0] - 0.45):         # under Q301's body, between pins and tab
+        vias += [(x, y) for y in grid(qy0 + 0.9, bot - 0.5)]
+    for x in grid(tab[2] + 0.9, hx - 0.4):           # right of the tab, under R302's VCOLL pad
+        vias += [(x, y) for y in grid(pad_box("R302", "/VCOLL")[3] + 0.75, bot - 0.5)]
+    copper["vias"] = vias
 
 
 # ---------------------------------------------------------------- write + report
@@ -236,6 +310,60 @@ def outline(text):
                                 f"{H if float(q.group(3)) > 0 else 0:g})", blk)
     new, n = re.subn(r"^\t\(gr_line\n.*?^\t\)", fix, text, flags=re.M | re.S)
     return new
+
+
+def area(pts):
+    return abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(pts, pts[1:] + pts[:1]))) / 2
+
+
+def inside(pt, pts):
+    x, y, hit = *pt, False
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:] + pts[:1]):
+        if (y0 > y) != (y1 > y) and x < x0 + (y - y0) * (x1 - x0) / (y1 - y0):
+            hit = not hit
+    return hit
+
+
+def set_layers(text):
+    """Make the board LAYERS copper layers (the layer list only; no stack-up block is written)."""
+    inner = "".join(f'\t\t({2 + 2 * n} "In{n}.Cu" signal)\n' for n in range(1, LAYERS - 1))
+    text = re.sub(r'^\t\t\(\d+ "In\d+\.Cu" signal\)\n', "", text, flags=re.M)
+    return text.replace('\t\t(0 "F.Cu" signal)\n', '\t\t(0 "F.Cu" signal)\n' + inner, 1)
+
+
+def top_level(text, head):
+    """(start, end) of each top-level (HEAD ...) block, with its line break."""
+    for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
+        yield m.start(), m.end()
+
+
+def set_copper(text):
+    """Replace Q301's VCOLL zones and stitching vias with the ones from vcoll_area()."""
+    polys = [z[2] for z in copper["zones"]]
+    drop = [(s, e) for s, e in top_level(text, "zone") if '(name "VCOLL_Q301' in text[s:e]]
+    for s, e in top_level(text, "via"):
+        blk = text[s:e]
+        at = re.search(r"\(at ([-\d.]+) ([-\d.]+)\)", blk)
+        if '(net "/VCOLL")' in blk and any(inside((float(at.group(1)), float(at.group(2))), p) for p in polys):
+            drop.append((s, e))
+    for s, e in sorted(drop, reverse=True):
+        text = text[:s] + text[e:]
+    uid = lambda *k: uuid.uuid5(uuid.NAMESPACE_URL, "lean_place/" + "/".join(map(str, k)))
+    new = []
+    for x, y in copper["vias"]:
+        new.append(f'\t(via\n\t\t(at {x:g} {y:g})\n\t\t(size {VIA[0]:g})\n\t\t(drill {VIA[1]:g})\n'
+                   f'\t\t(layers "F.Cu" "B.Cu")\n\t\t(net "/VCOLL")\n\t\t(uuid "{uid("via", x, y)}")\n\t)\n')
+    for name, layers, pts in copper["zones"]:
+        lay = (f'(layer "{layers[0]}")' if len(layers) == 1
+               else "(layers " + " ".join(f'"{l}"' for l in layers) + ")")
+        new.append(f'\t(zone\n\t\t(net "/VCOLL")\n\t\t{lay}\n\t\t(uuid "{uid("zone", name)}")\n'
+                   f'\t\t(name "{name}")\n\t\t(hatch edge 0.5)\n\t\t(priority 1)\n'
+                   '\t\t(connect_pads yes\n\t\t\t(clearance 0.2)\n\t\t)\n\t\t(min_thickness 0.2)\n'
+                   '\t\t(fill\n\t\t\t(thermal_gap 0.5)\n\t\t\t(thermal_bridge_width 0.5)\n'
+                   '\t\t\t(island_removal_mode 0)\n\t\t)\n\t\t(polygon\n\t\t\t(pts\n\t\t\t\t'
+                   + " ".join(f"(xy {x:g} {y:g})" for x, y in pts) + "\n\t\t\t)\n\t\t)\n\t)\n")
+    at = min(i for i in (text.find(k) for k in ("\n\t(zone\n", "\n\t(group ", "\n\t(embedded_fonts ")) if i >= 0) + 1
+    return text[:at] + "".join(new) + text[at:]
 
 
 def report():
@@ -257,6 +385,11 @@ def report():
     print(f"row: x {r1[0]:.1f}-{r1[2]:.1f} ({r1[2] - r1[0]:.1f} mm), y {r1[1]:.1f}-{r1[3]:.1f}; U1 courtyard {', '.join(f'{v:.1f}' for v in box(['U1']))}")
     print(f"courtyard overlaps: {len(over)}" + ("".join(f"\n  {o}" for o in over)))
     print(f"outside the outline: {', '.join(out) or 'none'}")
+    for name, layers, pts in copper["zones"]:
+        print(f"{name}: {area(pts):.0f} mm2 outline on {', '.join(layers)} (the fill is smaller: clearances)")
+    polys = [z[2] for z in copper["zones"]]
+    stray = [v for v in copper["vias"] if not all(inside(v, p) for p in polys)]
+    print(f"VCOLL stitching vias: {len(copper['vias'])}" + (f", NOT inside every zone: {stray}" if stray else ", all inside both zones"))
     left = sorted(set(FP) - set(placed))
     if left:
         print(f"NOT PLACED by the floorplan: {', '.join(left)}")
@@ -275,11 +408,13 @@ def release():
 def drc():
     rpt = ROOT / "exports" / "lean_place_drc.json"
     rpt.parent.mkdir(exist_ok=True)
-    subprocess.run([KICAD_CLI, "pcb", "drc", "--format", "json", "--severity-all", "--output", str(rpt), str(PCB)],
+    # --refill-zones fills the VCOLL zones in memory for the check; the board file is not saved
+    subprocess.run([KICAD_CLI, "pcb", "drc", "--format", "json", "--severity-all", "--refill-zones",
+                    "--output", str(rpt), str(PCB)],
                    capture_output=True, text=True)
     d = json.loads(rpt.read_text(encoding="utf-8"))
     c = Counter(v["type"] for v in d.get("violations", []))
-    print(f"DRC ({rpt.relative_to(ROOT)}): " + (", ".join(f"{k} {n}" for k, n in c.most_common()) or "clean")
+    print(f"DRC ({rpt.relative_to(ROOT).as_posix()}): " + (", ".join(f"{k} {n}" for k, n in c.most_common()) or "clean")
           + f"; unconnected items {len(d.get('unconnected_items', []))}")
 
 
@@ -287,6 +422,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry", action="store_true", help="report only, don't write the board")
     ap.add_argument("--drc", action="store_true", help="run kicad-cli DRC after writing")
+    ap.add_argument("--pcb", help="place this board file instead of the Lean board (a scratch copy)")
     a = ap.parse_args()
     if list(PCB.parent.glob("~*.lck")):
         sys.exit("KiCad has the Lean board open (lock file). Close it first.")
@@ -300,10 +436,12 @@ def main():
     release()
     with open(PCB, encoding="utf-8", newline="") as f:
         text = f.read()
-    text, done = apply_moves(outline(text), moves)
+    text, done = apply_moves(outline(set_layers(text)), moves)
+    text = set_copper(text)
     with open(PCB, "w", encoding="utf-8", newline="") as f:
         f.write(text)
-    print(f"wrote {PCB.relative_to(ROOT)}: outline {W:g} x {H:g}, {len(done)} footprints")
+    print(f"wrote {PCB.name}: {LAYERS} copper layers, outline {W:g} x {H:g}, {len(done)} footprints, "
+          f"{len(copper['zones'])} VCOLL zones, {len(copper['vias'])} vias")
     if a.drc:
         drc()
 
