@@ -11573,7 +11573,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100"
+		(property "Value" "1k 1W"
 			(at 144.78 173.99 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11584,7 +11584,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
 			(at 142.24 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -11606,7 +11606,7 @@
 				)
 			)
 		)
-		(property "Description" "100 ohm 1% 125 mW 150 V 0805 (Basic)"
+		(property "Description" "1 kohm 1% 1 W 200 V 2512 thick film (Extended)"
 			(at 142.24 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -11617,7 +11617,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17408"
+		(property "LCSC" "C54315"
 			(at 142.24 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -11628,7 +11628,7 @@
 				)
 			)
 		)
-		(property "MPN" "0805W8F1000T5E"
+		(property "MPN" "25121WF1001T4E"
 			(at 142.24 172.72 0)
 			(hide yes)
 			(show_name no)
@@ -11639,7 +11639,7 @@
 				)
 			)
 		)
-		(property "Note" "Top of stack to NPN collector"
+		(property "Note" "Top of stack to NPN collector. 18S Lean: 1 kohm takes ~0.5 W off Q301 at 75.6 V, 22 mA"
 			(at 142.24 172.72 0)
 			(hide yes)
 			(show_name no)
