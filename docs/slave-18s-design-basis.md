@@ -160,6 +160,22 @@ is `slave-18s/bom.csv`.
     - **Not good yet:** the NTC filter parts are 34 mm from GPIO1–4 and their nets have to cross
       the ch 0–10 bus (needs an inner layer); Q301 has no reserved copper; the hole keep-out for
       M2 (2.75 mm from the centre, `make_rules.py`) is my figure for a 5 mm washer.
+  - **Try 3b (2026-11-10): connectors where the user wants them, the rest placed for routing.**
+    The user moved J2 to stand on the left edge (all plugs along or near the top edge) and asked
+    that the connectors stay in their areas; everything else was free. From `lean_place.py`:
+    - All four holes are in the corners again; the GH plugs sit 5 mm down from the top edge to
+      clear H3 (they are top-entry, so they don't need the edge).
+    - Tap room 1 mm (the taps also fan out under the plug bodies), row y 6.9–14.8, U1 centred
+      under ch 11–18 (centre x 42.5) with 5.3 mm between the row's and U1's courtyards, and
+      3.4 mm from U1's courtyard to the bottom edge for the S3…C0 wrap.
+    - Right of U1 in its pin order: isoSPI pairs, R402/R401, C304/C305, DRIVE, with C303 under
+      pin 48. The port A pair passes under port B's termination row. Q301 bottom-right.
+    - Pad to U1 pin: C303 2.3, C304 2.8, C305 3.8, R401 3.6, R402 2.6, C301 4.5, Q301 6.0–8.4 mm.
+      Transformer courtyards 6.5 and 15 mm from U1's.
+    - **NTC filter parts sit under J2, 39 mm from GPIO1–4.** GPIO1–4 and VREF2 have to cross the
+      ch 0–10 bus, so they need an inner layer. The right side of U1 has no room for them.
+    - Estimates, to be proven by routing: the ch 11–18 fan-in (worst trace 4.9 mm sideways in
+      about 5.6 mm) and the six-trace wrap under U1 in 3.4 mm.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
