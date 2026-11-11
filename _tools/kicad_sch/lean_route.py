@@ -19,8 +19,9 @@ What it routes:
      strip to C303. GPIO5-9 are joined across their pads and tied to the exposed pad (V-).
   4. ch 3-10 bus: U1's left pins 32-18 on the front, nested inside S3 and C2_F (bus_3_10). S11
      (pin 17) crosses on In1 like S12.
+  5. Taps: plug pins to the R2 top pads, down between two R2 parts to the R1 pads (taps).
 
-Not routed here: the taps from the plugs to the resistor rows, isoSPI,
+Not routed here: isoSPI,
 DRIVE, VCOLL, the rest of the NTC wiring, the V- pour.
 """
 import argparse
@@ -60,6 +61,9 @@ BUS_TURN = 0.5                       # ... and each lane turns this much higher 
 BUS_LEFT, BUS_STRAIGHT = 9, 2        # pins 32-24 turn left, pins 23-22 (S8, C8_F) go straight up
 BUS_R_IN, BUS_R_Y = 0.55, 19.65      # pins 21-18: innermost lane this far left of the pads, turns at Y
 S11_VIA_Y = 0.33                     # S11 source via: under R211, above C11_F's front lane
+TAP_END = 0.39                       # taps: the 45 degree leg ends this far above the R2 top pad
+W_GAP = 0.2                          # CELLn down the 0.65 mm gap between two R2 parts
+GAP_JOG = 0.16                       # ... jogs to the R1 pad starting this far under the R2 pads
 
 segs, vias = [], []
 
@@ -84,6 +88,7 @@ def line(net, layer, w, pts):
 
 def route(net, layer, w, pts, c=0.3):
     """Orthogonal way-points; every inner corner is cut at 45 degrees by up to C."""
+    pts = [p for i, p in enumerate(pts) if i == 0 or (round(p[0], 4), round(p[1], 4)) != (round(pts[i - 1][0], 4), round(pts[i - 1][1], 4))]
     out = [pts[0]]
     for p, q, r in zip(pts, pts[1:], pts[2:]):
         l1 = abs(q[0] - p[0]) + abs(q[1] - p[1])
@@ -227,6 +232,41 @@ def bus_3_10():
     via("/S11", *src)
 
 
+def taps():
+    """Plug pins to the R2 top pads, then down between two R2 parts to the R1 pad (front).
+
+    Each tap leaves its plug pin straight down and takes one 45 degree leg to its R2 pad, so
+    the legs of neighbours stay parallel. From the R2 pad CELLn goes right into the gap to
+    R2(n+1) (0.65 mm: a 0.2 mm track), down past the S pads and jogs into R1n's CELLn pad.
+    CELL0 (J1 pin 1) runs down between NT1 and R201 to R100 and branches to NT1; CELL9 comes
+    from J1 pin 10 and J5 pin 1.
+    """
+    def leg(net, j, r):
+        y_end = r[3] - TAP_END
+        route(net, "F.Cu", W_C, [(j[0], j[1]), (j[0], y_end - abs(r[0] - j[0])), (r[0], y_end), (r[0], r[1])], c=0)
+
+    def down(net, x, r1):
+        """from x down the gap to R1's pad R1 (centre r1[0], r1[1])."""
+        y0 = pad("R201", "/S1")[5] + GAP_JOG
+        line(net, "F.Cu", W_GAP, [(x, y0), (r1[0], y0 + abs(r1[0] - x)), (r1[0], r1[1])])
+        return y0
+
+    for n in range(1, 19):
+        net = f"/CELL{n}"
+        r2, r1 = pad(f"R2{n:02d}", net), pad(f"R1{n:02d}", net)
+        for j in [(pad("J1", net)), (pad("J5", net))] if n == 9 else [pad("J1" if n < 9 else "J5", net)]:
+            leg(net, j, r2)
+        gx = (r2[4] + (pad(f"R2{n + 1:02d}", f"/CELL{n + 1}")[2] if n < 18 else r2[4] + 0.65)) / 2
+        y0 = down(net, gx, r1)
+        route(net, "F.Cu", W_GAP, [(r2[0], r2[1]), (gx, r2[1]), (gx, y0)])
+    # CELL0: between NT1 and R201, branch to NT1's CELL0 pad
+    j, nt, r1 = pad("J1", "/CELL0"), pad("NT1", "/CELL0"), pad("R100", "/CELL0")
+    gx = (pad("NT1", "/V-")[4] + pad("R201", "/CELL1")[2]) / 2
+    y0 = down("/CELL0", gx, r1)
+    line("/CELL0", "F.Cu", W_GAP, [(gx, j[1]), (gx, y0)])
+    line("/CELL0", "F.Cu", W_GAP, [(gx, nt[1]), (nt[0], nt[1])])
+
+
 # ---------------------------------------------------------------- write
 def blocks(text, head):
     for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
@@ -273,7 +313,7 @@ def main():
     a = ap.parse_args()
     if list(PCB.parent.glob("~*.lck")):
         sys.exit("KiCad has the Lean board open (lock file). Close it first.")
-    fan_in(); v_plus(); bottom_pins(); bus_3_10()
+    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps()
     nets = sorted({s[0] for s in segs} | {v[0] for v in vias})
     length = {}
     for net, layer, w, p, q in segs:
