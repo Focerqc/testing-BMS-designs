@@ -1,0 +1,249 @@
+"""Scripted routing for the 18S Lean board, try 4 (70 x 32): the two riskiest pieces (2026-11-11).
+
+  "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" _tools/kicad_sch/lean_route.py [--dry] [--drc] [--pcb FILE]
+
+Every coordinate comes from the pads on the board, so run it again after lean_place.py. It
+removes all tracks and vias on the nets it routes and writes them again (same uuids, so a second
+run changes nothing). pcbnew only reads; the board file is edited as text. Close KiCad first.
+
+What it routes:
+  1. ch 11-18 fan-in to U1's top pins. C18_F...C11_F on the front in eight lanes, lowest lane
+     for ch 18. S18...S12 drop to a via under the series row, cross on In1 and come up at a via
+     under the chip, just inside U1's top pad row.
+  2. V+ supply: U1 pin 1 to C301, C301 to R301 over the top of C301 (0.6 mm from its V- pad),
+     CELL18 from R118 to R301.
+  3. U1's bottom pins. S2, C1_F, S1, C0_F and GPIO1-4 fan out to a row of eight vias under the
+     chip and leave on In2 in eight lanes; the cell nets run to vias at their resistors, the
+     GPIO nets to vias at the NTC parts. S3 and C2_F leave on the front along the 1 mm strip
+     under U1 and go up the outside of the (not yet routed) ch 3-10 bus. VREG runs along the
+     strip to C303. GPIO5-9 are joined across their pads and tied to the exposed pad (V-).
+
+Not routed here: the ch 3-10 bus and S11, the taps from the plugs to the resistor rows, isoSPI,
+DRIVE, VCOLL, the rest of the NTC wiring, the V- pour.
+"""
+import argparse
+import re
+import sys
+import uuid
+from pathlib import Path
+
+import pcbnew
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from kisch import ROOT  # noqa: E402
+import lean_place as lp  # noqa: E402  (loads the board: PCB, FP, mm)
+
+PCB, FP, mm = lp.PCB, lp.FP, lp.mm
+
+# ---------------------------------------------------------------- KNOBS (mm)
+W_C, W_S, W_FINE = 0.25, 0.3, 0.2    # cell sense, balance, under-the-chip stubs
+VIA = (0.5, 0.2)                     # pad / hole: JLC standard price from 0.45 / 0.2
+SRC_VIA_Y = 0.625                    # S source via: this far under the series row's pads
+CF_VIA_Y = 1.175                     # Cn_F via (ch 0, 1): further down, clear of the S vias
+F_LANE0, F_PITCH = 16.2, 0.45        # front fan-in: y of the ch 18 lane, lanes go up from it
+I1_LANE0, I1_PITCH = 18.2, 0.6       # In1 fan-in for S18...S12
+RING_TOP = 0.545                     # S via this far inside U1's top pad row
+ROW_Y = 27.2                         # the via row under the chip for the bottom pins
+ROW_X0, ROW_PITCH = 32.35, 0.75
+BEND = (28.55, 28.4, 28.3, 28.2, 28.2, 28.3, 28.4, 28.55)   # where each stub leaves its pin's column
+I2_LANE0, I2_PITCH = 27.8, 0.45      # In2 lanes leaving the via row to the left
+CELL_UP = (13.9, 13.45, 13.0, 12.55)  # In2: where S2, C1_F, S1, C0_F turn up
+CELL_TOP = (14.0, 14.45, 14.9, 15.35)  # In2: where they turn left to their vias
+BUS_X = (20.9, 20.4)                 # front: S3, C2_F go up here, outside the ch 3-10 bus
+BUS_Y = (21.3, 21.8)                 # front: where they turn left to their resistors
+STRIP = (30.8, 31.26)                # front: S3, C2_F lanes under U1
+VP_OVER = 16.8                       # VP_F passes over C301 here (0.6 mm above its V- pad)
+
+segs, vias = [], []
+
+
+def pad(ref, net):
+    """(cx, cy, x0, y0, x1, y1) of REF's pad on NET (the largest if several)."""
+    ps = [p for p in FP[ref].Pads() if p.GetNetname() == net]
+    if not ps:
+        sys.exit(f"{ref}: no pad on {net}")
+    p = max(ps, key=lambda q: q.GetBoundingBox().GetWidth() * q.GetBoundingBox().GetHeight())
+    b = p.GetBoundingBox()
+    return (mm(p.GetPosition().x), mm(p.GetPosition().y),
+            mm(b.GetLeft()), mm(b.GetTop()), mm(b.GetRight()), mm(b.GetBottom()))
+
+
+def line(net, layer, w, pts):
+    for a, b in zip(pts, pts[1:]):
+        a, b = (round(a[0], 3), round(a[1], 3)), (round(b[0], 3), round(b[1], 3))
+        if a != b:
+            segs.append((net, layer, w, a, b))
+
+
+def route(net, layer, w, pts, c=0.3):
+    """Orthogonal way-points; every inner corner is cut at 45 degrees by up to C."""
+    out = [pts[0]]
+    for p, q, r in zip(pts, pts[1:], pts[2:]):
+        l1 = abs(q[0] - p[0]) + abs(q[1] - p[1])
+        l2 = abs(r[0] - q[0]) + abs(r[1] - q[1])
+        k = min(c, l1 / 2, l2 / 2)
+        out.append((q[0] + (p[0] - q[0]) / l1 * k, q[1] + (p[1] - q[1]) / l1 * k))
+        out.append((q[0] + (r[0] - q[0]) / l2 * k, q[1] + (r[1] - q[1]) / l2 * k))
+    out.append(pts[-1])
+    line(net, layer, w, out)
+
+
+def via(net, x, y):
+    vias.append((net, round(x, 3), round(y, 3)))
+
+
+# ---------------------------------------------------------------- the routes
+def fan_in():
+    u_top = pad("U1", "/C18_F")[3]                    # top edge of U1's top pads
+    row_bot = pad("R118", "/C18_F")[5]                # bottom edge of the series row's pads
+    ring_y = pad("U1", "/C18_F")[5] + RING_TOP
+    for i, n in enumerate(range(18, 10, -1)):         # Cn_F on the front
+        net = f"/C{n}_F"
+        s, t = pad(f"R1{n:02d}", net), pad("U1", net)
+        y = F_LANE0 - F_PITCH * i
+        route(net, "F.Cu", W_C, [(s[0], s[1]), (s[0], y), (t[0], y), (t[0], u_top + 0.3)])
+    for j, n in enumerate(range(18, 11, -1)):         # Sn through In1
+        net = f"/S{n}"
+        s, t = pad(f"R2{n:02d}", net), pad("U1", net)
+        vy = row_bot + SRC_VIA_Y
+        line(net, "F.Cu", W_S, [(s[0], s[1]), (s[0], vy)])
+        via(net, s[0], vy)
+        y = I1_LANE0 - I1_PITCH * j
+        route(net, "In1.Cu", W_S, [(s[0], vy), (s[0], y), (t[0], y), (t[0], ring_y)])
+        via(net, t[0], ring_y)
+        line(net, "F.Cu", W_C, [(t[0], t[5] - 0.3), (t[0], ring_y)])
+
+
+def v_plus():
+    p1, c, r = pad("U1", "/VP_F"), pad("C301", "/VP_F"), pad("R301", "/VP_F")
+    line("/VP_F", "F.Cu", W_S, [(p1[0], p1[1]), (c[0], p1[1])])
+    route("/VP_F", "F.Cu", W_S, [(c[0], c[1]), (c[0], VP_OVER), (r[0], VP_OVER), (r[0], r[1])])
+    s, t = pad("R118", "/CELL18"), pad("R301", "/CELL18")
+    d = s[0] - (t[4] - 0.1)                           # 45 degrees down into R301's pad
+    line("/CELL18", "F.Cu", W_C, [(s[0], s[1]), (s[0], t[1] - d), (t[4] - 0.1, t[1]), (t[0], t[1])])
+
+
+def bottom_pins():
+    nets = ["/S2", "/C1_F", "/S1", "/C0_F", "/GPIO1", "/GPIO2", "/GPIO3", "/GPIO4"]
+    row_bot = pad("R100", "/C0_F")[5]
+    vx = [ROW_X0 + ROW_PITCH * k for k in range(8)]
+    lane = [I2_LANE0 + I2_PITCH * k for k in range(8)]
+    for k, net in enumerate(nets):                    # pin -> fan -> via row, on the front
+        p = pad("U1", net)
+        dx = vx[k] - p[0]
+        line(net, "F.Cu", W_FINE, [(p[0], p[3] + 0.4), (p[0], BEND[k]), (vx[k], BEND[k] - abs(dx)), (vx[k], ROW_Y)])
+        via(net, vx[k], ROW_Y)
+    # cell nets on In2: left in a bundle, up, left again to a via at their resistor
+    for k, (net, ref, vy) in enumerate((("/S2", "R202", SRC_VIA_Y), ("/C1_F", "R101", CF_VIA_Y),
+                                        ("/S1", "R201", SRC_VIA_Y), ("/C0_F", "R100", CF_VIA_Y))):
+        t = pad(ref, net)
+        ty = row_bot + vy
+        route(net, "In2.Cu", W_C, [(vx[k], ROW_Y), (vx[k], lane[k]), (CELL_UP[k], lane[k]),
+                                   (CELL_UP[k], CELL_TOP[k]), (t[0], CELL_TOP[k]), (t[0], ty)])
+        via(net, t[0], ty)
+        line(net, "F.Cu", W_S if "S" in net[:2] else W_C, [(t[0], t[1]), (t[0], ty)])
+    # GPIO1-4 on In2 to a via between (or beside) the pads of their NTC filter parts
+    g = {n: (pad(f"R70{n}", f"/GPIO{n}"), pad(f"C70{n}", f"/GPIO{n}")) for n in range(1, 5)}
+    mid = lambda n: ((g[n][0][0] + g[n][1][0]) / 2, g[n][0][1])
+    tgt = {1: mid(1), 2: (g[2][0][4] + 0.5, g[2][0][1]), 3: mid(3), 4: mid(4)}
+    j21 = pad("J2", "/GPIO1")
+    x1 = tgt[2][0] + 0.7                              # GPIO1 goes up just right of GPIO2's via
+    route("/GPIO1", "In2.Cu", W_C, [(vx[4], ROW_Y), (vx[4], lane[4]), (x1, lane[4]), (x1, tgt[1][1] - 1.075),
+                                    (tgt[1][0], tgt[1][1] - 1.075), (tgt[1][0], tgt[1][1])])
+    route("/GPIO1", "In2.Cu", W_C, [(tgt[1][0], tgt[1][1] - 1.075), (tgt[1][0], j21[1]), (j21[0], j21[1])])
+    route("/GPIO2", "In2.Cu", W_C, [(vx[5], ROW_Y), (vx[5], lane[5]), (tgt[2][0], lane[5]), tgt[2]])
+    route("/GPIO3", "In2.Cu", W_C, [(vx[6], ROW_Y), (vx[6], lane[6]), (tgt[3][0], lane[6]), tgt[3]])
+    route("/GPIO4", "In2.Cu", W_C, [(vx[7], ROW_Y), (vx[7], lane[7]), (tgt[4][0] + 1.1, lane[7]),
+                                    (tgt[4][0] + 1.1, tgt[4][1] + 0.725), (tgt[4][0], tgt[4][1] + 0.725), tgt[4]])
+    for n in range(1, 5):
+        via(f"/GPIO{n}", *tgt[n])
+        xs = sorted([g[n][0][0], g[n][1][0], tgt[n][0]]) if n != 2 else sorted([g[2][0][0], tgt[2][0]])
+        line(f"/GPIO{n}", "F.Cu", W_C, [(xs[0], tgt[n][1]), (xs[-1], tgt[n][1])])
+    # S3 and C2_F on the front: along the strip under U1, up outside the bus, left to the row
+    for k, (net, ref) in enumerate((("/S3", "R203"), ("/C2_F", "R102"))):
+        p, t = pad("U1", net), pad(ref, net)
+        route(net, "F.Cu", W_C, [(p[0], p[5] - 0.4), (p[0], STRIP[k]), (BUS_X[k], STRIP[k]),
+                                 (BUS_X[k], BUS_Y[k]), (t[0], BUS_Y[k]), (t[0], t[1])])
+    # VREG along the strip to C303: pad width out of the pin, then 0.4 mm
+    p, t = pad("U1", "/VREG"), pad("C303", "/VREG")
+    route("/VREG", "F.Cu", 0.3, [(p[0], p[5] - 0.4), (p[0], t[1]), (p[0] + 0.6, t[1])])
+    line("/VREG", "F.Cu", 0.4, [(p[0] + 0.6, t[1]), (t[0], t[1])])
+    # GPIO5-9 (tied to V-): one track across the five pads, one stub from the middle pad to the EP
+    gp = sorted((mm(q.GetPosition().x), mm(q.GetPosition().y)) for q in FP["U1"].Pads()
+                if q.GetNumber() in ("43", "44", "45", "46", "47"))
+    ep_bot = max(mm(q.GetBoundingBox().GetBottom()) for q in FP["U1"].Pads() if q.GetNumber() == "65")
+    line("/V-", "F.Cu", W_C, [gp[0], gp[-1]])
+    line("/V-", "F.Cu", W_C, [gp[2], (gp[2][0], ep_bot - 0.25)])
+
+
+# ---------------------------------------------------------------- write
+def blocks(text, head):
+    for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
+        yield m.start(), m.end()
+
+
+def write(text, mine, ubox):
+    """Drop every segment and via on the nets in MINE and add ours. V- is shared with everything
+    else, so only its tracks inside U1's courtyard (UBOX) count as ours."""
+    uid = lambda *k: uuid.uuid5(uuid.NAMESPACE_URL, "lean_route/" + "/".join(map(str, k)))
+    drop = []
+    for head in ("segment", "via"):
+        for s, e in blocks(text, head):
+            blk = text[s:e]
+            net = re.search(r'\(net "([^"]*)"\)', blk)
+            if not net or net.group(1) not in mine:
+                continue
+            if net.group(1) == "/V-":
+                a = re.search(r"\((?:start|at) ([-\d.]+) ([-\d.]+)\)", blk)
+                if not (ubox[0] < float(a.group(1)) < ubox[2] and ubox[1] < float(a.group(2)) < ubox[3]):
+                    continue
+            drop.append((s, e))
+    for s, e in sorted(drop, reverse=True):
+        text = text[:s] + text[e:]
+    new = []
+    for s in segs:
+        net, layer, w, a, b = s
+        new.append(f'\t(segment\n\t\t(start {a[0]:g} {a[1]:g})\n\t\t(end {b[0]:g} {b[1]:g})\n\t\t(width {w:g})\n'
+                   f'\t\t(layer "{layer}")\n\t\t(net "{net}")\n\t\t(uuid "{uid("seg", *s)}")\n\t)\n')
+    for v in vias:
+        net, x, y = v
+        new.append(f'\t(via\n\t\t(at {x:g} {y:g})\n\t\t(size {VIA[0]:g})\n\t\t(drill {VIA[1]:g})\n'
+                   f'\t\t(layers "F.Cu" "B.Cu")\n\t\t(net "{net}")\n\t\t(uuid "{uid("via", *v)}")\n\t)\n')
+    at = min(i for i in (text.find(k) for k in ("\n\t(via\n", "\n\t(zone\n", "\n\t(group ", "\n\t(embedded_fonts "))
+             if i >= 0) + 1
+    return text[:at] + "".join(new) + text[at:], len(drop)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dry", action="store_true", help="report only, don't write the board")
+    ap.add_argument("--drc", action="store_true", help="run kicad-cli DRC (zones filled) after writing")
+    ap.add_argument("--pcb", help="route this board file instead of the Lean board (a scratch copy)")
+    a = ap.parse_args()
+    if list(PCB.parent.glob("~*.lck")):
+        sys.exit("KiCad has the Lean board open (lock file). Close it first.")
+    fan_in(); v_plus(); bottom_pins()
+    nets = sorted({s[0] for s in segs} | {v[0] for v in vias})
+    length = {}
+    for net, layer, w, p, q in segs:
+        length[net] = length.get(net, 0) + ((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2) ** 0.5
+    by_layer = {l: sum(1 for s in segs if s[1] == l) for l in ("F.Cu", "In1.Cu", "In2.Cu")}
+    print(f"{len(nets)} nets, {len(segs)} segments ({', '.join(f'{l} {n}' for l, n in by_layer.items())}), {len(vias)} vias")
+    print("longest: " + ", ".join(f"{n[1:]} {v:.0f} mm" for n, v in sorted(length.items(), key=lambda kv: -kv[1])[:6]))
+    if a.dry:
+        print("(dry run, board not written)")
+        return
+    ubox = lp.box(["U1"])
+    lp.release()
+    with open(PCB, encoding="utf-8", newline="") as f:
+        text = f.read()
+    text, gone = write(text, set(nets), ubox)
+    with open(PCB, "w", encoding="utf-8", newline="") as f:
+        f.write(text)
+    print(f"wrote {PCB.name}: {gone} old items removed")
+    if a.drc:
+        lp.drc()
+
+
+if __name__ == "__main__":
+    main()
