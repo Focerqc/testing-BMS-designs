@@ -91,7 +91,7 @@ def board_nets(pcb=None):
 
 
 def copper_layers(pcb=None):
-    return len(re.findall(r'^		\(\d+ "[\w.]+\.Cu" \w+', (pcb or PCB).read_text(encoding="utf-8"), re.M))
+    return len(re.findall(r'^\t\t\(\d+ "[\w.]+\.Cu" \w+',(pcb or PCB).read_text(encoding="utf-8"), re.M))
 
 
 def board_refs(pcb=None):
