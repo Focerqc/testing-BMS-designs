@@ -12,22 +12,25 @@ placed by courtyard centre, so connectors (whose origin is pin 1) land where you
 Afterwards it lists courtyard overlaps and parts outside the outline; --drc also runs
 kicad-cli DRC and counts the violations by type (unrouted nets are expected at this stage).
 
-Try 3 floorplan (2026-11-10, 70 x 37: 120 ohm 1206 balance, 0603 series, M2 holes, no test points).
-The connectors are where the user put them: cell plugs on the top edge, the NTC plug J2 standing
-on the left edge, the isoSPI GH plugs top-right just under H3. Everything else is placed for
-routing on the front layer:
-  - 18-channel row under the plugs at 2.4 mm pitch; U1 under ch 11-18, centred on them, so their
-    16 traces fan in with at most 4.9 mm sideways in FAN.
-  - ch 0-10 run diagonally down to a bus on U1's left side; S3...C0 wrap under U1 from the left.
-  - right of U1, top to bottom, in U1's pin order: isoSPI B pair, isoSPI A pair (it passes under
-    port B's termination row), ICMP/IBIAS resistors, VREF caps, DRIVE, VREG. C303 sits under pin 48.
-  - Q301 bottom-right with its pins toward U1 (2026-11-10, four copper layers): C302 above its
-    tab, R302 (1 kohm 2512, about 0.5 W) right of it above H2 with its VCOLL pad toward the tab.
-    A VCOLL copper area is reserved round the tab on the front and, larger, on In1, In2 and the
-    back, stitched with vias. VCOLL is top of stack: 0.6 mm to banks 0-4 (the fill follows the
-    .kicad_dru), so the area starts 0.7 mm right of Q301's DRIVE/VREG pads and 1.3 mm under the
-    isoSPI termination rows, where the port A pair runs.
-  - NTC filter parts under J2. GPIO1-4 and VREF2 need an inner layer to reach them (4-layer board).
+Try 4 floorplan (2026-11-11, 70 x 32: the user wants 5 mm off the height so the carrier can hold
+connectors above the slaves). Try 3c (70 x 37) is commit 5306098. The connectors are where the
+user put them: cell plugs on the top edge, the NTC plug J2 standing on the left edge, the isoSPI
+GH plugs top-right just under H3. What changed to lose 5 mm:
+  - series resistors R100-R118 are 0402 lying down under the standing 1206 balance row (2 mm),
+    tap room 0.5 mm (0.5 mm), and only BELOW = 1.3 mm under U1 instead of 3.4 mm (2.1 mm); the
+    fan-in gap above U1 is what is left (printed by the report).
+  - U1's bottom pins (S3...C0, GPIO1-4) have to leave through vias under the chip on inner
+    layers; only VREG runs along the 1 mm strip under U1 to C303.
+  - right of U1, bottom-aligned column in U1's pin order: R402, R401, C304, C305, a gap for
+    DRIVE, C303. C301/R301 lie at pin 1 above the isoSPI pairs.
+  - Q301 stands right of the column with its pins down and its tab up (the 6 mm under the isoSPI
+    termination rows is too low for it lying). C302 stands right of it, R302 lies right of that.
+    Its pins run DRIVE, VCOLL, VREG from the left, so VREG (22 mA) comes back under the body and
+    through the column gap to C303, and DRIVE (1 mA) has to hop over it on an inner layer.
+  - one VCOLL zone on all four layers: round Q301 and under C302/R302, stitched with vias. VCOLL
+    is top of stack: 0.6 mm to banks 0-4 (the fill follows the .kicad_dru).
+  - the port A pair has no way past Q301 and port B's termination row on the front: inner layer.
+  - NTC filter parts under J2. GPIO1-4 and VREF2 need an inner layer to reach them.
 """
 import argparse
 import json
@@ -49,19 +52,20 @@ if "--pcb" in sys.argv:          # a scratch copy for trials (needed before the 
     PCB = Path(sys.argv[sys.argv.index("--pcb") + 1]).resolve()
 
 # ---------------------------------------------------------------- KNOBS (mm, board coordinates)
-W, H = 70.0, 37.0        # board outline, top-left corner at (0, 0); 37 is the XR slot's height
+W, H = 70.0, 32.0        # board outline, top-left corner at (0, 0); the XR slot is 37 high
 EDGE = 0.3               # courtyards stay this far inside the outline
 HOLE_INSET = 2.5         # M2 hole centres this far in from each corner
 PLUG_X = 5.25            # left courtyard edge of J1 (clear of H4)
 J2_XY = (1.05, 5.91)     # top-left courtyard corner of J2, standing on the left edge (user, 2026-11-10)
 PITCH = 2.4              # channel pitch along the row (1206 R2 pad 1.75 + 0.2 + 0.25 + 0.2)
-ROW_SHIFT = 0.0          # row centre minus plug-pin centre
-TAP = 1.0                # plug courtyards -> R2 (outer) row courtyards; the taps also fan out under the plug bodies
+ROW_SHIFT = 0.25         # row centre minus plug-pin centre (R100, lying, clears J2)
+TAP = 0.5                # plug courtyards -> R2 (outer) row courtyards; the taps also fan out under the plug bodies
 ROW_GAP = 0.25           # R2 row courtyards -> R1 (inner) row courtyards
-FAN = 5.3                # R1 row courtyards -> U1 courtyard: fan-in of ch 11-18 to U1's top pins
-U1_X = 37.0              # U1 centre x (rotation stays 270). 42.5 centres its top pins under ch 11-18
-                         # (try 3b); 37 (try 3c) trades 5.5 mm more sideways fan-in for room right of
-                         # U1: Q301, R302 and the VCOLL copper, and T601 12 mm from U1
+BELOW = 1.3              # U1 courtyard -> bottom edge: one VREG trace; the other bottom pins use vias
+U1_X = 36.0              # U1 centre x (rotation stays 270). 42.5 centres its top pins under ch 11-18
+                         # (try 3b); 37 was try 3c; 36 lets Q301 stand left of port B's termination row
+COL_GAP = 0.6            # U1 courtyard -> supply column: VREF2 and DRIVE run down side by side here
+DRIVE_GAP = 0.9          # in the column between C305 and C303: DRIVE passes through to Q301
 GAP = 0.3                # between parts packed into a block
 ISO_X = 52.82            # left courtyard edge of port B (T601 + J4); port A (T501 + J3) is right of it
 ISO_Y = 5.07             # top courtyard edge of the GH plugs J4/J3 (clear of H3)
@@ -69,7 +73,6 @@ PARK_X = W + 6           # where parked parts wait
 LAYERS = 4               # copper layers: F, In1, In2, B (decided 2026-11-10)
 HOLE_KEEP = 2.75         # copper keep-out radius round an M2 hole centre (make_rules.py HOLES)
 HV = 0.6                 # top-of-stack copper to banks 0-4 (make_rules.py HV_FAR)
-PAIR = 1.3               # room under the isoSPI termination rows for the port A pair + HV to VCOLL
 VIA = (0.6, 0.3)         # stitching via pad / hole
 VIA_PITCH = 1.15         # stitching via pitch
 
@@ -79,6 +82,7 @@ board = pcbnew.LoadBoard(str(PCB))
 FP = {f.GetReference(): f for f in board.GetFootprints()}
 placed = {}
 copper = {"zones": [], "vias": []}      # Q301's VCOLL area, filled in by floorplan()
+info = {}                               # measurements for the report
 
 
 def court(fp):
@@ -177,6 +181,18 @@ def net_left(ref, net):
     sys.exit(f"{ref}: no pad on {net}")
 
 
+def net_up(ref, net):
+    """Vertical rotation (90 or 270) that puts REF's NET pad(s) on top."""
+    fp = FP[ref]
+    for rot in (90, 270):
+        fp.SetOrientationDegrees(rot)
+        ys = [(pd.GetPosition().y, pd.GetNetname() == net) for pd in fp.Pads()]
+        low = max(y for y, _ in ys)
+        if min(ys)[1] and any(y == low and not on for y, on in ys):
+            return rot
+    sys.exit(f"{ref}: no rotation puts {net} on top")
+
+
 def tl(ref, x, y, rot=0):
     """Top-left courtyard corner of REF to (x, y); returns (right, bottom)."""
     w, h = size(ref, rot)
@@ -203,15 +219,15 @@ def floorplan():
     tl("J2", *J2_XY, 90)
     j2x1, j2y1 = box(["J2"])[2:]
 
-    # the 18-channel row: R2 (balance) outer, R1 (10 ohm) inner and half a pitch right,
-    # ch 0 at the left, harness pads up
+    # the 18-channel row: R2 (balance) outer, standing, harness pads up; R1 (10 ohm, 0402) inner,
+    # lying, half a pitch right, Cn_F pad left. Sn comes down between two R1 parts. ch 0 at the left
     xc = pins_mid + ROW_SHIFT - 9 * PITCH + PITCH / 4   # R100 (ch 0); the two rows together centred
     h2 = size("R201", harness_up("R201"))[1]
-    h1 = size("R101", harness_up("R101"))[1]
+    h1 = size("R101", 0)[1]
     y2 = plug_bottom + TAP + h2 / 2
     y1 = y2 + h2 / 2 + ROW_GAP + h1 / 2
     for n in range(19):
-        put(f"R1{n:02d}", xc + n * PITCH, y1, harness_up(f"R1{n:02d}"))
+        put(f"R1{n:02d}", xc + n * PITCH, y1, net_left(f"R1{n:02d}", f"/C{n}_F"))
         if n:
             put(f"R2{n:02d}", xc + n * PITCH - PITCH / 2, y2, harness_up(f"R2{n:02d}"))
     row_bottom = y1 + h1 / 2
@@ -220,8 +236,9 @@ def floorplan():
 
     # U1 under ch 11-18; ch 0-10 bus down its left side
     u = size("U1", -90)[1]
-    put("U1", U1_X, row_bottom + FAN + u / 2, -90)
+    put("U1", U1_X, H - BELOW - u / 2, -90)
     ux0, uy0, ux1, uy1 = box(["U1"])
+    info["fan"] = uy0 - row_bottom
 
     # isoSPI ports, top-right: GH plug, transformer under it with the chip side down, then the
     # four termination parts standing in a row under the transformer. Port B left, A right.
@@ -239,68 +256,68 @@ def floorplan():
         x += tw + GAP
     rc_bottom = box(["R601", "C602"])[3]
 
-    # right of U1, in its pin order top to bottom: isoSPI 64-61 (free to run right), ICMP 58,
-    # IBIAS 57, VREF1 51, VREF2 50, then DRIVE 49 passes under the column to Q301
-    sx = ux1 + GAP
-    col = ["R402", "R401", "C304", "C305"]
-    pack(col, sx, rc_bottom + 1.3, 1)                # 1.3 mm: the port A pair runs between
+    # right of U1, a bottom-aligned column in its pin order: (isoSPI 64-61 run right above it)
+    # ICMP 58, IBIAS 57, VREF1 51, VREF2 50, a gap where DRIVE 49 passes through, VREG 48
+    sx = ux1 + COL_GAP
+    rot = net_left("C303", "/VREG")
+    y = H - EDGE - size("C303", rot)[1]
+    tl("C303", sx, y, rot)
+    y -= DRIVE_GAP
+    for ref, net in (("C305", "/VREF2"), ("C304", "/VREF1"), ("R401", "/IBIAS"), ("R402", "/ICMP")):
+        rot = net_left(ref, net)
+        y -= size(ref, rot)[1]
+        tl(ref, sx, y, rot)
+        y -= GAP
+    col = ["R402", "R401", "C304", "C305", "C303"]
     sx2 = box(col)[2] + GAP
-    # VREG cap right under pin 48 (U1's bottom side, rightmost pin)
-    cw, chh = size("C303", 0)
-    put("C303", ux1 - cw / 2, uy1 + GAP + chh / 2, 0)
     # V+ filter right of pin 1 (U1's top-right corner), lying under the ch 12-18 fan-in, which
     # comes in from the right above U1's top edge: C301 at the pin, R301 right of it, VP_F pads left
-    r, _ = tl("C301", sx + 0.05, uy0 + 0.1, net_left("C301", "/VP_F"))
+    r, _ = tl("C301", ux1 + 0.35, uy0 + 0.1, net_left("C301", "/VP_F"))
     tl("R301", r + GAP, uy0 + 0.1, net_left("R301", "/VP_F"))
+    info["pairs"] = box(col)[1] - box(["C301"])[3]
     # NTC filter parts under J2, three per row (pull-up, cap per channel; TH701 last)
     pack(["R701", "C701", "R702", "C702", "R703", "C703", "R704", "C704", "TH701"],
-         J2_XY[0] + 0.25, j2y1 + 1.6, 3)
+         J2_XY[0] + 0.25, j2y1 + 0.8, 3)
 
-    # Q301 bottom-right, pins toward U1 (DRIVE top, VREG bottom), tab to the right
-    qw, qh = size("Q301", 0)
-    put("Q301", sx2 + qw / 2, H - EDGE - qh / 2, 0)
+    # Q301 right of the column, standing: pins down at the bottom edge, tab up
+    rot = net_up("Q301", "/VCOLL")
+    qw, qh = size("Q301", rot)
+    put("Q301", sx2 + qw / 2, H - EDGE - qh / 2, rot)
     qx1 = box(["Q301"])[2]
-    top = rc_bottom + PAIR                           # nothing on VCOLL above this line
-    # C302 above the tab, R302 (2512) right of Q301; both with the VCOLL pad at the tab
-    rot = (net_left("C302", "/VCOLL") + 180) % 360
-    cw2, ch2 = size("C302", rot)
-    put("C302", qx1 - cw2 / 2, top + 0.1 + ch2 / 2, rot)
+    # C302 stands right of Q301 under port B's termination row, VCOLL pad up (at the tab);
+    # R302 (2512) lies right of it on the bottom edge, VCOLL pad left
+    rot = net_up("C302", "/VCOLL")
+    r, _ = tl("C302", qx1 + GAP, rc_bottom + GAP, rot)
     rot = net_left("R302", "/VCOLL")
-    rw, rh = size("R302", rot)
-    put("R302", min(qx1 + GAP, W - EDGE - rw) + rw / 2, top + 0.3 + rh / 2, rot)
-    vcoll_area(top, box(col)[2])
+    tl("R302", r + GAP, H - EDGE - size("R302", rot)[1], rot)
+    vcoll_area(rc_bottom)
 
 
-def vcoll_area(top, col_right):
-    """Reserved VCOLL copper for Q301 (collector = tab): one zone on the front, a larger one on
-    the other layers, stitched with vias under the body and right of the tab."""
-    low = [pad_box("Q301", n) for n in ("/DRIVE", "/VREG")]
+def vcoll_area(rcb):
+    """Reserved VCOLL copper for Q301 (collector = tab): one zone on all four layers, round Q301
+    and under C302/R302, stitched with vias. The fill keeps 0.6 mm from DRIVE, VREG, V- and the
+    isoSPI nets by the .kicad_dru, so the outline may run over their pads."""
+    qx0, qy0, qx1, qy1 = box(["Q301"])
     tab = max((pd.GetBoundingBox() for pd in FP["Q301"].Pads() if pd.GetNetname() == "/VCOLL"),
               key=lambda b: b.GetWidth() * b.GetHeight())
-    tab = (mm(tab.GetLeft()), mm(tab.GetTop()), mm(tab.GetRight()), mm(tab.GetBottom()))
-    qy0 = box(["Q301"])[1]
-    fx0 = max(b[2] for b in low) + HV + 0.1          # right of the DRIVE/VREG pads
-    xa = pad_box("C302", "/V-")[2] + HV              # right of C302's V- pad
-    xr = pad_box("R302", "/CELL18")[0] - 0.8         # under R302's body, short of its CELL18 pad
+    tab_bottom = mm(tab.GetBottom())
+    pins_top = min(pad_box("Q301", n)[1] for n in ("/DRIVE", "/VREG"))
     hx = W - HOLE_INSET - HOLE_KEEP - 0.15           # left of H2's keep-out
-    hy = H - HOLE_INSET - HOLE_KEEP - 0.25           # above it
-    bot, right = H - 0.5, W - 0.5                    # board-edge clearance (.kicad_pro)
-    ix0 = col_right + HV                             # inner layers: right of the supply column
+    bot = H - 0.5                                    # board-edge clearance (.kicad_pro)
+    top = rcb + 0.35                                 # under the termination rows' pads
     r = lambda pts: [(round(x, 2), round(y, 2)) for x, y in pts]
-    copper["zones"] = [
-        ("VCOLL_Q301_front", ["F.Cu"],
-         r([(fx0, qy0 + 0.1), (xa, qy0 + 0.1), (xa, top), (xr, top), (xr, hy), (hx, hy), (hx, bot), (fx0, bot)])),
-        ("VCOLL_Q301_inner_back", ["In1.Cu", "In2.Cu", "B.Cu"],
-         r([(ix0, top), (right, top), (right, hy), (hx, hy), (hx, bot), (ix0, bot)])),
-    ]
+    poly = r([(qx0 + 0.2, qy0 + 0.1), (qx1, qy0 + 0.1), (qx1, top), (hx, top), (hx, bot), (qx0 + 0.2, bot)])
+    copper["zones"] = [("VCOLL_Q301", ["F.Cu", "In1.Cu", "In2.Cu", "B.Cu"], poly)]
     vias = []
-    grid = lambda a, b: [round(a + i * VIA_PITCH, 2) for i in range(int((b - a) / VIA_PITCH + 1e-6) + 1)]
-    for x in grid(fx0 + 0.7, tab[0] - 0.45):         # under Q301's body, between pins and tab
-        vias += [(x, y) for y in grid(qy0 + 0.9, bot - 0.5)]
-    for x in grid(tab[2] + 0.9, hx - 0.4):           # right of the tab, below R302
-        vias += [(x, y) for y in grid(pad_box("R302", "/VCOLL")[3] + 0.75, bot - 0.5)]
+    grid = lambda a, b: [round(a + i * VIA_PITCH, 2) for i in range(int((b - a) / VIA_PITCH + 1e-6) + 1)] if b >= a else []
+    for x in grid(qx0 + 0.9, qx1 - 0.6):             # under Q301's body, between tab and pins
+        vias += [(x, y) for y in grid(tab_bottom + 0.6, pins_top - 1.95)]   # VREG runs above the pins
+    rv, rc = pad_box("R302", "/VCOLL"), pad_box("R302", "/CELL18")
+    for x in grid(box(["C302"])[2] + 0.6, hx - 0.4):  # the strip above R302
+        vias += [(x, y) for y in grid(top + 0.5, rv[1] - 0.6)]
+    for x in grid(rv[2] + 0.6, rc[0] - 0.6):         # under R302's body, between its pads
+        vias += [(x, y) for y in grid(rv[1] + 0.35, bot - 0.5)]
     copper["vias"] = vias
-
 
 # ---------------------------------------------------------------- write + report
 def outline(text):
@@ -342,12 +359,10 @@ def top_level(text, head):
 
 def set_copper(text):
     """Replace Q301's VCOLL zones and stitching vias with the ones from vcoll_area()."""
-    polys = [z[2] for z in copper["zones"]]
     drop = [(s, e) for s, e in top_level(text, "zone") if '(name "VCOLL_Q301' in text[s:e]]
     for s, e in top_level(text, "via"):
         blk = text[s:e]
-        at = re.search(r"\(at ([-\d.]+) ([-\d.]+)\)", blk)
-        if '(net "/VCOLL")' in blk and any(inside((float(at.group(1)), float(at.group(2))), p) for p in polys):
+        if '(net "/VCOLL")' in blk:              # nothing is routed: every VCOLL via is one of ours
             drop.append((s, e))
     for s, e in sorted(drop, reverse=True):
         text = text[:s] + text[e:]
@@ -386,13 +401,15 @@ def report():
     print(f"board {W:g} x {H:g} mm, {len(refs) - len(parked)} parts on it, {len(parked)} parked: {', '.join(sorted(parked)) or '-'}")
     r1 = box([f"R1{n:02d}" for n in range(19)] + [f"R2{n:02d}" for n in range(1, 19)])
     print(f"row: x {r1[0]:.1f}-{r1[2]:.1f} ({r1[2] - r1[0]:.1f} mm), y {r1[1]:.1f}-{r1[3]:.1f}; U1 courtyard {', '.join(f'{v:.1f}' for v in box(['U1']))}")
+    print(f"fan-in gap above U1: {info['fan']:.2f} mm; under U1: {BELOW:g} mm; "
+          f"band for the isoSPI pairs right of U1: {info['pairs']:.2f} mm")
     print(f"courtyard overlaps: {len(over)}" + ("".join(f"\n  {o}" for o in over)))
     print(f"outside the outline: {', '.join(out) or 'none'}")
     for name, layers, pts in copper["zones"]:
         print(f"{name}: {area(pts):.0f} mm2 outline on {', '.join(layers)} (the fill is smaller: clearances)")
     polys = [z[2] for z in copper["zones"]]
     stray = [v for v in copper["vias"] if not all(inside(v, p) for p in polys)]
-    print(f"VCOLL stitching vias: {len(copper['vias'])}" + (f", NOT inside every zone: {stray}" if stray else ", all inside both zones"))
+    print(f"VCOLL stitching vias: {len(copper['vias'])}" + (f", NOT inside every zone: {stray}" if stray else ", all inside the zone outline"))
     left = sorted(set(FP) - set(placed))
     if left:
         print(f"NOT PLACED by the floorplan: {', '.join(left)}")
