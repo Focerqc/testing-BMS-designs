@@ -59,7 +59,9 @@ ROW_SHIFT = 0.0          # row centre minus plug-pin centre
 TAP = 1.0                # plug courtyards -> R2 (outer) row courtyards; the taps also fan out under the plug bodies
 ROW_GAP = 0.25           # R2 row courtyards -> R1 (inner) row courtyards
 FAN = 5.3                # R1 row courtyards -> U1 courtyard: fan-in of ch 11-18 to U1's top pins
-U1_X = 42.5              # U1 centre x: its top pins centred under ch 11-18 (rotation stays 270)
+U1_X = 37.0              # U1 centre x (rotation stays 270). 42.5 centres its top pins under ch 11-18
+                         # (try 3b); 37 (try 3c) trades 5.5 mm more sideways fan-in for room right of
+                         # U1: Q301, R302 and the VCOLL copper, and T601 12 mm from U1
 GAP = 0.3                # between parts packed into a block
 ISO_X = 52.82            # left courtyard edge of port B (T601 + J4); port A (T501 + J3) is right of it
 ISO_Y = 5.07             # top courtyard edge of the GH plugs J4/J3 (clear of H3)
@@ -246,9 +248,10 @@ def floorplan():
     # VREG cap right under pin 48 (U1's bottom side, rightmost pin)
     cw, chh = size("C303", 0)
     put("C303", ux1 - cw / 2, uy1 + GAP + chh / 2, 0)
-    # V+ filter beside pin 1 (U1's top-right corner), right of the ch 18 fan-in, both standing
-    _, b = tl("R301", sx + 0.35, row_bottom + 1.35, 90)
-    tl("C301", sx + 0.05, b + GAP, 90)
+    # V+ filter right of pin 1 (U1's top-right corner), lying under the ch 12-18 fan-in, which
+    # comes in from the right above U1's top edge: C301 at the pin, R301 right of it, VP_F pads left
+    r, _ = tl("C301", sx + 0.05, uy0 + 0.1, net_left("C301", "/VP_F"))
+    tl("R301", r + GAP, uy0 + 0.1, net_left("R301", "/VP_F"))
     # NTC filter parts under J2, three per row (pull-up, cap per channel; TH701 last)
     pack(["R701", "C701", "R702", "C702", "R703", "C703", "R704", "C704", "TH701"],
          J2_XY[0] + 0.25, j2y1 + 1.6, 3)
@@ -258,13 +261,13 @@ def floorplan():
     put("Q301", sx2 + qw / 2, H - EDGE - qh / 2, 0)
     qx1 = box(["Q301"])[2]
     top = rc_bottom + PAIR                           # nothing on VCOLL above this line
-    # C302 above the tab, R302 (2512) right of Q301 above H2; both with the VCOLL pad at the tab
+    # C302 above the tab, R302 (2512) right of Q301; both with the VCOLL pad at the tab
     rot = (net_left("C302", "/VCOLL") + 180) % 360
     cw2, ch2 = size("C302", rot)
     put("C302", qx1 - cw2 / 2, top + 0.1 + ch2 / 2, rot)
     rot = net_left("R302", "/VCOLL")
     rw, rh = size("R302", rot)
-    put("R302", W - EDGE - rw / 2, top + 0.3 + rh / 2, rot)
+    put("R302", min(qx1 + GAP, W - EDGE - rw) + rw / 2, top + 0.3 + rh / 2, rot)
     vcoll_area(top, box(col)[2])
 
 
@@ -294,7 +297,7 @@ def vcoll_area(top, col_right):
     grid = lambda a, b: [round(a + i * VIA_PITCH, 2) for i in range(int((b - a) / VIA_PITCH + 1e-6) + 1)]
     for x in grid(fx0 + 0.7, tab[0] - 0.45):         # under Q301's body, between pins and tab
         vias += [(x, y) for y in grid(qy0 + 0.9, bot - 0.5)]
-    for x in grid(tab[2] + 0.9, hx - 0.4):           # right of the tab, under R302's VCOLL pad
+    for x in grid(tab[2] + 0.9, hx - 0.4):           # right of the tab, below R302
         vias += [(x, y) for y in grid(pad_box("R302", "/VCOLL")[3] + 0.75, bot - 0.5)]
     copper["vias"] = vias
 
