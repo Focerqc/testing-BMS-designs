@@ -895,7 +895,7 @@
   // ---------- LOADING ----------
   // Plain names in the Board menu (the path stays the value and the tooltip).
   function boardLabel(path) {
-    if (/slave-18s-lean\//.test(path)) return '18S Lean · layout practice';
+    if (/slave-18s-lean\//.test(path)) return '18S Lean · shrink trial';
     if (/slave-18s\//.test(path)) return '18S Guard · full protection';
     return path;
   }
@@ -2406,304 +2406,6 @@
     toast('Color armed — drag on the board to draw');
   }
 
-  // ---------- LAYOUT PRACTICE (docs/slave-18s-lean-layout-plan.md; Lean shrink trial since 2026-11-08) ----------
-  // Lean's placement comes from _tools/kicad_sch/lean_place.py and its knobs. The card has two parts:
-  //  - a row preview: R1xx/R2xx boxes for another pitch, package or row order, laid out the way
-  //    lean_place.py lays out the row (R1nn at centre + (n - 9) × pitch, R2nn half a pitch left of it,
-  //    harness pads up), on the placed row's centre line, so with the same numbers the boxes sit on the parts;
-  //  - a step guide whose checks are measured from the board, so every new try updates them.
-  // Row order: read left to right, the chip-end pads go C0, S1, C1, S2 … S18, C18, the order of U1's cell
-  // pins walking clockwise from C0. Each gap in a row carries one trace.
-  const L_PKG = { '2010': [5.0, 2.5], '2512': [6.3, 3.2], '1210': [3.2, 2.5], '1206': [3.2, 1.6] };   // body L × W, mm
-  const L_R1 = [3.2, 1.6];                          // R1xx: 10 Ω 1206
-  const ROW_EDGE = 1;                               // mm: board-edge margin when saying which pitch fits
-  // Smallest pitch with room for one 0.25 mm trace between neighbouring R2 pads (pad ≈ body W + 0.15 mm,
-  // 0.2 mm clearance each side), or for the 0.30 mm S trace between 1206 pads (1.75 mm).
-  const rowMinPitch = r2W => Math.max(r2W + 0.15 + 0.65, 1.75 + 0.7);
-  const f1 = v => (Math.round(v * 10) / 10).toFixed(1);
-  const fpRef = ref => S.board?.footprints.find(f => f.ref === ref);
-  const nn = n => String(n).padStart(2, '0');
-  const byRef = (a, b) => a.localeCompare(b, 'en', { numeric: true });
-
-  // The board outline (Edge.Cuts end points; the bbox adds the line width).
-  function outlineBox() {
-    const pts = (S.board.edges || []).flat();
-    if (!pts.length) { const b = S.board.bbox; return { x0: b.x, y0: b.y, x1: b.x + b.w, y1: b.y + b.h }; }
-    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
-    return { x0: Math.min(...xs), y0: Math.min(...ys), x1: Math.max(...xs), y1: Math.max(...ys) };
-  }
-
-  // A part's extent on the board: its pads (w/h are in the pad's own frame) and its fab outline.
-  function partBox(fp) {
-    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-    for (const p of fp.pads) {
-      const q = Math.abs((((p.angle % 180) + 180) % 180) - 90) < 1;
-      const w = (q ? p.h : p.w) / 2, h = (q ? p.w : p.h) / 2;
-      x0 = Math.min(x0, p.x - w); x1 = Math.max(x1, p.x + w); y0 = Math.min(y0, p.y - h); y1 = Math.max(y1, p.y + h);
-    }
-    for (const pt of (fp.outline || []).flat()) {
-      x0 = Math.min(x0, pt[0]); x1 = Math.max(x1, pt[0]); y0 = Math.min(y0, pt[1]); y1 = Math.max(y1, pt[1]);
-    }
-    if (x0 === Infinity) return { x0: fp.x, y0: fp.y, x1: fp.x, y1: fp.y };
-    return { x0, y0, x1, y1 };
-  }
-  // Parked = the part's middle is off the outline (lean_place.py parks what doesn't fit right of the board).
-  function onBoard(fp, ob = outlineBox()) {
-    const b = partBox(fp), cx = (b.x0 + b.x1) / 2, cy = (b.y0 + b.y1) / 2;
-    return cx >= ob.x0 && cx <= ob.x1 && cy >= ob.y0 && cy <= ob.y1;
-  }
-  // Pad centre of REF on NET to the nearest U1 pin on the same net, mm.
-  function pinDist(ref, net) {
-    const fp = fpRef(ref), u = fpRef('U1');
-    if (!fp || !u) return null;
-    let d = Infinity;
-    for (const a of fp.pads) if (a.net === net) for (const b of u.pads) if (b.net === net) d = Math.min(d, Math.hypot(a.x - b.x, a.y - b.y));
-    return d === Infinity ? null : d;
-  }
-  const harnessUp = fp => {
-    const c = fp.pads.find(p => /\/CELL\d+$/.test(p.net)), o = fp.pads.find(p => p !== c && p.net);
-    return !!(c && o && c.y < o.y - 0.3);
-  };
-
-  // The placed channel row, measured: centre line, pitch, R2 package, which row is on the plug side.
-  function placedRow() {
-    const r1 = [...Array(19)].map((_, n) => fpRef(`R1${nn(n)}`));
-    const r2 = [...Array(18)].map((_, n) => fpRef(`R2${nn(n + 1)}`));
-    if (r1.some(f => !f) || r2.some(f => !f)) return null;
-    const steps = r1.slice(1).map((f, i) => f.x - r1[i].x);
-    const pkg = (r2[0].fpid.match(/R_(\d{4})_/) || [])[1] || '2010';
-    const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
-    const y1 = mean(r1.map(f => f.y)), y2 = mean(r2.map(f => f.y));
-    const r1Out = y1 < y2;
-    const L2 = (L_PKG[pkg] || L_PKG['2010'])[0], L1 = L_R1[0];
-    const [yOut, lOut, yIn, lIn] = r1Out ? [y1, L1, y2, L2] : [y2, L2, y1, L1];
-    const boxes = [...r1, ...r2].map(partBox);
-    return {
-      r1, r2, steps, pkg, r1Out,
-      pitch: (r1[18].x - r1[0].x) / 18,
-      centre: mean(r1.map(f => f.x)),
-      top: yOut - lOut / 2,                          // plug-side row, body top
-      gap: (yIn - lIn / 2) - (yOut + lOut / 2),      // body to body between the rows
-      x0: Math.min(...boxes.map(b => b.x0)), x1: Math.max(...boxes.map(b => b.x1)),
-    };
-  }
-
-  function layoutRow() {
-    if (!S.board || !/lean/i.test(S.boardPath)) return;
-    const row = placedRow();
-    if (!row) return toast('This board has no R100–R118 / R201–R218 row to measure', 'warn');
-    const pitch = Math.min(10, Math.max(2, +$('lPitch').value || 3.3));
-    const pkg = L_PKG[$('lPkg').value] ? $('lPkg').value : '2010';
-    const r1Out = $('lOuter').value === 'R1';         // Racc's order: 10 Ω on the plug side
-    const [r2L, r2W] = L_PKG[pkg];
-
-    // Same plug-side top edge and the same gap between the rows as the placed row; same centre line
-    // (lean_place.py: board centre + ROW_SHIFT). Only pitch, package and order change.
-    const [hOut, hIn] = r1Out ? [L_R1[0], r2L] : [r2L, L_R1[0]];
-    const yOut = row.top + hOut / 2, yIn = row.top + hOut + row.gap + hIn / 2;
-    const [yR2, yR1] = r1Out ? [yIn, yOut] : [yOut, yIn];
-    const xR1 = row.centre + 9 * pitch, xR2 = xR1 - pitch / 2;   // ch 18, the right end
-
-    const colorFor = (auto, hex, note) => {
-      let c = S.doc.colors.find(k => k.auto === auto);
-      if (!c) { c = { id: uid('c'), hex, note, auto }; S.doc.colors.push(c); }
-      else if (!c.note || /^R[12]xx (balance|series) /.test(c.note)) c.note = note;
-      return c.id;
-    };
-    // The color keys still say L-: saved docs from the old L layout keep their two colors.
-    const c2 = colorFor('L-R2', '#ff9361', `R2xx balance ${pkg} (hot): ${r1Out ? 'inner' : 'outer'} row, CELLn pad up, Sn pad toward U1`);
-    const c1 = colorFor('L-R1', '#5cc8ff', `R1xx series 10 Ω 1206: ${r1Out ? 'outer' : 'inner'} row, half a pitch right of its R2`);
-    const mk = (c, x, y, w, h, n, start) => ({
-      id: uid('b'), c, x: r2(x), y: r2(y), w, h, auto: 'row', tag: { p: c === c2 ? 'R2' : 'R1', start, step: -1 },
-      pat: { n, dir: 'left', pitch: r2(pitch), skip: [] },
-    });
-    const rows = [
-      mk(c2, xR2, yR2, r2W, r2L, 18, 18),
-      mk(c1, xR1, yR1, L_R1[1], L_R1[0], 19, 18),   // R118 … R101, then R100 (ch 0) at the left end
-    ];
-    S.doc.boxes = S.doc.boxes.filter(b => b.auto !== 'L' && b.auto !== 'row').concat(rows);
-    S.sel = null;
-    commit();
-
-    const ob = outlineBox();
-    const its = rows.flatMap(instances);
-    const off = its.filter(it => it.x - it.w / 2 < ob.x0 || it.x + it.w / 2 > ob.x1 ||
-                                 it.y - it.h / 2 < ob.y0 || it.y + it.h / 2 > ob.y1).length;
-    const left = Math.min(...its.map(it => it.x - it.w / 2)), right = Math.max(...its.map(it => it.x + it.w / 2));
-    const pMin = rowMinPitch(r2W);
-    const pFit = Math.min(row.centre - ob.x0, ob.x1 - row.centre) - ROW_EDGE - L_R1[1] / 2;
-    const same = Math.abs(pitch - row.pitch) < 0.005 && pkg === row.pkg && r1Out === row.r1Out;
-    const real = [Math.abs(pitch - row.pitch) >= 0.005 && `PITCH = ${fmt(pitch)} in lean_place.py`,
-                  pkg !== row.pkg && `${pkg} R2s in make_lean.py's SWAP table (then F8)`,
-                  r1Out !== row.r1Out && 'the two rows swapped in lean_place.py'].filter(Boolean);
-    const msg = `Preview: ${pkg} at ${fmt(pitch)} mm, ${r1Out ? '10 Ω' : 'balance'} row on the plug side, ` +
-      `${f1(right - left)} mm long (x ${f1(left)}–${f1(right)}). ` +
-      (pitch < pMin - 1e-6 ? `⚠ Under ${fmt(pMin)} mm there's no room for a trace between the ${pkg}s. ` : '') +
-      (off ? `⚠ ${off} box${off > 1 ? 'es' : ''} past the board edge: ${fmt(Math.floor(pFit / 9 * 20) / 20)} mm pitch fits. ` : '') +
-      (same ? 'Same as the placed row.' : `To try it for real: ${real.join('; ')}.`);
-    $('lInfo').textContent = msg;
-    toast(`Previewed 37 resistors at ${fmt(pitch)} mm pitch. ${esc(msg)}`, off || pitch < pMin - 1e-6 ? 'warn' : 'info', 6000);
-  }
-
-  // Each step: what to look at, why, and a check measured from the board (ok: true / false, or null = info only).
-  const SUPPLY = [['C303', '/VREG', 3], ['C304', '/VREF1', 3], ['C305', '/VREF2', 3],
-                  ['R401', '/IBIAS', 4], ['R402', '/ICMP', 4], ['C301', '/VP_F', 4]];
-  const PORT_A = ['T501', 'J3', 'R501', 'R502', 'C501', 'C502'];
-  const ROUTE_NETS = ['/CELL14', '/S14', '/C14_F', '/CELL0'];
-  const GUIDE = [
-    { id: 'try', t: 'Read this try',
-      d: ['lean_place.py placed every part from the knobs at its top: plugs centred on the top edge, the 18-channel row under them, U1 under the row, both isoSPI ports right of U1 (port B above port A), Q301 bottom-left, and the 14 test pads on the back (Bottom view).',
-          'Each run places everything from scratch. A part you move by hand in KiCad stays only until the next run, so once a move works, put it in the script.',
-          'A part that doesn\'t fit is parked right of the outline; in try 2 nothing is. Turn on 3D and Parts: the render and the pads line up.'],
-      look: 'lean_place.py --drc: only silk warnings and unrouted nets. A clearance or courtyard error means two parts collide.',
-      check: () => {
-        const ob = outlineBox();
-        const parked = S.board.footprints.filter(f => !onBoard(f, ob)).map(f => f.ref).sort(byRef);
-        return { ok: null,   // a reading step: steps 5 and 6 judge what's parked and the size
-          text: `${f1(ob.x1 - ob.x0)} × ${f1(ob.y1 - ob.y0)} mm, ${S.board.footprints.length - parked.length} parts on the board, ` +
-            (parked.length ? `${parked.length} parked off it: ${parked.join(', ')}.` : 'none parked.') };
-      } },
-    { id: 'ch14', t: 'One channel: ch 14',
-      d: ['R214 (33 Ω balance, 2010) and R114 (10 Ω, 1206) stand vertical: CELL14 pad up toward J5.6, chip pad down toward U1.',
-          'The balance row is on the plug side, so its heat stays away from U1. The 10 Ω row sits just below, half a pitch to the right.',
-          'That half step makes the chip pads read S14, C14, S15, C15 … left to right, the order of U1\'s top pins. The tap reaches R114 through the gap right of R214; S14 leaves R214 through the gap left of R114. One trace per gap.'],
-      look: 'In KiCad, highlight CELL14, then S14 (` key): each should be one short path with no crossing ratsnest line.',
-      check: () => {
-        const a = fpRef('R214'), b = fpRef('R114'), n = fpRef('R115');
-        if (!a || !b || !n) return null;
-        const half = (n.x - b.x) / 2, dx = b.x - a.x, up = harnessUp(a) && harnessUp(b);
-        return { ok: up && Math.abs(dx - half) < 0.05,
-          text: `${up ? 'Both CELL14 pads up' : '⚠ a CELL14 pad faces down'}; R114 is ${fmt(dx)} mm right of R214 (half a pitch: ${fmt(half)}).` };
-      } },
-    { id: 'row', t: 'All 18 channels in one row',
-      d: ['Ch 0 (R100 alone: no balance resistor) at the left end, ch 18 at the right. Cell numbers rise left to right, like the pins of J1 and J5.',
-          '3.3 mm is the least pitch for 2010s: one 0.25 mm trace with 0.2 mm each side between neighbouring pads. That makes the row about 61 mm, which is why the board can be 70 wide.',
-          'Knobs: PITCH, ROW_SHIFT (row centre minus board centre), TAP (room for the taps under the plugs), FAN (room between the row and U1). The preview above draws another pitch or package as boxes before you change PITCH.'],
-      look: 'Tap lines from J1/J5 never cross. Ch 11–18 drop onto U1\'s top pins; ch 0–10 run as one bus down U1\'s left side. A crossing means two channels are swapped or one is flipped.',
-      check: () => {
-        const row = placedRow();
-        if (!row) return null;
-        const ob = outlineBox();
-        const inOrder = row.steps.every(s => s > 0), even = Math.max(...row.steps) - Math.min(...row.steps) < 0.05;
-        const up = [...row.r1, ...row.r2].every(harnessUp);
-        const min = rowMinPitch((L_PKG[row.pkg] || L_PKG['2010'])[1]);
-        const fits = row.x0 >= ob.x0 && row.x1 <= ob.x1;
-        return { ok: inOrder && even && up && fits && row.pitch >= min - 0.005,
-          text: `Ch 0–18 ${inOrder && even ? 'in order' : '⚠ out of order or uneven'} at ${fmt(row.pitch)} mm (${row.pkg}s need ${fmt(min)}), ` +
-            `${f1(row.x1 - row.x0)} mm long (x ${f1(row.x0)}–${f1(row.x1)})${fits ? '' : ', ⚠ past the board edge'}` +
-            `${up ? ', all harness pads up' : ', ⚠ some harness pads face down'}.` };
-      } },
-    { id: 'supply', t: 'Supply parts at their pins',
-      d: ['C303 (VREG) at pin 48, C304/C305 (VREF1/2) at pins 51/50: U1\'s bottom-right corner and right side. R401/R402 at IBIAS/ICMP (57/58).',
-          'R301 + C301 (V+ filter) at pin 1, U1\'s top-right corner, fed from CELL18.',
-          'lean_place.py packs these in rows under U1 and beside Q301, which can leave them far from their pins (the check says how far). Move them in lean_place.py (the pack() lists in floorplan()), or try spots by hand in KiCad first.',
-          'Q301 keeps its corner, with R302/C302 at the collector. It needs about 25 × 25 mm of VCOLL copper on both layers for its 1.6 W: the biggest block still to fit.'],
-      look: 'Each VREG/VREF cap within about 3 mm of its pin (pad centre to pin), with a short return to V−.',
-      check: () => {
-        const rows = SUPPLY.map(([ref, net, max]) => ({ ref, max, d: pinDist(ref, net) })).filter(r => r.d != null);
-        if (!rows.length) return null;
-        const far = rows.filter(r => r.d > r.max);
-        return { ok: !far.length,
-          text: rows.map(r => `${r.ref} ${f1(r.d)}`).join(', ') + ' mm from their U1 pins' +
-            (far.length ? ` (want caps ≤ 3, R401/R402/C301 ≤ 4).` : '.') };
-      } },
-    { id: 'portA', t: 'Both isoSPI ports beside U1',
-      d: ['Each port is one strip right of U1: an R/C column (4 × 0603), the transformer, then the GH plug at the board edge. Port B (OUT: T601, J4) on top, port A (IN: T501, J3) under it.',
-          'Both fit since try 2 because Lean dropped the PH alternates J6/J7. Knobs: ISO_B, ISO_A (a spot (x, y), or None to park the port), ISO_Y and ISO_GAP.',
-          'Still open: each transformer\'s courtyard is about 3.7 mm from U1\'s, and the datasheet wants 1–2 cm.',
-          'Nothing else in the U1 → transformer → plug corridor, and no pour under the line side.'],
-      look: 'lean_place.py lists nothing parked and no courtyard overlaps.',
-      check: () => {
-        const ob = outlineBox();
-        const off = PORT_A.filter(r => fpRef(r) && !onBoard(fpRef(r), ob));
-        if (off.length) return { ok: false, text: `${off.length} of ${PORT_A.length} parts parked off the board: ${off.join(', ')}.` };
-        const a = pinDist('T501', '/IPA'), b = pinDist('T601', '/IPB');
-        return { ok: true, text: `On the board. Transformer to U1 pin: T501 ${a == null ? '–' : f1(a)} mm, T601 ${b == null ? '–' : f1(b)} mm.` };
-      } },
-    { id: 'height', t: 'Toward 35 mm tall',
-      d: ['A slave in the XR slot is about 70 × 35 mm (the dashed overlay). The first tries are 50 tall to leave room to work.',
-          'In try 2 the plugs and the row end at y ≈ 25, and U1 under them at y ≈ 44. Plugs 5.6, tap room 5, the two resistor rows 11.4, fan-in 6 and U1 13.5 come to about 41.5 mm, so 35 mm needs the plugs off the top edge, not just tighter knobs.',
-          'Q301\'s copper sets a floor: measure Q301 at 75.6 V first (layout plan, step 10).'],
-      look: 'The check counts the parts that still reach below y = 35.',
-      check: () => {
-        const ob = outlineBox(), h = ob.y1 - ob.y0, lim = ob.y0 + 35;
-        if (h <= 35.01) return { ok: true, text: `${f1(h)} mm tall: fits the slave.` };
-        const below = S.board.footprints.filter(f => onBoard(f, ob) && partBox(f).y1 > lim + 0.01);
-        return { ok: false, text: `${f1(h)} mm tall, ${f1(h - 35)} over. ${below.length} parts reach below y = 35.` };
-      } },
-    { id: 'route', t: 'Route ch 14 and the C0 sense',
-      d: ['Practice on this try: lean_place.py moves parts but not tracks, so throw the tracks away (git checkout the board) before the next run.',
-          'Ch 14, front layer: J5.6 → R214 top pad → R114 top pad (CELL14, 0.25 mm). R114 → U1\'s C14 pin (C14_F, 0.25 mm). R214 → S14 (0.30 mm).',
-          'C0: J1.1 → R100 pad 1 on its own 0.25 mm trace. V− touches CELL0 only at NT1, beside J1.1.'],
-      look: 'DRC: shorting_items means V− copper touches CELL0 somewhere other than NT1. Ratsnest for ch 14: no lines left.',
-      check: () => {
-        const t = S.board.tracks || [];
-        const n = ROUTE_NETS.map(net => [net.slice(1), t.filter(s => s.net === net).length]);
-        return { ok: null, text: n.some(([, k]) => k) ? 'Track segments: ' + n.map(([net, k]) => `${net} ${k}`).join(', ') + '.' : 'No tracks yet.' };
-      } },
-  ];
-  let guideOpen = null;   // step the user expanded; default is the first one not ticked
-  let guideCache = { board: null, res: {} };
-
-  function guideChecks() {
-    if (guideCache.board !== S.board) {
-      const res = {};
-      for (const g of GUIDE) {
-        try { res[g.id] = S.board ? g.check() : null; } catch { res[g.id] = null; }
-      }
-      guideCache = { board: S.board, res };
-    }
-    return guideCache.res;
-  }
-
-  function renderGuide() {
-    const ol = $('guideSteps');
-    if (!ol) return;
-    // The card follows the Lean plan: on any other board (Guard keeps its old placement and
-    // its C1xx/D1xx/F1xx parts) it only says which board to pick.
-    const lean = /lean/i.test(S.boardPath);
-    $('guideCard').classList.toggle('not-lean', !lean);
-    $('btnLayoutRow').disabled = !lean;
-    const ids = new Set(GUIDE.map(g => g.id));
-    const done = new Set((S.doc.guide?.done || []).filter(id => ids.has(id)));
-    const cur = GUIDE.find(g => !done.has(g.id));
-    const open = guideOpen ?? cur?.id;
-    const res = lean ? guideChecks() : {};
-    const mark = r => !r ? '' : r.ok === true ? '<span class="gs-chk ok" title="Check passes on this board">✓</span>'
-      : r.ok === false ? '<span class="gs-chk bad" title="Check fails on this board: open the step">!</span>'
-      : '<span class="gs-chk info" title="Measured from this board, nothing to pass">i</span>';
-    ol.innerHTML = GUIDE.map((g, k) => `
-      <li class="guide-step${done.has(g.id) ? ' done' : ''}${g === cur ? ' cur' : ''}${g.id === open ? ' open' : ''}" data-id="${g.id}">
-        <div class="gs-head"><input type="checkbox" data-tick="${g.id}" ${done.has(g.id) ? 'checked' : ''} title="Mark step ${k + 1} done">
-          <span class="gs-n">${k + 1}</span><span class="gs-t">${esc(g.t)}</span>${mark(res[g.id])}</div>
-        ${g.id === open ? `${res[g.id] ? `<p class="gs-now ${res[g.id].ok === false ? 'bad' : res[g.id].ok ? 'ok' : ''}"><b>This try:</b> ${esc(res[g.id].text)}</p>` : ''}
-          <ul>${g.d.map(x => `<li>${esc(x)}</li>`).join('')}</ul><p class="gs-look"><b>Look for:</b> ${esc(g.look)}</p>` : ''}
-      </li>`).join('');
-    const checks = GUIDE.map(g => res[g.id]).filter(r => r && r.ok != null);
-    $('guideProgress').textContent = `${done.size}/${GUIDE.length} done` + (checks.length ? ` · ${checks.filter(r => r.ok).length}/${checks.length} ✓` : '');
-  }
-
-  function onGuideClick(e) {
-    const tick = e.target.closest('[data-tick]');
-    if (tick) {
-      const id = tick.dataset.tick;
-      const ids = new Set(GUIDE.map(g => g.id));
-      const done = new Set((S.doc.guide?.done || []).filter(x => ids.has(x)));
-      tick.checked ? done.add(id) : done.delete(id);
-      S.doc.guide = { done: GUIDE.map(g => g.id).filter(x => done.has(x)) };
-      guideOpen = null;
-      renderGuide();
-      scheduleSave();
-      return;
-    }
-    const head = e.target.closest('.gs-head');
-    if (!head) return;
-    const id = head.parentElement.dataset.id;
-    const cur = GUIDE.find(g => !(S.doc.guide?.done || []).includes(g.id))?.id;
-    guideOpen = (guideOpen ?? cur) === id ? -1 : id;   // click the open step again to fold it
-    renderGuide();
-  }
-
   // ---------- SAVE / OPEN AS .TXT (work from a laptop without the local server) ----------
   function saveTxt() {
     if (!S.boardPath) return;
@@ -2732,14 +2434,11 @@
           !confirm(`This file was saved from ${d.board}.\nLoad its boxes onto ${S.boardPath} anyway?`)) return;
       S.doc.colors = d.colors;
       S.doc.boxes = d.boxes;
-      if (d.guide) S.doc.guide = d.guide;
-      $('lInfo').textContent = '';
       S.sel = null;
       S.activeColor = null;
       ensureColorExists();
       commit();
       scheduleSave();
-      renderGuide();
       toast(`Loaded ${d.boxes.length} boxes from <b>${esc(file.name)}</b>. Undo puts the old ones back.`);
     };
     rd.readAsText(file);
@@ -2869,7 +2568,6 @@
   // ---------- UI REFRESH ----------
   function refreshUI() {
     renderLegend();
-    renderGuide();
     fillSelbar();
     $('boxCount').textContent = totalCount();
     if ($('btnUndo')) $('btnUndo').disabled = S.undo.length === 0;
@@ -3225,8 +2923,6 @@
     $('btnSaveTxt').onclick = saveTxt;
     $('btnOpenTxt').onclick = () => $('openTxtFile').click();
     $('openTxtFile').onchange = e => { const f = e.target.files[0]; if (f) openTxt(f); e.target.value = ''; };
-    $('btnLayoutRow').onclick = layoutRow;
-    $('guideSteps').addEventListener('click', onGuideClick);
     $('btnCopy').onclick = () => copy($('modalText').textContent);
     $('btnClose').onclick = () => $('modal').classList.remove('open');
     $('modal').addEventListener('click', e => { if (e.target === $('modal')) $('modal').classList.remove('open'); });
