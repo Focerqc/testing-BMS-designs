@@ -18527,8 +18527,8 @@
 		)
 	)
 	(gr_rect
-		(start 0 0)
-		(end 156.5 37)
+		(start 0 -5)
+		(end 156.5 32)
 		(stroke
 			(width 0.3)
 			(type dash)
@@ -18538,8 +18538,8 @@
 		(uuid "b1e47bb5-1ba6-4f07-a47f-d3658abd2226")
 	)
 	(gr_rect
-		(start 1 1)
-		(end 71 36)
+		(start 0 0)
+		(end 70 32)
 		(stroke
 			(width 0.2)
 			(type dash)
@@ -18549,8 +18549,8 @@
 		(uuid "af29d6c3-0851-4d52-8f8f-020b33c40509")
 	)
 	(gr_rect
-		(start 73 1)
-		(end 143 36)
+		(start 72 0)
+		(end 142 32)
 		(stroke
 			(width 0.2)
 			(type dash)
@@ -18560,8 +18560,8 @@
 		(uuid "4d9ce38d-a27f-4724-8f7c-ad4faec6c717")
 	)
 	(gr_rect
-		(start 144.5 1)
-		(end 155.5 36)
+		(start 144.5 -4)
+		(end 155.5 31)
 		(stroke
 			(width 0.2)
 			(type dash)
@@ -18645,7 +18645,7 @@
 		)
 	)
 	(gr_text "XR BMS slot 156.5 x 37 mm, 10 mm tall (long-term goal)"
-		(at 0 -1.2 0)
+		(at 0 -6.2 0)
 		(layer "Dwgs.User")
 		(uuid "0155f682-2964-40b0-870e-3b3d8b6876b7")
 		(effects
@@ -18656,8 +18656,8 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "Slave A ~70 x 35"
-		(at 36 34 0)
+	(gr_text "Carrier connectors (5 mm above slave A, 70 x 32)"
+		(at 36 -2.5 0)
 		(layer "Dwgs.User")
 		(uuid "980f395b-14c8-4057-be8e-008a45fdc378")
 		(effects
@@ -18667,8 +18667,8 @@
 			)
 		)
 	)
-	(gr_text "Slave B ~70 x 35"
-		(at 108 34 0)
+	(gr_text "Slave B 70 x 32"
+		(at 108 16 0)
 		(layer "Dwgs.User")
 		(uuid "e2800750-e9e1-4f3d-9254-320867ad5fce")
 		(effects
@@ -18679,7 +18679,7 @@
 		)
 	)
 	(gr_text "Plugs"
-		(at 150 18.5 90)
+		(at 150 13.5 90)
 		(layer "Dwgs.User")
 		(uuid "2818fd55-aa4f-4b2c-a448-0e5858449fa8")
 		(effects
