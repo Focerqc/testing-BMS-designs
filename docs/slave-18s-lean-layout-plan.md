@@ -24,8 +24,10 @@ in the dashboard. The steps below still describe what each part of the layout ha
 **Changed 2026-11-09: try 2.** Lean has no J6/J7 any more (`make_lean.py` drops them), so it is
 **91 footprints**. `lean_place.py` now puts both isoSPI ports on the board as strips right of U1
 (R/C column, transformer, GH plug; port B above port A), with nothing parked. Where the steps
-below mention J6/J7, 93 footprints or port A being parked, that is the older state. The
-dashboard's practice card describes try 2 since 2026-11-10.
+below mention J6/J7, 93 footprints or port A being parked, that is the older state.
+
+**Changed 2026-11-10:** the dashboard's Layout practice card is gone (see "Board Boxes and the
+variants"). What it measured on try 2 is kept under "Where try 2 stands".
 
 Read with: `AGENTS.md`, `docs/slave-18s-design-basis.md` ("Variants", "Balance resistor
 sizing", "Net classes and clearance rules", "Placement checklist").
@@ -99,17 +101,32 @@ left side to its left and bottom pins, with C0 outermost.
  back: TP1–TP10 in two rows under the free band (bottom left), TP11–TP14 right of Q301
 ```
 
-What the dashboard's practice card measures on this try (3 of 5 checks pass):
+Measured on this try (2026-11-10, pad centre to the U1 pin on the same net):
 
-- **Pass:** ch 14 stagger, the 18-channel row (in order, 3.3 mm pitch, on the board), both
+- **Fine:** ch 14 stagger, the 18-channel row (in order, 3.3 mm pitch, on the board), both
   isoSPI ports on the board.
-- **Fail: supply parts at their pins.** `lean_place.py` packs C303–C305, R401/R402 and C301 in
-  rows; the VREG/VREF caps want to be within about 3 mm of their pins.
-- **Fail: height.** 50 mm, 15 over the 35 mm goal. The stack-up (plugs 5.6, tap room 5, two
+- **Not fine: supply parts at their pins.** `lean_place.py` packs them in rows along the bottom
+  edge. C303 (VREG) is 10.0 mm from pin 48, C304 (VREF1) 9.8 mm, C305 (VREF2) 6.9 mm; these
+  want about 3 mm. R401/R402 are 8.4/8.9 mm from IBIAS/ICMP, R301/C301 (V+ filter) 28 mm from
+  pin 1, and Q301 37 mm from the VREG pin.
+- **Not fine: height.** 50 mm, 15 over the 35 mm goal. The stack-up (plugs 5.6, tap room 5, two
   resistor rows 11.4, fan-in 6, U1 13.5) is about 41.5 mm before the supply parts, so 35 mm
   needs the cell plugs off the top edge, not tighter knobs.
-- **Open and not measured by the card:** each transformer is about 3.7 mm from U1 (datasheet:
-  1–2 cm); Q301's collector copper has no reserved area; nothing is routed.
+- **Not routable as placed: ch 14–18 to U1 (found 2026-11-10).** Port B's parts (R601 first)
+  start at y = 25.99 from x = 49.3 to the right edge; the R1 row's chip pads end at y = 24.39.
+  Nine traces start right of x = 49.3 (C14_F–C18_F, S15–S18) and have to pass left through
+  that 1.6 mm slot to U1's top pins. They need about 4.5 mm (5 × 0.25 + 4 × 0.30 + 0.2 gaps),
+  and the 0.6 mm stack rule to port B's chip-side pads leaves room for two. `lean_place.py`
+  only checks courtyards, so it reports this try as clean. The next try needs about 5.5 mm
+  between the R1 row and port B (`ISO_Y`), which pushes port A down toward H2.
+- **No room at U1's right side.** The isoSPI R/C columns sit 0.9 mm from U1's pins 49–64, where
+  C304/C305 (pins 51/50) and R401/R402 (pins 57/58) also have to go. Left of U1, about
+  35 × 17 mm of the front is free (it carries the ch 0–10 bus, about 10 mm wide).
+- **Also open:** each transformer is about 3.7 mm from U1 (datasheet: 1–2 cm); Q301's collector
+  copper has no reserved area; nothing is routed (0 tracks, 0 zones, 167 unconnected).
+- **Left over from the 120 × 70 board:** the silk texts "IN" (115.5, 40), "OUT" (115.5, 30)
+  and the board name (30.3, 62.1) are outside the 70 × 50 outline, so the board carries no
+  silk text of its own yet. `lean_place.py` doesn't move them.
 
 The floorplan above the try 2 one is the 120 × 70 starting point, not a rule. You'll move it around in step 3. What has to stay
 true: the channels follow the pin order, and the row's chip-end pads alternate S and C the same
@@ -179,8 +196,8 @@ ratsnest of the group you're working on is easy to read.
 
 Pick **channel 14** (under J5, right of the row's middle).
 
-1. Drag R214 and R114 onto the board, a little left of J5 pin 6 (C14, x ≈ 64.5). With the
-   card's defaults R214 lands at x ≈ 59.4 and R114 at x ≈ 61.5.
+1. Drag R214 and R114 onto the board, a little left of J5 pin 6 (C14, x ≈ 64.5). With 4.2 mm
+   pitch R214 lands at x ≈ 59.4 and R114 at x ≈ 61.5.
 2. **Orientation:** both resistors vertical (rotate 90°), harness pad (CELL14) **up** toward
    the connector, chip pad **down** toward U1.
 3. **Position:** R214 (balance, hot) in the **outer row**, its body about 5 mm under the connector
@@ -209,7 +226,7 @@ Pick **channel 14** (under J5, right of the row's middle).
   into U1 (balancing is derated to 80 mA once the die is above 85 °C).
 - Racc's 12S board does the opposite: 10 Ω on the plug side, balance resistor next to the chip.
   At his 120 Ω (0.12 W) the heat hardly matters, and on Lean (no C-pin caps) the R1 position
-  doesn't change the circuit. The card's **Outer row: 10 Ω** draws his order. (Until 2026-11-07
+  doesn't change the circuit. (Until 2026-11-07
   this plan called "R1 next to the C pin" Racc's method; his board shows otherwise.)
 
 **What to look for:** press **`** (backtick, highlight net) on CELL14 and S14 in turn: each should
@@ -249,8 +266,7 @@ bus that wraps under U1 to pin 38. NT1 goes beside J1.1 (step 5).
 - Banks: every neighbour in the row and in the bus is the adjacent cell (≤ 25 V, 0.2 mm). The
   far-apart nets to watch are below U1: keep Q301's VCOLL copper (bank 6) clear of the ch 0–3
   bus (bank 0), or the 0.6 mm rule will push the pour back.
-- Length: at 4.2 mm the row is 77 mm (x ≈ 1.9–79). The card says which pitch fits if you try
-  another.
+- Length: at 4.2 mm the row is 77 mm (x ≈ 1.9–79).
 
 **Check:** `check_pcb_parity.py --variant lean`, then DRC. Expect 0 clearance/courtyard
 errors. **Commit:** `PCB (Lean): cell channels placed`.
@@ -404,16 +420,12 @@ commit, not before (next section).
 - **Hosted site:** published with Lean on 2026-11-06 (step 2 state: staged parts below the
   outline, top render made without them so it matches the outline). Re-export after each
   placement commit: `export_site.py` → `node check_hosted.cjs` → push `site/`.
-- **Layout practice card** (left sidebar, reworked 2026-11-08 for the shrink trial): seven steps
-  (read the try, ch 14, the row, supply parts at their pins, both isoSPI ports beside U1, toward 35 mm,
-  route ch 14 and C0). Each step has a check measured from the board file (✓ passes, ! fails,
-  i = info only), so a new `lean_place.py` run updates them after a dashboard reload. Try 1:
-  2 of 5 pass; the VREG/VREF caps are 7–10 mm from their pins, C301 28 mm from pin 1, and
-  port A is parked. Try 2 (2026-11-09): 3 of 5 pass; both ports are on the board, the supply
-  parts and the height still fail. "Preview the 18-channel row" draws R2xx/R1xx boxes the way `lean_place.py`
-  lays out the row, on the placed row's centre line, for another pitch, R2 package or row order,
-  and says which knob or `SWAP` entry would make it real. With the same numbers the boxes sit on
-  the parts.
+- **Layout practice card: removed 2026-11-10.** It was a step list with checks measured from
+  the board, plus a button that drew the 18-channel row as boxes for another pitch or package.
+  It never hid or moved a part, so there was nothing to practise on. Placement is tried with
+  `lean_place.py` (knobs at its top; it reports parked parts and courtyard overlaps) and looked
+  at in the dashboard. Boxes the row preview drew stay in a saved boxes file as ordinary boxes;
+  delete their colors to remove them.
 - **Top render with parked parts:** the dashboard finds the board itself in the render (the
   long unbroken opaque runs), puts that on the outline and draws the rest around it at the same
   scale. Parked parts then show where they are. Until 2026-11-08 it stretched the whole opaque
