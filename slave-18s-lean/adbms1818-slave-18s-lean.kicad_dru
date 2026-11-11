@@ -10,6 +10,8 @@
 #    neighbouring banks are at most 6 levels apart (an S pin sits up to one level below
 #    its tap while balancing): 6 x 4.2 V = 25.2 V < 30 V. Two or more banks apart they
 #    can differ by 31-75.6 V, so they get 0.6 mm. Items with no net count as bank 0.
+#    4 copper layers: no rule names a layer, so the inner layers and the zone fills
+#    (the VCOLL copper under Q301) keep the same 0.6 mm.
 
 (rule "Stack: bank 0 (levels 0-2) vs banks 2-6, B2 31-150 V"
   (constraint clearance (min 0.6mm))
