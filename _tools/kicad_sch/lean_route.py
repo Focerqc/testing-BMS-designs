@@ -1,4 +1,4 @@
-"""Scripted routing for the 18S Lean board, try 4 (70 x 32): the two riskiest pieces (2026-11-11).
+"""Scripted routing for the 18S Lean board, try 4 (70 x 32), one piece at a time (2026-11-11).
 
   "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" _tools/kicad_sch/lean_route.py [--dry] [--drc] [--pcb FILE]
 
@@ -15,10 +15,12 @@ What it routes:
   3. U1's bottom pins. S2, C1_F, S1, C0_F and GPIO1-4 fan out to a row of eight vias under the
      chip and leave on In2 in eight lanes; the cell nets run to vias at their resistors, the
      GPIO nets to vias at the NTC parts. S3 and C2_F leave on the front along the 1 mm strip
-     under U1 and go up the outside of the (not yet routed) ch 3-10 bus. VREG runs along the
+     under U1 and go up the outside of the ch 3-10 bus. VREG runs along the
      strip to C303. GPIO5-9 are joined across their pads and tied to the exposed pad (V-).
+  4. ch 3-10 bus: U1's left pins 32-18 on the front, nested inside S3 and C2_F (bus_3_10). S11
+     (pin 17) crosses on In1 like S12.
 
-Not routed here: the ch 3-10 bus and S11, the taps from the plugs to the resistor rows, isoSPI,
+Not routed here: the taps from the plugs to the resistor rows, isoSPI,
 DRIVE, VCOLL, the rest of the NTC wiring, the V- pour.
 """
 import argparse
@@ -53,6 +55,11 @@ BUS_X = (20.9, 20.4)                 # front: S3, C2_F go up here, outside the c
 BUS_Y = (21.3, 21.8)                 # front: where they turn left to their resistors
 STRIP = (30.8, 31.26)                # front: S3, C2_F lanes under U1
 VP_OVER = 16.8                       # VP_F passes over C301 here (0.6 mm above its V- pad)
+BUS_X0, BUS_PITCH = 21.4, 0.48       # ch 3-10 bus: lane of pin 32 (C3_F), lanes go right from it
+BUS_TURN = 0.5                       # ... and each lane turns this much higher than the one outside it
+BUS_LEFT, BUS_STRAIGHT = 9, 2        # pins 32-24 turn left, pins 23-22 (S8, C8_F) go straight up
+BUS_R_IN, BUS_R_Y = 0.55, 19.65      # pins 21-18: innermost lane this far left of the pads, turns at Y
+S11_VIA_Y = 0.33                     # S11 source via: under R211, above C11_F's front lane
 
 segs, vias = [], []
 
@@ -176,6 +183,50 @@ def bottom_pins():
     line("/V-", "F.Cu", W_C, [gp[2], (gp[2][0], ep_bot - 0.25)])
 
 
+def bus_3_10():
+    """U1's left pins 32...18 (C3_F...C10_F) on the front, nested inside S3 and C2_F; S11 on In1.
+
+    Every pin leaves left to its lane, goes up and turns towards its resistor. Pins 32-24 turn
+    left: the top pin's lane is innermost and turns highest. S8 and C8_F go straight up. The
+    targets of pins 21-18 lie right of any lane (R209...R110 sit above U1's top-left corner), so
+    they turn right, and there the outer lane turns highest. S11 (pin 17) cannot get past
+    C10_F, S10 and C11_F on the front: it drops to a via just inside the pin row and crosses on
+    In1 above S12's lane, like S12...S18.
+    """
+    nets = [(f"/C{n}_F", f"R1{n:02d}") if k % 2 == 0 else (f"/S{n + 1}", f"R2{n + 1:02d}")
+            for k, n in enumerate(n for c in range(3, 11) for n in (c, c))][:15]
+    pins = [pad("U1", net) for net, _ in nets]
+    tgts = [pad(ref, net) for net, ref in nets]
+    left = pins[0][2]                                 # left edge of U1's left pad column
+    n_l, n_s = BUS_LEFT, BUS_STRAIGHT
+    xs = [BUS_X0 + BUS_PITCH * k for k in range(n_l)]
+    xs += [tgts[k][0] for k in range(n_l, n_l + n_s)]
+    n_r = len(nets) - n_l - n_s
+    xs += [left - BUS_R_IN - 0.5 * (len(nets) - 1 - k) for k in range(n_l + n_s, len(nets))]
+    ys = [BUS_Y[0] - BUS_TURN * (k + 1) for k in range(n_l)] + [None] * n_s
+    ys += [BUS_R_Y - BUS_TURN * (len(nets) - 1 - k) for k in range(n_l + n_s, len(nets))]
+    for k in range(len(nets) - 1):                    # lanes in order, 0.475 apart at least
+        assert xs[k + 1] - xs[k] >= 0.475 - 1e-9, (nets[k], xs[k], xs[k + 1])
+    assert all(tgts[k][0] < xs[k] for k in range(n_l)) and all(tgts[k][0] > xs[k] for k in range(n_l + n_s, len(nets)))
+    for k, (net, ref) in enumerate(nets):
+        w = W_S if net.startswith("/S") else W_C
+        p, t = pins[k], tgts[k]
+        pts = [(left + 0.3, p[1]), (xs[k], p[1])]
+        if ys[k] is not None:
+            pts += [(xs[k], ys[k]), (t[0], ys[k])]
+        route(net, "F.Cu", w, pts + [(t[0], t[1])])
+    # S11: pin 17 -> via inside the pin row -> In1 -> via under R211 -> R211
+    p, t = pad("U1", "/S11"), pad("R211", "/S11")
+    ring = (p[4] + RING_TOP, p[1])
+    src = (t[0], pad("R111", "/C11_F")[5] + S11_VIA_Y)
+    line("/S11", "F.Cu", W_C, [(p[4] - 0.3, p[1]), ring])
+    line("/S11", "F.Cu", W_S, [(t[0], t[1]), src])
+    lane = I1_LANE0 - I1_PITCH * 7                   # one above S12's In1 lane
+    route("/S11", "In1.Cu", W_S, [ring, (ring[0], lane), (src[0], lane), src])
+    via("/S11", *ring)
+    via("/S11", *src)
+
+
 # ---------------------------------------------------------------- write
 def blocks(text, head):
     for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
@@ -222,7 +273,7 @@ def main():
     a = ap.parse_args()
     if list(PCB.parent.glob("~*.lck")):
         sys.exit("KiCad has the Lean board open (lock file). Close it first.")
-    fan_in(); v_plus(); bottom_pins()
+    fan_in(); v_plus(); bottom_pins(); bus_3_10()
     nets = sorted({s[0] for s in segs} | {v[0] for v in vias})
     length = {}
     for net, layer, w, p, q in segs:
