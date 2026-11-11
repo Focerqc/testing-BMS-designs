@@ -7948,7 +7948,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7970,7 +7970,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7981,7 +7981,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7992,7 +7992,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 302.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8481,7 +8481,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8503,7 +8503,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8514,7 +8514,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8525,7 +8525,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 124.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8595,7 +8595,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8617,7 +8617,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8628,7 +8628,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8639,7 +8639,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9233,7 +9233,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9255,7 +9255,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9266,7 +9266,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9277,7 +9277,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 340.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10140,7 +10140,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10162,7 +10162,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10173,7 +10173,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10184,7 +10184,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 111.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10713,7 +10713,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10735,7 +10735,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10746,7 +10746,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10757,7 +10757,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 251.46 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10827,7 +10827,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10849,7 +10849,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10860,7 +10860,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10871,7 +10871,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 175.26 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11356,7 +11356,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11378,7 +11378,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11389,7 +11389,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11400,7 +11400,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 289.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11698,7 +11698,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11720,7 +11720,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11731,7 +11731,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11742,7 +11742,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11926,7 +11926,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11948,7 +11948,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11959,7 +11959,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11970,7 +11970,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 200.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12496,7 +12496,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12518,7 +12518,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12529,7 +12529,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12540,7 +12540,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 314.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12610,7 +12610,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12632,7 +12632,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12643,7 +12643,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12654,7 +12654,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12724,7 +12724,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12746,7 +12746,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12757,7 +12757,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12768,7 +12768,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 327.66 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13066,7 +13066,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13088,7 +13088,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13099,7 +13099,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13110,7 +13110,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 226.06 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13598,7 +13598,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13620,7 +13620,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13631,7 +13631,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13642,7 +13642,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 213.36 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14171,7 +14171,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14193,7 +14193,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14204,7 +14204,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14215,7 +14215,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 276.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14627,7 +14627,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14649,7 +14649,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14660,7 +14660,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14671,7 +14671,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 149.86 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15156,7 +15156,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15178,7 +15178,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15189,7 +15189,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15200,7 +15200,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 238.76 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15876,7 +15876,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15898,7 +15898,7 @@
 				)
 			)
 		)
-		(property "Description" "10 ohm 1% 100 mW 0603 thick film (Basic)"
+		(property "Description" "10 ohm 1% 62.5 mW 0402 thick film (Basic)"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15909,7 +15909,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22859"
+		(property "LCSC" "C25077"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15920,7 +15920,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF100JT5E"
+		(property "MPN" "0402WGF100JTCE"
 			(at 137.16 45.72 0)
 			(hide yes)
 			(show_name no)
