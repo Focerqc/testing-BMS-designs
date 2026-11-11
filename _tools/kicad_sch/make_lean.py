@@ -16,8 +16,9 @@ Lean = Guard minus:
 and with these parts swapped (SWAP below, same nets):
   R201-R218  balance 33 ohm 2512 (1 W) -> 120 ohm 1206 (0.25 W): about 31 mA and 0.12 W per
              cell instead of 89 mA and 0.26 W (2026-11-10, try 3; was 33 ohm 2010 in tries 1-2)
-  R100-R118  10 ohm series 1206 -> 0603: they carry the balance current, now about 10 mW each
-             (2026-11-10, try 3)
+  R100-R118  10 ohm series 1206 -> 0402 (62.5 mW): they carry the balance current, about 10 mW
+             each. Lying down they fit the 2.4 mm channel pitch and make the row 2 mm lower
+             (2026-11-11, try 4, 70 x 32; 0603 in try 3)
   T501, T601 isoSPI transformer Pulse HM2113ZNL -> Bourns SM91502AL (same pin functions:
              chip 1-2CT-3, line 6-5CT-4 through the built-in choke; 1000 VDC working; half the area)
   H1-H4      mounting holes M3 (3.2 mm) -> M2 (2.2 mm) (2026-11-10, try 3)
@@ -66,11 +67,11 @@ R2_1206 = {
     "LCSC": ("C53728", "C17909"),
     "MPN": ("25121WF330JT4E", "1206W4F1200T5E"),
 }
-R1_0603 = {
-    "Footprint": ("Resistor_SMD:R_1206_3216Metric", "Resistor_SMD:R_0603_1608Metric"),
-    "Description": ("10 ohm 1% 250 mW 1206 thick film (Basic)", "10 ohm 1% 100 mW 0603 thick film (Basic)"),
-    "LCSC": ("C17903", "C22859"),
-    "MPN": ("1206W4F100JT5E", "0603WAF100JT5E"),
+R1_0402 = {
+    "Footprint": ("Resistor_SMD:R_1206_3216Metric", "Resistor_SMD:R_0402_1005Metric"),
+    "Description": ("10 ohm 1% 250 mW 1206 thick film (Basic)", "10 ohm 1% 62.5 mW 0402 thick film (Basic)"),
+    "LCSC": ("C17903", "C25077"),
+    "MPN": ("1206W4F100JT5E", "0402WGF100JTCE"),
 }
 HOLE_M2 = {
     "Value": ("M3", "M2"),
@@ -94,7 +95,7 @@ R302_1K = {
     "Note": ("Top of stack to NPN collector",
              "Top of stack to NPN collector. 18S Lean: 1 kohm takes ~0.5 W off Q301 at 75.6 V, 22 mA"),
 }
-SWAP = ({f"R2{n:02d}": R2_1206 for n in range(1, 19)} | {f"R1{n:02d}": R1_0603 for n in range(19)}
+SWAP = ({f"R2{n:02d}": R2_1206 for n in range(1, 19)} | {f"R1{n:02d}": R1_0402 for n in range(19)}
         | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS} | {f"H{n}": HOLE_M2 for n in range(1, 5)} | {"R302": R302_1K})
 # R2's Note carries the Guard power figure (which itself ignores the 10 ohm in the loop)
 NOTE_SUB = {f"R2{n:02d}": ("~0.4 W at 4.2 V", "~0.12 W at 4.2 V") for n in range(1, 19)}
