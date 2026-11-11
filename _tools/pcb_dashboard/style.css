@@ -476,6 +476,12 @@ kbd {
 .dock-btn.btn-cu-top.active {
   color: #ff5c7a; background: rgba(255, 92, 122, 0.15); border-color: rgba(255, 92, 122, 0.4);
 }
+.dock-btn.btn-cu-in1.active {
+  color: #5fd38a; background: rgba(95, 211, 138, 0.15); border-color: rgba(95, 211, 138, 0.4);
+}
+.dock-btn.btn-cu-in2.active {
+  color: #ffa94d; background: rgba(255, 169, 77, 0.15); border-color: rgba(255, 169, 77, 0.4);
+}
 .dock-btn.btn-cu-bot.active {
   color: #5cb8ff; background: rgba(92, 184, 255, 0.15); border-color: rgba(92, 184, 255, 0.4);
 }

@@ -24,6 +24,8 @@
     explain: false,
     showGroups: true,
     showTopCu: false,
+    showIn1Cu: false,
+    showIn2Cu: false,
     showBotCu: false,
     showVias: false,
     showSides: false,
@@ -1568,6 +1570,24 @@
       ctx.restore();
     }
 
+    // Inner copper traces (In2.Cu under In1.Cu), drawn on every pane: they have no side
+    for (const [on, name, colour] of [[S.showIn2Cu, 'In2.Cu', '#ffa94d'], [S.showIn1Cu, 'In1.Cu', '#5fd38a']]) {
+      if (!on || !S.board.tracks) continue;
+      ctx.save();
+      ctx.strokeStyle = colour;
+      ctx.lineCap = 'round';
+      for (const tr of S.board.tracks) {
+        if (tr.layer !== name) continue;
+        const p1 = toScreen(tr.x1, tr.y1), p2 = toScreen(tr.x2, tr.y2);
+        ctx.lineWidth = Math.max(1, tr.w * sc);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
     // Top copper traces (F.Cu)
     if (S.showTopCu && layerOnPane(pane, 'F.Cu') && S.board.tracks) {
       ctx.save();
@@ -2723,6 +2743,10 @@
         tglTopCu.classList.toggle('active', S.showTopCu);
         render();
       };
+    }
+    for (const [id, key] of [['tglIn1Cu', 'showIn1Cu'], ['tglIn2Cu', 'showIn2Cu']]) {
+      const b = $(id);
+      if (b) b.onclick = () => { S[key] = !S[key]; b.classList.toggle('active', S[key]); render(); };
     }
     const tglBotCu = $('tglBotCu');
     if (tglBotCu) {
