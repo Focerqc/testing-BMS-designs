@@ -110,7 +110,7 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. `--variant lean` for Lean. Close KiCad first |
 | `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier, mounting-hole keep-out) from the board's nets. `--variant lean` for Lean. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
 | `flip_back.py REF... \| --test-points` | Writes the PCB: flips footprints to B.Cu in place through pcbnew and splices only their blocks into the file (the diff stays those parts; a whole-file pcbnew save re-formats 5000 lines). Idempotent. `lean_place.py` runs it for TP1-TP14. KiCad's Python, KiCad closed |
-| `lean_place.py` | Writes the Lean PCB: outline + every footprint from the knobs at its top (shrink trial). Run with KiCad's Python (`"C:\Program Files\KiCad\10.0\bin\python.exe"`), KiCad closed. `--dry` to report only, `--drc` for a kicad-cli DRC count. Reports courtyard overlaps and parts off the outline |
+| `lean_place.py` | Writes the Lean PCB: copper layer list (4), outline, every footprint and Q301's VCOLL zones and vias (unfilled; KiCad fills them) from the knobs at its top (shrink trial). `--pcb FILE` works on a scratch copy. Run with KiCad's Python (`"C:\Program Files\KiCad\10.0\bin\python.exe"`), KiCad closed. `--dry` to report only, `--drc` for a kicad-cli DRC count. Reports courtyard overlaps and parts off the outline |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
 if it timed out, wait for the file to settle -> `kicad-cli sch upgrade --force` ->
@@ -175,3 +175,15 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
   `download_jlcpcb_database` fetched CDFER's catalog but couldn't replace the file because other
   sessions' MCP servers hold it open (WinError 32); it was filled in place instead (501k in-stock
   parts, 2026-11-08). It lists only parts in stock, so a missing LCSC number may just be out of stock.
+
+### R302 swap, four layers and VCOLL zones on Lean (2026-11-10)
+
+- **F8 leaves a resized part where the old one was.** R302 (0805 -> 2512) landed on top of
+  R402 and looked like a placement mistake. Run `lean_place.py` right after the user's save, and
+  say beforehand that the F8 position is temporary.
+- **Zones and vias can be written as text** (`lean_place.py` `set_copper`): unfilled zone blocks
+  with fixed uuids, so a re-run gives the same file. Check them with
+  `kicad-cli pcb drc --refill-zones`; without the fill every stitching via is `via_dangling`.
+  For a picture, fill a scratch copy with `--refill-zones --save-board` and export that.
+- **pcbnew `SaveBoard` writes CRLF on Windows.** The text helpers match LF only; convert a
+  pcbnew-saved copy to LF before running them on it.
