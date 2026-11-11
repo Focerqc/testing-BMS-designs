@@ -110,6 +110,7 @@ Configured for this repo in `.mcp.json`. Tips from its docs (HEADLESS_AUTHORING,
 | `pcb_move.py MOVES.json` | Writes the PCB: sets footprint positions from `{"REF": [x, y(, rot)]}`. `--variant lean` for Lean. Close KiCad first |
 | `make_rules.py` | Writes the net classes into the `.kicad_pro` and generates the `.kicad_dru` (stack banks, isoSPI barrier, mounting-hole keep-out) from the board's nets. `--variant lean` for Lean. `--check` = files current and kicad-cli really loads the rules. Run after any net is added or renamed. Close KiCad first |
 | `flip_back.py REF... \| --test-points` | Writes the PCB: flips footprints to B.Cu in place through pcbnew and splices only their blocks into the file (the diff stays those parts; a whole-file pcbnew save re-formats 5000 lines). Idempotent. `lean_place.py` runs it for TP1-TP14. KiCad's Python, KiCad closed |
+| `lean_route.py` | Writes the Lean PCB: tracks and vias for the ch 11-18 fan-in, the V+ filter, U1's bottom pins and VREG, from the pad positions. Run it after `lean_place.py` (which does not move tracks). It replaces everything on the nets it routes; a second run changes nothing. `--dry`, `--drc`, `--pcb FILE`. KiCad's Python, KiCad closed |
 | `lean_place.py` | Writes the Lean PCB: copper layer list (4), outline, every footprint and Q301's VCOLL zones and vias (unfilled; KiCad fills them) from the knobs at its top (shrink trial). `--pcb FILE` works on a scratch copy. Run with KiCad's Python (`"C:\Program Files\KiCad\10.0\bin\python.exe"`), KiCad closed. `--dry` to report only, `--drc` for a kicad-cli DRC count. Reports courtyard overlaps and parts off the outline |
 
 Wiring recipe that worked: back up the sheet -> MCP `batch_connect` (about 15 labels) ->
@@ -192,3 +193,12 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
   `lean_place.py --pcb COPY`. The 70 x 32 try was proven that way, so the user pressed F8 once.
 - **`lean_place.py` is the current try only** (try 4, 70 x 32). Older floorplans are in git
   (try 3c, 70 x 37: `5306098`), not behind knobs.
+- **Scripted routing worked first time when the geometry was planned as lanes (2026-11-11).**
+  For a fan between two rows of pads in the same order, the trace that travels furthest gets the
+  lane nearest its target, and the lanes stack away from it; nothing crosses. Count the traces
+  across the busiest vertical line before choosing a layer. Under a 0.5 mm-pitch QFP, a 0.5 mm
+  via cannot sit in line with its neighbours' stubs: fan the stubs out to one row of vias at
+  0.75 mm pitch, with each stub leaving its pin's column 0.1-0.15 mm lower than the one outside it.
+- **Segments are plain text too:** `(segment (start x y) (end x y) (width w) (layer "F.Cu")
+  (net "/NAME") (uuid ...))`, one per line group as `lean_route.py` writes them. KiCad 10
+  stores the net by name.

@@ -255,9 +255,42 @@ is `slave-18s/bom.csv`.
       from GPIO1.
     - Checks: 0 courtyard overlaps, parity PASS, `make_rules.py --variant lean --check` OK, DRC
       with the zones filled: silkscreen items and 150 unconnected, no clearance errors.
-    - **What makes 32 mm harder than 37 mm, all unproven:** five things need inner layers (U1's
-      bottom pins, DRIVE, the port A pair, CELL18 to R302, the NTC nets), the VCOLL copper is
-      smaller, and the fan-in has less room. If routing fails, go back to `5306098`.
+    - **What makes 32 mm harder than 37 mm:** five things need inner layers (U1's bottom pins,
+      DRIVE, the port A pair, CELL18 to R302, the NTC nets), the VCOLL copper is smaller, and
+      the fan-in has less room. The first two of these are routed (next bullet); if the rest
+      fails, go back to `5306098`.
+  - **First routing on try 4 (2026-11-11): the two riskiest pieces, 29 nets, DRC clean.**
+    `_tools/kicad_sch/lean_route.py` writes the tracks and vias from the pad positions, so it
+    can be run again after `lean_place.py`. 221 segments (front 119, In1 35, In2 67), 30 vias
+    of 0.5/0.2 mm. DRC with the zones filled: no clearance, short or hole errors; unconnected
+    items 150 → 112.
+    - **ch 11–18 fan-in.** C18_F…C11_F run on the front in eight lanes at 0.45 mm pitch
+      (y 13.05–16.2), the lowest lane for ch 18. S18…S12 do not share that gap: each drops to a
+      via 0.6 mm under the series row, crosses on **In1** (seven lanes at 0.6 mm) and comes up
+      at a via just inside U1's top pad row (0.55 mm from the pads, 1.6 mm from the exposed
+      pad). So the front carries 8 traces where 15 were counted, and the 4.9 mm gap is not
+      tight any more.
+    - **V+ filter.** U1 pin 1 straight to C301; C301 to R301 over the top of C301 at y 16.8,
+      0.6 mm above C301's V− pad (VP_F is top of stack); CELL18 from R118 down to R301.
+    - **U1's bottom pins.** S2, C1_F, S1, C0_F and GPIO1–4 (pins 35–42) fan out with 0.2 mm
+      tracks to **one row of eight vias under the chip** (y 27.2, 0.75 mm pitch, between the
+      pad row and the exposed pad) and leave on **In2** in eight lanes going left. The four
+      cell nets turn up at x 12.5–13.9 and end in vias at R202, R101, R201 and R100; GPIO1–4
+      end in vias at their NTC filter parts (GPIO1 also reaches J2 pin 1). All eight are
+      bank 0, so they may run side by side.
+    - **S3 and C2_F** (pins 33, 34) leave on the front along the strip under U1 (two lanes,
+      y 30.8 and 31.26; copper may go to 31.5) and go up at x 20.9 and 20.4 to R203 and R102.
+      That is the outside of the ch 3–10 bus: the 16 left-side pins still have to be routed
+      inside it, nested the same way.
+    - **VREG** runs along the same strip from pin 48 to C303 (0.3 mm at the pin, then 0.4 mm).
+      **GPIO5–9** are joined across their pads and tied to the exposed pad from pin 45.
+    - Longest nets: GPIO1 50 mm, C0_F 48 mm, S1 46 mm (inner layer, bank 0, µA or 31 mA).
+      The C0 sense now runs 48 mm on In2 beside S1; cell 1's balance current returns through
+      R100 and C0_F's pin only as far as the datasheet's Figure 99 intends, but the long
+      parallel run should be looked at before ordering.
+    - **Not routed yet:** the ch 3–10 bus and S11, the taps from the plugs to the resistor
+      rows, both isoSPI ports, DRIVE, VCOLL and CELL18 to R302, the VREF/bias parts, the rest
+      of the NTC wiring (GPIO2–4 to J2 and C702, TH701), and the V− pour.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
