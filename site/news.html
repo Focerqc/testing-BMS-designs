@@ -82,7 +82,7 @@
         <span class="snapshot">Copper plot · KiCad 10</span>
       </div>
       <div class="board-grid">
-        <figure class="board-shot"><img src="./files/lean-try4-70x32-routed.png" alt="Copper plot of the 18S Lean slave at 70 by 32 mm with the first routed traces: front copper in red, inner layer 1 in green, inner layer 2 in orange" loading="lazy" width="2400" height="1097"></figure>
+        <figure class="board-shot"><img src="./files/lean-try4-70x32-routed.png" alt="Copper plot of the 18S Lean slave at 70 by 32 mm with the first routed traces: front copper in red, inner layer 1 in green, inner layer 2 in orange" loading="lazy" width="2400" height="1097"><img src="./files/adbms1818-slave-18s-lean-3d-top.png" alt="Top-down 3D render of the same board: white cell plugs on the top edge, the resistor rows, the ADBMS1818 with its first traces, the regulator transistor standing beside it and both isoSPI plugs top right" loading="lazy"></figure>
         <div class="board-notes">
           <h3>What you're looking at</h3>
           <ul class="legend">
@@ -94,7 +94,7 @@
             <li><b>Bottom right</b> Q301 standing with its tab up, C302, and the 1 kΩ R302; the red block is the collector copper, repeated on all four layers</li>
             <li><b>Top right</b> both isoSPI ports: GH plug, transformer, four termination parts. Port B (OUT) left, port A (IN) right</li>
           </ul>
-          <div class="honest"><span>Honest status</span><p>29 of 88 nets are routed; the picture shows copper, not a 3D render. Not routed: channels 3–10, the taps from the plugs, isoSPI, the regulator, the thermistor wiring and the ground pour. At 32 mm three of those need an inner layer: the regulator's base drive, one isoSPI pair, and the top-of-stack feed to R302. The first cell's sense line now runs 48 mm on an inner layer, which should be reviewed before ordering. The transistor's copper is about 119 mm² per layer where its datasheet rates 625 mm², so its temperature is an estimate until a board is measured. No stack-up or copper weight is chosen yet. Guard stays at 120 × 70 mm with its protection parts. The Board Boxes snapshot and the schematic PDF on this site are older than this page.</p></div>
+          <div class="honest"><span>Honest status</span><p>29 of 88 nets are routed. The first picture is a copper plot, the second a 3D render; the transformers have no 3D model, so the render shows only their pads. Not routed: channels 3–10, the taps from the plugs, isoSPI, the regulator, the thermistor wiring and the ground pour. At 32 mm three of those need an inner layer: the regulator's base drive, one isoSPI pair, and the top-of-stack feed to R302. The first cell's sense line now runs 48 mm on an inner layer, which should be reviewed before ordering. The transistor's copper is about 119 mm² per layer where its datasheet rates 625 mm², so its temperature is an estimate until a board is measured. No stack-up or copper weight is chosen yet. Guard stays at 120 × 70 mm with its protection parts.</p></div>
           <a class="button primary small" href="./">Inspect in Board Boxes <span>→</span></a>
         </div>
       </div>
