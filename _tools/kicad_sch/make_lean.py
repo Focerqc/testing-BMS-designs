@@ -21,6 +21,10 @@ and with these parts swapped (SWAP below, same nets):
   T501, T601 isoSPI transformer Pulse HM2113ZNL -> Bourns SM91502AL (same pin functions:
              chip 1-2CT-3, line 6-5CT-4 through the built-in choke; 1000 VDC working; half the area)
   H1-H4      mounting holes M3 (3.2 mm) -> M2 (2.2 mm) (2026-11-10, try 3)
+  R302       Q301 collector resistor 100 ohm 0805 -> 1 kohm 2512 (1 W): at 75.6 V and about 22 mA
+             it takes about 0.5 W, so Q301 drops from about 1.5 W to about 1.05 W. At 45 V and the
+             35 mA peak the collector is still 10 V above V- (datasheet p. 71: >= 6 V). Claude's
+             proposal, approved by the user 2026-11-10; a deviation from the datasheet's 100 ohm
 
 Labels sitting on a removed part's pin ends are deleted with it. The Guard file is never
 written. Re-run after any Guard schematic change, then:
@@ -81,8 +85,17 @@ XFMR_BOURNS = {
     "LCSC": ("C5730533", "C915690"),
     "MPN": ("HM2113ZNLT", "SM91502ALE"),
 }
+R302_1K = {
+    "Value": ("100", "1k 1W"),
+    "Footprint": ("Resistor_SMD:R_0805_2012Metric", "Resistor_SMD:R_2512_6332Metric"),
+    "Description": ("100 ohm 1% 125 mW 150 V 0805 (Basic)", "1 kohm 1% 1 W 200 V 2512 thick film (Extended)"),
+    "LCSC": ("C17408", "C54315"),
+    "MPN": ("0805W8F1000T5E", "25121WF1001T4E"),
+    "Note": ("Top of stack to NPN collector",
+             "Top of stack to NPN collector. 18S Lean: 1 kohm takes ~0.5 W off Q301 at 75.6 V, 22 mA"),
+}
 SWAP = ({f"R2{n:02d}": R2_1206 for n in range(1, 19)} | {f"R1{n:02d}": R1_0603 for n in range(19)}
-        | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS} | {f"H{n}": HOLE_M2 for n in range(1, 5)})
+        | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS} | {f"H{n}": HOLE_M2 for n in range(1, 5)} | {"R302": R302_1K})
 # R2's Note carries the Guard power figure (which itself ignores the 10 ohm in the loop)
 NOTE_SUB = {f"R2{n:02d}": ("~0.4 W at 4.2 V", "~0.12 W at 4.2 V") for n in range(1, 19)}
 
