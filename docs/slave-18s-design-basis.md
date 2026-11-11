@@ -259,6 +259,13 @@ is `slave-18s/bom.csv`.
       DRIVE, the port A pair, CELL18 to R302, the NTC nets), the VCOLL copper is smaller, and
       the fan-in has less room. The first two of these are routed (next bullet); if the rest
       fails, go back to `5306098`.
+    - **Where the slave sits in the slot (the user, 2026-11-11):** on the slot's **bottom**
+      edge. The 5 mm above it, next to the slave's own cell plugs, is for the connectors on the
+      carrier. The "XR slot overlay" drawing on the board's Dwgs.User layer shows it that way
+      (slot y −5…32 in board coordinates; it had the slave on the top edge before).
+    - **Board Boxes shows the inner layers** since 2026-11-11: In1.Cu (green) and In2.Cu
+      (orange) buttons beside F.Cu and B.Cu. The cell lines that look missing with only F.Cu
+      on are either on an inner layer (S12–S18, ch 0–2) or not routed yet (ch 3–10).
   - **First routing on try 4 (2026-11-11): the two riskiest pieces, 29 nets, DRC clean.**
     `_tools/kicad_sch/lean_route.py` writes the tracks and vias from the pad positions, so it
     can be run again after `lean_place.py`. 221 segments (front 119, In1 35, In2 67), 30 vias
