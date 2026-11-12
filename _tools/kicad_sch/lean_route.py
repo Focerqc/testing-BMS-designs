@@ -25,7 +25,10 @@ What it routes:
 
   7. isoSPI: port B on the front with one B.Cu hop, port A on In1, its CT on In2 (isospi).
 
-Not routed here: VREF1/VREF2, IBIAS/ICMP, the rest of the NTC wiring, the V- pour.
+  8. VREF1/VREF2, IBIAS/ICMP at U1; VREF2 on In1 to the NTC parts; GPIO2-4 to J2, C702, TH701
+     (bias_ntc).
+
+Not routed here: the V- pour.
 """
 import argparse
 import re
@@ -79,6 +82,9 @@ ISO_OVER = 20.3                      # CT under the transformer body, above the 
 A_VIA = ((43.6, 21.3), (44.7, 21.95))  # IPA, IMA drop to In1 here, right of U1
 A_DOWN = (52.2, 51.6)                # In1: x where IPA and IMA turn down, left of T601's courtyard
 A_LANE = (22.75, 23.45)              # In1: IPA, IMA under T601's courtyard
+VREF2_RING_X = 39.75                 # VREF2 drops to In1 inside U1's pin row, left of VREG's In1 track
+VREF2_TURN_X, VREF2_LANE = 38.6, 28.3  # In1: down right of the bottom-pin via row, left under it
+EDGE_X = 0.9                         # GPIO2 (front) and GPIO3 (In2) run down the left board edge here
 
 segs, vias = [], []
 
@@ -419,6 +425,60 @@ def isospi():
             route(net, "F.Cu", W_ISO, [(a[0], a[1]), (a[0], y), (b[0], y), (b[0], b[1])], c=0.5)
 
 
+def bias_ntc():
+    """VREF1, VREF2, IBIAS, ICMP at U1, and the rest of the NTC wiring.
+
+    VREF1, IBIAS and ICMP go straight across the channel right of U1 to C304, R401 and R402;
+    ICMP's second resistor joins between the R402 and R401 rows. VREF2 goes down the channel to
+    C305, and drops to In1 inside the pin row for the 30 mm run to the NTC parts: right of the
+    bottom-pin via row, under it, and up into a via between R702 and C703. On the front it
+    feeds R701...R704 along the two 0.9 mm channels between the three part rows. GPIO2 reaches
+    C702 from J2 pin 3 down the left board edge on the front and R702 from J2 on In1; GPIO3
+    comes from J2 pin 5 down the edge on In2; GPIO4 reaches TH701 under the bottom row.
+    """
+    u = lambda n: pin("U1", n)
+    st = lambda p: (p[4] - 0.3, p[1])
+    c304, c305 = pad("C304", "/VREF1"), pad("C305", "/VREF2")
+    r401b, r401i, r402 = pad("R401", "/IBIAS"), pad("R401", "/ICMP"), pad("R402", "/ICMP")
+    line("/VREF1", "F.Cu", W_C, [st(u("51")), (c304[0], u("51")[1])])
+    line("/ICMP", "F.Cu", W_C, [st(u("58")), (r402[0], u("58")[1])])
+    mid = (r402[5] + r401i[3]) / 2
+    route("/ICMP", "F.Cu", W_C, [(r401i[0], r401i[1]), (r401i[0], mid), (r402[0], mid), (r402[0], r402[1])])
+    ix = u("57")[4] + 0.75
+    route("/IBIAS", "F.Cu", W_C, [st(u("57")), (ix, u("57")[1]), (ix, r401b[1]), (r401b[0], r401b[1])])
+    p50 = u("50")
+    vx = c305[2] - 0.35
+    route("/VREF2", "F.Cu", W_C, [st(p50), (vx, p50[1]), (vx, c305[1]), (c305[0], c305[1])])
+    ring = (VREF2_RING_X, p50[1])
+    line("/VREF2", "F.Cu", W_C, [(p50[2] + 0.3, p50[1]), ring])
+    via("/VREF2", *ring)
+    # NTC block: three rows of parts, 0.9 mm channels between the pad rows
+    r = {n: pad(f"R70{n}", "/VREF2") for n in range(1, 5)}
+    ch1 = (r[1][5] + r[3][3]) / 2                     # between rows 1 and 2
+    ch2 = (r[3][5] + r[4][3]) / 2                     # between rows 2 and 3
+    g2r, c703 = pad("R702", "/GPIO2"), pad("C703", "/GPIO3")
+    nv = ((r[2][4] + g2r[2]) / 2, ch1)                # VREF2 via between R702's pads, above C703
+    route("/VREF2", "In1.Cu", W_C, [ring, (VREF2_TURN_X, ring[1]), (VREF2_TURN_X, VREF2_LANE),
+                                    (nv[0], VREF2_LANE), nv])
+    via("/VREF2", *nv)
+    line("/VREF2", "F.Cu", W_C, [nv, (r[1][0], ch1)])
+    for n in (1, 2, 3):
+        line("/VREF2", "F.Cu", W_C, [(r[n][0], ch1), (r[n][0], r[n][1])])
+    route("/VREF2", "F.Cu", W_C, [(r[3][0], r[3][1]), (r[3][0], ch2), (r[4][0], ch2), (r[4][0], r[4][1])])
+    # GPIO2: J2 pin 3 -> C702 down the left edge (front); J2 pin 3 -> the GPIO2 via right of R702 (In1)
+    j3, j5, c702 = pad("J2", "/GPIO2"), pad("J2", "/GPIO3"), pad("C702", "/GPIO2")
+    route("/GPIO2", "F.Cu", W_C, [(j3[0], j3[1]), (EDGE_X, j3[1]), (EDGE_X, c702[1]), (c702[0], c702[1])])
+    g2v = (g2r[4] + 0.5, g2r[1])                      # bottom_pins() put it there
+    route("/GPIO2", "In1.Cu", W_C, [(j3[0], j3[1]), (g2v[0], j3[1]), g2v])
+    # GPIO3: J2 pin 5 down the edge on In2, along channel 1 to the GPIO3 via (bottom_pins())
+    g3v = ((pad("R703", "/GPIO3")[0] + c703[0]) / 2, c703[1])
+    route("/GPIO3", "In2.Cu", W_C, [(j5[0], j5[1]), (EDGE_X, j5[1]), (EDGE_X, ch1), (g3v[0], ch1), g3v])
+    # GPIO4: C704 -> TH701 under the bottom row
+    c704, th = pad("C704", "/GPIO4"), pad("TH701", "/GPIO4")
+    y = th[5] + 0.45
+    route("/GPIO4", "F.Cu", W_C, [(c704[0], c704[1]), (c704[0], y), (th[0], y), (th[0], th[1])])
+
+
 # ---------------------------------------------------------------- write
 def blocks(text, head):
     for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
@@ -468,7 +528,7 @@ def main():
     a = ap.parse_args()
     if list(PCB.parent.glob("~*.lck")):
         sys.exit("KiCad has the Lean board open (lock file). Close it first.")
-    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps(); supply(); isospi()
+    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps(); supply(); isospi(); bias_ntc()
     nets = sorted({s[0] for s in segs} | {v[0] for v in vias})
     length = {}
     for net, layer, w, p, q in segs:
