@@ -20,9 +20,10 @@ What it routes:
   4. ch 3-10 bus: U1's left pins 32-18 on the front, nested inside S3 and C2_F (bus_3_10). S11
      (pin 17) crosses on In1 like S12.
   5. Taps: plug pins to the R2 top pads, down between two R2 parts to the R1 pads (taps).
+  6. Supply: VREG from Q301 under its body to C303, DRIVE over it on In1, a via for Q301 pin 2,
+     CELL18 on In2 to R302 (supply).
 
-Not routed here: isoSPI,
-DRIVE, VCOLL, the rest of the NTC wiring, the V- pour.
+Not routed here: isoSPI, the rest of the NTC wiring, the V- pour.
 """
 import argparse
 import re
@@ -64,6 +65,11 @@ S11_VIA_Y = 0.33                     # S11 source via: under R211, above C11_F's
 TAP_END = 0.39                       # taps: the 45 degree leg ends this far above the R2 top pad
 W_GAP = 0.2                          # CELLn down the 0.65 mm gap between two R2 parts
 GAP_JOG = 0.16                       # ... jogs to the R1 pad starting this far under the R2 pads
+W_SUP = 0.4                          # VREG, DRIVE, CELL18 to R302
+Q_VREG_Y = 27.97                     # VREG under Q301's body: 0.6 below the lowest VCOLL via row
+DRIVE_VIA_Y = 29.9                   # DRIVE drops to In1 here, in the channel right of U1
+CELL18_VIA_Y = 15.6                  # CELL18 drops to In2 on its track from R118 to R301
+CELL18_LANE = (22.95, 55.0, 27.6)    # In2: under T601's courtyard, down right of Q301, along to R302
 
 segs, vias = [], []
 
@@ -74,6 +80,14 @@ def pad(ref, net):
     if not ps:
         sys.exit(f"{ref}: no pad on {net}")
     p = max(ps, key=lambda q: q.GetBoundingBox().GetWidth() * q.GetBoundingBox().GetHeight())
+    b = p.GetBoundingBox()
+    return (mm(p.GetPosition().x), mm(p.GetPosition().y),
+            mm(b.GetLeft()), mm(b.GetTop()), mm(b.GetRight()), mm(b.GetBottom()))
+
+
+def pin(ref, num):
+    """(cx, cy, x0, y0, x1, y1) of REF's pad NUM."""
+    p = next(q for q in FP[ref].Pads() if q.GetNumber() == num)
     b = p.GetBoundingBox()
     return (mm(p.GetPosition().x), mm(p.GetPosition().y),
             mm(b.GetLeft()), mm(b.GetTop()), mm(b.GetRight()), mm(b.GetBottom()))
@@ -177,7 +191,7 @@ def bottom_pins():
         route(net, "F.Cu", W_C, [(p[0], p[5] - 0.4), (p[0], STRIP[k]), (BUS_X[k], STRIP[k]),
                                  (BUS_X[k], BUS_Y[k]), (t[0], BUS_Y[k]), (t[0], t[1])])
     # VREG along the strip to C303: pad width out of the pin, then 0.4 mm
-    p, t = pad("U1", "/VREG"), pad("C303", "/VREG")
+    p, t = pin("U1", "48"), pad("C303", "/VREG")
     route("/VREG", "F.Cu", 0.3, [(p[0], p[5] - 0.4), (p[0], t[1]), (p[0] + 0.6, t[1])])
     line("/VREG", "F.Cu", 0.4, [(p[0] + 0.6, t[1]), (t[0], t[1])])
     # GPIO5-9 (tied to V-): one track across the five pads, one stub from the middle pad to the EP
@@ -267,6 +281,54 @@ def taps():
     line("/CELL0", "F.Cu", W_GAP, [(gx, nt[1]), (nt[0], nt[1])])
 
 
+def supply():
+    """VREG, DRIVE, Q301's pin 2 and CELL18 to R302.
+
+    VREG leaves Q301 pin 3 upwards, runs left under the body (0.6 mm under the stitching vias,
+    VCOLL is top of stack), down left of DRIVE's pad and through the gap between C305 and C303
+    to C303, which pin 48 already reaches. Pin 55 (ISOMD, tied to VREG) drops to In1 inside the
+    pin row and comes up on that track. VREG closes DRIVE's pad in, so DRIVE goes down the
+    channel right of U1, crosses on In1 and comes up between VREG and its pad. The VREG track
+    also cuts pin 2 off the tab on the front: a via above pin 2 ties it to the inner VCOLL copper.
+    CELL18 drops to In2 on its way from R118 to R301, passes under T601's courtyard, goes down
+    right of Q301's via grid and along between the VCOLL via rows to R302's CELL18 pad.
+    """
+    q1, q2, q3 = pad("Q301", "/DRIVE"), pin("Q301", "2"), pad("Q301", "/VREG")
+    c305, c303 = pad("C305", "/VREF2"), pad("C303", "/VREG")
+    gap_y = (c305[5] + c303[3]) / 2
+    vx = q1[2] - 0.6                                  # VREG down left of DRIVE's pad
+    route("/VREG", "F.Cu", W_SUP, [(q3[0], q3[1]), (q3[0], Q_VREG_Y), (vx, Q_VREG_Y), (vx, gap_y),
+                                    (c303[0], gap_y), (c303[0], c303[1])])
+    p55, p48 = pin("U1", "55"), pin("U1", "48")
+    ring = (p55[2] - RING_TOP, p55[1])
+    line("/VREG", "F.Cu", W_C, [(p55[2] + 0.3, p55[1]), ring])
+    low = (ring[0], c303[1])                          # on pin 48's track to C303
+    line("/VREG", "In1.Cu", W_C, [ring, low])
+    via("/VREG", *ring)
+    via("/VREG", *low)
+    # DRIVE: pin 49 -> channel -> In1 -> up between VREG and Q301's pin 1
+    p49 = pin("U1", "49")
+    cx = p49[4] + 0.3
+    pocket = (q1[0], Q_VREG_Y + W_SUP / 2 + 0.2 + VIA[0] / 2 + 0.03)
+    route("/DRIVE", "F.Cu", 0.3, [(p49[4] - 0.3, p49[1]), (cx, p49[1]), (cx, DRIVE_VIA_Y)])
+    route("/DRIVE", "In1.Cu", 0.3, [(cx, DRIVE_VIA_Y), (q1[0], DRIVE_VIA_Y), pocket])
+    line("/DRIVE", "F.Cu", 0.3, [pocket, (q1[0], q1[1])])
+    via("/DRIVE", cx, DRIVE_VIA_Y)
+    via("/DRIVE", *pocket)
+    # Q301 pin 2: via above it, 0.6 mm from VREG
+    v2 = (q2[0], Q_VREG_Y + W_SUP / 2 + 0.6 + VIA[0] / 2 + 0.03)
+    line("/VCOLL", "F.Cu", 0.5, [v2, (q2[0], q2[1])])
+    via("/VCOLL", *v2)
+    # CELL18 to R302
+    s, t = pad("R118", "/CELL18"), pad("R302", "/CELL18")
+    top, end = (s[0], CELL18_VIA_Y), (t[0], CELL18_LANE[2])
+    y1, x2, y3 = CELL18_LANE
+    route("/CELL18", "In2.Cu", W_C, [top, (s[0], y1), (x2, y1), (x2, y3), end])
+    line("/CELL18", "F.Cu", W_C, [end, (t[0], t[1])])
+    via("/CELL18", *top)
+    via("/CELL18", *end)
+
+
 # ---------------------------------------------------------------- write
 def blocks(text, head):
     for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
@@ -284,6 +346,8 @@ def write(text, mine, ubox):
             net = re.search(r'\(net "([^"]*)"\)', blk)
             if not net or net.group(1) not in mine:
                 continue
+            if net.group(1) == "/VCOLL" and head == "via" and f"(size {VIA[0]:g})" not in blk:
+                continue                              # lean_place's stitching vias (0.6 mm)
             if net.group(1) == "/V-":
                 a = re.search(r"\((?:start|at) ([-\d.]+) ([-\d.]+)\)", blk)
                 if not (ubox[0] < float(a.group(1)) < ubox[2] and ubox[1] < float(a.group(2)) < ubox[3]):
@@ -313,7 +377,7 @@ def main():
     a = ap.parse_args()
     if list(PCB.parent.glob("~*.lck")):
         sys.exit("KiCad has the Lean board open (lock file). Close it first.")
-    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps()
+    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps(); supply()
     nets = sorted({s[0] for s in segs} | {v[0] for v in vias})
     length = {}
     for net, layer, w, p, q in segs:
