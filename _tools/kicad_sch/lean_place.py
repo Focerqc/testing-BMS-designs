@@ -28,7 +28,7 @@ GH plugs top-right just under H3. What changed to lose 5 mm:
     Its pins run DRIVE, VCOLL, VREG from the left, so VREG (22 mA) comes back under the body and
     through the column gap to C303, and DRIVE (1 mA) has to hop over it on an inner layer.
   - one VCOLL zone on all four layers: round Q301 and under C302/R302, stitched with vias. VCOLL
-    is top of stack: 0.6 mm to banks 0-4 (the fill follows the .kicad_dru).
+    ranges from stack minus 35.35 V to stack; the fill follows make_rules.py's range rule.
   - the port A pair has no way past Q301 and port B's termination row on the front: inner layer.
   - NTC filter parts under J2. GPIO1-4 and VREF2 need an inner layer to reach them.
 """
@@ -72,9 +72,11 @@ ISO_Y = 5.07             # top courtyard edge of the GH plugs J4/J3 (clear of H3
 PARK_X = W + 6           # where parked parts wait
 LAYERS = 4               # copper layers: F, In1, In2, B (decided 2026-11-10)
 HOLE_KEEP = 2.75         # copper keep-out radius round an M2 hole centre (make_rules.py HOLES)
-HV = 0.6                 # top-of-stack copper to banks 0-4 (make_rules.py HV_FAR)
+HV = 0.6                 # VCOLL range vs >30 V neighbours, plus conservative bank rules
 VIA = (0.6, 0.3)         # stitching via pad / hole
 VIA_PITCH = 1.15         # stitching via pitch
+VCOLL_PAD_MARGIN = HV + VIA[0] / 2 + 0.05  # R302 CELL18 pad edge to stitching-via centre
+VCOLL_BODY_TOP = 1.50    # first via row below R302's pad top, clears CELL18 lane at y=27.8
 
 # ---------------------------------------------------------------- helpers
 mm, nm = pcbnew.ToMM, pcbnew.FromMM
@@ -315,8 +317,8 @@ def vcoll_area(rcb):
     rv, rc = pad_box("R302", "/VCOLL"), pad_box("R302", "/CELL18")
     for x in grid(box(["C302"])[2] + 0.6, hx - 0.4):  # the strip above R302
         vias += [(x, y) for y in grid(top + 0.5, rv[1] - 0.6)]
-    for x in grid(rv[2] + 0.6, rc[0] - 0.6):         # under R302's body, between its pads
-        vias += [(x, y) for y in grid(rv[1] + 0.35, bot - 0.5)]
+    for x in grid(rv[2] + 0.6, rc[0] - VCOLL_PAD_MARGIN):  # leave 0.65 mm to CELL18 pad
+        vias += [(x, y) for y in grid(rv[1] + VCOLL_BODY_TOP, bot - 0.5)]
     copper["vias"] = vias
 
 # ---------------------------------------------------------------- write + report
@@ -362,7 +364,7 @@ def set_copper(text):
     drop = [(s, e) for s, e in top_level(text, "zone") if '(name "VCOLL_Q301' in text[s:e]]
     for s, e in top_level(text, "via"):
         blk = text[s:e]
-        if '(net "/VCOLL")' in blk:              # nothing is routed: every VCOLL via is one of ours
+        if '(net "/VCOLL")' in blk:              # also removes routing's pin-2 via; run lean_route next
             drop.append((s, e))
     for s, e in sorted(drop, reverse=True):
         text = text[:s] + text[e:]

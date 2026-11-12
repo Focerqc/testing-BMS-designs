@@ -74,7 +74,7 @@ W_SUP = 0.4                          # VREG, DRIVE, CELL18 to R302
 Q_VREG_Y = 27.97                     # VREG under Q301's body: 0.6 below the lowest VCOLL via row
 DRIVE_VIA_Y = 29.9                   # DRIVE drops to In1 here, in the channel right of U1
 CELL18_VIA_Y = 15.6                  # CELL18 drops to In2 on its track from R118 to R301
-CELL18_LANE = (22.95, 55.0, 27.6)    # In2: under T601's courtyard, down right of Q301, along to R302
+CELL18_LANE = (22.95, 55.0, 27.8)    # In2: end via clears VCOLL strip at y=26.55 by >0.6 mm
 W_ISO = 0.25
 ISO_DOWN = (47.8, 47.3)              # front: x where IPB and IMB turn down towards T601
 ISO_UNDER = 22.37                    # front: IMB under T601's pins (0.6 mm above Q301's tab)
@@ -300,7 +300,7 @@ def supply():
     """VREG, DRIVE, Q301's pin 2 and CELL18 to R302.
 
     VREG leaves Q301 pin 3 upwards, runs left under the body (0.6 mm under the stitching vias,
-    VCOLL is top of stack), down left of DRIVE's pad and through the gap between C305 and C303
+    VCOLL can reach top of stack), down left of DRIVE's pad and through the gap between C305 and C303
     to C303, which pin 48 already reaches. Pin 55 (ISOMD, tied to VREG) drops to In1 inside the
     pin row and comes up on that track. VREG closes DRIVE's pad in, so DRIVE goes down the
     channel right of U1, crosses on In1 and comes up between VREG and its pad. The VREG track

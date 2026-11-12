@@ -33,6 +33,13 @@
   (constraint clearance (min 0.6mm))
   (condition "(A.NetName == '/C12_F' || A.NetName == '/C13_F' || A.NetName == '/C14_F' || A.NetName == '/CELL12' || A.NetName == '/CELL13' || A.NetName == '/CELL14' || A.NetName == '/S12' || A.NetName == '/S13' || A.NetName == '/S14') && (B.NetName == '/C18_F' || B.NetName == '/CELL18' || B.NetName == '/S18' || B.NetName == '/VCOLL' || B.NetName == '/VP_F')"))
 
+# Lean VCOLL: stack - (0..35.35 V), including R302 +1% at 35 mA.
+# Cells 2.5..4.2 V; Cn_F may rise one level, Sn may fall one level.
+# Compare both range endpoints; retain the conservative bank rules above.
+(rule "Lean VCOLL operating range: more than 30 V"
+  (constraint clearance (min 0.6mm))
+  (condition "A.NetName == '/VCOLL' && (B.NetName == '/C0_F' || B.NetName == '/C10_F' || B.NetName == '/C15_F' || B.NetName == '/C16_F' || B.NetName == '/C17_F' || B.NetName == '/C18_F' || B.NetName == '/C1_F' || B.NetName == '/C2_F' || B.NetName == '/C3_F' || B.NetName == '/C4_F' || B.NetName == '/C5_F' || B.NetName == '/C6_F' || B.NetName == '/C7_F' || B.NetName == '/C8_F' || B.NetName == '/C9_F' || B.NetName == '/CELL0' || B.NetName == '/CELL1' || B.NetName == '/CELL10' || B.NetName == '/CELL16' || B.NetName == '/CELL17' || B.NetName == '/CELL18' || B.NetName == '/CELL2' || B.NetName == '/CELL3' || B.NetName == '/CELL4' || B.NetName == '/CELL5' || B.NetName == '/CELL6' || B.NetName == '/CELL7' || B.NetName == '/CELL8' || B.NetName == '/CELL9' || B.NetName == '/DRIVE' || B.NetName == '/GPIO1' || B.NetName == '/GPIO2' || B.NetName == '/GPIO3' || B.NetName == '/GPIO4' || B.NetName == '/IBIAS' || B.NetName == '/ICMP' || B.NetName == '/IMA' || B.NetName == '/IMB' || B.NetName == '/IPA' || B.NetName == '/IPB' || B.NetName == '/ISOA_CM' || B.NetName == '/ISOA_CT' || B.NetName == '/ISOB_CM' || B.NetName == '/ISOB_CT' || B.NetName == '/S1' || B.NetName == '/S10' || B.NetName == '/S11' || B.NetName == '/S16' || B.NetName == '/S17' || B.NetName == '/S18' || B.NetName == '/S2' || B.NetName == '/S3' || B.NetName == '/S4' || B.NetName == '/S5' || B.NetName == '/S6' || B.NetName == '/S7' || B.NetName == '/S8' || B.NetName == '/S9' || B.NetName == '/V-' || B.NetName == '/VP_F' || B.NetName == '/VREF1' || B.NetName == '/VREF2' || B.NetName == '/VREG' || B.NetName == 'unconnected-(U1-SDI{slash}NC-Pad53)' || B.NetName == 'unconnected-(U1-SDO{slash}NC-Pad54)' || B.NetName == 'unconnected-(U1-WDT-Pad56)')"))
+
 # 2. isoSPI barrier. Each line side (connector to transformer pins 4-6) floats between
 #    this module and its neighbour: up to 2 x 75.6 V = 151.2 V. IPC-2221B B2 151-300 V
 #    needs 1.25 mm; 2.0 mm leaves margin for motor common-mode transients and ESD

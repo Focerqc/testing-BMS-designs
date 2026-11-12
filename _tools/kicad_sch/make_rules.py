@@ -68,7 +68,14 @@ LAYERS = COPPER_LAYERS["guard"]   # set from --variant in main()
 LOW = re.compile(r"/(V-|DRIVE|VREG|VREF[12]|IBIAS|ICMP|GPIO\d+|IP[AB]|IM[AB]|ISO[AB]_C[MT])$"
                  r"|unconnected-\(U1-")           # <= 6 V above V-
 TAPPED = re.compile(r"/(?:CELL|TAP)(\d+)$|/C(\d+)_F$|/S(\d+)$")
-TOP = {"/VP_F", "/VCOLL", "/VBAT_F"}              # top of stack, after R301/R302
+TOP = {"/VP_F", "/VBAT_F"}                        # top of stack, after R301
+VARIANT = "guard"
+CELL_VOLTS = (2.5, 4.2)                          # documented 18S operating envelope: 45-75.6 V
+COLLECTOR_OHMS = {"guard": 100, "lean": 1000}
+COLLECTOR_PEAK_A = 0.035
+COLLECTOR_TOLERANCE = 0.01                       # include R302's +1% at the peak current
+STACK_LEVEL = 18
+HV_THRESHOLD = 30.0
 # Line side includes the transformer's unconnected LINE_CT pad 5 and the GH connector's
 # hold-down tabs (J3/J4 pad MP, no circuit, about 1.5 mm from the signal pads)
 LINE = {"A": re.compile(r"/ISOA_L[PN]$|unconnected-\((T501|J3)-"),
@@ -106,7 +113,7 @@ def classify(nets):
         m = TAPPED.search(n)
         if port:
             line[port].append(n)
-        elif n in TOP:
+        elif n in TOP or n == "/VCOLL":
             bank[n] = 18 // 3
         elif m:
             bank[n] = int(next(g for g in m.groups() if g)) // 3
@@ -121,6 +128,51 @@ def classify(nets):
 
 def any_net(side, nets):
     return "(" + " || ".join(f"{side}.NetName == '{n}'" for n in sorted(nets)) + ")"
+
+
+def level_range(net):
+    """Tap-level envelope; Cn may rise towards C(n+1) during balancing, Sn falls to C(n-1).
+
+    VCOLL is correlated with the stack: level 18 minus a load-dependent voltage drop,
+    not an independent absolute voltage. At 2.5 V/cell its equivalent level range is
+    18 - (R302 * 1.01 * 0.035) / 2.5 ... 18. Guard drops only 3.535 V and keeps its
+    existing top-bank rules. Lean drops 35.35 V; compare both ends against each net.
+    """
+    if net == "/VCOLL":
+        return (STACK_LEVEL - COLLECTOR_OHMS[VARIANT] * (1 + COLLECTOR_TOLERANCE)
+                * COLLECTOR_PEAK_A / CELL_VOLTS[0], STACK_LEVEL)
+    if net in TOP:
+        return STACK_LEVEL, STACK_LEVEL
+    m = TAPPED.search(net)
+    if m:
+        n = int(next(g for g in m.groups() if g))
+        return (max(0, n - 1) if net.startswith('/S') else n,
+                min(STACK_LEVEL, n + 1) if re.fullmatch(r'/C\d+_F', net) else n)
+    if LOW.search(net):
+        return 0, 6 / CELL_VOLTS[0]
+    raise ValueError(f"no level range for {net}")
+
+
+def collector_far(nets):
+    """Nets potentially >30 V from VCOLL within the documented cell-voltage envelope.
+
+    For tap levels lo..hi, stack minus that tap is (18-hi)*2.5 .. (18-lo)*4.2 V.
+    Subtract the collector drop 0..35.35 V and test both signed endpoints. This keeps
+    stack and tap correlated (no comparison of a full stack against a depleted tap).
+    Existing bank rules remain as a conservative floor; the isoSPI barrier still wins.
+    """
+    low, high = level_range('/VCOLL')
+    drop = (high - low) * CELL_VOLTS[0]
+    far = []
+    for n in nets:
+        if n == '/VCOLL':
+            continue
+        lo, hi = level_range(n)
+        delta = max((STACK_LEVEL - lo) * CELL_VOLTS[1],
+                    drop - (STACK_LEVEL - hi) * CELL_VOLTS[0])
+        if delta > HV_THRESHOLD:
+            far.append(n)
+    return far
 
 
 def dru_text(nets):
@@ -154,6 +206,14 @@ def dru_text(nets):
                 f'(rule "Stack: bank {b} (levels {lo}-{hi}) vs {others}, B2 31-150 V"',
                 f"  (constraint clearance (min {HV_FAR}mm))",
                 f'  (condition "{a_side} && {any_net("B", far)}"))']
+    if VARIANT == "lean":
+        out += ["",
+                "# Lean VCOLL: stack - (0..35.35 V), including R302 +1% at 35 mA.",
+                "# Cells 2.5..4.2 V; Cn_F may rise one level, Sn may fall one level.",
+                "# Compare both range endpoints; retain the conservative bank rules above.",
+                '(rule "Lean VCOLL operating range: more than 30 V"',
+                f"  (constraint clearance (min {HV_FAR}mm))",
+                f'  (condition "A.NetName == \'/VCOLL\' && {any_net("B", collector_far(bank))}"))']
     out += ["",
             "# 2. isoSPI barrier. Each line side (connector to transformer pins 4-6) floats between",
             "#    this module and its neighbour: up to 2 x 75.6 V = 151.2 V. IPC-2221B B2 151-300 V",
@@ -234,14 +294,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--pcb", type=Path, help="scratch board; sibling project/rules must exist")
     ap.add_argument("--variant", choices=tuple(VARIANTS), default="guard",
                     help="guard = slave-18s, lean = slave-18s-lean")
     a = ap.parse_args()
-    global PRO, PCB, DRU, HOLE, LAYERS
+    global PRO, PCB, DRU, HOLE, LAYERS, VARIANT
+    VARIANT = a.variant
     HOLE, LAYERS = HOLES[a.variant], COPPER_LAYERS[a.variant]
     sch = VARIANTS[a.variant]
     PRO, PCB, DRU = (sch.with_suffix(s) for s in (".kicad_pro", ".kicad_pcb", ".kicad_dru"))
-    print(f"{a.variant}: {PCB.relative_to(sch.parents[1]).as_posix()}")
+    if a.pcb:
+        PCB = a.pcb.resolve()
+        PRO, DRU = PCB.with_suffix('.kicad_pro'), PCB.with_suffix('.kicad_dru')
+    print(f"{a.variant}: {PCB}")
     have = copper_layers()
     if have != LAYERS:
         print(f"FAIL: the board has {have} copper layers, {a.variant} is {LAYERS}"
