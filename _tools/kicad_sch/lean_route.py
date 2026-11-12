@@ -23,7 +23,9 @@ What it routes:
   6. Supply: VREG from Q301 under its body to C303, DRIVE over it on In1, a via for Q301 pin 2,
      CELL18 on In2 to R302 (supply).
 
-Not routed here: isoSPI, the rest of the NTC wiring, the V- pour.
+  7. isoSPI: port B on the front with one B.Cu hop, port A on In1, its CT on In2 (isospi).
+
+Not routed here: VREF1/VREF2, IBIAS/ICMP, the rest of the NTC wiring, the V- pour.
 """
 import argparse
 import re
@@ -70,6 +72,13 @@ Q_VREG_Y = 27.97                     # VREG under Q301's body: 0.6 below the low
 DRIVE_VIA_Y = 29.9                   # DRIVE drops to In1 here, in the channel right of U1
 CELL18_VIA_Y = 15.6                  # CELL18 drops to In2 on its track from R118 to R301
 CELL18_LANE = (22.95, 55.0, 27.6)    # In2: under T601's courtyard, down right of Q301, along to R302
+W_ISO = 0.25
+ISO_DOWN = (47.8, 47.3)              # front: x where IPB and IMB turn down towards T601
+ISO_UNDER = 22.37                    # front: IMB under T601's pins (0.6 mm above Q301's tab)
+ISO_OVER = 20.3                      # CT under the transformer body, above the pins
+A_VIA = ((43.6, 21.3), (44.7, 21.95))  # IPA, IMA drop to In1 here, right of U1
+A_DOWN = (52.2, 51.6)                # In1: x where IPA and IMA turn down, left of T601's courtyard
+A_LANE = (22.75, 23.45)              # In1: IPA, IMA under T601's courtyard
 
 segs, vias = [], []
 
@@ -329,15 +338,97 @@ def supply():
     via("/CELL18", *end)
 
 
+def isospi():
+    """Both isoSPI ports, chip side and line side.
+
+    Port B on the front: IPB into T601 pin 1 from the left, IMB under T601's pins to R602 and
+    up into pin 3, CT over the pins (under the transformer body) and down right of C602, CM
+    between R601 and R602 and along the bottom pads. IPB to R601's bottom pad would have to
+    cross IMB, so it hops on B.Cu. Port A drops to In1 right of U1 (its pins sit below port B's)
+    and passes under T601's courtyard; IPA comes up left of R501, IMA comes up between T501
+    pins 1 and 2 for R502 and under the body for pin 3. Port A's CT has no front path to C502
+    (the board edge is right of it), so it crosses on In2 from under the body to below C502.
+    Each port's two V- caps share a via between them. Line side: transformer to plug, short.
+    """
+    u = {n: pad("U1", f"/{n}") for n in ("IPB", "IMB", "IPA", "IMA")}
+    start = lambda p: (p[4] - 0.3, p[1])
+    # ---- port B
+    t1, t2, t3 = pin("T601", "1"), pin("T601", "2"), pin("T601", "3")
+    ra_t, ra_b = pad("R601", "/ISOB_CM"), pad("R601", "/IPB")
+    rb_t, rb_b = pad("R602", "/IMB"), pad("R602", "/ISOB_CM")
+    ca_t, ca_b = pad("C601", "/V-"), pad("C601", "/ISOB_CM")
+    cb_t, cb_b = pad("C602", "/V-"), pad("C602", "/ISOB_CT")
+    route("/IPB", "F.Cu", W_ISO, [start(u["IPB"]), (ISO_DOWN[0], u["IPB"][1]), (ISO_DOWN[0], t1[1]), (t1[0], t1[1])])
+    route("/IMB", "F.Cu", W_ISO, [start(u["IMB"]), (ISO_DOWN[1], u["IMB"][1]), (ISO_DOWN[1], ISO_UNDER),
+                                  (t3[0], ISO_UNDER), (t3[0], t3[1])])
+    line("/IMB", "F.Cu", W_ISO, [(rb_t[0], ISO_UNDER), (rb_t[0], rb_t[1])])
+    hop = (t1[2] - 0.6, t1[1])                        # IPB: B.Cu round IMB to R601's bottom pad
+    low = (ra_b[2] - 0.56, ra_b[3] - 0.1)
+    route("/IPB", "B.Cu", W_ISO, [hop, (hop[0], low[1]), low])
+    line("/IPB", "F.Cu", W_ISO, [low, (low[0] + (ra_b[1] - low[1]), ra_b[1]), (ra_b[0], ra_b[1])])
+    via("/IPB", *hop)
+    via("/IPB", *low)
+    gx = (ra_t[4] + rb_t[2]) / 2
+    route("/ISOB_CM", "F.Cu", W_ISO, [(ra_t[0], ra_t[1]), (gx, ra_t[1]), (gx, (rb_b[1] + ca_b[1]) / 2),
+                                      (ca_b[0], (rb_b[1] + ca_b[1]) / 2)])
+    cx = cb_t[4] + 0.2 + W_ISO / 2 + 0.015
+    route("/ISOB_CT", "F.Cu", W_ISO, [(t2[0], t2[1]), (t2[0], ISO_OVER), (cx, ISO_OVER), (cx, cb_b[1]), (cb_b[0], cb_b[1])])
+    vb = ((ca_t[4] + cb_t[2]) / 2, (ca_t[5] + ca_b[3]) / 2 + 0.0)
+    line("/V-", "F.Cu", W_ISO, [(ca_t[0], ca_t[1]), vb, (cb_t[0], cb_t[1])])
+    via("/V-", *vb)
+    # ---- port A
+    t1, t2, t3 = pin("T501", "1"), pin("T501", "2"), pin("T501", "3")
+    ra_t, ra_b = pad("R501", "/ISOA_CM"), pad("R501", "/IPA")
+    rb_t, rb_b = pad("R502", "/IMA"), pad("R502", "/ISOA_CM")
+    ca_t, ca_b = pad("C501", "/V-"), pad("C501", "/ISOA_CM")
+    cb_t, cb_b = pad("C502", "/V-"), pad("C502", "/ISOA_CT")
+    pa, ma = A_VIA
+    route("/IPA", "F.Cu", W_ISO, [start(u["IPA"]), (pa[0], u["IPA"][1]), pa])
+    route("/IMA", "F.Cu", W_ISO, [start(u["IMA"]), (u["IMA"][4] + 0.45, u["IMA"][1]), (u["IMA"][4] + 0.45, ma[1]), ma])
+    via("/IPA", *pa)
+    via("/IMA", *ma)
+    ipa = (t1[2] - 0.28, A_LANE[0])                   # IPA via left of R501
+    ima = ((ra_t[4] + rb_t[2]) / 2, t1[5] + 0.47)     # IMA via between T501 pins 1-2 and the row
+    ima3 = (t3[0], t3[3] - 0.66)                      # IMA via under the body, above pin 3
+    route("/IPA", "In1.Cu", W_ISO, [pa, (A_DOWN[0], pa[1]), (A_DOWN[0], A_LANE[0]), ipa])
+    route("/IMA", "In1.Cu", W_ISO, [ma, (A_DOWN[1], ma[1]), (A_DOWN[1], A_LANE[1]), (ima[0], A_LANE[1]), ima])
+    route("/IMA", "In1.Cu", W_ISO, [ima, (ima3[0], ima[1]), ima3], c=0.6)
+    for v, n in ((ipa, "/IPA"), (ima, "/IMA"), (ima3, "/IMA")):
+        via(n, *v)
+    route("/IPA", "F.Cu", W_ISO, [(t1[0], t1[1]), (ipa[0], t1[1]), (ipa[0], ra_b[1]), (ra_b[0], ra_b[1])])
+    route("/IMA", "F.Cu", W_ISO, [ima, (rb_t[0], ima[1]), (rb_t[0], rb_t[1])])
+    line("/IMA", "F.Cu", W_ISO, [ima3, (t3[0], t3[1])])
+    gx = ima[0]
+    route("/ISOA_CM", "F.Cu", W_ISO, [(ra_t[0], ra_t[1]), (gx, ra_t[1]), (gx, (rb_b[1] + ca_b[1]) / 2),
+                                      (ca_b[0], (rb_b[1] + ca_b[1]) / 2)])
+    ct_top, ct_low = (t2[0], ima3[1]), (cb_b[0], cb_b[5] + 0.65)
+    ct_x = (rb_t[4] + ca_t[2]) / 2 + 0.85            # In2: right of the V- via
+    line("/ISOA_CT", "F.Cu", W_ISO, [ct_top, (t2[0], t2[1])])
+    route("/ISOA_CT", "In2.Cu", W_ISO, [ct_top, (ct_x, ct_top[1]), (ct_x, ct_low[1]), ct_low])
+    line("/ISOA_CT", "F.Cu", W_ISO, [ct_low, (cb_b[0], cb_b[1])])
+    via("/ISOA_CT", *ct_top)
+    via("/ISOA_CT", *ct_low)
+    va = ((rb_t[4] + ca_t[2]) / 2, ca_t[1])
+    line("/V-", "F.Cu", W_ISO, [va, (cb_t[0], cb_t[1])])
+    via("/V-", *va)
+    # ---- line side: transformer pins 6/4 to plug pins 1/2, turning at the same height
+    for t, j, port in (("T601", "J4", "B"), ("T501", "J3", "A")):
+        for tn, jn, net in (("6", "1", f"/ISO{port}_LP"), ("4", "2", f"/ISO{port}_LN")):
+            a, b = pin(t, tn), pin(j, jn)
+            y = (a[3] + b[5]) / 2
+            route(net, "F.Cu", W_ISO, [(a[0], a[1]), (a[0], y), (b[0], y), (b[0], b[1])], c=0.5)
+
+
 # ---------------------------------------------------------------- write
 def blocks(text, head):
     for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
         yield m.start(), m.end()
 
 
-def write(text, mine, ubox):
+def write(text, mine, vboxes):
     """Drop every segment and via on the nets in MINE and add ours. V- is shared with everything
-    else, so only its tracks inside U1's courtyard (UBOX) count as ours."""
+    else, so only its tracks and vias inside VBOXES (U1, the termination rows) count as ours;
+    VCOLL's 0.6 mm stitching vias belong to lean_place."""
     uid = lambda *k: uuid.uuid5(uuid.NAMESPACE_URL, "lean_route/" + "/".join(map(str, k)))
     drop = []
     for head in ("segment", "via"):
@@ -350,7 +441,7 @@ def write(text, mine, ubox):
                 continue                              # lean_place's stitching vias (0.6 mm)
             if net.group(1) == "/V-":
                 a = re.search(r"\((?:start|at) ([-\d.]+) ([-\d.]+)\)", blk)
-                if not (ubox[0] < float(a.group(1)) < ubox[2] and ubox[1] < float(a.group(2)) < ubox[3]):
+                if not any(b[0] < float(a.group(1)) < b[2] and b[1] < float(a.group(2)) < b[3] for b in vboxes):
                     continue
             drop.append((s, e))
     for s, e in sorted(drop, reverse=True):
@@ -377,7 +468,7 @@ def main():
     a = ap.parse_args()
     if list(PCB.parent.glob("~*.lck")):
         sys.exit("KiCad has the Lean board open (lock file). Close it first.")
-    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps(); supply()
+    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps(); supply(); isospi()
     nets = sorted({s[0] for s in segs} | {v[0] for v in vias})
     length = {}
     for net, layer, w, p, q in segs:
@@ -388,11 +479,11 @@ def main():
     if a.dry:
         print("(dry run, board not written)")
         return
-    ubox = lp.box(["U1"])
+    vboxes = [lp.box(["U1"]), lp.box(["R601", "R602", "C601", "C602", "R501", "R502", "C501", "C502"])]
     lp.release()
     with open(PCB, encoding="utf-8", newline="") as f:
         text = f.read()
-    text, gone = write(text, set(nets), ubox)
+    text, gone = write(text, set(nets), vboxes)
     with open(PCB, "w", encoding="utf-8", newline="") as f:
         f.write(text)
     print(f"wrote {PCB.name}: {gone} old items removed")
