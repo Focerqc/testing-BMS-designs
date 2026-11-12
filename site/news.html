@@ -23,16 +23,16 @@
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow"><span class="pulse"></span> Update · November 11, 2026</p>
-        <h1>70 × 32 mm,<br><em>first traces.</em></h1>
-        <p class="intro">An ADBMS1818 cell monitor for 18 Li-ion cells, with passive balancing and an isoSPI daisy chain to a separate master. One schematic makes two boards: <b>Guard</b>, with hot-plug protection for the bench, and <b>Lean</b>, without it. Lean is being shrunk so that one day two of them can share a 156.5 × 37 mm battery slot that is only 10 mm tall. It is now <b>70 × 32 mm on four copper layers</b>, with every part placed on the front and both cell plugs still on the board. The 5 mm under the slot height is for connectors on the carrier. The first 29 of 88 nets are routed by script and pass DRC: the fan-in to the chip's top pins and the escape from its bottom pins, the two pieces most likely to fail at this height.</p>
+        <h1>70 × 32 mm,<br><em>fully routed.</em></h1>
+        <p class="intro">An ADBMS1818 cell monitor for 18 Li-ion cells, with passive balancing and an isoSPI daisy chain to a separate master. One schematic makes two boards: <b>Guard</b>, with hot-plug protection for the bench, and <b>Lean</b>, without it. Lean is being shrunk so that one day two of them can share a 156.5 × 37 mm battery slot that is only 10 mm tall. It is now <b>70 × 32 mm on four copper layers</b>, with every part placed on the front and both cell plugs still on the board. The 5 mm under the slot height is for connectors on the carrier. Every net is now routed by script, with the ground (V−) poured on the back layer, and DRC finds no clearance errors and nothing left unconnected. Two long traces still need a review before a board is ordered.</p>
         <div class="hero-actions">
           <a class="button primary" href="./">Explore the board <span>→</span></a>
           <a class="button secondary" href="./files/adbms1818-slave-18s-lean-schematic.pdf">Lean schematic PDF <span>↗</span></a>
         </div>
       </div>
       <figure class="hero-board">
-        <img src="./files/lean-try4-70x32-routed.png" alt="Copper plot of the 18S Lean slave at 70 by 32 mm: two cell plugs on the top edge, a row of 18 standing balance resistors with 19 small series resistors under it, the ADBMS1818 below with traces fanning in from the right half of the row, a bundle of inner-layer traces leaving its bottom pins to the left, the regulator transistor and its copper area bottom right, both isoSPI ports top right" width="2400" height="1097">
-        <figcaption><span class="tag">Copper plot</span> 18S Lean, try 4 at 70 × 32 mm · front red, inner layers green and orange</figcaption>
+        <img src="./files/lean-try4-70x32-full-route.png" alt="Copper plot of the fully routed 18S Lean slave at 70 by 32 mm: taps from both cell plugs down to the resistor rows, every channel fanning into the ADBMS1818 from the left and top, inner-layer traces leaving its bottom pins to the left, the regulator transistor's copper area bottom right, both isoSPI ports top right" width="2400" height="1097">
+        <figcaption><span class="tag">Copper plot</span> 18S Lean, try 4, fully routed · front red, inner layers green and orange; the back-layer ground pour is not drawn</figcaption>
       </figure>
     </section>
 
@@ -41,7 +41,7 @@
       <div><strong>75.6 V</strong><span>stack at 4.2 V/cell</span></div>
       <div><strong>70 × 32</strong><span>mm, Lean try 4 (was 120 × 70)</span></div>
       <div><strong>77</strong><span>parts on Lean (Guard: 150)</span></div>
-      <div><strong>29 / 88</strong><span>Lean nets routed, DRC clean</span></div>
+      <div><strong>88 / 88</strong><span>Lean nets routed, DRC clean</span></div>
       <div><strong>0</strong><span>PCB ↔ schematic mismatches</span></div>
     </section>
 
@@ -71,7 +71,8 @@
         <li class="done"><span class="dot"></span><div><span class="when">Nov 10</span><h3>Regulator heat shared with a resistor, four layers</h3><p>On Lean the resistor in the regulator transistor's collector went from 100 Ω to 1 kΩ in a 1 W package. At 75.6 V and about 22 mA it takes about 0.5 W, so the transistor drops from about 1.5 W to about 1.05 W. At a 45 V stack and the chip's 35 mA peak the collector still sits 10 V above ground, and the datasheet asks for 6 V. This is our own change from the datasheet's 100 Ω. The board went to four copper layers, with a copper area for the transistor's collector on all four, joined by vias.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 11</span><h3>Try 4: 70 × 32 mm</h3><p>The cell plugs stay on the slave, and the carrier should hold connectors above it, so 5 mm had to come off. With the try 3 parts only 3.7 mm was left for traces above and below the chip. The 10 Ω series resistors became 0402 lying down (2 mm), the strip under the plugs lost 0.5 mm, and the chip moved to 1.3 mm from the bottom edge. The regulator transistor now stands on end beside the chip, because the space under the isoSPI parts is too low for it lying down. Its copper area is smaller than at 37 mm, so it will run hotter.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 11</span><h3>First routing: fan-in and bottom pins</h3><p>A script draws the traces from the pad positions, so it can run again after any placement change. Channels 11–18 reach the chip's top pins on two layers: the eight sense lines on the front, the seven balance lines through vias on an inner layer. Eight bottom pins fan out to one row of vias under the chip and leave on the other inner layer; two more and the 5 V supply use the 1 mm strip between the chip and the board edge. 29 nets, 221 track segments, 30 vias, no clearance or short errors in DRC.</p></div></li>
-        <li class="now"><span class="dot"></span><div><span class="when">Now</span><h3>Route the rest</h3><p>Still open on the board: channels 3–10 down the chip's left side, the taps from the plugs to the resistor rows, both isoSPI ports, the regulator's own connections, the reference and bias parts, the thermistor wiring and the ground pour. Three of these need an inner layer at this height. If one of them does not fit, the 70 × 37 mm placement is kept as the fallback.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 11</span><h3>Fully routed at 70 × 32 mm</h3><p>The same script routed the rest the same day: channels 3–10 down the chip's left side, the taps from both plugs to the resistor rows, the regulator, both isoSPI ports, the reference and bias parts and the thermistor wiring. The 70 × 37 mm fallback was not needed. More than planned moved to inner layers: one balance line, the regulator's base drive, one isoSPI port and a centre-tap line, the top-of-stack feed to the 1 kΩ resistor, the thermistor reference and two thermistor lines. The ground (V−) is a pour on the back layer, kept out from under the isoSPI transformers and plugs. Copper: 1 oz outside, 0.5 oz inside. DRC: no errors, nothing unconnected.</p></div></li>
+        <li class="now"><span class="dot"></span><div><span class="when">Now</span><h3>Review before ordering</h3><p>Two things to look at before a board is ordered: the first cell's sense line, which runs 48 mm on an inner layer beside its balance line, and isoSPI port A, whose chip-side pair is 26–33 mm long because the chip sits 30 mm from that port.</p></div></li>
         <li><span class="dot"></span><div><span class="when">Later</span><h3>Bench test, carrier and master</h3><p>A resistor-ladder cell simulator and isoSPI dongle on the bench, a carrier for two slaves on the Funwheel harness, then the master in its own box.</p></div></li>
       </ol>
     </section>
@@ -82,19 +83,21 @@
         <span class="snapshot">Copper plot · KiCad 10</span>
       </div>
       <div class="board-grid">
-        <figure class="board-shot"><img src="./files/lean-try4-70x32-routed.png" alt="Copper plot of the 18S Lean slave at 70 by 32 mm with the first routed traces: front copper in red, inner layer 1 in green, inner layer 2 in orange" loading="lazy" width="2400" height="1097"><img src="./files/adbms1818-slave-18s-lean-3d-top.png" alt="Top-down 3D render of the same board: white cell plugs on the top edge, the resistor rows, the ADBMS1818 with its first traces, the regulator transistor standing beside it and both isoSPI plugs top right" loading="lazy"></figure>
+        <figure class="board-shot"><img src="./files/lean-try4-70x32-full-route.png" alt="Copper plot of the fully routed 18S Lean slave at 70 by 32 mm: front copper in red, inner layer 1 in green, inner layer 2 in orange" loading="lazy" width="2400" height="1097"><img src="./files/adbms1818-slave-18s-lean-3d-top.png" alt="Top-down 3D render of the same board, fully routed: white cell plugs on the top edge, the resistor rows with their taps, the ADBMS1818 with traces on every side, the regulator transistor standing beside it and both isoSPI plugs top right" loading="lazy"></figure>
         <div class="board-notes">
           <h3>What you're looking at</h3>
           <ul class="legend">
             <li><b>Top edge</b> J1 + J5 cell taps (C0–C9, C9–C18); J2 thermistors standing on the left edge; M2 holes in the corners</li>
             <li><b>Under the plugs</b> 18 × 120 Ω balance resistors (1206, standing) and under them 19 × 10 Ω (0402, lying), half a pitch apart, in the chip's pin order</li>
-            <li><b>Centre</b> U1 ADBMS1818. Red traces from the right half of the row are the sense lines of channels 11–18; the green ones under them are their balance lines on inner layer 1</li>
+            <li><b>Under the plugs</b> each plug pin takes one 45° leg to its balance resistor, then runs down between two of them to its 10 Ω resistor</li>
+            <li><b>Centre</b> U1 ADBMS1818. Channels 3–10 come in from the left on the front, nested so no line crosses another; channels 11–18 come in from the top, sense lines in red and balance lines on inner layer 1 in green</li>
             <li><b>Orange</b> inner layer 2: eight bottom pins leave through a row of vias under the chip, four to the first cells' resistors top left, four to the thermistor filters bottom left</li>
             <li><b>Right of U1</b> the V+ filter at pin 1, then a column of bias resistors and reference caps in pin order, with the 5 V cap at the bottom</li>
             <li><b>Bottom right</b> Q301 standing with its tab up, C302, and the 1 kΩ R302; the red block is the collector copper, repeated on all four layers</li>
-            <li><b>Top right</b> both isoSPI ports: GH plug, transformer, four termination parts. Port B (OUT) left, port A (IN) right</li>
+            <li><b>Top right</b> both isoSPI ports: GH plug, transformer, four termination parts. Port B (OUT) left, on the front; port A (IN) right, reached on inner layer 1 under port B</li>
+            <li><b>Not drawn</b> the back layer: one ground (V−) pour over the whole board except under the isoSPI ports</li>
           </ul>
-          <div class="honest"><span>Honest status</span><p>29 of 88 nets are routed. The first picture is a copper plot, the second a 3D render; the transformers have no 3D model, so the render shows only their pads. Not routed: channels 3–10, the taps from the plugs, isoSPI, the regulator, the thermistor wiring and the ground pour. At 32 mm three of those need an inner layer: the regulator's base drive, one isoSPI pair, and the top-of-stack feed to R302. The first cell's sense line now runs 48 mm on an inner layer, which should be reviewed before ordering. The transistor's copper is about 119 mm² per layer where its datasheet rates 625 mm², so its temperature is an estimate until a board is measured. No stack-up or copper weight is chosen yet. Guard stays at 120 × 70 mm with its protection parts.</p></div>
+          <div class="honest"><span>Honest status</span><p>Every net is routed and DRC is clean with the pours filled. The first picture is a copper plot without the back-layer pour, the second a 3D render; the transformers have no 3D model, so the render shows only their pads. Not checked yet: the first cell's sense line runs 48 mm on an inner layer beside its balance line, and isoSPI port A's chip-side pair is 26–33 mm long, more than the 2 cm we planned for. The transistor's copper is about 119 mm² per layer where its datasheet rates 625 mm², so its temperature is an estimate until a board is measured. Guard stays at 120 × 70 mm with its protection parts.</p></div>
           <a class="button primary small" href="./">Inspect in Board Boxes <span>→</span></a>
         </div>
       </div>
@@ -124,7 +127,8 @@
       <div class="section-head"><div><p class="eyebrow">04 / Review focus</p><h2>Where a second pair of eyes helps most</h2></div></div>
       <div class="review-grid">
         <article><span class="num">01</span><h3>Q301 heat on a small board</h3><p>R302 now takes about a third of the drop, which leaves Q301 about 1.05 W on roughly 119 mm² of copper per layer, four layers. Is that enough for a SOT-223 in a closed battery box, or should it be a DPAK from the start?</p></article>
-        <article><span class="num">02</span><h3>Long sense lines on an inner layer</h3><p>At 32 mm the first cells' sense and balance lines leave the chip through vias under it and run up to 48 mm on an inner layer, side by side. Is that a measurement risk for cell 1, and does it want a ground layer next to it?</p></article>
+        <article><span class="num">02</span><h3>Long sense lines on an inner layer</h3><p>At 32 mm the first cells' sense and balance lines leave the chip through vias under it and run up to 48 mm on an inner layer, side by side. Is that a measurement risk for cell 1, and does it want ground copper next to it? The ground pour is on the back layer, one layer further away.</p></article>
+        <article><span class="num">05</span><h3>A long isoSPI pair</h3><p>Port A's chip-side pair runs 26–33 mm on an inner layer, under port B's termination parts, before it reaches its transformer. Is that too long for a reliable link next to a motor, or would swapping the two ports be worth it?</p></article>
         <article><span class="num">03</span><h3>One board, harness or carrier</h3><p>Each slave should work alone on a harness, or sit flat on a carrier and be soldered to it through the plug holes. Is soldering through the JST pin holes a sound joint, and how should the isoSPI ports reach the carrier?</p></article>
         <article><span class="num">04</span><h3>Harness and protection</h3><p>Are the tap fuses, zener clamps and TVS enough for plug-and-play? And the pin order against the Funwheel pack.</p></article>
       </div>
