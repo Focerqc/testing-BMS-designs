@@ -7,6 +7,8 @@ import re
 import shutil
 import subprocess
 
+from part_notes import notes_for_board
+
 ROOT = Path(__file__).resolve().parents[2]
 UI = Path(__file__).resolve().parent
 SITE = ROOT / 'site'
@@ -36,6 +38,7 @@ for source in board_files:
     result = subprocess.run([r'C:\Program Files\KiCad\10.0\bin\python.exe', str(UI / 'kicad_bridge.py'), 'read', str(source)], capture_output=True, text=True, encoding='utf-8', check=True)
     board = json.loads(result.stdout.split('@@JSON@@', 1)[1])
     board['path'] = relative
+    board['partNotes'] = notes_for_board(relative, [f['ref'] for f in board.get('footprints', [])])
     # Machine-specific model resolution paths are not needed in a public snapshot.
     def sanitize(value):
         if isinstance(value, dict):

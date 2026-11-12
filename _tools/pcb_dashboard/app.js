@@ -31,6 +31,9 @@
     showSides: false,
     selectMode: false,
     infoMode: false,
+    superMode: false,
+    padSel: null,
+    padHover: null,
     hoverFp: null,
     infoFp: null,
     activePreset: null,
@@ -363,6 +366,7 @@
     if (!color(id)) return false;
     S.activeColor = id;
     if (S.infoMode) toggleInfoMode(false);
+    if (S.superMode) toggleSuperMode(false);
     if (toastMsg) toast(toastMsg);
     return true;
   }
@@ -470,6 +474,7 @@
     S.selectMode = !S.selectMode;
     if (S.selectMode) {
       if (S.infoMode) toggleInfoMode(false);
+      if (S.superMode) toggleSuperMode(false);
       if (!S.showParts) {
         S.showParts = true;
         if ($('tglParts')) $('tglParts').classList.add('active');
@@ -486,6 +491,7 @@
   function toggleInfoMode(forceState) {
     S.infoMode = forceState !== undefined ? forceState : !S.infoMode;
     if (S.infoMode) {
+      if (S.superMode) toggleSuperMode(false);
       if (S.selectMode) {
         S.selectMode = false;
         if ($('btnSelectMode')) $('btnSelectMode').classList.remove('active');
@@ -506,6 +512,8 @@
           $('infoRef').textContent = 'Select part';
         }
       }
+      const eh = $('infoEmptyHint');
+      if (eh) eh.textContent = 'Click any component on the board to view its info';
       toast('Info mode: click any component on PCB to view details.');
     } else {
       S.hoverFp = null;
@@ -514,6 +522,182 @@
       toast('Info mode exited');
     }
     refreshUI();
+  }
+
+  // ---------- SUPER INFO (single pads) ----------
+  function setBadge(text) {
+    const b = document.querySelector('#partInfoCard .info-badge');
+    if (b) b.textContent = text;
+  }
+
+  function superPadColor(pad) {
+    if (S.padSel && pad === S.padSel.pad) return '#ffb347';
+    if (S.padSel && S.padSel.pad.net && pad.net === S.padSel.pad.net) return '#5ee6ff';
+    if (S.padHover === pad) return '#ffffff';
+    return 'rgba(255, 255, 255, 0.22)';
+  }
+
+  function toggleSuperMode(forceState) {
+    S.superMode = forceState !== undefined ? forceState : !S.superMode;
+    if (S.superMode) {
+      if (S.selectMode) {
+        S.selectMode = false;
+        if ($('btnSelectMode')) $('btnSelectMode').classList.remove('active');
+      }
+      if (S.infoMode) toggleInfoMode(false);
+      disarmDraw();
+      S.sel = null;
+      if (!S.showParts) {
+        S.showParts = true;
+        if ($('tglParts')) $('tglParts').classList.add('active');
+      }
+      $('partInfoCard')?.classList.remove('hidden');
+      setPadPanelEmpty();
+      toast('Super info: click any pad to see its net and every other pad on that net.');
+    } else {
+      S.padSel = null;
+      S.padHover = null;
+      S.infoFp = null;
+      $('partInfoCard')?.classList.add('hidden');
+      $('padInfoBody')?.classList.add('hidden');
+      $('infoBody')?.classList.remove('hidden');
+      const hint = $('infoEmptyHint');
+      if (hint) hint.textContent = 'Click any component on the board to view its info';
+      toast('Super info exited');
+    }
+    refreshUI();
+  }
+
+  function setPadPanelEmpty() {
+    S.padSel = null;
+    $('infoBody')?.classList.add('hidden');
+    $('padInfoBody')?.classList.add('hidden');
+    const hint = $('infoEmptyHint');
+    if (hint) {
+      hint.textContent = 'Click a pad on the board to see its net';
+      hint.classList.remove('hidden');
+    }
+    $('infoRef').textContent = 'Select pad';
+    setBadge('Super info');
+  }
+
+  // Which pad is under the pointer. Uses the same rotation as the pad drawing,
+  // so what you click is what you see highlighted.
+  function hitPad(m) {
+    if (!S.board?.footprints) return null;
+    const side = S.sideView === 'both' ? (S.pointerSide || 'top') : (S.sideView === 'bottom' ? 'bot' : 'top');
+    const tol = Math.max(0.02, 1 / S.view.scale); // about one screen pixel, in mm
+    let best = null;
+    let bestArea = Infinity;
+    let bestDepth = Infinity;
+    for (const fp of S.board.footprints) {
+      if (!fpOnSide(fp, side)) continue;
+      for (const pad of fp.pads || []) {
+        const dx = m.x - pad.x;
+        const dy = m.y - pad.y;
+        if (Math.hypot(dx, dy) > Math.hypot(pad.w, pad.h) / 2 + tol) continue;
+        const a = ((pad.angle || 0) * Math.PI) / 180;
+        const lx = dx * Math.cos(a) - dy * Math.sin(a);
+        const ly = dx * Math.sin(a) + dy * Math.cos(a);
+        if (Math.abs(lx) > pad.w / 2 + tol || Math.abs(ly) > pad.h / 2 + tol) continue;
+        // Where pads overlap (a thermal via inside the exposed pad), the smaller pad is the one
+        // you meant. Ties go to the pad the pointer sits deepest inside.
+        const area = pad.w * pad.h;
+        const depth = Math.max(Math.abs(lx) / (pad.w / 2 || 1), Math.abs(ly) / (pad.h / 2 || 1));
+        if (area < bestArea || (area === bestArea && depth < bestDepth)) {
+          best = { fp, pad };
+          bestArea = area;
+          bestDepth = depth;
+        }
+      }
+    }
+    return best;
+  }
+
+  function isGroundNet(net) {
+    return /(^|\/)V-$/.test(net || '');
+  }
+
+  function netKind(net) {
+    if (!net) return 'Not connected';
+    if (net.startsWith('unconnected-')) return 'No-connect pad (not wired)';
+    if (isGroundNet(net)) return 'Ground: V- (bottom of the stack)';
+    const n = net.replace(/^\//, '');
+    let m;
+    if ((m = n.match(/^CELL(\d+)$/))) return `Cell tap ${m[1]} (node between cells ${m[1]} and ${Number(m[1]) + 1})`;
+    if ((m = n.match(/^C(\d+)_F$/))) return `Chip C${m[1]} pin, after its 10 ohm series resistor`;
+    if ((m = n.match(/^S(\d+)$/))) return `Balance pin S${m[1]}, to the cell's balance resistor`;
+    if ((m = n.match(/^TAP(\d+)$/))) return `Guard tap ${m[1]}, after its fuse`;
+    if (/^GPIO\d+$/.test(n)) return 'GPIO: thermistor input, pulled up to VREF2';
+    if (/^V(P_F|BAT_F)$/.test(n)) return 'Supply: V+ at the top of the stack (chip supply)';
+    if (n === 'VREG') return 'Supply: 5 V regulator output (VREG)';
+    if (/^VREF[12]$/.test(n)) return 'Reference: VREF (chip reference)';
+    if (n === 'VCOLL' || n === 'DRIVE') return 'Regulator Q301: collector (VCOLL) or base (DRIVE)';
+    if (/^(IBIAS|ICMP)$/.test(n)) return 'Bias network (IBIAS / ICMP)';
+    if (/ISO|^I[PM][AB]$/.test(n)) return 'isoSPI signal';
+    return 'Signal';
+  }
+
+  function showPadInfo(fp, pad) {
+    S.padSel = { fp, pad };
+    S.infoFp = fp;
+    $('partInfoCard')?.classList.remove('hidden');
+    $('infoEmptyHint')?.classList.add('hidden');
+    $('infoBody')?.classList.add('hidden');
+    $('padInfoBody')?.classList.remove('hidden');
+    setBadge('Super info');
+    $('infoRef').textContent = `${fp.ref} · pad ${pad.num}`;
+
+    const net = pad.net || '';
+    $('padNum').textContent = pad.num;
+    $('padPart').textContent = fp.value ? `${fp.ref} (${fp.value})` : fp.ref;
+    $('padNet').textContent = net || 'No net';
+    $('padKind').textContent = netKind(net);
+    $('padGround').textContent = isGroundNet(net) ? 'Yes: V- is the chip ground' : 'No';
+    $('padPos').textContent = `(${fmt(pad.x)}, ${fmt(pad.y)}) mm`;
+    $('padSize').textContent = `${fmt(pad.w)} × ${fmt(pad.h)} mm`;
+
+    const peers = [];
+    if (net) {
+      for (const f of S.board.footprints) {
+        for (const p of f.pads || []) {
+          if (p.net === net && !(f === fp && p.num === pad.num)) peers.push(`${f.ref}.${p.num}`);
+        }
+      }
+    }
+    const box = $('padPeers');
+    if (!net) {
+      $('padPeerHead').textContent = 'Connects to';
+      box.textContent = 'Nothing: this pad has no net.';
+    } else {
+      $('padPeerHead').textContent = `Connects to (${peers.length} other pad${peers.length === 1 ? '' : 's'} on ${net})`;
+      if (!peers.length) {
+        box.textContent = 'Only this pad is on this net.';
+      } else {
+        const shown = peers.slice(0, 150);
+        box.textContent = shown.join(', ') + (peers.length > shown.length ? ` … +${peers.length - shown.length} more` : '');
+      }
+    }
+    render();
+    toast(`Pad <b>${esc(fp.ref)}.${esc(pad.num)}</b> → ${net ? esc(net) : 'no net'}`);
+  }
+
+  function renderPartNotes(note) {
+    const purpose = $('infoPurpose');
+    const list = $('infoIssues');
+    if (!purpose || !list) return;
+    list.textContent = '';
+    if (!note) {
+      purpose.textContent = 'No note recorded for this part yet.';
+      return;
+    }
+    purpose.textContent = note.purpose;
+    const items = note.issues && note.issues.length ? note.issues : ['None recorded.'];
+    for (const t of items) {
+      const li = document.createElement('li');
+      li.textContent = t;
+      list.appendChild(li);
+    }
   }
 
   // ---------- PART INFO HELPERS ----------
@@ -765,6 +949,8 @@
     card.classList.remove('hidden');
     $('infoEmptyHint')?.classList.add('hidden');
     $('infoBody')?.classList.remove('hidden');
+    $('padInfoBody')?.classList.add('hidden');
+    setBadge('Part Info');
 
     const { type, val, pkg } = describePart(fp);
 
@@ -821,6 +1007,7 @@
     }
 
     render();
+    renderPartNotes(S.board?.partNotes?.[fp.ref]);
     const toastVal = val.display !== '–' ? val.display : (pkg.package || '');
     toast(`Inspecting <b>${fp.ref}</b>${toastVal ? ` (${toastVal})` : ''}`);
   }
@@ -829,6 +1016,7 @@
     if (!S.infoFp) return;
     const fp = S.infoFp;
     const { type, val, pkg } = describePart(fp);
+    const note = S.board?.partNotes?.[fp.ref];
     const nets = fp.pads ? [...new Set(fp.pads.map(p => p.net).filter(Boolean))].join(', ') : '';
     const text = [
       `Reference: ${fp.ref}`,
@@ -842,7 +1030,8 @@
       `Pads: ${fp.pads?.length || 0}`,
       nets ? `Nets: ${nets}` : 'Nets: Not connected',
       fp.lcsc ? `LCSC: ${fp.lcsc}` : '',
-      fp.mpn ? `MPN: ${fp.mpn}` : ''
+      fp.mpn ? `MPN: ${fp.mpn}` : '',
+      ...(note ? [`Purpose: ${note.purpose}`, ...note.issues.map(t => `Possible issue: ${t}`)] : [])
     ].filter(Boolean).join('\n');
 
     navigator.clipboard.writeText(text).then(() => {
@@ -1519,7 +1708,7 @@
     if (S.explain && S.showGroups) drawGroupOutlines(pane);
 
     // existing footprints (dimmed pads or color-highlighted if selected)
-    if (S.showParts || S.selectMode || S.infoMode || S.explain) {
+    if (S.showParts || S.selectMode || S.infoMode || S.superMode || S.explain) {
       ctx.save();
       for (const fp of S.board.footprints) {
         if (!fpOnSide(fp, pane.side)) continue;
@@ -1533,6 +1722,7 @@
         ctx.fillStyle = isInfoSel ? '#ffb347' : (hex ? hex + '88' : (isHover ? (S.infoMode ? 'rgba(255, 179, 71, 0.65)' : 'rgba(60, 240, 208, 0.55)') : 'rgba(255, 255, 255, 0.22)'));
         for (const pad of fp.pads) {
           const c = toScreen(pad.x, pad.y);
+          if (S.superMode) ctx.fillStyle = superPadColor(pad);
           ctx.save();
           ctx.translate(c.x, c.y);
           ctx.rotate((-pad.angle * Math.PI) / 180);
@@ -2004,6 +2194,15 @@
     }
     if (e.button !== 0) return;
 
+    // Super info: click a single pad to see its net and the pads on that net.
+    if (S.superMode) {
+      const hit = hitPad(m);
+      if (hit) showPadInfo(hit.fp, hit.pad);
+      else setPadPanelEmpty();
+      render();
+      return;
+    }
+
     // Component info inspection mode: click any component to inspect details.
     // Never fall through into draw/move — that was fighting Info mode.
     if (S.infoMode) {
@@ -2122,6 +2321,17 @@
       S.hoverFp = hitFootprint(m);
       showExplain(S.hoverFp, e);
       if (S.hoverFp !== prev) render();
+      return;
+    }
+
+    if (S.superMode && !S.drag) {
+      const h = hitPad(m);
+      const next = h ? h.pad : null;
+      if (next !== S.padHover) {
+        S.padHover = next;
+        canvas.className = next ? 'over-box' : '';
+        render();
+      }
       return;
     }
 
@@ -2594,6 +2804,7 @@
     if ($('btnRedo')) $('btnRedo').disabled = S.redo.length === 0;
     if ($('btnSelectMode')) $('btnSelectMode').classList.toggle('active', !!S.selectMode);
     if ($('btnInfoMode')) $('btnInfoMode').classList.toggle('active', !!S.infoMode);
+    if ($('btnSuperInfo')) $('btnSuperInfo').classList.toggle('active', !!S.superMode);
     render();
   }
 
@@ -2634,6 +2845,7 @@
     // and never accidentally resizes or resets orientation of existing boxes!
     S.sel = null;
     if (S.infoMode) toggleInfoMode(false);
+    if (S.superMode) toggleSuperMode(false);
     S.selectMode = false;
     if (!S.activeColor || !color(S.activeColor)) {
       ensureArmedColor();
@@ -2824,6 +3036,8 @@
     if (btnSelectMode) btnSelectMode.onclick = toggleSelectMode;
     const btnInfoMode = $('btnInfoMode');
     if (btnInfoMode) btnInfoMode.onclick = () => toggleInfoMode();
+    const btnSuperInfo = $('btnSuperInfo');
+    if (btnSuperInfo) btnSuperInfo.onclick = () => toggleSuperMode();
     const btnCopyInfo = $('btnCopyInfo');
     if (btnCopyInfo) btnCopyInfo.onclick = copyPartInfo;
     const btnCloseInfo = $('btnCloseInfo');

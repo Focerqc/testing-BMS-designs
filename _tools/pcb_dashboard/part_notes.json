@@ -1,0 +1,52 @@
+{
+  "_about": "Per-part notes for Board Boxes Info mode. Matched by full reference designator. Lookup order: the board's variant list first (lean or guard), then shared. Each entry: purpose (what the part does in this circuit) and issues (possible current problems, with the source in docs/slave-18s-design-basis.md or site/news.html). Edit here, not in app.js. Re-run export_site.py after editing so the hosted snapshot picks it up.",
+  "shared": [
+    {"match": "C301", "purpose": "V+ filter capacitor, 100 nF 100 V, from the chip's V+ pin (VP_F) to V-. The 100 nF of Figure 112's V+ filter, with R301 in front of it.", "issues": []},
+    {"match": "C302", "purpose": "Collector capacitor for the regulator NPN, 100 nF 100 V, from the collector (VCOLL) to V-. The datasheet text value; Figure 112 shows 10 nF (deviation 6).", "issues": []},
+    {"match": "C303", "purpose": "VREG decoupling, 1 uF from the 5 V regulator output (VREG) to V-. Figure 112 value.", "issues": []},
+    {"match": "C30[45]", "purpose": "Reference decoupling, 1 uF from VREF1 or VREF2 to V-. Figure 112 value.", "issues": []},
+    {"match": "C(50[12]|60[12])", "purpose": "isoSPI centre-tap capacitor, 10 nF to V-. Racc's filtering for motor noise (deviation 1): the midpoint of the split termination (ISOx_CM) and the transformer's chip-side centre tap (ISOx_CT) each get one.", "issues": ["The datasheet warns that centre-tap caps above 10 nF can stop the isoSPI common mode settling. Do not raise them."]},
+    {"match": "R(50[12]|60[12])", "purpose": "isoSPI termination half, 51 ohm. Two in series make the split 100 ohm termination, with the midpoint on ISOx_CM (Racc's filter point, deviation 1).", "issues": []},
+    {"match": "R401", "purpose": "Bias divider, 1 kohm: IBIAS to ICMP. Part of the IBIAS-1k-ICMP-1k-V- network from Figure 112.", "issues": []},
+    {"match": "R402", "purpose": "Bias divider, 1 kohm: ICMP to V-. Second half of the IBIAS/ICMP network from Figure 112.", "issues": []},
+    {"match": "R70[1-4]", "purpose": "100 kohm pull-up from thermistor input GPIO1 to GPIO4 up to VREF2. Racc's thermistor arrangement (deviation 3).", "issues": []},
+    {"match": "C70[1-4]", "purpose": "100 nF from thermistor input GPIO1 to GPIO4 to V-: the NTC filter (deviation 3).", "issues": []},
+    {"match": "TH701", "purpose": "On-board 100 kohm NTC on GPIO4 to V-, measures board temperature.", "issues": []},
+    {"match": "J1", "purpose": "Cell tap connector C0 to C9, 10-pin JST PH 2 mm. Pin 1 is C0 (V-); pin n is C(n-1).", "issues": ["The harness must match the Funwheel pack's tap order (open item)."]},
+    {"match": "J5", "purpose": "Cell tap connector C9 to C18, 10-pin JST PH 2 mm. Pin 1 is C9, pin 10 is C18 (top of stack). C9 is on both J1 and J5 by design.", "issues": ["Both plugs carry the same C9 tap. The harness must not wire C9 twice with different wires."]},
+    {"match": "J2", "purpose": "NTC connector, 6-pin JST PH: GPIO1 to GPIO3 and V- for the external cell NTCs.", "issues": ["The harness must match the Funwheel pack's NTC wiring (open item)."]},
+    {"match": "J[34]", "purpose": "isoSPI port connector, JST GH 2-pin top entry (BM02B-GHS-TBT). J3 is port A in, J4 is port B out. The same family as the ENNOID master, so its cable plugs straight in.", "issues": ["Review item 03: is soldering through the JST pin holes a sound joint on a carrier, and how do the ports reach it?"]},
+    {"match": "U1", "purpose": "ADBMS1818 cell monitor, LQFP-64 with an exposed pad tied to V-. Reads the 18 cell voltages through the C-pin inputs, balances through the S pins and talks isoSPI.", "issues": ["Exposed pad: 16 open 0.2 mm plated holes. The assembler must accept the paste and voiding, or choose via-fill (review item 08).", "The die's thermal budget with every cell balancing is not confirmed (open item)."]},
+    {"match": "Q301", "purpose": "Regulator NPN (FZT853, SOT-223). It takes the stack down to the 5 V VREG rail. DRIVE sets its base current and the collector sits on VCOLL.", "issues": ["Heat: the collector needs a large copper area on both layers, stitched. The estimate is about 1.07 W on Lean at 75.6 V (open item).", "Stock was thin (264) at the last check. Recheck before ordering."]},
+    {"match": "H[1-4]", "purpose": "Mounting hole in the corner of the board.", "issues": []}
+  ],
+  "lean": [
+    {"match": "C701", "purpose": "100 nF from thermistor input GPIO1 to V-: the NTC filter (deviation 3).", "issues": ["GPIO1 is the longest net on Lean, about 50 mm on an inner layer (review item 02 area)."]},
+    {"match": "R100", "purpose": "10 ohm series resistor, 0402, between cell 0 (CELL0) and the chip's C0 pin. Figure 112 part; it also carries the balance return current of cell 1.", "issues": ["C0_F carries the cell 1 balance return (about 31 mA while balancing) on a 48 mm inner-layer run (review item 02)."]},
+    {"match": "R(10[1-9]|11[0-8])", "purpose": "10 ohm series resistor, 0402, between cell n's tap (CELLn) and the chip's Cn pin. Figure 112 part; it also carries the balance return current of the next cell.", "issues": ["Lean has no per-pin 100 nF filter capacitors (C101 to C118 are Guard only; Racc's board has none), so these resistors have no capacitor after them."]},
+    {"match": "R(20[1-9]|21[0-8])", "purpose": "Balance resistor for cell n, from the cell node (CELLn) to S n. Turns on to bleed that cell while balancing.", "issues": ["120 ohm gives about 30 mA per cell, against about 89 mA with Guard's 33 ohm, so balancing is slower. All 18 at once is about 2.3 W in total (estimate)."]},
+    {"match": "R301", "purpose": "V+ filter resistor, 100 ohm 0603, from the top of the stack (CELL18) to the chip's V+ pin (VP_F). Figure 112's 100 ohm V+ filter, with C301.", "issues": []},
+    {"match": "R302", "purpose": "Lean only: 1 kohm 2512 1 W collector resistor from CELL18 to VCOLL. It replaces the datasheet's 100 ohm so that Q301 dissipates less (deviation 14).", "issues": ["Estimated 0.48 W at 22 mA and 1.23 W at the 35 mA peak, against a 1 W rating. The pulse rating and the master's duty cycle are not yet known (open item).", "Below about 41 V on the stack at 35 mA, the collector falls under the datasheet's 6 V minimum."]},
+    {"match": "C302", "purpose": "Collector capacitor for the regulator NPN, 100 nF 100 V, from VCOLL to V-. The datasheet text value (deviation 6).", "issues": ["With the 1 kohm R302 the RC corner is about 1.6 kHz instead of 16 kHz (design basis)."]},
+    {"match": "T501", "purpose": "isoSPI transformer for port A, Bourns SM91502AL on Lean: common-mode choke built in, 1000 VDC working. It isolates the chip's port A pair from the cable.", "issues": ["Port A's chip-side pair runs 26 to 33 mm on an inner layer (review item 05).", "Foreign crossings on this port are uncovered by a shield (review item 06; isospi_shield_check.py finds six in total)."]},
+    {"match": "T601", "purpose": "isoSPI transformer for port B, Bourns SM91502AL on Lean: common-mode choke built in, 1000 VDC working. It isolates the chip's port B pair from the cable.", "issues": ["Foreign crossings on this port are uncovered by a shield (review item 06; isospi_shield_check.py finds six in total)."]},
+    {"match": "NT1", "purpose": "Net tie joining CELL0 (the C0 sense wire) to V- at a single point. Lean's replacement for Guard's F120 fuse, so the C0 sense wire stays separate from the V- pour until here.", "issues": ["Deliberate: DRC flags any other copper that joins CELL0 to ground."]},
+    {"match": "H[1-4]", "purpose": "M2 mounting hole in the corner of the board (Lean uses M2; Guard uses M3).", "issues": ["Hole positions and the copper keep-out (2.75 mm from centre for a 5 mm washer) are estimates."]}
+  ],
+  "guard": [
+    {"match": "R302", "purpose": "Guard: 100 ohm 0805 collector resistor from VBAT_F to VCOLL, the datasheet value.", "issues": ["At 75.6 V the NPN dissipates about 1.5 W. The 3 W rating needs 52 x 52 mm of 2 oz copper (open item on the regulator)."]},
+    {"match": "R301", "purpose": "V+ filter resistor, 100 ohm 0603, from the fused supply (VBAT_F) to the chip's V+ pin (VP_F).", "issues": []},
+    {"match": "R(20[1-9]|21[0-8])", "purpose": "Balance resistor for cell n, 33 ohm 2512 1 W, from the cell node to S n.", "issues": ["About 89 mA per cell and 0.26 W each. All 18 at once is about 6.7 W, so firmware should balance odd and even cells in turn. The die budget is open."]},
+    {"match": "R(10[0-9]|11[0-8])", "purpose": "10 ohm series resistor, 1206, between cell n's tap and the chip's Cn pin. Figure 112 part; it also carries the balance return current of the next cell.", "issues": ["Chosen 1206 because a 0603 would run at about 79 % of its 0.1 W rating while balancing."]},
+    {"match": "C1(0[1-9]|1[0-8])", "purpose": "100 nF 100 V from the C-pin n to V-. The per-pin filter capacitor of Figure 112.", "issues": []},
+    {"match": "D1(0[1-9]|1[0-8])", "purpose": "6.8 V zener clamp between neighbouring C pins. Keeps a pair under the chip's 8 V limit, so a plug mated in any order is safe (deviation 8).", "issues": []},
+    {"match": "F1(0[0-9]|1[0-8])", "purpose": "250 mA fuse on cell n's tap (CELLn to TAPn). A shorted part or a slipped probe cannot pull pack current through the board (deviation 7).", "issues": []},
+    {"match": "F119", "purpose": "250 mA supply fuse between the top tap (TAP18) and VBAT_F, so the chip's current does not show up as an error on cells 1 and 18.", "issues": []},
+    {"match": "F120", "purpose": "250 mA supply fuse from the bottom tap (TAP0) to V-. Lean replaces it with the net tie NT1.", "issues": []},
+    {"match": "D301", "purpose": "85 V TVS across the supply (VBAT_F to V-), protecting the regulator and chip from a surge (deviation 9).", "issues": []},
+    {"match": "J[67]", "purpose": "Unfitted JST PH footprint in parallel with J3 or J4, for a PH header or two soldered wires.", "issues": []},
+    {"match": "TP[0-9]+", "purpose": "Keystone probe loop for bench access on the net named in its pad. It has no circuit function; Lean removes all of them.", "issues": []},
+    {"match": "T50[1]|T601", "purpose": "isoSPI transformer with the common-mode choke built in (Pulse HM2113ZNL on Guard). Isolates the chip's isoSPI pair from the cable. T501 is port A, T601 is port B.", "issues": []},
+    {"match": "H[1-4]", "purpose": "M3 mounting hole in the corner of the board.", "issues": []}
+  ]
+}

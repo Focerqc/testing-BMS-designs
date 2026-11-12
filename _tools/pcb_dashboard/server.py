@@ -14,6 +14,7 @@ import os
 import socketserver
 import subprocess
 import urllib.parse
+from part_notes import notes_for_board
 from PIL import Image, ImageOps
 from pypdf import PdfReader, PdfWriter
 import tempfile
@@ -294,7 +295,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
             if u.path == "/api/board":
                 full = safe_path(q.get("path", [""])[0])
-                return self.send_json(read_board(full))
+                board = dict(read_board(full))
+                refs = [f["ref"] for f in board.get("footprints", [])]
+                board["partNotes"] = notes_for_board(board["path"], refs)
+                return self.send_json(board)
 
             if u.path == "/api/boxes":
                 bf = boxes_file(safe_path(q.get("path", [""])[0]))
