@@ -100,7 +100,10 @@ If you see anything else, that is your first finding.
 ## How the safety rules work (check them, don't just trust them)
 
 - **Stack clearance by "bank":** each net has a level (its cell tap number; V−, VREG, VREF,
-  GPIO and the isoSPI chip side are level 0; VP_F and VCOLL count as the top). Bank =
+  GPIO and the isoSPI chip side are level 0; VP_F counts as the top). Guard VCOLL stays
+  in the top bank. Lean VCOLL is stack minus 0–35.35 V (1 kΩ +1%, 35 mA); an additional
+  range rule enforces 0.6 mm for potentially >30 V differences over 2.5–4.2 V/cell.
+  Existing bank clearances remain conservative (corrected 2026-11-11). Bank =
   level ÷ 3. Same or neighbouring bank: 0.2 mm (net class). Two or more banks apart: 0.6 mm
   (IPC-2221B B2, 31–100 V), in the generated `.kicad_dru`. No rule names a layer, so the
   same applies on inner layers.
@@ -134,8 +137,10 @@ If you see anything else, that is your first finding.
 1. **C0 sense line** (C0_F) runs about 48 mm on In2 beside S1 (cell 1's balance line).
    Measurement error or noise on cell 1?
 2. **isoSPI port A chip-side pair** is 26.3 mm (IPA) and 32.9 mm (IMA, including branches),
-   on In1 under port B's termination parts. The design basis quotes about 2 cm from datasheet
-   p. 86. Port B is 17.7 / 20.4 mm. Is that a real link risk? Would swapping the ports help?
+   on In1 under port B's termination parts. Correction 2026-11-11: datasheet p. 86's
+   <2 cm is transformer-to-connector, not these chip-side lengths; it asks U1 to be close
+   but at least 1–2 cm from the transformer (spacing already an accepted deviation).
+   Port B is 17.7 / 20.4 mm. Review foreign crossings and shielding, not a false length limit.
 3. **V− is a back-layer pour, not a star.** The placement checklist asked for a V− star from
    U1's exposed pad (caps return there, balance current kept out of it). Check how the balance
    return of cell 1 and the supply/decoupling currents actually flow now.

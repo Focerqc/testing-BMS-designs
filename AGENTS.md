@@ -202,3 +202,14 @@ and look -> `lint_offgrid` + `list_floating_labels` -> commit the schematic alon
 - **Segments are plain text too:** `(segment (start x y) (end x y) (width w) (layer "F.Cu")
   (net "/NAME") (uuid ...))`, one per line group as `lean_route.py` writes them. KiCad 10
   stores the net by name.
+
+### Review-fix scratch checks (2026-11-11)
+
+- **`lean_place.py` removes the routing-owned VCOLL pin-2 via too.** Run placement then
+  routing. Confirm the 0.5 mm via at (50.34, 29.05) is back and run filled-zone DRC.
+  Placement alone is not a completed routed board, even when its second run is identical.
+- **KiCad 10 `PCB_VIA.GetWidth()` needs a layer argument.** Without one, pcbnew opens a
+  wxWidgets assertion dialog and blocks a headless script. Use `GetWidth(pcbnew.F_Cu)`.
+- **A clean DRC does not prove an isoSPI shield covers a crossing.** The first scratch
+  shield stopped 0.1 mm from a crossing centre; check filled copper around the whole
+  projected trace intersection, not only the centre point or the zone outline.

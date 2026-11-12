@@ -24,7 +24,7 @@ is `slave-18s/bom.csv`.
 | | **18S Guard** (`slave-18s/`) | **18S Lean** (`slave-18s-lean/`) |
 |---|---|---|
 | Use | Hot-plug harnesses, unknown packs, bench work | Known pack, harness plugged in once; closer to the Ennoid-style slaves |
-| Tap fuses F100–F118, supply fuses F119/F120 | yes | no: thin traces act as the fuse (Racc's suggestion). F120's place is taken by the net tie NT1 (CELL0 to V−, since 2026-11-06) |
+| Tap fuses F100–F118, supply fuses F119/F120 | yes | no: trace fuses were deferred, so no fuse protection is designed in (clarified 2026-11-11). F120's place is taken by the net tie NT1 (CELL0 to V−, since 2026-11-06) |
 | Zener clamps D101–D118 | yes | no |
 | V+ TVS D301 | yes | no: with no F119 ahead of it, a shorted TVS would short the whole stack |
 | C-pin filter caps C101–C118 | yes | no (Racc's board has none; the 10 ohm resistors stay) |
@@ -291,7 +291,9 @@ is `slave-18s/bom.csv`.
       inside it, nested the same way.
     - **VREG** runs along the same strip from pin 48 to C303 (0.3 mm at the pin, then 0.4 mm).
       **GPIO5–9** are joined across their pads and tied to the exposed pad from pin 45.
-    - Longest nets: GPIO1 50 mm, C0_F 48 mm, S1 46 mm (inner layer, bank 0, µA or 31 mA).
+    - Longest nets: GPIO1 50 mm, C0_F 48 mm, S1 46 mm (inner layer, bank 0).
+      Clarified 2026-11-11: C0_F carries cell 1 balancing return (~31 mA) while balancing,
+      not only microamp sense current; DCP=0 pauses balancing during measurements.
       The C0 sense now runs 48 mm on In2 beside S1; cell 1's balance current returns through
       R100 and C0_F's pin only as far as the datasheet's Figure 99 intends, but the long
       parallel run should be looked at before ordering.
@@ -317,7 +319,8 @@ is `slave-18s/bom.csv`.
       31 mA), down past the S pads and jogs into R1n's CELL pad. CELL0 squeezes between NT1
       and R201 (0.2 mm, 0.205 mm each side) to R100, with a branch to NT1.
     - **Supply (`supply`).** VREG leaves Q301 pin 3 upwards and runs left under the body at
-      y 27.97, 0.6 mm below the lowest VCOLL via row (VCOLL is top of stack). It goes down
+      y 27.97, 0.6 mm below the lowest VCOLL via row (VCOLL can reach top of stack;
+      its operating range was corrected on 2026-11-11). It goes down
       left of DRIVE's pad and through the C305–C303 gap to C303. Pin 55 (ISOMD) joins VREG
       through In1 from a via inside the pin row. VREG closes DRIVE's pad in, so DRIVE goes
       down the channel right of U1, crosses on In1 and comes up in the 1.25 mm pocket between
@@ -326,7 +329,9 @@ is `slave-18s/bom.csv`.
     - **CELL18 to R302 on In2.** It drops on its track from R118 to R301 (y 15.6). It passes
       under T601's courtyard at y 22.95, between the IPB vias, then goes down right of Q301's
       via grid (x 55) and along y 27.6 between the VCOLL via rows to a via above R302's
-      CELL18 pad. CELL18 and VCOLL are both bank 6, so 0.2 mm is enough. The In2 VCOLL copper
+      CELL18 pad. **Correction 2026-11-11:** the shared bank-6 assumption was wrong for
+      Lean's 1 kΩ R302. Its peak drop requires 0.6 mm clearance; the lower lane is now
+      y 27.8 (review-fix entry below). The In2 VCOLL copper
       is cut along that line but stays joined round the right end.
     - **The VCOLL grid blocks inner tracks.** Its vias sit 1.15 mm apart, and a 0.25 mm
       track needs 0.65 mm between via edges. Anything crossing Q301 on an inner layer must go
@@ -347,9 +352,10 @@ is `slave-18s/bom.csv`.
       side runs straight from transformer pins 6/4 to plug pins 1/2. DRC: the 2 mm barrier,
       the no-pour and the only-own-tracks rules are all clean.
     - **Chip-side isoSPI lengths:** IPB 17.7, IMB 20.4, IPA 26.3 and IMA 32.9 mm (branches to
-      the termination included). Port A is over the 2 cm that "Track widths" quotes from
-      p. 86, because U1 sits 30 mm from port A's row on this board. To review before ordering
-      with the C0 line below.
+      the termination included). **Correction 2026-11-11:** p. 86 limits the
+      transformer-to-connector distance to <2 cm, not these chip-side runs. It asks U1
+      to be close to, but at least 1–2 cm away from, the transformer; chip-to-transformer
+      spacing is already an accepted deviation (try 3). Foreign crossings remain open.
     - **VREF/bias and NTC (`bias_ntc`).** VREF1, IBIAS and ICMP go straight across the
       channel to C304, R401 and R402; ICMP's second resistor joins between the R402 and R401
       rows. VREF2 runs down the channel beside DRIVE to C305, drops inside the pin row and
@@ -383,6 +389,34 @@ is `slave-18s/bom.csv`.
       rest of B.Cu by the VCOLL copper and the IPB hop. It joins on **In1**: a V− track from
       port B's cap via to the R402 via, between port A's IMA lane and the IPB via (0.21 mm
       each side).
+  - **Review fixes (2026-11-11, branch `review-fixes-lean`).** No footprint, outline,
+    schematic or layer-role change. Corrects the project rule at peak current; it does not
+    establish a dielectric-breakdown risk at the normal 22–23 V collector drop.
+    - **VCOLL range:** R302 is 1 kΩ ±1%, Ipeak = 35 mA: drop 0–35.35 V. The declared
+      operating cell range is 2.5–4.2 V (45–75.6 V stack), not a hot-plug/fault model.
+      Relative to the stack, VCOLL's equivalent level spans 18−35.35/2.5 = 3.86 to 18.
+      For another net's tap envelope lo..hi, the signed difference is bounded by
+      (18−hi)×2.5−35.35 and (18−lo)×4.2 V. Test both endpoints against 30 V.
+      Cn_F may rise towards C(n+1) during balancing, Sn may fall towards C(n−1).
+      Existing bank clearances remain a conservative floor; the later 2 mm isoSPI rule
+      still wins. Guard's 100 Ω drops only 3.535 V; its generated content is unchanged.
+    - **Copper:** CELL18's lower In2 lane/end via moved from y 27.6 to 27.8. Removed the
+      three stitching vias at x 62.21 (y 28.4/29.55/30.7), and the remaining top body row
+      at y 28.4 (x 58.76/59.91/61.06). Stitching vias 31 → 25; the separate 0.5 mm
+      Q301 pin-2 via at (50.34,29.05) remains after placement then routing.
+    - Nearest relevant clearances: R302 CELL18 pad-to-stitching-via 0.350 → at least
+      1.200 mm (pad bounding-box lower bound); end via 0.559 → 0.750 mm; horizontal
+      In2 CELL18 lane-to-stitching-via 0.375 → 0.825 mm. Filled-zone DRC passes.
+    - Zone outline stays **118.6962 mm² per layer**. Filled VCOLL copper before → after:
+      F.Cu 78.940 → 75.487; In1 98.040 → 96.402; In2 103.811 → 93.537;
+      B.Cu 105.302 → 103.663 mm². Total loss 17.004 mm² summed across layers;
+      that sum is not a thermal-equivalent exposed area. Thermal acceptance remains open.
+    - **isoSPI remains unchanged on the real board.** Centreline checking finds 20
+      foreign crossings: eight CELL18/port crossings and twelve port-A/port-B crossings.
+      Same-port and V− crossings are excluded. Proposed option: A on B.Cu, B's short hop
+      on In1, a connected V− shield on In2 outside the transformer courtyards, and CELL18
+      routed west of the ports. This changes layer roles and requires the owner's choice;
+      scratch feasibility is not authorization to change the real board.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
@@ -512,7 +546,7 @@ checked against the Littelfuse sheet), which lowers the current slightly; it is 
   85 °C (p. 75). Read the die temperature (ITMP) while balancing.
 - The track widths (see "Track widths") were set with the old 114 mA figure, the safe side.
 - **Lean since 2026-11-10: 120 Ω in 1206.** About 31 mA, 0.12 W per balance resistor (48 % of
-  0.25 W), about 10 mW per 10 Ω resistor (0603), about 2.3 W with all 18 balancing
+  0.25 W), about 10 mW per 10 Ω resistor (0402 since try 4; corrected 2026-11-11), about 2.3 W with all 18 balancing
   (18 × 4.2 V × 31 mA). The numbers above this line are Guard's 33 Ω.
 
 ## isoSPI transformer
@@ -840,12 +874,12 @@ page, 2026-11-06), voltage drop, and robustness. 1 oz copper is 0.49 mΩ per squ
 
 | Class | Nets | Track | Based on |
 |---|---|---|---|
-| HV_CELL | CELL1–18, C0_F–C18_F (and TAPn if added) | 0.25 mm | C-pin current is µA. The harness-side CELLn also carries one cell's balance current (≤ 114 mA) from the connector to R2nn. 0.25 mm runs between U1's pads at 0.5 mm pitch with 0.25 mm gaps |
+| HV_CELL | CELL1–18, C0_F–C18_F (and TAPn if added) | 0.25 mm | C-pin current is µA during measurement; C(n−1)_F carries cell n balancing return while its switch is on (clarified 2026-11-11). The harness-side CELLn also carries balance current. 0.25 mm runs between U1's pads at 0.5 mm pitch with 0.25 mm gaps |
 | BALANCE | S1–S18 | 0.30 mm | ≤ 114 mA (sizing table below). Same as U1's pad width. 1.6 mΩ/mm on 1 oz, so 30 mm drops about 6 mV next to 3.8 V across 33 Ω |
 | SUPPLY | VP_F, VCOLL, DRIVE, VREG | 0.40 mm | Q301 carries ≤ 35 mA peak (datasheet p. 71); DRIVE sources ≤ 1 mA. Wider for a short, low-inductance VREG decoupling loop. Neck down to 0.3 mm at U1 pins 1, 48 and 49. VCOLL's real job is the collector pour (placement checklist) |
-| ISOSPI_PHY | IPA, IMA, IPB, IMB, ISO*_CM, ISO*_CT | 0.25 mm, pair 0.25 / 0.25 | ≤ 30 mA per pin (abs max, p. 11). Not impedance-controlled: the runs stay under 2 cm (p. 86), far shorter than the pulse edges |
+| ISOSPI_PHY | IPA, IMA, IPB, IMB, ISO*_CM, ISO*_CT | 0.25 mm, pair 0.25 / 0.25 | ≤ 30 mA per pin (abs max, p. 11). Not impedance-controlled. Correction 2026-11-11: p. 86's <2 cm is transformer-to-connector, not chip-side trace length; crossings need review |
 | ISOSPI_LINE | ISOA_LP/LN, ISOB_LP/LN | 0.25 mm, pair 0.25 / 0.25 | Same currents, cable side of the transformers |
-| Default | V−, VREF1/2, IBIAS, ICMP, GPIO1–4 | 0.25 mm | mA or less. V− (chip ≤ 35 mA plus cell 1's balance return) will mostly be a pour |
+| Default | V−, VREF1/2, IBIAS, ICMP, GPIO1–4 | 0.25 mm | V− carries chip supply/decoupling current (≤35 mA peak); cell 1's intended balancing return is C0_F–R100–CELL0 (corrected 2026-11-11) |
 
 Lean is four copper layers since 2026-11-10 (`COPPER_LAYERS` in `make_rules.py`; `--check`
 fails if the board's layer count differs). JLC multilayer limits (capabilities page,
@@ -878,7 +912,12 @@ chip side are level 0) and a bank = level ÷ 3, rounded down:
 
 | Bank | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
 |---|---|---|---|---|---|---|---|
-| Taps | 0–2 + low-voltage nets | 3–5 | 6–8 | 9–11 | 12–14 | 15–17 | 18, VP_F, VCOLL |
+| Taps | 0–2 + low-voltage nets | 3–5 | 6–8 | 9–11 | 12–14 | 15–17 | 18, VP_F; Guard VCOLL. Lean VCOLL additionally has the range rule below |
+
+**Lean correction, 2026-11-11:** VCOLL's original bank-6 clearances are retained only as a
+conservative floor. The additional range rule uses stack minus 0–35.35 V and requires
+0.6 mm whenever either voltage-difference endpoint exceeds 30 V (arithmetic in the dated
+review-fix entry above). It includes the upper taps previously missed by the bank model.
 
 - Same or neighbouring bank: at most 6 levels apart, 6 × 4.2 = 25.2 V. That's the 16–30 V row,
   so the net class's 0.2 mm applies. The 6 includes an S pin, which sits up to one level
@@ -989,6 +1028,19 @@ when the placement is reviewed.
 - [x] **No XT30s.** The right edge is left empty (the master carries the power path).
 
 ## Open items
+
+- [ ] **Lean regulator thermal acceptance (review, 2026-11-11).** At 75.6 V and 22 mA:
+      R302 ~0.48 W, Q301 ~1.07 W. At 35 mA: R302 ~1.23 W, Q301 ~1.25 W (nominal
+      resistance, 5 V emitter). Obtain the actual master's worst-case duty cycle and
+      resistor derating/pulse allowance, or measurements on the first boards. A "peak"
+      label does not establish a safe repetitive load. No thermal redesign in this pass.
+- [ ] **Lean U1 exposed-pad assembly (review, 2026-11-11).** Its 16 open 0.2 mm plated
+      holes need the assembler's acceptance of paste volume/voiding, or an explicit
+      paste/via-fill decision. The old two-layer/open-via note is not Lean assembly approval.
+- [ ] **Lean isoSPI foreign crossings (review, 2026-11-11).** Choose a routing/shield
+      option before changing layer roles; implement a check of projected foreign copper
+      crossings against filled, connected ground on an intervening layer. Present DRC
+      courtyard rules do not prove this. Bench noise testing remains necessary.
 
 - [x] Build the ADBMS1818 symbol from the datasheet pin table (64-LQFP_EP). Done; netlist
       checked.
