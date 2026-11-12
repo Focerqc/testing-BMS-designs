@@ -79,6 +79,9 @@ a:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-off
 .history-toggle{margin:4px 0 8px 44px;min-height:38px;padding:0 16px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--green);font:800 12px var(--sans);cursor:pointer}
 .history-toggle:hover{border-color:var(--green)}
 .history-toggle:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.timeline-clip{position:relative}
+.timeline-clip.is-collapsed{overflow:hidden}
+.timeline-clip.is-collapsed::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(rgba(245,246,241,0),var(--paper));pointer-events:none}
 .when{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .done .when{color:var(--green)}
 .now .when{color:var(--amber)}

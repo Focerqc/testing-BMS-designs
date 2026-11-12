@@ -50,29 +50,31 @@
         <div><p class="eyebrow">01 / Progress</p><h2>Where things stand</h2></div>
         <span class="snapshot">Snapshot · Nov 11, 2026</span>
       </div>
+      <div class="timeline-clip" id="timelineClip">
       <ol class="timeline" id="timeline">
         <li class="done"><span class="dot"></span><div><span class="when">Nov 11 · latest</span><h3>Fully routed at 70 × 32 mm</h3><p>The same script routed the rest the same day: channels 3–10 down the chip's left side, the taps from both plugs to the resistor rows, the regulator, both isoSPI ports, the reference and bias parts and the thermistor wiring. The 70 × 37 mm fallback was not needed. More than planned moved to inner layers: one balance line, the regulator's base drive, one isoSPI port and a centre-tap line, the top-of-stack feed to the 1 kΩ resistor, the thermistor reference and two thermistor lines. The ground (V−) is a pour on the back layer, kept out from under the isoSPI transformers and plugs. Copper: 1 oz outside, 0.5 oz inside. DRC: no errors, nothing unconnected.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 11</span><h3>First routing: fan-in and bottom pins</h3><p>A script draws the traces from the pad positions, so it can run again after any placement change. Channels 11–18 reach the chip's top pins on two layers: the eight sense lines on the front, the seven balance lines through vias on an inner layer. Eight bottom pins fan out to one row of vias under the chip and leave on the other inner layer; two more and the 5 V supply use the 1 mm strip between the chip and the board edge. 29 nets, 221 track segments, 30 vias, no clearance or short errors in DRC.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 11</span><h3>Try 4: 70 × 32 mm</h3><p>The cell plugs stay on the slave, and the carrier should hold connectors above it, so 5 mm had to come off. With the try 3 parts only 3.7 mm was left for traces above and below the chip. The 10 Ω series resistors became 0402 lying down (2 mm), the strip under the plugs lost 0.5 mm, and the chip moved to 1.3 mm from the bottom edge. The regulator transistor now stands on end beside the chip, because the space under the isoSPI parts is too low for it lying down. Its copper area is smaller than at 37 mm, so it will run hotter.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 10</span><h3>Regulator heat shared with a resistor, four layers</h3><p>On Lean the resistor in the regulator transistor's collector went from 100 Ω to 1 kΩ in a 1 W package. At 75.6 V and about 22 mA it takes about 0.5 W, so the transistor drops from about 1.5 W to about 1.05 W. At a 45 V stack and the chip's 35 mA peak the collector still sits 10 V above ground, and the datasheet asks for 6 V. This is our own change from the datasheet's 100 Ω. The board went to four copper layers, with a copper area for the transistor's collector on all four, joined by vias.</p></div></li>
         <li class="done"><span class="dot"></span><div><span class="when">Nov 10</span><h3>Try 3 placed: 70 × 37 mm</h3><p>The new parts are in the schematic and on the board: 120 Ω balance resistors in 1206, M2 holes, no test points, 77 parts. The 18-channel row sits under the cell plugs at 2.4 mm pitch with the chip under its right half, the thermistor plug stands on the left edge and both isoSPI ports are top right. 37 mm is the slot's own height; 35 mm was not reached with the plugs on the top edge.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 10</span><h3>Decisions for try 3</h3><p>Balance current drops to about 30 mA: 120 Ω in 1206 instead of 33 Ω in 2010, and the 10 Ω resistors go from 1206 to 0603. That is the value the working reference board uses, and its designer would also pick a smaller 10 Ω part today. Mounting holes become M2, the board gets four copper layers, and Lean loses its test points. Parts stay on the front, so the board can sit flat on a carrier. The transformers stay a few mm from the chip: the reference board runs that way without link errors, with the same split termination and centre-tap caps we use.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 10</span><h3>Try 2 measured: the parts are too big for 70 × 35</h3><p>The front parts take 1,764 mm² of courtyard: half of the 70 × 50 mm board, and 72 % of the 70 × 35 mm goal before any trace. The biggest blocks are the balance resistors, the two isoSPI ports, the cell plugs and the 10 Ω resistors. Try 2 also can't be routed as placed: nine traces from channels 14–18 would have to pass a 1.6 mm slot above isoSPI port B.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 9</span><h3>Lean test points move to the back</h3><p>The ten probe loops became bare 1.5 mm pads like the four high-voltage ones, and all 14 now sit on the back. That frees about 23 × 6 mm of front copper and leaves no test-point parts to order. The cost: probing is from the underside, and the back needs standoffs because four pads carry 25–75 V. Guard keeps its loops on the front.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 9</span><h3>Lean shrink, try 2: both ports on the board</h3><p>Lean dropped the not-fitted PH footprints J6/J7 (Guard keeps them), so it is 91 parts and its isoSPI cable is GH only, like the master's. Each port is now one strip right of U1: four small resistors and caps, the transformer, then the GH plug at the board edge, port B above port A. Nothing waits beside the board, and the 2 mm isolation gap holds in DRC, also between the two ports.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 8</span><h3>Lean shrink, try 1: 70 × 50 mm</h3><p>Balance resistors went from 2512 to 2010, so the row shrinks from 77 to 62 mm, and the isoSPI transformers to the Bourns SM91502AL: half the area, still 1000 VDC working. A script places the whole board from a few numbers, so each try takes seconds. Everything fits except isoSPI port A.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 7</span><h3>Layout practice in Board Boxes</h3><p>A card in the dashboard lays out all 18 channels as one staggered row under the cell plugs, in the chip's pin order, so no tap trace has to cross another. The long-term battery slot is drawn on the board as a dashed outline.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 6</span><h3>Two variants: Guard and Lean</h3><p>A script turns the Guard schematic into Lean: no tap fuses, zener clamps, TVS or cell-input caps, 93 parts instead of 150. A net tie keeps the C0 sense wire on its own trace, and DRC flags any other copper joining it to ground.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 6</span><h3>Vertical GH, isoSPI ports beside U1</h3><p>J3/J4 are now the top-entry JST GH (BM02B-GHS-TBT), so the plugs come in from above and the ports no longer need the board edge. Both ports moved to the right edge next to U1, which turned 270° so its isoSPI pins face them: each transformer is about 3.4 mm from its plug and about 1.5–2 cm from the chip, and the two pairs don't cross. U1 now renders with its 3D body.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 6</span><h3>isoSPI on JST GH, connector row placed</h3><p>J3/J4 are now JST GH 2P like the master, with not-fitted JST PH footprints J6/J7 beside them for a PH header or bare wires. All connectors sit in one row centred on the top edge, IN on the left and OUT on the right, each transformer about 5 mm from its plug, and a mounting hole in every corner.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 6</span><h3>Master firmware checked</h3><p>The ENNOID master's public firmware sends only commands that match the ADBMS1818 datasheet when set to LTC6813-1, so no custom firmware is expected. It leaves the spare GPIO pull-downs off, so GPIO5–9 are now tied to V− instead of floating. A bench test with one slave is the real proof.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 6</span><h3>Hot-plug protection and test points</h3><p>A 250 mA fuse on every cell tap, a 6.8 V zener across each cell input pair, an 85 V TVS on the supply, 14 test points and 4 mounting holes, following ADI's own slave reference design (AN-2093). 58 parts, all checked into the PCB.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 6</span><h3>Net classes and HV clearance</h3><p>Track widths per net type and spacing for up to 75.6 V between cells far apart in the stack, taken from IPC-2221B, plus a creepage gap across the isoSPI transformers.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 5</span><h3>Parts on the PCB</h3><p>All 90 footprints imported and grouped by block: cell inputs, balancing, supply, isoSPI A/B and connectors. Every pad's net matches the schematic.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 5</span><h3>Schematic wired</h3><p>Every part has a value, footprint and JLC part number. ERC is clean, and a script checks all 272 pins against the wiring table.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 5</span><h3>Symbol and footprints checked</h3><p>ADBMS1818 symbol built from the datasheet pin table (65 pins, 0 mismatches). Transformer and NPN pad numbering checked against the manufacturers' drawings.</p></div></li>
-        <li class="done" hidden><span class="dot"></span><div><span class="when">Nov 4</span><h3>Design basis</h3><p>Values from the ADBMS1818 typical application (Figure 112), plus isoSPI noise filtering and thermistor setup from a working reference board. Every deviation is written down with its reason.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 10</span><h3>Decisions for try 3</h3><p>Balance current drops to about 30 mA: 120 Ω in 1206 instead of 33 Ω in 2010, and the 10 Ω resistors go from 1206 to 0603. That is the value the working reference board uses, and its designer would also pick a smaller 10 Ω part today. Mounting holes become M2, the board gets four copper layers, and Lean loses its test points. Parts stay on the front, so the board can sit flat on a carrier. The transformers stay a few mm from the chip: the reference board runs that way without link errors, with the same split termination and centre-tap caps we use.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 10</span><h3>Try 2 measured: the parts are too big for 70 × 35</h3><p>The front parts take 1,764 mm² of courtyard: half of the 70 × 50 mm board, and 72 % of the 70 × 35 mm goal before any trace. The biggest blocks are the balance resistors, the two isoSPI ports, the cell plugs and the 10 Ω resistors. Try 2 also can't be routed as placed: nine traces from channels 14–18 would have to pass a 1.6 mm slot above isoSPI port B.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 9</span><h3>Lean test points move to the back</h3><p>The ten probe loops became bare 1.5 mm pads like the four high-voltage ones, and all 14 now sit on the back. That frees about 23 × 6 mm of front copper and leaves no test-point parts to order. The cost: probing is from the underside, and the back needs standoffs because four pads carry 25–75 V. Guard keeps its loops on the front.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 9</span><h3>Lean shrink, try 2: both ports on the board</h3><p>Lean dropped the not-fitted PH footprints J6/J7 (Guard keeps them), so it is 91 parts and its isoSPI cable is GH only, like the master's. Each port is now one strip right of U1: four small resistors and caps, the transformer, then the GH plug at the board edge, port B above port A. Nothing waits beside the board, and the 2 mm isolation gap holds in DRC, also between the two ports.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 8</span><h3>Lean shrink, try 1: 70 × 50 mm</h3><p>Balance resistors went from 2512 to 2010, so the row shrinks from 77 to 62 mm, and the isoSPI transformers to the Bourns SM91502AL: half the area, still 1000 VDC working. A script places the whole board from a few numbers, so each try takes seconds. Everything fits except isoSPI port A.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 7</span><h3>Layout practice in Board Boxes</h3><p>A card in the dashboard lays out all 18 channels as one staggered row under the cell plugs, in the chip's pin order, so no tap trace has to cross another. The long-term battery slot is drawn on the board as a dashed outline.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Two variants: Guard and Lean</h3><p>A script turns the Guard schematic into Lean: no tap fuses, zener clamps, TVS or cell-input caps, 93 parts instead of 150. A net tie keeps the C0 sense wire on its own trace, and DRC flags any other copper joining it to ground.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Vertical GH, isoSPI ports beside U1</h3><p>J3/J4 are now the top-entry JST GH (BM02B-GHS-TBT), so the plugs come in from above and the ports no longer need the board edge. Both ports moved to the right edge next to U1, which turned 270° so its isoSPI pins face them: each transformer is about 3.4 mm from its plug and about 1.5–2 cm from the chip, and the two pairs don't cross. U1 now renders with its 3D body.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>isoSPI on JST GH, connector row placed</h3><p>J3/J4 are now JST GH 2P like the master, with not-fitted JST PH footprints J6/J7 beside them for a PH header or bare wires. All connectors sit in one row centred on the top edge, IN on the left and OUT on the right, each transformer about 5 mm from its plug, and a mounting hole in every corner.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Master firmware checked</h3><p>The ENNOID master's public firmware sends only commands that match the ADBMS1818 datasheet when set to LTC6813-1, so no custom firmware is expected. It leaves the spare GPIO pull-downs off, so GPIO5–9 are now tied to V− instead of floating. A bench test with one slave is the real proof.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Hot-plug protection and test points</h3><p>A 250 mA fuse on every cell tap, a 6.8 V zener across each cell input pair, an 85 V TVS on the supply, 14 test points and 4 mounting holes, following ADI's own slave reference design (AN-2093). 58 parts, all checked into the PCB.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 6</span><h3>Net classes and HV clearance</h3><p>Track widths per net type and spacing for up to 75.6 V between cells far apart in the stack, taken from IPC-2221B, plus a creepage gap across the isoSPI transformers.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 5</span><h3>Parts on the PCB</h3><p>All 90 footprints imported and grouped by block: cell inputs, balancing, supply, isoSPI A/B and connectors. Every pad's net matches the schematic.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 5</span><h3>Schematic wired</h3><p>Every part has a value, footprint and JLC part number. ERC is clean, and a script checks all 272 pins against the wiring table.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 5</span><h3>Symbol and footprints checked</h3><p>ADBMS1818 symbol built from the datasheet pin table (65 pins, 0 mismatches). Transformer and NPN pad numbering checked against the manufacturers' drawings.</p></div></li>
+        <li class="done"><span class="dot"></span><div><span class="when">Nov 4</span><h3>Design basis</h3><p>Values from the ADBMS1818 typical application (Figure 112), plus isoSPI noise filtering and thermistor setup from a working reference board. Every deviation is written down with its reason.</p></div></li>
       </ol>
+      </div>
       <button class="history-toggle" type="button" aria-expanded="false" aria-controls="timeline" hidden>Show full history</button>
       <ol class="timeline timeline-next">
         <li class="now"><span class="dot"></span><div><span class="when">Now</span><h3>Review before ordering</h3><p>Two things to look at before a board is ordered: the first cell's sense line, which runs 48 mm on an inner layer beside its balance line, and isoSPI port A, whose chip-side pair is 26–33 mm long because the chip sits 30 mm from that port.</p></div></li>
@@ -188,22 +190,47 @@
   <footer><a class="wordmark" href="#top"><span class="mark">B</span> BMS designs</a><span>Built in public · <a href="https://github.com/Focerqc/testing-BMS-designs">Source on GitHub ↗</a> · <a href="https://github.com/Focerqc/testing-BMS-designs/blob/main/docs/slave-18s-design-basis.md">Design basis ↗</a></span></footer>
   <script>
     (function () {
+      var clip = document.getElementById('timelineClip');
       var list = document.getElementById('timeline');
       var btn = document.querySelector('.history-toggle');
-      if (!list || !btn) return;
-      var hiddenItems = list.querySelectorAll('li[hidden]');
-      var n = hiddenItems.length;
-      if (n === 0) return;
-      btn.hidden = false;
-      function label(open) {
-        btn.textContent = open ? 'Show fewer' : 'Show full history (' + n + ' more)';
+      if (!clip || !list || !btn) return;
+      var items = list.querySelectorAll('li');
+      var open = false;
+
+      // Show the latest change in full and the top half of the one before it.
+      function collapse() {
+        var peek = clip.offsetHeight;
+        if (items.length > 1) {
+          var gap = items[1].getBoundingClientRect().top - clip.getBoundingClientRect().top;
+          peek = Math.round(gap + items[1].offsetHeight / 2);
+        }
+        clip.classList.add('is-collapsed');
+        clip.style.maxHeight = peek + 'px';
       }
-      label(false);
-      btn.addEventListener('click', function () {
-        var open = btn.getAttribute('aria-expanded') !== 'true';
-        hiddenItems.forEach(function (li) { li.hidden = !open; });
+      function expand() {
+        clip.classList.remove('is-collapsed');
+        clip.style.maxHeight = '';
+      }
+      function label() {
+        btn.textContent = open ? 'Show fewer' : 'Show full history (' + (items.length - 1) + ' more)';
         btn.setAttribute('aria-expanded', String(open));
-        label(open);
+      }
+
+      collapse();
+      label();
+      btn.hidden = false;
+      btn.addEventListener('click', function () {
+        open = !open;
+        if (open) {
+          expand();
+        } else {
+          collapse();
+          clip.scrollIntoView({ block: 'nearest' });
+        }
+        label();
+      });
+      window.addEventListener('resize', function () {
+        if (!open) collapse();
       });
     })();
   </script>
