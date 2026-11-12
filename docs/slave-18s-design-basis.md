@@ -417,6 +417,12 @@ is `slave-18s/bom.csv`.
       on In1, a connected V− shield on In2 outside the transformer courtyards, and CELL18
       routed west of the ports. This changes layer roles and requires the owner's choice;
       scratch feasibility is not authorization to change the real board.
+      **Count reconciled (2026-11-11):** the 20 above was a preliminary raw segment-intersection
+      estimate and is superseded. `_tools/kicad_sch/isospi_shield_check.py` is the ground truth:
+      on the current Lean board it finds **6 unique crossing locations, none covered**: five
+      between adjacent layers of port traces (no layer between them for a shield), and one
+      CELL18 on In2 under ISOB_CM on F.Cu at about (55.05, 24.36) mm, where In1 has no V− copper.
+      Zero port-to-port crossings. The Guard board was not re-counted with this script.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
