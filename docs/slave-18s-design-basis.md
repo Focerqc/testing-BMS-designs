@@ -361,10 +361,28 @@ is `slave-18s/bom.csv`.
     - **Layers used, as of now.** In1: S11–S18, VREG (pin 55), DRIVE, port A, VREF2,
       GPIO2. In2: U1's bottom pins, GPIO1–4, CELL18, CT_A. B.Cu: the IPB hop only. All
       four layers carry the VCOLL zone round Q301.
-    - **Left for the V− pour:** U1 pins 52/59/60 to the EP, the column caps (R402, C303–C305),
-      C301, C302, the NTC caps and TH701, J2 pins 2/4/6, NT1, and the two isoSPI cap vias.
-      Several of these sit inside routed tracks and need their own via (C702, C701/C704 have
-      a 0.9 mm gap beside them).
+  - **V− pour on B.Cu, stack-up decided (the user, 2026-11-11): every net connected, DRC
+    clean.** `lean_route.py` `v_minus()`; DRC with zones filled: 0 unconnected, no copper
+    errors (silkscreen only). Board file has the zone unfilled; KiCad fills it on opening.
+    - **Stack-up:** V− is a pour on **B.Cu**, which only had the IPB hop and the VCOLL zone.
+      In1 and In2 carry signals. **Copper: JLC's standard 1 oz outer / 0.5 oz inner** (no
+      2 oz outer under the 0.5 mm-pitch QFP). The board file has no stackup section; this is
+      an order setting.
+    - **The pour** covers the board 0.5 mm in from the edge, with a notch round the isoSPI
+      ports (T501, T601, J3, J4 courtyards; no pour there). Priority 0, so Q301's VCOLL zone
+      (priority 1, all four layers) wins. The stack-bank and barrier rules set its clearance
+      to each net.
+    - **Vias:** one 0.5 mm via with a short stub at each SMD V− pad: C301, R402,
+      C304/C305 (one via between them), C303, C302, C701, C702, TH701 (C703 and C704 join it
+      along the channel between rows 2 and 3), NT1. U1's pins 52/59/60 go straight in to the
+      exposed pad; J2's V− pins and U1's exposed pad reach B.Cu through their own holes.
+    - **Next to VCOLL:** the vias at R402 and C303 sit close to the VCOLL zone and get a
+      B.Cu stub out into the pour. C302's V− pad is inside the VCOLL copper: its via has a
+      B.Cu track up between Q301's via grid and the strip vias to the pour above.
+    - **The termination-row strip** (port V− vias, C302, the H2 corner) is cut off from the
+      rest of B.Cu by the VCOLL copper and the IPB hop. It joins on **In1**: a V− track from
+      port B's cap via to the R402 via, between port A's IMA lane and the IPB via (0.21 mm
+      each side).
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
