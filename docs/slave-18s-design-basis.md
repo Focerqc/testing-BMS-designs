@@ -295,9 +295,76 @@ is `slave-18s/bom.csv`.
       The C0 sense now runs 48 mm on In2 beside S1; cell 1's balance current returns through
       R100 and C0_F's pin only as far as the datasheet's Figure 99 intends, but the long
       parallel run should be looked at before ordering.
-    - **Not routed yet:** the ch 3–10 bus and S11, the taps from the plugs to the resistor
-      rows, both isoSPI ports, DRIVE, VCOLL and CELL18 to R302, the VREF/bias parts, the rest
-      of the NTC wiring (GPIO2–4 to J2 and C702, TH701), and the V− pour.
+    - The rest was routed the same day (next bullet); only the V− pour is left.
+  - **Routing on try 4 finished except V− (2026-11-11): 81 nets, DRC clean, 20 unconnected,
+    all V−.** Five more functions in `lean_route.py`, one commit each: 652 segments (front 494,
+    In1 69, In2 86, B.Cu 3), 52 vias of 0.5/0.2 mm. A second run changes nothing. Checks after
+    each piece: `lean_route.py --drc` (zones filled), `check_pcb_parity.py --variant lean`,
+    `make_rules.py --variant lean --check`, a picture. Nothing fell back to 37 mm.
+    - **ch 3–10 bus (`bus_3_10`).** U1's left pins 32–18 on the front, inside S3 and C2_F.
+      Pins 32–24 (C3_F…C7_F) take lanes 0.48 mm apart from x 21.4, each turning 0.5 mm
+      higher than the one outside it, and go left to their resistors. S8 and C8_F go straight
+      up. The resistors of pins 21–18 (S9…C10_F) are right of any lane, above U1's top-left
+      corner, so those four turn right, and there the **outer** lane turns highest. Nothing
+      crosses either way.
+    - **S11 is on In1, not the front.** C10_F, S10 and C11_F close every front path from pin
+      17 to R211. Like S12, it drops to a via just inside the pin row and crosses on In1 one
+      lane above S12. Its via under R211 sits 0.33 mm below the series row, above C11_F's
+      front lane, 0.225 mm from it.
+    - **Taps (`taps`).** Each plug pin goes straight down and takes one 45° leg to its R2 top
+      pad, so neighbours stay parallel. CELL9 comes from both plugs. From the R2 pad, CELLn
+      runs right into the 0.65 mm gap to R2(n+1) as a **0.2 mm track** (0.225 mm each side;
+      31 mA), down past the S pads and jogs into R1n's CELL pad. CELL0 squeezes between NT1
+      and R201 (0.2 mm, 0.205 mm each side) to R100, with a branch to NT1.
+    - **Supply (`supply`).** VREG leaves Q301 pin 3 upwards and runs left under the body at
+      y 27.97, 0.6 mm below the lowest VCOLL via row (VCOLL is top of stack). It goes down
+      left of DRIVE's pad and through the C305–C303 gap to C303. Pin 55 (ISOMD) joins VREG
+      through In1 from a via inside the pin row. VREG closes DRIVE's pad in, so DRIVE goes
+      down the channel right of U1, crosses on In1 and comes up in the 1.25 mm pocket between
+      VREG and its pad. The VREG track also cuts Q301 pin 2 off the tab on the front. A 0.5 mm
+      via above pin 2 ties it to the inner VCOLL copper.
+    - **CELL18 to R302 on In2.** It drops on its track from R118 to R301 (y 15.6). It passes
+      under T601's courtyard at y 22.95, between the IPB vias, then goes down right of Q301's
+      via grid (x 55) and along y 27.6 between the VCOLL via rows to a via above R302's
+      CELL18 pad. CELL18 and VCOLL are both bank 6, so 0.2 mm is enough. The In2 VCOLL copper
+      is cut along that line but stays joined round the right end.
+    - **The VCOLL grid blocks inner tracks.** Its vias sit 1.15 mm apart, and a 0.25 mm
+      track needs 0.65 mm between via edges. Anything crossing Q301 on an inner layer must go
+      round the grid.
+    - **isoSPI port B (`isospi`), front.** IPB goes into T601 pin 1 from the left. IMB runs
+      under the transformer pins at y 22.37 (0.615 mm from Q301's tab, 0.455 mm from the
+      termination pads) to R602 and up into pin 3. CT runs over the pins under the
+      transformer body and down right of C602. CM runs between R601 and R602 and along the
+      bottom pads. **IPB to R601's bottom pad would have to cross IMB whichever way IMB goes,
+      so it hops on B.Cu** (two vias, 3.4 mm).
+    - **isoSPI port A: In1, as planned.** Its pins sit below port B's, so IPA and IMA drop to
+      In1 right of U1 and pass under T601's courtyard (the courtyard rules have no layer, so
+      a foreign track may not cross under a transformer on any layer). IPA comes up left of
+      R501. IMA comes up between T501's pins 1–2 and the row (for R502) and under the body
+      (for pin 3). **CT_A has no front path to C502**: the board edge is right of it. It
+      crosses on In2 from under the transformer body to below C502.
+    - **Each port's two V− caps share a via** between them (C601/C602, C501/C502). The line
+      side runs straight from transformer pins 6/4 to plug pins 1/2. DRC: the 2 mm barrier,
+      the no-pour and the only-own-tracks rules are all clean.
+    - **Chip-side isoSPI lengths:** IPB 17.7, IMB 20.4, IPA 26.3 and IMA 32.9 mm (branches to
+      the termination included). Port A is over the 2 cm that "Track widths" quotes from
+      p. 86, because U1 sits 30 mm from port A's row on this board. To review before ordering
+      with the C0 line below.
+    - **VREF/bias and NTC (`bias_ntc`).** VREF1, IBIAS and ICMP go straight across the
+      channel to C304, R401 and R402; ICMP's second resistor joins between the R402 and R401
+      rows. VREF2 runs down the channel beside DRIVE to C305, drops inside the pin row and
+      crosses to the NTC parts on **In1** (30 mm along y 28.3, under the bottom-pin via row).
+      On the front it feeds R701–R704 along the two 0.9 mm channels between the three part
+      rows. GPIO2 reaches C702 from J2 pin 3 down the left board edge (x 0.9, 0.775 mm from
+      the edge) and R702 on In1. GPIO3 comes from J2 pin 5 down the same edge on In2. GPIO4
+      reaches TH701 under the bottom row.
+    - **Layers used, as of now.** In1: S11–S18, VREG (pin 55), DRIVE, port A, VREF2,
+      GPIO2. In2: U1's bottom pins, GPIO1–4, CELL18, CT_A. B.Cu: the IPB hop only. All
+      four layers carry the VCOLL zone round Q301.
+    - **Left for the V− pour:** U1 pins 52/59/60 to the EP, the column caps (R402, C303–C305),
+      C301, C302, the NTC caps and TH701, J2 pins 2/4/6, NT1, and the two isoSPI cap vias.
+      Several of these sit inside routed tracks and need their own via (C702, C701/C704 have
+      a 0.9 mm gap beside them).
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
