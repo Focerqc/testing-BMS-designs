@@ -174,6 +174,13 @@ button, input, select { font: inherit; color: inherit; }
   font-weight: 600;
   box-shadow: 0 0 10px rgba(255, 179, 71, 0.3);
 }
+#btnSuperInfo.active {
+  background: rgba(94, 230, 255, 0.16);
+  border-color: #5ee6ff;
+  color: #5ee6ff;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(94, 230, 255, 0.35);
+}
 .btn-del:hover {
   color: var(--red);
   border-color: rgba(255, 92, 122, 0.4);
@@ -690,3 +697,12 @@ kbd {
 .info-issues { margin: 0; padding-left: 16px; font-size: 12px; line-height: 1.5; }
 .info-issues li { margin-bottom: 4px; }
 .pad-peers { font-family: monospace; font-size: 11px; line-height: 1.6; word-break: break-word; }
+.super-toggles { display: flex; gap: 6px; margin: 2px 0 8px; }
+.super-toggles.hidden { display: none; }
+.super-tgl {
+  font: 600 11px var(--mono, monospace); padding: 3px 9px; border-radius: 6px; cursor: pointer;
+  background: transparent; color: var(--muted, #8a93a6); border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.super-tgl:hover { border-color: rgba(255, 255, 255, 0.3); color: var(--text, #e6e9ef); }
+.super-tgl.active { color: #5ee6ff; border-color: #5ee6ff; background: rgba(94, 230, 255, 0.14); }
+.super-tgl.active::before { content: "● "; font-size: 9px; }

@@ -126,6 +126,10 @@
             <button id="btnCloseInfo" class="btn btn-ghost btn-xs" title="Close info box">✕</button>
           </div>
         </div>
+        <div id="superToggles" class="super-toggles hidden">
+          <button id="tglSuperPulse" class="super-tgl active" title="Pulse: a wave travels along the selected net's traces, outward from the pad you clicked">Pulse</button>
+          <button id="tglSuperFull" class="super-tgl" title="Full length: follow the net on through series parts (resistors, fuses, net ties) until it reaches the chip">Full length</button>
+        </div>
         <div id="infoEmptyHint" class="info-empty hidden">Click any component on the board to view its info</div>
         <div id="infoBody" class="info-body">
           <div class="info-row">
@@ -192,6 +196,7 @@
           <div class="info-row"><span class="info-k">Ground</span><span id="padGround" class="info-v">–</span></div>
           <div class="info-row"><span class="info-k">Center</span><span id="padPos" class="info-v mono">–</span></div>
           <div class="info-row"><span class="info-k">Size</span><span id="padSize" class="info-v mono">–</span></div>
+          <div id="padPathRow" class="info-row hidden"><span class="info-k">Full length</span><span id="padPath" class="info-v mono">–</span></div>
           <div class="info-notes">
             <div class="info-issues-head" id="padPeerHead">Connects to</div>
             <div id="padPeers" class="pad-peers">–</div>

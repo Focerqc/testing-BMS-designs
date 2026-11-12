@@ -32,6 +32,9 @@
     selectMode: false,
     infoMode: false,
     superMode: false,
+    superPulse: true,        // Super info: wave runs along the selected net
+    superFull: false,        // Super info: follow the net through series parts to the chip
+    superPath: null,         // { nets, extra, parts, segs } for the selected pad
     padSel: null,
     padHover: null,
     hoverFp: null,
@@ -530,11 +533,258 @@
     if (b) b.textContent = text;
   }
 
+  const SUPER_NET = '#5ee6ff';    // the clicked pad's net
+  const SUPER_EXTRA = '#c49bff';  // nets reached through series parts (Full length)
+
   function superPadColor(pad) {
     if (S.padSel && pad === S.padSel.pad) return '#ffb347';
-    if (S.padSel && S.padSel.pad.net && pad.net === S.padSel.pad.net) return '#5ee6ff';
+    if (S.padSel && S.padSel.pad.net && pad.net === S.padSel.pad.net) return SUPER_NET;
+    if (S.superPath && S.superPath.extra.has(pad.net)) return SUPER_EXTRA;
     if (S.padHover === pad) return '#ffffff';
     return 'rgba(255, 255, 255, 0.22)';
+  }
+
+  // ---------- SUPER INFO: net path + pulse ----------
+  // Parts a signal passes straight through: resistors, fuses, inductors/ferrites, net ties.
+  const SERIES_REF = /^(R|F|L|FB|NT)\d/;
+
+  function seriesNets(fp) {
+    if (!SERIES_REF.test(fp.ref)) return null;
+    const nets = [...new Set((fp.pads || []).map(p => p.net).filter(n => n && !n.startsWith('unconnected-')))];
+    return nets.length === 2 ? nets : null;
+  }
+
+  function netTouchesChip(net) {
+    return S.board.footprints.some(f => /^U\d/.test(f.ref) && (f.pads || []).some(p => p.net === net));
+  }
+
+  // Which nets to light up. Without Full length: just the clicked pad's net. With it: walk on
+  // through series parts, but stop at ground, at big rails (many pads) and at any net that
+  // reaches the chip (the end of the line), except the net you started on.
+  function computeSuperPath() {
+    S.superPath = null;
+    const sel = S.padSel;
+    if (!sel || !sel.pad.net || !S.board) return;
+    const start = sel.pad.net;
+    const nets = new Set([start]);
+    const parts = [];
+    if (S.superFull && !isGroundNet(start)) {
+      const padCount = {};
+      for (const f of S.board.footprints) for (const p of f.pads || []) if (p.net) padCount[p.net] = (padCount[p.net] || 0) + 1;
+      const queue = [start];
+      while (queue.length && nets.size < 16) {
+        const net = queue.shift();
+        if (net !== start && (isGroundNet(net) || netTouchesChip(net) || padCount[net] > 16)) continue;
+        for (const f of S.board.footprints) {
+          const sn = seriesNets(f);
+          if (!sn || !sn.includes(net)) continue;
+          const other = sn[0] === net ? sn[1] : sn[0];
+          if (!parts.includes(f)) parts.push(f);
+          if (!nets.has(other)) { nets.add(other); queue.push(other); }
+        }
+      }
+    }
+    const extra = new Set([...nets].filter(n => n !== start));
+    S.superPath = { start, nets, extra, parts, segs: buildPulseSegs(nets, parts, sel) };
+  }
+
+  // Distance along the copper from the clicked pad to every track end, so the pulse can run
+  // outward from it as one continuous wave (through vias, pads and the series parts).
+  function buildPulseSegs(nets, parts, sel) {
+    const key = (x, y) => `${Math.round(x * 100)},${Math.round(y * 100)}`;
+    const adj = new Map();
+    const link = (a, b, w) => {
+      if (!adj.has(a)) adj.set(a, []);
+      if (!adj.has(b)) adj.set(b, []);
+      adj.get(a).push([b, w]);
+      adj.get(b).push([a, w]);
+    };
+    // Split each track where another track of its net ends partway along it (a T-junction),
+    // so the wave can turn into the branch and each piece gets its own direction.
+    const raw = (S.board.tracks || []).filter(t => nets.has(t.net));
+    const tracks = [];
+    for (const t of raw) {
+      const dx = t.x2 - t.x1, dy = t.y2 - t.y1, len2 = dx * dx + dy * dy;
+      const cuts = [];
+      if (len2 > 1e-6) {
+        for (const o of raw) {
+          if (o === t || o.net !== t.net || o.layer !== t.layer) continue;
+          for (const [px, py] of [[o.x1, o.y1], [o.x2, o.y2]]) {
+            const u = ((px - t.x1) * dx + (py - t.y1) * dy) / len2;
+            if (u <= 1e-3 || u >= 1 - 1e-3) continue;
+            if (Math.hypot(t.x1 + u * dx - px, t.y1 + u * dy - py) < 0.02) cuts.push(u);
+          }
+        }
+      }
+      const us = [0, ...[...new Set(cuts)].sort((a, b) => a - b), 1];
+      for (let i = 0; i + 1 < us.length; i++) {
+        tracks.push(Object.assign({}, t, {
+          x1: t.x1 + us[i] * dx, y1: t.y1 + us[i] * dy, x2: t.x1 + us[i + 1] * dx, y2: t.y1 + us[i + 1] * dy,
+        }));
+      }
+    }
+    const ends = [];
+    for (const t of tracks) {
+      const a = key(t.x1, t.y1), b = key(t.x2, t.y2);
+      link(a, b, Math.hypot(t.x2 - t.x1, t.y2 - t.y1));
+      ends.push([a, t.x1, t.y1, t.net], [b, t.x2, t.y2, t.net]);
+    }
+    const padKey = (f, p) => `P:${f.ref}.${p.num}`;
+    const inPad = (p, x, y) => {
+      const dx = x - p.x, dy = y - p.y;
+      const a = ((p.angle || 0) * Math.PI) / 180;
+      const lx = dx * Math.cos(a) - dy * Math.sin(a);
+      const ly = dx * Math.sin(a) + dy * Math.cos(a);
+      return Math.abs(lx) <= p.w / 2 + 0.01 && Math.abs(ly) <= p.h / 2 + 0.01;
+    };
+    for (const f of S.board.footprints) {
+      for (const p of f.pads || []) {
+        if (!nets.has(p.net)) continue;
+        for (const [k, x, y, n] of ends) if (n === p.net && inPad(p, x, y)) link(padKey(f, p), k, Math.hypot(x - p.x, y - p.y));
+      }
+    }
+    const partSegs = [];
+    for (const f of parts) {
+      const ps = (f.pads || []).filter(p => nets.has(p.net));
+      const a = ps[0], b = ps.find(p => p.net !== a.net);
+      if (!a || !b) continue;
+      link(padKey(f, a), padKey(f, b), Math.hypot(b.x - a.x, b.y - a.y));
+      partSegs.push({ fp: f, a, b, ka: padKey(f, a), kb: padKey(f, b) });
+    }
+    // Dijkstra from the clicked pad (graphs here are a few hundred nodes, so a plain scan is fine)
+    const dist = new Map([[padKey(sel.fp, sel.pad), 0]]);
+    const done = new Set();
+    for (;;) {
+      let cur = null, cd = Infinity;
+      for (const [k, d] of dist) if (!done.has(k) && d < cd) { cur = k; cd = d; }
+      if (cur === null) break;
+      done.add(cur);
+      for (const [nb, w] of adj.get(cur) || []) {
+        if (cd + w < (dist.get(nb) ?? Infinity)) dist.set(nb, cd + w);
+      }
+    }
+    const segs = [];
+    const orient = (x1, y1, x2, y2, ka, kb, extraFields) => {
+      const da = dist.get(ka), db = dist.get(kb);
+      const flip = da !== undefined && db !== undefined ? db < da : (da === undefined && db !== undefined);
+      const d0 = Math.min(da ?? Infinity, db ?? Infinity);
+      segs.push(Object.assign(flip
+        ? { x1: x2, y1: y2, x2: x1, y2: y1 }
+        : { x1, y1, x2, y2 }, { d0: Number.isFinite(d0) ? d0 : 0 }, extraFields));
+    };
+    for (const t of tracks) orient(t.x1, t.y1, t.x2, t.y2, key(t.x1, t.y1), key(t.x2, t.y2), { layer: t.layer, w: t.w, net: t.net });
+    for (const s of partSegs) orient(s.a.x, s.a.y, s.b.x, s.b.y, s.ka, s.kb, { layer: null, w: 0.3, net: null, fp: s.fp });
+    return segs;
+  }
+
+  let pulseRaf = null;
+  function ensurePulseLoop() {
+    const want = S.superMode && S.superPulse && S.superPath;
+    if (want && !pulseRaf) {
+      const tick = () => {
+        if (!(S.superMode && S.superPulse && S.superPath)) { pulseRaf = null; render(); return; }
+        render();
+        pulseRaf = requestAnimationFrame(tick);
+      };
+      pulseRaf = requestAnimationFrame(tick);
+    }
+  }
+
+  function updateSuperToggles() {
+    $('superToggles')?.classList.toggle('hidden', !S.superMode);
+    $('tglSuperPulse')?.classList.toggle('active', !!S.superPulse);
+    $('tglSuperFull')?.classList.toggle('active', !!S.superFull);
+    const row = $('padPathRow');
+    const p = S.superPath;
+    if (row) {
+      const show = !!(S.superFull && p && S.padSel);
+      row.classList.toggle('hidden', !show);
+      if (show) {
+        const via = p.parts.map(f => f.ref).join(', ');
+        $('padPath').textContent = p.extra.size
+          ? `${[...p.nets].join(' → ')}${via ? ` (through ${via})` : ''}`
+          : 'No series parts on this net';
+      }
+    }
+  }
+
+  function setSuperOption(name, on) {
+    S[name] = on;
+    if (name === 'superFull') computeSuperPath();
+    updateSuperToggles();
+    ensurePulseLoop();
+    render();
+  }
+
+  // Lit-up path drawn over everything else: board dimmed, the path's copper, vias and pads
+  // bright, and (with Pulse) a glowing wave running outward from the clicked pad.
+  function drawSuperPath(pane) {
+    const P = S.superPath;
+    if (!S.superMode || !P) return;
+    const sc = S.view.scale;
+    const r = stage.getBoundingClientRect();
+    ctx.save();
+    ctx.fillStyle = 'rgba(7, 9, 14, 0.55)';
+    ctx.fillRect(0, pane.top, r.width, pane.height);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    const segOnPane = s => (s.layer ? layerOnPane(pane, s.layer) : fpOnSide(s.fp, pane.side));
+    const colourOf = s => (s.net && s.net !== P.start ? SUPER_EXTRA : (s.net ? SUPER_NET : SUPER_EXTRA));
+    // solid copper
+    for (const s of P.segs) {
+      if (!segOnPane(s)) continue;
+      const a = toScreen(s.x1, s.y1), b = toScreen(s.x2, s.y2);
+      ctx.strokeStyle = colourOf(s);
+      ctx.globalAlpha = s.layer ? 0.75 : 0.45;
+      ctx.lineWidth = Math.max(2, s.w * sc);
+      ctx.setLineDash(s.layer ? [] : [4, 4]);
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+    // vias on the path
+    for (const v of S.board.vias || []) {
+      if (!P.nets.has(v.net)) continue;
+      const p = toScreen(v.x, v.y);
+      ctx.fillStyle = v.net === P.start ? SUPER_NET : SUPER_EXTRA;
+      ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(2, (v.width / 2) * sc), 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#07090e';
+      ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.8, (v.drill / 2) * sc), 0, Math.PI * 2); ctx.fill();
+    }
+    // pads on the path (and the series parts' pads)
+    for (const fp of S.board.footprints) {
+      if (!fpOnSide(fp, pane.side)) continue;
+      for (const pad of fp.pads || []) {
+        if (!P.nets.has(pad.net)) continue;
+        const c = toScreen(pad.x, pad.y);
+        ctx.save();
+        ctx.translate(c.x, c.y);
+        ctx.rotate((-pad.angle * Math.PI) / 180);
+        ctx.fillStyle = superPadColor(pad);
+        const w = Math.max(1, pad.w * sc), h = Math.max(1, pad.h * sc);
+        ctx.fillRect(-w / 2, -h / 2, w, h);
+        ctx.restore();
+      }
+    }
+    // the travelling wave: a dash pattern phased by distance from the clicked pad
+    if (S.superPulse) {
+      const t = performance.now() / 1000;
+      const speed = 90;            // screen px per second
+      const dash = 14, gap = 34;
+      ctx.setLineDash([dash, gap]);
+      ctx.shadowBlur = 12;
+      for (const s of P.segs) {
+        if (!segOnPane(s)) continue;
+        const a = toScreen(s.x1, s.y1), b = toScreen(s.x2, s.y2);
+        const col = colourOf(s);
+        ctx.shadowColor = col;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = Math.max(2, s.w * sc * 0.7);
+        ctx.lineDashOffset = -(t * speed) + s.d0 * sc;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+    ctx.restore();
   }
 
   function toggleSuperMode(forceState) {
@@ -556,6 +806,7 @@
       toast('Super info: click any pad to see its net and every other pad on that net.');
     } else {
       S.padSel = null;
+      S.superPath = null;
       S.padHover = null;
       S.infoFp = null;
       $('partInfoCard')?.classList.add('hidden');
@@ -565,11 +816,14 @@
       if (hint) hint.textContent = 'Click any component on the board to view its info';
       toast('Super info exited');
     }
+    updateSuperToggles();
     refreshUI();
   }
 
   function setPadPanelEmpty() {
     S.padSel = null;
+    S.superPath = null;
+    updateSuperToggles();
     $('infoBody')?.classList.add('hidden');
     $('padInfoBody')?.classList.add('hidden');
     const hint = $('infoEmptyHint');
@@ -678,6 +932,9 @@
         box.textContent = shown.join(', ') + (peers.length > shown.length ? ` … +${peers.length - shown.length} more` : '');
       }
     }
+    computeSuperPath();
+    updateSuperToggles();
+    ensurePulseLoop();
     render();
     toast(`Pad <b>${esc(fp.ref)}.${esc(pad.num)}</b> → ${net ? esc(net) : 'no net'}`);
   }
@@ -1814,6 +2071,8 @@
       }
       ctx.restore();
     }
+
+    if (S.superMode && S.superPath) drawSuperPath(pane);
 
     // boxes
     const selBox = S.sel ? box(S.sel.id) : null;
@@ -3038,6 +3297,8 @@
     if (btnInfoMode) btnInfoMode.onclick = () => toggleInfoMode();
     const btnSuperInfo = $('btnSuperInfo');
     if (btnSuperInfo) btnSuperInfo.onclick = () => toggleSuperMode();
+    if ($('tglSuperPulse')) $('tglSuperPulse').onclick = () => setSuperOption('superPulse', !S.superPulse);
+    if ($('tglSuperFull')) $('tglSuperFull').onclick = () => setSuperOption('superFull', !S.superFull);
     const btnCopyInfo = $('btnCopyInfo');
     if (btnCopyInfo) btnCopyInfo.onclick = copyPartInfo;
     const btnCloseInfo = $('btnCloseInfo');
