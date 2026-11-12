@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=daf10c352e">
+  <link rel="stylesheet" href="style.css?v=30dfd30812">
 </head>
 <body>
   <header class="topbar">
@@ -87,6 +87,7 @@
         <div class="legend-actions">
           <button id="btnSelectMode" class="btn btn-ghost btn-sm" title="Select existing footprint parts on PCB into the active color group">Select</button>
           <button id="btnInfoMode" class="btn btn-ghost btn-sm" title="Toggle Part Info mode: click any component on PCB to inspect its properties">Info</button>
+          <button id="btnSuperInfo" class="btn btn-ghost btn-sm" title="Super info: click any single pad to see its net and every other pad on that net">Super info</button>
           <button id="btnAddColor" class="btn btn-ghost btn-sm" title="Add a color">+ Add</button>
           <button id="btnClearAll" class="btn btn-ghost btn-sm btn-del" title="Clear all boxes and selections">Clear</button>
         </div>
@@ -176,6 +177,24 @@
           <div class="info-row hidden" id="infoMpnRow">
             <span class="info-k">MPN</span>
             <span id="infoMpn" class="info-v mono">–</span>
+          </div>
+          <div class="info-notes" id="infoNotes">
+            <p id="infoPurpose" class="info-purpose">–</p>
+            <div class="info-issues-head">Possible issues</div>
+            <ul id="infoIssues" class="info-issues"></ul>
+          </div>
+        </div>
+        <div id="padInfoBody" class="info-body hidden">
+          <div class="info-row"><span class="info-k">Pad</span><span id="padNum" class="info-v mono">–</span></div>
+          <div class="info-row"><span class="info-k">Part</span><span id="padPart" class="info-v mono">–</span></div>
+          <div class="info-row"><span class="info-k">Net</span><span id="padNet" class="info-v mono">–</span></div>
+          <div class="info-row info-row-stack"><span class="info-k">Kind</span><div class="info-v-stack"><span id="padKind" class="info-v">–</span></div></div>
+          <div class="info-row"><span class="info-k">Ground</span><span id="padGround" class="info-v">–</span></div>
+          <div class="info-row"><span class="info-k">Center</span><span id="padPos" class="info-v mono">–</span></div>
+          <div class="info-row"><span class="info-k">Size</span><span id="padSize" class="info-v mono">–</span></div>
+          <div class="info-notes">
+            <div class="info-issues-head" id="padPeerHead">Connects to</div>
+            <div id="padPeers" class="pad-peers">–</div>
           </div>
         </div>
       </div>
@@ -361,6 +380,6 @@
   </div>
 
   <script src="hosted.js?v=51354843d6"></script>
-  <script src="app.js?v=7157e8d61c"></script>
+  <script src="app.js?v=0000edb286"></script>
 </body>
 </html>

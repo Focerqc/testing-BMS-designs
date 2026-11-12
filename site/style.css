@@ -682,3 +682,11 @@ kbd {
 .explain-tip .xt-ref { font-family: var(--mono); font-size: 11px; opacity: .65; }
 .explain-tip div { margin-top: 3px; }
 .dock-btn[hidden], .explain-tip[hidden] { display: none; }
+
+/* Part notes (Info mode) and pad list (Super info) */
+.info-notes { margin-top: 10px; }
+.info-purpose { margin: 4px 0 8px; font-size: 12px; line-height: 1.5; }
+.info-issues-head { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; opacity: .6; margin: 8px 0 4px; }
+.info-issues { margin: 0; padding-left: 16px; font-size: 12px; line-height: 1.5; }
+.info-issues li { margin-bottom: 4px; }
+.pad-peers { font-family: monospace; font-size: 11px; line-height: 1.6; word-break: break-word; }
