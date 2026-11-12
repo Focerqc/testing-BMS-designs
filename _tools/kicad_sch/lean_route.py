@@ -28,7 +28,7 @@ What it routes:
   8. VREF1/VREF2, IBIAS/ICMP at U1; VREF2 on In1 to the NTC parts; GPIO2-4 to J2, C702, TH701
      (bias_ntc).
 
-Not routed here: the V- pour.
+  9. V-: a via at each V- pad and a pour on B.Cu, clear of the isoSPI ports (v_minus).
 """
 import argparse
 import re
@@ -86,7 +86,7 @@ VREF2_RING_X = 39.75                 # VREF2 drops to In1 inside U1's pin row, l
 VREF2_TURN_X, VREF2_LANE = 38.6, 28.3  # In1: down right of the bottom-pin via row, left under it
 EDGE_X = 0.9                         # GPIO2 (front) and GPIO3 (In2) run down the left board edge here
 
-segs, vias = [], []
+segs, vias, zones = [], [], []       # zones: (name, net, layer, priority, points)
 
 
 def pad(ref, net):
@@ -479,16 +479,78 @@ def bias_ntc():
     route("/GPIO4", "F.Cu", W_C, [(c704[0], c704[1]), (c704[0], y), (th[0], y), (th[0], th[1])])
 
 
+def v_minus():
+    """V-: a pour on B.Cu (the user, 2026-11-11) and a via with a short stub at every V- pad that
+    is not a through-hole pad or the exposed pad (those reach B.Cu by themselves).
+
+    The pour leaves out the isoSPI ports (T501, T601, J3, J4: no pour under them). Q301's VCOLL
+    zone sits on all four layers at higher priority, so V- vias next to it get a B.Cu stub out
+    into the V- pour; C302's V- pad sits inside the VCOLL copper and gets a B.Cu track up
+    between the via grid and the strip vias to the pour above. U1's right-side V- pins go
+    straight in to the exposed pad on the front.
+    """
+    ep_r = max(mm(q.GetBoundingBox().GetRight()) for q in FP["U1"].Pads() if q.GetNumber() == "65")
+    for n in ("52", "59", "60"):
+        p = pin("U1", n)
+        line("/V-", "F.Cu", W_C, [(p[4] - 0.3, p[1]), (ep_r - 0.2, p[1])])
+    vp = lambda ref: pad(ref, "/V-")
+
+    def drop(ref, v, stub=None):
+        p = vp(ref)
+        line("/V-", "F.Cu", W_C, [(p[0], p[1]), v])
+        via("/V-", *v)
+        if stub:
+            line("/V-", "B.Cu", W_C, [v, stub])
+
+    c301 = vp("C301")
+    drop("C301", (c301[0], c301[5] + 0.54))
+    r402 = vp("R402")
+    drop("R402", (r402[4] + 0.56, r402[1]), stub=(r402[0] - 0.6, r402[1]))
+    c304, c305 = vp("C304"), vp("C305")
+    line("/V-", "F.Cu", W_C, [(c304[0], c304[1]), (c305[0], c305[1])])
+    via("/V-", c304[0], (c304[5] + c305[3]) / 2)
+    c303 = vp("C303")
+    drop("C303", (c303[4] + 0.56, c303[1]), stub=(c303[0] - 0.6, c303[1]))
+    c302 = vp("C302")
+    drop("C302", (c302[0], c302[5] + 0.55), stub=(c302[0], pad("R601", "/IPB")[5] - 0.4))
+    # The pour under the termination rows (port V- vias, C302, the H2 corner) is cut off from the
+    # rest of B.Cu by the VCOLL copper and the IPB hop: join it on In1, between port A's IMA lane
+    # and the IPB via, to the V- via at R402.
+    ca_t, ca_b, cb_t = vp("C601"), pad("C601", "/ISOB_CM"), vp("C602")
+    vb = ((ca_t[4] + cb_t[2]) / 2, (ca_t[5] + ca_b[3]) / 2)
+    ly = A_LANE[1] + W_ISO / 2 + 0.2 + W_C / 2 + 0.01
+    rv = (r402[4] + 0.56, r402[1])
+    line("/V-", "In1.Cu", W_C, [vb, (vb[0] - (vb[1] - ly), ly), (rv[0] + (ly - rv[1]), ly), rv])
+    # NTC block
+    c701 = vp("C701")
+    drop("C701", (c701[0], c701[3] - 1.3))
+    c702 = vp("C702")
+    drop("C702", ((c702[4] + pad("R703", "/VREF2")[2]) / 2, c702[1]))
+    c703, c704, th = vp("C703"), vp("C704"), vp("TH701")
+    ch2 = (pad("R703", "/VREF2")[5] + pad("R704", "/VREF2")[3]) / 2
+    route("/V-", "F.Cu", W_C, [(c704[0], c704[1]), (c704[0], ch2), (th[0], ch2), (th[0], th[1])])
+    line("/V-", "F.Cu", W_C, [(c703[0], c703[1]), (c703[0], ch2)])
+    drop("TH701", (th[0], th[5] + 0.7))
+    nt = vp("NT1")
+    drop("NT1", (nt[0] - 0.65, nt[1] + 0.6))
+    # the pour, notched round the isoSPI ports
+    e = 0.5
+    x0, y0, x1, y1 = lp.box(["T501", "T601", "J3", "J4"])
+    zones.append(("V-_B.Cu", "/V-", "B.Cu", 0,
+                  [(e, e), (lp.W - e, e), (lp.W - e, y0 - 0.1), (x0 - 0.1, y0 - 0.1), (x0 - 0.1, y1 + 0.1),
+                   (lp.W - e, y1 + 0.1), (lp.W - e, lp.H - e), (e, lp.H - e)]))
+
+
 # ---------------------------------------------------------------- write
 def blocks(text, head):
     for m in re.finditer(rf"^\t\({head}\n.*?^\t\)\n", text, re.M | re.S):
         yield m.start(), m.end()
 
 
-def write(text, mine, vboxes):
-    """Drop every segment and via on the nets in MINE and add ours. V- is shared with everything
-    else, so only its tracks and vias inside VBOXES (U1, the termination rows) count as ours;
-    VCOLL's 0.6 mm stitching vias belong to lean_place."""
+def write(text, mine):
+    """Drop every segment and via on the nets in MINE and add ours. Every V- track and 0.5 mm V-
+    via is ours (nothing else draws V- copper but the zone); VCOLL's 0.6 mm stitching vias belong
+    to lean_place. Zones in ZONES are replaced by name and written unfilled."""
     uid = lambda *k: uuid.uuid5(uuid.NAMESPACE_URL, "lean_route/" + "/".join(map(str, k)))
     drop = []
     for head in ("segment", "via"):
@@ -499,10 +561,13 @@ def write(text, mine, vboxes):
                 continue
             if net.group(1) == "/VCOLL" and head == "via" and f"(size {VIA[0]:g})" not in blk:
                 continue                              # lean_place's stitching vias (0.6 mm)
-            if net.group(1) == "/V-":
-                a = re.search(r"\((?:start|at) ([-\d.]+) ([-\d.]+)\)", blk)
-                if not any(b[0] < float(a.group(1)) < b[2] and b[1] < float(a.group(2)) < b[3] for b in vboxes):
-                    continue
+            if net.group(1) == "/V-" and head == "via" and f"(size {VIA[0]:g})" not in blk:
+                continue
+            drop.append((s, e))
+    names = {z[0] for z in zones}
+    for s, e in blocks(text, "zone"):
+        m = re.search(r'\(name "([^"]*)"\)', text[s:e])
+        if m and m.group(1) in names:
             drop.append((s, e))
     for s, e in sorted(drop, reverse=True):
         text = text[:s] + text[e:]
@@ -517,7 +582,17 @@ def write(text, mine, vboxes):
                    f'\t\t(layers "F.Cu" "B.Cu")\n\t\t(net "{net}")\n\t\t(uuid "{uid("via", *v)}")\n\t)\n')
     at = min(i for i in (text.find(k) for k in ("\n\t(via\n", "\n\t(zone\n", "\n\t(group ", "\n\t(embedded_fonts "))
              if i >= 0) + 1
-    return text[:at] + "".join(new) + text[at:], len(drop)
+    text = text[:at] + "".join(new) + text[at:]
+    zt = []
+    for name, net, layer, prio, pts in zones:         # unfilled: KiCad (or --refill-zones) fills them
+        zt.append(f'\t(zone\n\t\t(net "{net}")\n\t\t(layer "{layer}")\n\t\t(uuid "{uid("zone", name)}")\n'
+                  f'\t\t(name "{name}")\n\t\t(hatch edge 0.5)\n\t\t(priority {prio})\n'
+                  '\t\t(connect_pads\n\t\t\t(clearance 0.2)\n\t\t)\n\t\t(min_thickness 0.25)\n'
+                  '\t\t(fill\n\t\t\t(thermal_gap 0.5)\n\t\t\t(thermal_bridge_width 0.5)\n'
+                  '\t\t\t(island_removal_mode 0)\n\t\t)\n\t\t(polygon\n\t\t\t(pts\n\t\t\t\t'
+                  + " ".join(f"(xy {x:g} {y:g})" for x, y in pts) + "\n\t\t\t)\n\t\t)\n\t)\n")
+    at = min(i for i in (text.find(k) for k in ("\n\t(zone\n", "\n\t(group ", "\n\t(embedded_fonts ")) if i >= 0) + 1
+    return text[:at] + "".join(zt) + text[at:], len(drop)
 
 
 def main():
@@ -528,22 +603,21 @@ def main():
     a = ap.parse_args()
     if list(PCB.parent.glob("~*.lck")):
         sys.exit("KiCad has the Lean board open (lock file). Close it first.")
-    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps(); supply(); isospi(); bias_ntc()
+    fan_in(); v_plus(); bottom_pins(); bus_3_10(); taps(); supply(); isospi(); bias_ntc(); v_minus()
     nets = sorted({s[0] for s in segs} | {v[0] for v in vias})
     length = {}
     for net, layer, w, p, q in segs:
         length[net] = length.get(net, 0) + ((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2) ** 0.5
-    by_layer = {l: sum(1 for s in segs if s[1] == l) for l in ("F.Cu", "In1.Cu", "In2.Cu")}
+    by_layer = {l: sum(1 for s in segs if s[1] == l) for l in ("F.Cu", "In1.Cu", "In2.Cu", "B.Cu")}
     print(f"{len(nets)} nets, {len(segs)} segments ({', '.join(f'{l} {n}' for l, n in by_layer.items())}), {len(vias)} vias")
     print("longest: " + ", ".join(f"{n[1:]} {v:.0f} mm" for n, v in sorted(length.items(), key=lambda kv: -kv[1])[:6]))
     if a.dry:
         print("(dry run, board not written)")
         return
-    vboxes = [lp.box(["U1"]), lp.box(["R601", "R602", "C601", "C602", "R501", "R502", "C501", "C502"])]
     lp.release()
     with open(PCB, encoding="utf-8", newline="") as f:
         text = f.read()
-    text, gone = write(text, set(nets), vboxes)
+    text, gone = write(text, set(nets))
     with open(PCB, "w", encoding="utf-8", newline="") as f:
         f.write(text)
     print(f"wrote {PCB.name}: {gone} old items removed")
