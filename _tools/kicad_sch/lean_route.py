@@ -268,7 +268,7 @@ def taps():
     the legs of neighbours stay parallel. From the R2 pad CELLn goes right into the gap to
     R2(n+1) (0.65 mm: a 0.2 mm track), down past the S pads and jogs into R1n's CELLn pad.
     CELL0 (J1 pin 1) runs down between NT1 and R201 to R100 and branches to NT1; CELL9 comes
-    from J1 pin 10 and J5 pin 1.
+    from J1 pin 10 (and J5 pin 1 on the earlier ten-contact board).
     """
     def leg(net, j, r):
         y_end = r[3] - TAP_END
@@ -283,7 +283,12 @@ def taps():
     for n in range(1, 19):
         net = f"/CELL{n}"
         r2, r1 = pad(f"R2{n:02d}", net), pad(f"R1{n:02d}", net)
-        for j in [(pad("J1", net)), (pad("J5", net))] if n == 9 else [pad("J1" if n < 9 else "J5", net)]:
+        # Select actual connector pads so both sides of an F8 transition are routable.
+        sources = [pad(j, net) for j in ("J1", "J5")
+                   if any(p.GetNetname() == net for p in FP[j].Pads())]
+        if not sources:
+            sys.exit(f"No cell connector contact for {net}")
+        for j in sources:
             leg(net, j, r2)
         gx = (r2[4] + (pad(f"R2{n + 1:02d}", f"/CELL{n + 1}")[2] if n < 18 else r2[4] + 0.65)) / 2
         y0 = down(net, gx, r1)

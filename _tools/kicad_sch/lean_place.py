@@ -209,11 +209,13 @@ def floorplan():
                       ("H1", HOLE_INSET, H - HOLE_INSET), ("H2", W - HOLE_INSET, H - HOLE_INSET)):
         put_anchor(ref, x, y)
 
-    # cell plugs on the top edge, left: J1 and J5 keep their 23.5 mm pin-1 spacing
-    put_anchor("J1", 0, 0); put_anchor("J5", 23.5, 0)
+    # J5's nine contacts carry C10-C18; retain their old physical positions.
+    # The removed C9 contact leaves 2 mm more room between the cell headers.
+    j5_offset = 25.5 if len(list(FP["J5"].Pads())) == 9 else 23.5
+    put_anchor("J1", 0, 0); put_anchor("J5", j5_offset, 0)
     x0, y0, _, _ = box(["J1", "J5"])
     jx, jy = PLUG_X - x0, EDGE - y0
-    put_anchor("J1", jx, jy); put_anchor("J5", jx + 23.5, jy)
+    put_anchor("J1", jx, jy); put_anchor("J5", jx + j5_offset, jy)
     plug_bottom = box(["J1", "J5"])[3]
     pins_mid = jx + (23.5 + 9 * 2.0) / 2             # middle of C0 ... C18 on the plugs
 
