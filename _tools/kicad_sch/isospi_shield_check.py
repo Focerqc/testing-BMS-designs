@@ -3,8 +3,9 @@
 Read-only for the real board. It copies the Lean board (and its project files)
 into exports/isospi_check/, lets kicad-cli refill the zones on that copy, then:
 
-1. Finds every centreline crossing of an isoSPI port track (ISOA_* or ISOB_*)
-   with a foreign track on another layer. Excluded: same port, and V-.
+1. Finds every centreline crossing of an isoSPI port track (port A: IPA, IMA,
+   ISOA_*; port B: IPB, IMB, ISOB_*) with a foreign track on another layer.
+   Excluded: same port, and V-. The other port counts as foreign.
 2. For each crossing, samples the whole projected overlap of the two track
    bodies (not just the centre point).
 3. Requires every sample to lie inside filled V- copper on each layer strictly
@@ -195,12 +196,24 @@ def refill_copy(src):
 
 
 # ---------- the check --------------------------------------------------------
-def is_port(net):
-    return net.startswith("/ISOA_") or net.startswith("/ISOB_")
+# A port is its whole isoSPI circuit: the chip-side pair (IPx/IMx), the split
+# termination midpoint (ISOx_CM), the transformer centre tap (ISOx_CT) and the
+# line side (ISOx_LP/LN). CM and CT are AC-grounded nodes of the same pair, so a
+# port's own lines crossing them inject no outside signal (datasheet p. 86 bans
+# traces crossing the isoSPI lines; the port's own termination is part of them).
+CHIP_SIDE = {"/IPA": "ISOA", "/IMA": "ISOA", "/IPB": "ISOB", "/IMB": "ISOB"}
 
 
 def port_of(net):
-    return net[1:5] if is_port(net) else None  # "ISOA" / "ISOB"
+    if net in CHIP_SIDE:
+        return CHIP_SIDE[net]
+    if net.startswith("/ISOA_") or net.startswith("/ISOB_"):
+        return net[1:5]  # "ISOA" / "ISOB"
+    return None
+
+
+def is_port(net):
+    return port_of(net) is not None
 
 
 def find_crossings(tracks):
@@ -301,7 +314,7 @@ def main():
     seen, unique = set(), []
     for r in results:
         key = tuple(sorted([(r["port_net"], r["port_layer"]), (r["other_net"], r["other_layer"])]))
-        key = key + (tuple(r["at"]),)
+        key = key + (tuple(round(v, 2) for v in r["at"]),)  # same pair from both sides: float noise
         if key in seen:
             continue
         seen.add(key)
