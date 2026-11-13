@@ -112,6 +112,9 @@ def to_lean():
         E[b] = {re.sub(r"^F120\.", "NT1.", k): v for k, v in E[b].items()}
         E[b] = {k: lean_net(v) for k, v in E[b].items() if not LEAN_DROP.match(k)}
         NC[b] = {k for k in NC[b] if not LEAN_DROP.match(k)}
+    # Lean uses PH10 + PH9: CELL9 exists on J1.10 only.
+    E[5] = {k: v for k, v in E[5].items() if not k.startswith("J5.")}
+    E[5].update({f"J5.{k}": f"CELL{k + 9}" for k in range(1, 10)})
 
 
 def kicad(sch):

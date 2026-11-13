@@ -97,6 +97,18 @@ R302_1K = {
 }
 SWAP = ({f"R2{n:02d}": R2_1206 for n in range(1, 19)} | {f"R1{n:02d}": R1_0402 for n in range(19)}
         | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS} | {f"H{n}": HOLE_M2 for n in range(1, 5)} | {"R302": R302_1K})
+# Distinct contact counts for the two cell harnesses; CELL9 is on J1 only.
+# JST ePH.pdf pp. 1, 3: mounting-side pin 1, 2 mm pitch, B9B-PH-K-S.
+SWAP["J5"] = {
+    "Value": ("CELL_TAPS_C9-C18", "CELL_TAPS_C10-C18"),
+    "Footprint": ("Connector_JST:JST_PH_B10B-PH-K_1x10_P2.00mm_Vertical",
+                  "Connector_JST:JST_PH_B9B-PH-K_1x09_P2.00mm_Vertical"),
+    "Datasheet": ("", "https://www.jst-mfg.com/product/pdf/eng/ePH.pdf"),
+    "Description": ("Generic connector, single row, 01x10, script generated (kicad-library-utils/schlib/autogen/connector/)",
+                    "JST PH 9-pin cell taps C10-C18; pin 1 C10, pin 9 C18; C9 is on J1 only"),
+    "LCSC": ("C158038", "C157968"),
+    "MPN": ("B10B-PH-K-S(LF)(SN)", "B9B-PH-K-S(LF)(SN)"),
+}
 # R2's Note carries the Guard power figure (which itself ignores the 10 ohm in the loop)
 NOTE_SUB = {f"R2{n:02d}": ("~0.4 W at 4.2 V", "~0.12 W at 4.2 V") for n in range(1, 19)}
 
@@ -107,6 +119,16 @@ def swap_part(blk, ref):
         if o not in blk:
             sys.exit(f"{ref}: {o} not found in Guard; update SWAP")
         blk = blk.replace(o, f'(property "{prop}" "{new}"')
+    if ref == "J5":
+        blk = blk.replace('(lib_id "Connector_Generic:Conn_01x10")',
+                          '(lib_id "Connector_Generic:Conn_01x09")')
+        # The library's 9P pin 1 has the same relative position as 10P pin 1.
+        # Shift the symbol down one pitch to retain the existing C10-C18 labels.
+        blk = re.sub(r'^(\s*\(at [-\d.]+ )([-\d.]+)( 0\))',
+                     lambda m: m[1] + f'{float(m[2]) + 2.54:g}' + m[3],
+                     blk, count=1, flags=re.M)
+        blk = re.sub(r'\n\t\t\(pin "1"\s*\(uuid "[^"]+"\)\s*\)', '', blk)
+        blk = re.sub(r'\(pin "(\d+)"', lambda m: f'(pin "{int(m[1]) - 1}"', blk)
     if ref in NOTE_SUB:
         old, new = NOTE_SUB[ref]
         if blk.count(old) != 1:
@@ -167,6 +189,14 @@ def nettie_lib():
     return lib[i:j].replace('(symbol "NetTie_2"', '(symbol "Device:NetTie_2"', 1).replace("\n", "\n\t")
 
 
+def cell_connector_lib():
+    lib = (DEVICE_SYM.parent / "Connector_Generic.kicad_sym").read_text(encoding="utf-8")
+    i = lib.index('\n\t(symbol "Conn_01x09"')
+    j = lib.index('\n\t(symbol "', i + 5)
+    return lib[i:j].replace('(symbol "Conn_01x09"',
+                            '(symbol "Connector_Generic:Conn_01x09"', 1).replace("\n", "\n\t")
+
+
 def top_blocks(text):
     """(start, end, head) for each depth-1 s-expression of the file."""
     depth, start, i, n = 0, None, 0, len(text)
@@ -199,6 +229,12 @@ def main():
         sys.exit(f"parts not in the Guard schematic: {sorted(missing)}")
     dead_ends = {(round(p["ex"], 2), round(p["ey"], 2)) for r in REMOVE - {TIE}
                  for p in syms[r]["pins"].values()}
+    j5 = syms["J5"]
+    if j5["rot"] or j5["mirror"] or j5["lib_id"] != "Connector_Generic:Conn_01x10":
+        sys.exit("J5 is no longer an unrotated 10-pin connector; update its Lean conversion")
+    # Remove only the redundant C9 label; the other labels stay at their pin ends.
+    p = j5["pins"]["1"]
+    dead_ends.add((round(p["ex"], 2), round(p["ey"], 2)))
     f = syms[TIE]
     if f["rot"] or f["mirror"] or f["lib_id"] != "Device:Fuse":
         sys.exit(f"{TIE} is no longer an unrotated Device:Fuse; update tie_symbol()")
@@ -254,6 +290,9 @@ def main():
     if '(symbol "Device:NetTie_2"' not in lean:
         k = lean.index("(lib_symbols") + len("(lib_symbols")
         lean = lean[:k] + nettie_lib() + lean[k:]
+    if '(symbol "Connector_Generic:Conn_01x09"' not in lean:
+        k = lean.index("(lib_symbols") + len("(lib_symbols")
+        lean = lean[:k] + cell_connector_lib() + lean[k:]
 
     for old, new in RETEXT.items():
         if old not in lean:
