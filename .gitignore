@@ -31,3 +31,5 @@ exports/*
 _reference/firmware/
 # Third-party reference boards (STEP files, pinouts, renders) - local only, never published
 _reference/third-party/
+# Private cross-reference research results - local only, never published
+_reference/research/
