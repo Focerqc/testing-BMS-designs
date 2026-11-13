@@ -1101,3 +1101,53 @@ when the placement is reviewed.
       price at 0.5 mm diameter). See "U1 thermal vias".
 - [ ] EVAL-ADBMS1818Z schematic not reviewed (not supplied). Cross-check pins and the
       transformer against it if it turns up.
+
+
+## Lean cell plugs: PH 10 + PH 9, CELL9 on one wire (decided 2026-11-13)
+
+Prepared on `reference-ideas`; **PCB synchronization and final checks pending**.
+
+Owner decisions (2026-11-13):
+
+- **Keep JST PH for the cell plugs.** A 1.25 mm GH header would reject a wrong 9-pin
+  housing better, but PH stays by choice. The two plugs having different contact counts
+  is accepted as identification only. A 9-pin housing can still be forced into the 10-pin
+  header, and that risk is accepted rather than designed out.
+- **CELL9 is a single wire, on J1 pin 10.** Lean serves one monolithic 18S pack, not two
+  split or removable halves, so the harness never brings C9 in twice.
+- **isoSPI crossings get rerouted, not shielded.** Datasheet p. 86 bans any V− plane under
+  or between the transformer and plug, and any trace crossing an isoSPI line unless an
+  inner ground plane separates them. A reviewer advised against ground or foreign copper
+  under isoSPI. Removing the crossings meets both without adding copper there. (Separate
+  change; not done yet.)
+Lean's generator changes J5 to a nine-contact JST PH header while J1 keeps ten.
+J1 pins 1-10 carry CELL0-CELL9; J5 pins 1-9 carry CELL10-CELL18. Guard keeps its
+existing two ten-contact headers. This is a Lean/Guard deviation; Figure 112 does
+not specify harness connector allocation.
+
+Reason: identical headers accept the wrong harness half, and the nineteen distinct
+taps do not require twenty contacts. Removing J5's duplicate CELL9 contact removes
+one harness contact/crimp and the parallel CELL9 board branch. Different contact
+counts improve identification, but do not reject partial, forced or offset mating
+(accepted above). Both harness halves belong to one contiguous 18S stack. Hot-plug
+tolerance and connection sequence remain unqualified.
+
+Part: B9B-PH-K-S(LF)(SN), local catalog C157968 (stock is a cached observation,
+not an ordering guarantee); mating housing PHR-9. JST's official
+[ePH drawing](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf), pp. 1 and 3,
+establishes pin-1 orientation, 2 mm pitch, 100 V rating and the header body width
+19.9 mm versus 21.9 mm for ten contacts. Stock KiCad footprint
+`Connector_JST:JST_PH_B9B-PH-K_1x09_P2.00mm_Vertical` uses the corresponding
+mounting-side pin order, with its drawing rotated 180 degrees from JST's layout
+view. The nine pads span 16 mm. The 0.75 mm footprint holes exceed the drawing's
+0.7 mm reference holes; JST explicitly allows larger holes for glass-fibre boards.
+
+Scratch placement keeps C10-C18 at their existing physical positions: J5 pin 1
+moves 2 mm right into the former pin-2 location. The gap between header courtyards
+grows from 0.51 mm to 2.51 mm; no outline shrink is claimed. The board remains
+70 x 32 mm, four layers, with all isoSPI split termination and CT capacitors.
+Scratch routing has zero copper errors and zero unconnected items after zone fill;
+153 pre-existing silkscreen warnings remain. The actual board must be updated with
+F8 in the Lean project, then placement and routing regenerated and all checks run
+before this trial is considered applied. Do not use the old ten-contact J5 harness
+with the new nine-contact pin numbering.
