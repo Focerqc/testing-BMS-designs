@@ -425,6 +425,46 @@ is `slave-18s/bom.csv`.
       (commit `0f53001` groups each port's chip-side pair with its own nets). With that fixed
       it finds the same 20 as the first raw count. Rerouting alone cannot go below 10 (see
       "Lean cell plugs" for the plan). The Guard board was not counted with this script.
+  - **isoSPI Option 1 applied (2026-11-14, `ffcbc22` schematic, `d139588` PCB): 0 foreign
+    crossings.** The floorplan stays (U1, cell plugs, resistor rows, NTC block, T501/T601,
+    J3/J4, holes, outline); a few small parts move.
+    - **Why 0402:** port B's termination has to leave the strip under T601 for port A. Between
+      U1's courtyard (x 42.74) and T601's (x 52.82) there are 10.08 mm, and the band between
+      the stack-top V+ filter (C301/R301, 0.6 mm rule) and port A is 1.9–2.4 mm high. Four
+      0603 parts (3.05 × 1.55 mm courtyards) need 13.1 mm lying and are too tall standing, so
+      R601/R602 (51 Ω, 0402WGF510JTCE, C25125) and C601/C602 (10 nF 50 V X7R, CL05B103KB5NNNC,
+      C15195) are 0402 on Lean (`make_lean.py` swap table). Guard keeps 0603.
+    - **Port B (front):** IPB runs on a low lane (y 21.15) straight into T601 pin 1; IMB runs on
+      a high lane (y 19.45) over pins 1–2 inside T601's body into pin 3. At T601's left edge the
+      order has to be IMB, CT, IPB, while U1 has IPB above IMB, so IMB crosses IPB once, on In1,
+      next to the chip (same port). R602 stands on the IMB lane, R601 on the IPB lane, C601 lies
+      between them on the CM node with its V− via. C602 lies just left of T601 above the IMB
+      lane; CT reaches it on In1 under IMB inside T601's own courtyard.
+    - **Port A:** drops to In1 at its pins, runs under port B's lanes (y 21.8 / 22.3) and drops
+      at 45° into the strip under T601 (y 22.65 / 23.25). On the front the pair cannot pass Q301's
+      tab corner and T601's courtyard corner: the gap is 0.95 mm, the pair needs 1.3 mm with the
+      0.6 mm VCOLL rule. The T501 end is unchanged.
+    - **CELL18 to R302 (In2):** from a via at R301, down the 2.4 mm gap between U1's exposed pad
+      and its right pad column (x 39.35), out under pins 51/52 (y 26.0), then between the V−,
+      DRIVE and VCOLL vias along the bottom edge (y 28.6, 30.03, 31.0), at 0.6 mm or more from
+      each. R302 is turned so its CELL18 pad is on the left. The VREF2 via did not have to move.
+      CELL18 on the front now turns left at y 16.8 to R301, which frees the corner for C602.
+    - **VCOLL:** zone top 23.05 over Q301 (0.6 mm below IMA) with a notch at T601's corner
+      (x 51.2–53.98 down to y 24.0) on all four layers; R302's body vias moved with the turn
+      (25 → 28 stitching vias). Filled copper: F.Cu 75.5 → 72.5, In1 96.4 → 105.6, In2 93.5 →
+      95.1, B.Cu 103.7 → 103.3, total 369.1 → 376.5 mm². The B.Cu V− strip under the
+      transformers now joins the pour through the notch; the In1 V− link and the IPB B.Cu hop
+      are gone.
+    - **Track lengths (mm, before → after):** IPA 26.3 → 25.7, IMA 32.9 → 32.3, IPB 17.7 → 12.7,
+      IMB 20.4 → 20.4, CT A/B 11.4 / 10.2 → 11.4 / 7.5, CM A/B 5.0 / 5.0 → 5.0 / 2.1, line sides
+      4.0, CELL18 43.7 → 60.0 (`lean_route.py --dry` prints them).
+    - **Checks:** `isospi_shield_check.py` 0 crossings (was 20); no track of one port within
+      0.25 mm of the other port's pads in projection, except U1's neighbouring pins; parity
+      PASS; rules OK; checker 0 problems, ERC 0/0; zone-filled DRC 0 unconnected, no copper
+      errors, silkscreen 88 / 78 / 3. A second place-then-route run changes nothing.
+    - **Needs the reviewer's OK before ordering:** port B's termination now sits at the chip end
+      of the pair instead of at the transformer. Datasheet p. 86 does not say where the
+      termination goes. Port A's stays at its transformer.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
@@ -1045,10 +1085,11 @@ when the placement is reviewed.
 - [ ] **Lean U1 exposed-pad assembly (review, 2026-11-11).** Its 16 open 0.2 mm plated
       holes need the assembler's acceptance of paste volume/voiding, or an explicit
       paste/via-fill decision. The old two-layer/open-via note is not Lean assembly approval.
-- [ ] **Lean isoSPI foreign crossings (review, 2026-11-11).** Choose a routing/shield
-      option before changing layer roles; implement a check of projected foreign copper
-      crossings against filled, connected ground on an intervening layer. Present DRC
-      courtyard rules do not prove this. Bench noise testing remains necessary.
+- [x] **Lean isoSPI foreign crossings (review, 2026-11-11; closed 2026-11-14).** Rerouted,
+      not shielded (Option 1, see "Variants"): `isospi_shield_check.py` finds 0 crossings.
+      Bench noise testing remains necessary.
+- [ ] **Reviewer's OK for port B's termination at the chip end (2026-11-14).** Option 1 moved
+      R601/R602/C601 next to U1 pins 63/64; the datasheet does not rule on it.
 
 - [x] Build the ADBMS1818 symbol from the datasheet pin table (64-LQFP_EP). Done; netlist
       checked.
@@ -1124,8 +1165,8 @@ Owner decisions (2026-11-13):
 - **isoSPI crossings get rerouted, not shielded.** Datasheet p. 86 bans any V− plane under
   or between the transformer and plug, and any trace crossing an isoSPI line unless an
   inner ground plane separates them. A reviewer advised against ground or foreign copper
-  under isoSPI. Removing the crossings meets both without adding copper there. (Separate
-  change; not done yet.)
+  under isoSPI. Removing the crossings meets both without adding copper there. (Done
+  2026-11-14, `d139588`: 0 crossings.)
 - **The reroute is "Option 1" (owner, 2026-11-13):** keep the floorplan (U1, cell plugs,
   resistor rows, NTC block, transformers, isoSPI plugs, holes and outline stay) and move a few
   small parts. Port B's split termination and its midpoint cap go to the chip end by pins
