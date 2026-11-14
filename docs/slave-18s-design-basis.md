@@ -417,12 +417,14 @@ is `slave-18s/bom.csv`.
       on In1, a connected V− shield on In2 outside the transformer courtyards, and CELL18
       routed west of the ports. This changes layer roles and requires the owner's choice;
       scratch feasibility is not authorization to change the real board.
-      **Count reconciled (2026-11-11):** the 20 above was a preliminary raw segment-intersection
-      estimate and is superseded. `_tools/kicad_sch/isospi_shield_check.py` is the ground truth:
-      on the current Lean board it finds **6 unique crossing locations, none covered**: five
-      between adjacent layers of port traces (no layer between them for a shield), and one
-      CELL18 on In2 under ISOB_CM on F.Cu at about (55.05, 24.36) mm, where In1 has no V− copper.
-      Zero port-to-port crossings. The Guard board was not re-counted with this script.
+      **Count (corrected 2026-11-13): 20 crossings, none covered: 12 port A against port B,
+      8 CELL18 against either port.** `_tools/kicad_sch/isospi_shield_check.py` first reported
+      6 (2026-11-11) and that figure replaced the 20 for two days. It was wrong: the check
+      treated only the transformer centre-tap, termination and line nets as isoSPI lines, so
+      the chip-side pairs IPA/IMA and IPB/IMB were never checked against the other port
+      (commit `0f53001` groups each port's chip-side pair with its own nets). With that fixed
+      it finds the same 20 as the first raw count. Rerouting alone cannot go below 10 (see
+      "Lean cell plugs" for the plan). The Guard board was not counted with this script.
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
@@ -1085,7 +1087,9 @@ when the placement is reviewed.
       per-pair zener clamps and a TVS, so plug order no longer matters for the C pins. See
       "Protection and test points".
 - [x] Test points and mounting holes. Done 2026-11-06 (hole positions open).
-- [x] Connectors: JST PH. J1 + J5 cell taps (10 + 10, C9 shared), J2 NTCs, J3/J4 isoSPI.
+- [x] Connectors: JST PH. Guard: J1 + J5 cell taps (10 + 10, C9 shared). Lean since
+      2026-11-13: J1 10 pins (C0–C9) + J5 9 pins (C10–C18), C9 on one wire (see "Lean cell
+      plugs"). J2 NTCs; J3/J4 isoSPI (JST GH on both since 2026-11-06).
 - [ ] Harness: match J1/J5/J2 pin order to the Funwheel pack's tap and NTC wiring.
 - [ ] ENNOID master fit (`docs/master-ennoid-xlite.md`): J3/J4 are JST GH 2P now (done
       2026-11-06); isoSPI polarity still to confirm. Firmware: the public source's LTC6813-1 driver sends only commands that
@@ -1105,7 +1109,9 @@ when the placement is reviewed.
 
 ## Lean cell plugs: PH 10 + PH 9, CELL9 on one wire (decided 2026-11-13)
 
-Prepared on `reference-ideas`; **PCB synchronization and final checks pending**.
+Done on `reference-ideas`: schematic `a164eb4`, **PCB placed and routed `7cea3ca`** (F8 in the
+Lean project, then `lean_place.py` and `lean_route.py`; checker 0 problems, parity pass, rules
+OK, zone-filled DRC with 0 unconnected items and silkscreen warnings only).
 
 Owner decisions (2026-11-13):
 
@@ -1120,6 +1126,12 @@ Owner decisions (2026-11-13):
   inner ground plane separates them. A reviewer advised against ground or foreign copper
   under isoSPI. Removing the crossings meets both without adding copper there. (Separate
   change; not done yet.)
+- **The reroute is "Option 1" (owner, 2026-11-13):** keep the floorplan (U1, cell plugs,
+  resistor rows, NTC block, transformers, isoSPI plugs, holes and outline stay) and move a few
+  small parts. Port B's split termination and its midpoint cap go to the chip end by pins
+  63/64, its centre-tap cap goes beside T601, port A runs through the strip that frees under
+  T601, and CELL18 reaches R302 under U1 on an inner layer. A port at each end of the board
+  ("Option 2") is studied afterwards, on its own branch, as a feasibility question only.
 Lean's generator changes J5 to a nine-contact JST PH header while J1 keeps ten.
 J1 pins 1-10 carry CELL0-CELL9; J5 pins 1-9 carry CELL10-CELL18. Guard keeps its
 existing two ten-contact headers. This is a Lean/Guard deviation; Figure 112 does
@@ -1146,8 +1158,6 @@ Scratch placement keeps C10-C18 at their existing physical positions: J5 pin 1
 moves 2 mm right into the former pin-2 location. The gap between header courtyards
 grows from 0.51 mm to 2.51 mm; no outline shrink is claimed. The board remains
 70 x 32 mm, four layers, with all isoSPI split termination and CT capacitors.
-Scratch routing has zero copper errors and zero unconnected items after zone fill;
-153 pre-existing silkscreen warnings remain. The actual board must be updated with
-F8 in the Lean project, then placement and routing regenerated and all checks run
-before this trial is considered applied. Do not use the old ten-contact J5 harness
-with the new nine-contact pin numbering.
+Scratch routing had zero copper errors and zero unconnected items after zone fill, and
+the real board matches it since `7cea3ca` (153 silkscreen warnings, as before). Do not
+use the old ten-contact J5 harness with the new nine-contact pin numbering.
