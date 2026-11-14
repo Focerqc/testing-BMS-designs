@@ -465,6 +465,40 @@ is `slave-18s/bom.csv`.
     - **Needs the reviewer's OK before ordering:** port B's termination now sits at the chip end
       of the pair instead of at the transformer. Datasheet p. 86 does not say where the
       termination goes. Port A's stays at its transformer.
+  - **isoSPI Option 2 feasibility, a port at each end (2026-11-14, scratch only, branch
+    `lean-split-ends`).** Courtyard placement on scratch copies, lanes counted at the as-built
+    pitches (front 0.45, In1 0.6, bus 0.48 mm), no routing. The real board is unchanged.
+    - **As first drawn (U1 turned 180°): does not fit.** Cells 3–10 face right and 11–18 face
+      down, so 16 nets wrap three-quarters round the chip: 10 front + 9 In1 lanes above U1, 9 + 7
+      under it, 17 + 15 right of it. Height 12.32 (rows) + 6.1 + 13.49 + 6.6 = **38.5 mm** (37.2
+      at the tightest legal pitches), over the 37 mm slot. Port B's chip-side run would be 47–56 mm
+      (67–70 mm on a 63 mm-wide version with J2 moved into the free area).
+    - **U1 turned 90° clockwise from today (rotation 180): 70 × 34.2 mm, 0 courtyard overlaps.**
+      Pin sides checked on the footprint: cells 0–2 on the left side, 3–10 on the top, 11–18 down
+      the right side in the resistor row's order, so no cell lane passes under the chip. The bottom
+      side carries DRIVE, VREF2/1, VREG, IBIAS/ICMP, then IMA/IPA (61/62) and IMB/IPB (63/64) at
+      the right end: port A turns left along the bottom edge to T501 + J3 at the left end, port B
+      right to T601 + J4 in the bottom-right corner. The pairs part at the pins and never meet.
+    - Lanes: above U1 7 front + 6 In1 (today 8 + 7), plus 6 on In2 (GPIO1–4 and VREF2 to the NTC
+      parts at the top right, CELL18 to R302 at the left end); right of U1 9 front + 7 In1 in a
+      4.8 mm zone; left of U1 3 + 3; under U1 a 3.5 mm band for five reference/bias stubs from the
+      corner column and then port A (today's strip is 1.3 mm). Height 12.32 + 4.9 + 13.49 + 3.5 =
+      34.2 mm; 33.7 if the gap above U1 shrinks to its 7-lane need.
+    - isoSPI in the sketch: 0 foreign crossings, 0 port A × port B. Chip-side tracks IMA 26,
+      IPA 22, IMB 22, IPB 30 mm. Transformer to plug 3.3 mm on both (p. 86: < 2 cm). U1 to each
+      transformer about 18 mm, which for the first time meets p. 86's "at least 1–2 cm".
+    - Placement: J2 stands on the top edge right of the cell plugs, NTC parts beside it. Left end:
+      R302, C302 and Q301 (lying, pins toward U1) over T501/J3, port A's termination column at
+      T501's chip side, the reference column at U1's bottom-left corner. C301/R301 right of U1's
+      bottom-right corner. H1 moves into the free area, H2 above J4. Port A's termination in 0402
+      would give about 1 mm of width, not height.
+    - Still open: 2.2 mm over 32 mm (it fits the slot, with less room for carrier connectors).
+      Standing 0805 balance resistors would take about 1.6 mm off if a ≥ 0.25 W 0805 120 Ω part is
+      in stock (a standard 0.125 W 0805 is too small at 0.12 W). A free area right of the lanes
+      could make the board narrower. Rewrite cost: about 90 % of `lean_route.py`'s routing code
+      (all but `taps()`) and a quarter of `lean_place.py` (`floorplan()`, `vcoll_area()`).
+    - Reproduce: `split_ends_place.py` (KiCad's Python, scratch copy, `--fan 4.9 --band 3.5`) and
+      `split_ends_render.py` (lane count, crossing check, picture).
 - Balance resistor value: decided for Lean on 2026-11-10 (120 Ω, above). Still open for Guard
   (Racc: about 7 W board peak at 33 ohm with every cell balancing, a lot for a passively cooled
   board with no airflow).
@@ -1090,6 +1124,10 @@ when the placement is reviewed.
       Bench noise testing remains necessary.
 - [ ] **Reviewer's OK for port B's termination at the chip end (2026-11-14).** Option 1 moved
       R601/R602/C601 next to U1 pins 63/64; the datasheet does not rule on it.
+- [ ] **Floorplan choice (2026-11-14).** Option 1 (70 × 32, routed, ports side by side) or the
+      split-ends layout with U1 turned 90° clockwise (70 × 34.2 on a scratch copy, a port at each
+      end, 22–30 mm chip-side pairs). See "Variants", Option 2 feasibility. Silkscreen cleanup and
+      the manufacturing dry run wait for this choice.
 
 - [x] Build the ADBMS1818 symbol from the datasheet pin table (64-LQFP_EP). Done; netlist
       checked.
