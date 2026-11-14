@@ -76,7 +76,16 @@ HV = 0.6                 # VCOLL range vs >30 V neighbours, plus conservative ba
 VIA = (0.6, 0.3)         # stitching via pad / hole
 VIA_PITCH = 1.15         # stitching via pitch
 VCOLL_PAD_MARGIN = HV + VIA[0] / 2 + 0.05  # R302 CELL18 pad edge to stitching-via centre
-VCOLL_BODY_TOP = 1.50    # first via row below R302's pad top, clears CELL18 lane at y=27.8
+VCOLL_BODY_TOP = 0.50    # first via row below R302's pad top (CELL18 no longer runs under R302)
+# Option 1 (2026-11-13): port B's termination at the chip end, between its two lanes; the strip
+# under T601 is left to port A (on In1). Port B's 0402 parts are placed by a pad centre.
+B_LANES = (19.45, 21.15)  # IMB (top lane, over T601's pins to pin 3) and IPB (bottom, into pin 1)
+B_TERM_X = 47.42          # R602's IMB pad x (standing on the IMB lane); R601 and C601 follow right
+B_CM_Y = 20.30            # C601 (lying) pad centres, in the middle between the lanes
+C602_CT = (52.29, 18.36)  # C602's CT pad centre: lying above the IMB lane, just left of T601
+VCOLL_TOP = 23.05         # zone top over Q301: 0.6 mm below port A's IMA lane on In1 (y 22.3)
+VCOLL_NOTCH = (51.2, 24.0)  # notch x0 / bottom at T601's corner, where port A drops to the strip
+R302_CELL18_LEFT = True   # turn R302 so CELL18 (from under U1 on In2) reaches it from the left
 
 # ---------------------------------------------------------------- helpers
 mm, nm = pcbnew.ToMM, pcbnew.FromMM
@@ -195,6 +204,16 @@ def net_up(ref, net):
     sys.exit(f"{ref}: no rotation puts {net} on top")
 
 
+def put_pad(ref, rot, net, x, y):
+    """Turn REF to ROT and move it so its pad on NET is centred on (x, y)."""
+    fp = FP[ref]
+    fp.SetOrientationDegrees(rot)
+    p = next(q for q in fp.Pads() if q.GetNetname() == net)
+    pos, c = fp.GetPosition(), p.GetPosition()
+    fp.SetPosition(pcbnew.VECTOR2I(pos.x + nm(x) - c.x, pos.y + nm(y) - c.y))
+    placed[ref] = fp
+
+
 def tl(ref, x, y, rot=0):
     """Top-left courtyard corner of REF to (x, y); returns (right, bottom)."""
     w, h = size(ref, rot)
@@ -244,9 +263,9 @@ def floorplan():
     ux0, uy0, ux1, uy1 = box(["U1"])
     info["fan"] = uy0 - row_bottom
 
-    # isoSPI ports, top-right: GH plug, transformer under it with the chip side down, then the
-    # four termination parts standing in a row under the transformer. Port B left, A right.
-    # Port B's row starts 1.2 mm in from the transformer's left edge: the port A pair comes down there.
+    # isoSPI ports, top-right: GH plug, transformer under it with the chip side down. Port B left,
+    # A right. Port A's four termination parts stand in a row under T501; port B's sit at the chip
+    # end (Option 1), so the strip under T601 is free for port A's pair.
     x = ISO_X
     for port, jg in (("6", "J4"), ("5", "J3")):
         t = f"T{port}01"
@@ -254,11 +273,21 @@ def floorplan():
         gw, gh = size(jg, 0)                         # rot 0: pins toward the transformer
         put(jg, x + tw / 2, ISO_Y + gh / 2, 0)
         put(t, x + tw / 2, ISO_Y + gh + GAP + th / 2)
-        rc = [f"R{port}01", f"R{port}02", f"C{port}01", f"C{port}02"]
-        rw = sum(size(r, 90)[0] for r in rc) + GAP * 3
-        pack(rc, x + tw - rw, ISO_Y + gh + GAP + th + GAP, 4, 90)
+        if port == "5":
+            rc = [f"R{port}01", f"R{port}02", f"C{port}01", f"C{port}02"]
+            rw = sum(size(r, 90)[0] for r in rc) + GAP * 3
+            pack(rc, x + tw - rw, ISO_Y + gh + GAP + th + GAP, 4, 90)
         x += tw + GAP
-    rc_bottom = box(["R601", "C602"])[3]
+    rc_bottom = box(["R501", "C502"])[3]
+    # port B termination between its lanes: R602 stands on the IMB lane, R601 on the IPB lane,
+    # C601 lies between them on the CM node; C602 lies above the IMB lane next to T601
+    pitch = size("R602", 90)[0] + 0.02
+    put_pad("R602", net_up("R602", "/IMB"), "/IMB", B_TERM_X, B_LANES[0])
+    put_pad("R601", net_up("R601", "/ISOB_CM"), "/IPB", B_TERM_X + pitch, B_LANES[1])
+    cm_x = box(["R601"])[2] + 0.02
+    rot = net_left("C601", "/ISOB_CM")
+    put("C601", cm_x + size("C601", rot)[0] / 2, B_CM_Y, rot)
+    put_pad("C602", net_left("C602", "/V-"), "/ISOB_CT", *C602_CT)
 
     # right of U1, a bottom-aligned column in its pin order: (isoSPI 64-61 run right above it)
     # ICMP 58, IBIAS 57, VREF1 51, VREF2 50, a gap where DRIVE 49 passes through, VREG 48
@@ -292,7 +321,7 @@ def floorplan():
     # R302 (2512) lies right of it on the bottom edge, VCOLL pad left
     rot = net_up("C302", "/VCOLL")
     r, _ = tl("C302", qx1 + GAP, rc_bottom + GAP, rot)
-    rot = net_left("R302", "/VCOLL")
+    rot = net_left("R302", "/CELL18" if R302_CELL18_LEFT else "/VCOLL")
     tl("R302", r + GAP, H - EDGE - size("R302", rot)[1], rot)
     vcoll_area(rc_bottom)
 
@@ -310,7 +339,10 @@ def vcoll_area(rcb):
     bot = H - 0.5                                    # board-edge clearance (.kicad_pro)
     top = rcb + 0.35                                 # under the termination rows' pads
     r = lambda pts: [(round(x, 2), round(y, 2)) for x, y in pts]
-    poly = r([(qx0 + 0.2, qy0 + 0.1), (qx1, qy0 + 0.1), (qx1, top), (hx, top), (hx, bot), (qx0 + 0.2, bot)])
+    # top over Q301 at VCOLL_TOP, notched at T601's corner for port A (same outline on all layers)
+    nx, ny = VCOLL_NOTCH
+    poly = r([(qx0 + 0.2, VCOLL_TOP), (nx, VCOLL_TOP), (nx, ny), (qx1, ny), (qx1, top), (hx, top),
+              (hx, bot), (qx0 + 0.2, bot)])
     copper["zones"] = [("VCOLL_Q301", ["F.Cu", "In1.Cu", "In2.Cu", "B.Cu"], poly)]
     vias = []
     grid = lambda a, b: [round(a + i * VIA_PITCH, 2) for i in range(int((b - a) / VIA_PITCH + 1e-6) + 1)] if b >= a else []
@@ -319,7 +351,8 @@ def vcoll_area(rcb):
     rv, rc = pad_box("R302", "/VCOLL"), pad_box("R302", "/CELL18")
     for x in grid(box(["C302"])[2] + 0.6, hx - 0.4):  # the strip above R302
         vias += [(x, y) for y in grid(top + 0.5, rv[1] - 0.6)]
-    for x in grid(rv[2] + 0.6, rc[0] - VCOLL_PAD_MARGIN):  # leave 0.65 mm to CELL18 pad
+    x0, x1 = (rc[2] + VCOLL_PAD_MARGIN, rv[0] - 0.6) if rc[0] < rv[0] else (rv[2] + 0.6, rc[0] - VCOLL_PAD_MARGIN)
+    for x in grid(x0, x1):                            # under R302's body, 0.65 mm from the CELL18 pad
         vias += [(x, y) for y in grid(rv[1] + VCOLL_BODY_TOP, bot - 0.5)]
     copper["vias"] = vias
 

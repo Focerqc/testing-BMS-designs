@@ -73,15 +73,26 @@ GAP_JOG = 0.16                       # ... jogs to the R1 pad starting this far 
 W_SUP = 0.4                          # VREG, DRIVE, CELL18 to R302
 Q_VREG_Y = 27.97                     # VREG under Q301's body: 0.6 below the lowest VCOLL via row
 DRIVE_VIA_Y = 29.9                   # DRIVE drops to In1 here, in the channel right of U1
-CELL18_VIA_Y = 15.6                  # CELL18 drops to In2 on its track from R118 to R301
-CELL18_LANE = (22.95, 55.0, 27.8)    # In2: end via clears VCOLL strip at y=26.55 by >0.6 mm
+CELL18_Y = 16.8                      # front: CELL18 from R118 turns left to R301 here
+CELL18_VIA_X = 48.6                  # ... and drops to In2 here, left of R301's pad (clear of S18 on In1)
+# CELL18 to R302 on In2 (Option 1): down the channel between U1's exposed pad and its right pad
+# column, out under pins 51/52, then weaving between the V-, DRIVE and VCOLL vias along the bottom
+CELL18_IN2 = [(39.35, None), (39.35, 26.0), (44.2, 26.0), (44.2, 28.6), (47.05, 28.6), (47.05, 30.03),
+              (49.0, 30.03), (49.0, 31.0), (56.3, 31.0)]   # the first point's y is CELL18_Y
 W_ISO = 0.25
-ISO_DOWN = (47.8, 47.3)              # front: x where IPB and IMB turn down towards T601
-ISO_UNDER = 22.37                    # front: IMB under T601's pins (0.6 mm above Q301's tab)
-ISO_OVER = 20.3                      # CT under the transformer body, above the pins
-A_VIA = ((43.6, 21.3), (44.7, 21.95))  # IPA, IMA drop to In1 here, right of U1
-A_DOWN = (52.2, 51.6)                # In1: x where IPA and IMA turn down, left of T601's courtyard
-A_LANE = (22.75, 23.45)              # In1: IPA, IMA under T601's courtyard
+# isoSPI, Option 1 (2026-11-13). Port B: IPB on the bottom lane into T601 pin 1, IMB on the top lane
+# over the pins into pin 3 (lp.B_LANES); IMB hops under IPB on In1 near the chip. Its termination sits
+# between the lanes; C602 lies above the IMB lane, so CT hops under IMB on In1 inside T601.
+B_FAN_X = 45.2                       # front: IPB leaves its pin's line here, 45 degrees down to its lane
+IMB_HOP = ((44.7, 20.855), (46.7, 20.855))  # IMB: via at the first point, In1 along to the second, up
+B_VM_VIA = (51.05, 20.3)             # C601's V- via, between the lanes
+C602_VM_VIA = (50.75, 18.36)         # C602's V- via, left of it (0.6 mm from the S18 In1 track)
+CT_VIA = ((52.72, 18.36), (56.965, 20.15))  # CT: C602 -> In1 under IMB -> T601 pin 2
+# Port A: drops to In1 by its pins, runs under port B's lanes, and down into the strip under T601
+A_VIA = ((44.1, 21.6), (43.2, 21.955))  # IPA, IMA vias right of U1
+A_IN1 = (21.8, 22.3)                 # In1: IPA, IMA from the chip (IMA 0.6 mm above the VCOLL zone)
+A_JOG = 51.85                        # In1: IPA starts its 45 degree drop here; IMA keeps 0.45 mm off it
+A_LANE = (22.65, 23.25)              # In1: IPA, IMA under T601's courtyard
 VREF2_RING_X = 39.75                 # VREF2 drops to In1 inside U1's pin row, left of VREG's In1 track
 VREF2_TURN_X, VREF2_LANE = 38.6, 28.3  # In1: down right of the bottom-pin via row, left under it
 EDGE_X = 0.9                         # GPIO2 (front) and GPIO3 (In2) run down the left board edge here
@@ -160,8 +171,9 @@ def v_plus():
     line("/VP_F", "F.Cu", W_S, [(p1[0], p1[1]), (c[0], p1[1])])
     route("/VP_F", "F.Cu", W_S, [(c[0], c[1]), (c[0], VP_OVER), (r[0], VP_OVER), (r[0], r[1])])
     s, t = pad("R118", "/CELL18"), pad("R301", "/CELL18")
-    d = s[0] - (t[4] - 0.1)                           # 45 degrees down into R301's pad
-    line("/CELL18", "F.Cu", W_C, [(s[0], s[1]), (s[0], t[1] - d), (t[4] - 0.1, t[1]), (t[0], t[1])])
+    # straight down, left at CELL18_Y (clear of the C18_F lane) and down into R301's pad, which
+    # leaves the corner left of T601 free for C602
+    route("/CELL18", "F.Cu", W_C, [(s[0], s[1]), (s[0], CELL18_Y), (t[0], CELL18_Y), (t[0], t[1])])
 
 
 def bottom_pins():
@@ -339,12 +351,14 @@ def supply():
     v2 = (q2[0], Q_VREG_Y + W_SUP / 2 + 0.6 + VIA[0] / 2 + 0.03)
     line("/VCOLL", "F.Cu", 0.5, [v2, (q2[0], q2[1])])
     via("/VCOLL", *v2)
-    # CELL18 to R302
-    s, t = pad("R118", "/CELL18"), pad("R302", "/CELL18")
-    top, end = (s[0], CELL18_VIA_Y), (t[0], CELL18_LANE[2])
-    y1, x2, y3 = CELL18_LANE
-    route("/CELL18", "In2.Cu", W_C, [top, (s[0], y1), (x2, y1), (x2, y3), end])
-    line("/CELL18", "F.Cu", W_C, [end, (t[0], t[1])])
+    # CELL18 to R302: In2 from a via at R301's corner, under U1 and along the bottom edge
+    s, t = pad("R301", "/CELL18"), pad("R302", "/CELL18")
+    top = (CELL18_VIA_X, CELL18_Y)
+    line("/CELL18", "F.Cu", W_C, [(s[0] + 0.3, CELL18_Y), top])   # from v_plus()'s corner to the via
+    pts = [top] + [(x, CELL18_Y if y is None else y) for x, y in CELL18_IN2]
+    route("/CELL18", "In2.Cu", W_C, pts)
+    end = pts[-1]
+    line("/CELL18", "F.Cu", W_C, [end, (t[0], end[1])])
     via("/CELL18", *top)
     via("/CELL18", *end)
 
@@ -363,30 +377,31 @@ def isospi():
     """
     u = {n: pad("U1", f"/{n}") for n in ("IPB", "IMB", "IPA", "IMA")}
     start = lambda p: (p[4] - 0.3, p[1])
-    # ---- port B
+    # ---- port B: termination at the chip end, between the IMB (top) and IPB (bottom) lanes
     t1, t2, t3 = pin("T601", "1"), pin("T601", "2"), pin("T601", "3")
-    ra_t, ra_b = pad("R601", "/ISOB_CM"), pad("R601", "/IPB")
-    rb_t, rb_b = pad("R602", "/IMB"), pad("R602", "/ISOB_CM")
-    ca_t, ca_b = pad("C601", "/V-"), pad("C601", "/ISOB_CM")
-    cb_t, cb_b = pad("C602", "/V-"), pad("C602", "/ISOB_CT")
-    route("/IPB", "F.Cu", W_ISO, [start(u["IPB"]), (ISO_DOWN[0], u["IPB"][1]), (ISO_DOWN[0], t1[1]), (t1[0], t1[1])])
-    route("/IMB", "F.Cu", W_ISO, [start(u["IMB"]), (ISO_DOWN[1], u["IMB"][1]), (ISO_DOWN[1], ISO_UNDER),
-                                  (t3[0], ISO_UNDER), (t3[0], t3[1])])
-    line("/IMB", "F.Cu", W_ISO, [(rb_t[0], ISO_UNDER), (rb_t[0], rb_t[1])])
-    hop = (t1[2] - 0.6, t1[1])                        # IPB: B.Cu round IMB to R601's bottom pad
-    low = (ra_b[2] - 0.56, ra_b[3] - 0.1)
-    route("/IPB", "B.Cu", W_ISO, [hop, (hop[0], low[1]), low])
-    line("/IPB", "F.Cu", W_ISO, [low, (low[0] + (ra_b[1] - low[1]), ra_b[1]), (ra_b[0], ra_b[1])])
-    via("/IPB", *hop)
-    via("/IPB", *low)
-    gx = (ra_t[4] + rb_t[2]) / 2
-    route("/ISOB_CM", "F.Cu", W_ISO, [(ra_t[0], ra_t[1]), (gx, ra_t[1]), (gx, (rb_b[1] + ca_b[1]) / 2),
-                                      (ca_b[0], (rb_b[1] + ca_b[1]) / 2)])
-    cx = cb_t[4] + 0.2 + W_ISO / 2 + 0.015
-    route("/ISOB_CT", "F.Cu", W_ISO, [(t2[0], t2[1]), (t2[0], ISO_OVER), (cx, ISO_OVER), (cx, cb_b[1]), (cb_b[0], cb_b[1])])
-    vb = ((ca_t[4] + cb_t[2]) / 2, (ca_t[5] + ca_b[3]) / 2 + 0.0)
-    line("/V-", "F.Cu", W_ISO, [(ca_t[0], ca_t[1]), vb, (cb_t[0], cb_t[1])])
-    via("/V-", *vb)
+    y_m, y_p = lp.B_LANES
+    r1_cm, r2_cm = pad("R601", "/ISOB_CM"), pad("R602", "/ISOB_CM")
+    c1_cm, c1_v = pad("C601", "/ISOB_CM"), pad("C601", "/V-")
+    c2_ct, c2_v = pad("C602", "/ISOB_CT"), pad("C602", "/V-")
+    s = start(u["IPB"])                               # IPB: along its pin's line, 45 degrees down to its lane
+    line("/IPB", "F.Cu", W_ISO, [s, (B_FAN_X, s[1]), (B_FAN_X + y_p - s[1], y_p), (t1[0], y_p)])
+    s, (h0, h1) = start(u["IMB"]), IMB_HOP            # IMB: hop under IPB on In1, up to the top lane
+    line("/IMB", "F.Cu", W_ISO, [s, (h0[0] - (h0[1] - s[1]), s[1]), h0])
+    route("/IMB", "In1.Cu", W_ISO, [h0, h1, (h1[0], y_m)])
+    route("/IMB", "F.Cu", W_ISO, [(h1[0], y_m), (t3[0], y_m), (t3[0], t3[1])])
+    via("/IMB", *h0)
+    via("/IMB", h1[0], y_m)
+    line("/ISOB_CM", "F.Cu", W_ISO, [r2_cm[:2], r1_cm[:2], c1_cm[:2]])
+    line("/V-", "F.Cu", W_ISO, [c1_v[:2], B_VM_VIA])
+    via("/V-", *B_VM_VIA)
+    line("/V-", "F.Cu", W_ISO, [c2_v[:2], C602_VM_VIA])
+    via("/V-", *C602_VM_VIA)
+    ca, cb = CT_VIA                                   # CT: C602 -> In1 under the IMB lane -> pin 2
+    line("/ISOB_CT", "F.Cu", W_ISO, [c2_ct[:2], ca])
+    route("/ISOB_CT", "In1.Cu", W_ISO, [ca, (cb[0], ca[1]), cb])
+    line("/ISOB_CT", "F.Cu", W_ISO, [cb, (t2[0], t2[1])])
+    via("/ISOB_CT", *ca)
+    via("/ISOB_CT", *cb)
     # ---- port A
     t1, t2, t3 = pin("T501", "1"), pin("T501", "2"), pin("T501", "3")
     ra_t, ra_b = pad("R501", "/ISOA_CM"), pad("R501", "/IPA")
@@ -394,15 +409,23 @@ def isospi():
     ca_t, ca_b = pad("C501", "/V-"), pad("C501", "/ISOA_CM")
     cb_t, cb_b = pad("C502", "/V-"), pad("C502", "/ISOA_CT")
     pa, ma = A_VIA
-    route("/IPA", "F.Cu", W_ISO, [start(u["IPA"]), (pa[0], u["IPA"][1]), pa])
-    route("/IMA", "F.Cu", W_ISO, [start(u["IMA"]), (u["IMA"][4] + 0.45, u["IMA"][1]), (u["IMA"][4] + 0.45, ma[1]), ma])
+    s = start(u["IPA"])
+    line("/IPA", "F.Cu", W_ISO, [s, (pa[0] - (pa[1] - s[1]), s[1]), pa])
+    s = start(u["IMA"])
+    line("/IMA", "F.Cu", W_ISO, [s, (ma[0] - (ma[1] - s[1]), s[1]), ma])
     via("/IPA", *pa)
     via("/IMA", *ma)
     ipa = (t1[2] - 0.28, A_LANE[0])                   # IPA via left of R501
     ima = ((ra_t[4] + rb_t[2]) / 2, t1[5] + 0.47)     # IMA via between T501 pins 1-2 and the row
     ima3 = (t3[0], t3[3] - 0.66)                      # IMA via under the body, above pin 3
-    route("/IPA", "In1.Cu", W_ISO, [pa, (A_DOWN[0], pa[1]), (A_DOWN[0], A_LANE[0]), ipa])
-    route("/IMA", "In1.Cu", W_ISO, [ma, (A_DOWN[1], ma[1]), (A_DOWN[1], A_LANE[1]), (ima[0], A_LANE[1]), ima])
+    # In1: both lanes leave their vias at 45 degrees, run under port B's lanes and drop at 45
+    # degrees into the strip under T601; IMA's drop starts early enough to keep 0.45 mm off IPA's
+    cp = A_JOG - A_IN1[0]
+    cm = cp - 0.45 * 2 ** 0.5
+    line("/IPA", "In1.Cu", W_ISO, [pa, (pa[0] + A_IN1[0] - pa[1], A_IN1[0]), (A_JOG, A_IN1[0]),
+                                   (A_LANE[0] + cp, A_LANE[0]), ipa])
+    line("/IMA", "In1.Cu", W_ISO, [ma, (ma[0] + A_IN1[1] - ma[1], A_IN1[1]), (A_IN1[1] + cm, A_IN1[1]),
+                                   (A_LANE[1] + cm, A_LANE[1]), (ima[0], A_LANE[1]), ima])
     route("/IMA", "In1.Cu", W_ISO, [ima, (ima3[0], ima[1]), ima3], c=0.6)
     for v, n in ((ipa, "/IPA"), (ima, "/IMA"), (ima3, "/IMA")):
         via(n, *v)
@@ -517,15 +540,9 @@ def v_minus():
     c303 = vp("C303")
     drop("C303", (c303[4] + 0.56, c303[1]), stub=(c303[0] - 0.6, c303[1]))
     c302 = vp("C302")
-    drop("C302", (c302[0], c302[5] + 0.55), stub=(c302[0], pad("R601", "/IPB")[5] - 0.4))
-    # The pour under the termination rows (port V- vias, C302, the H2 corner) is cut off from the
-    # rest of B.Cu by the VCOLL copper and the IPB hop: join it on In1, between port A's IMA lane
-    # and the IPB via, to the V- via at R402.
-    ca_t, ca_b, cb_t = vp("C601"), pad("C601", "/ISOB_CM"), vp("C602")
-    vb = ((ca_t[4] + cb_t[2]) / 2, (ca_t[5] + ca_b[3]) / 2)
-    ly = A_LANE[1] + W_ISO / 2 + 0.2 + W_C / 2 + 0.01
-    rv = (r402[4] + 0.56, r402[1])
-    line("/V-", "In1.Cu", W_C, [vb, (vb[0] - (vb[1] - ly), ly), (rv[0] + (ly - rv[1]), ly), rv])
+    drop("C302", (c302[0], c302[5] + 0.55), stub=(c302[0], pad("R501", "/IPA")[5] - 0.4))
+    # The strip under T601/T501 (port A's V- via, C302, the H2 corner) joins the rest of the B.Cu
+    # pour through the VCOLL zone's notch at T601's corner (Option 1: no In1 link, no IPB hop).
     # NTC block
     c701 = vp("C701")
     drop("C701", (c701[0], c701[3] - 1.3))
@@ -616,6 +633,10 @@ def main():
     by_layer = {l: sum(1 for s in segs if s[1] == l) for l in ("F.Cu", "In1.Cu", "In2.Cu", "B.Cu")}
     print(f"{len(nets)} nets, {len(segs)} segments ({', '.join(f'{l} {n}' for l, n in by_layer.items())}), {len(vias)} vias")
     print("longest: " + ", ".join(f"{n[1:]} {v:.0f} mm" for n, v in sorted(length.items(), key=lambda kv: -kv[1])[:6]))
+    iso = [n for n in ("/IPA", "/IMA", "/IPB", "/IMB", "/ISOA_CT", "/ISOB_CT", "/ISOA_CM", "/ISOB_CM",
+                       "/ISOA_LP", "/ISOA_LN", "/ISOB_LP", "/ISOB_LN", "/CELL18") if n in length]
+    print("isoSPI and CELL18 track length (mm, all layers, vias not counted): "
+          + ", ".join(f"{n[1:]} {length[n]:.1f}" for n in iso))
     if a.dry:
         print("(dry run, board not written)")
         return
