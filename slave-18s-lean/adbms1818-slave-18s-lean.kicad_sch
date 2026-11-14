@@ -10187,7 +10187,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 251.46 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -10209,7 +10209,7 @@
 				)
 			)
 		)
-		(property "Description" "51 ohm 1% 0603 (Basic)"
+		(property "Description" "51 ohm 1% 62.5 mW 0402 thick film (Preferred)"
 			(at 251.46 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -10220,7 +10220,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23197"
+		(property "LCSC" "C25125"
 			(at 251.46 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -10231,7 +10231,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF510JT5E"
+		(property "MPN" "0402WGF510JTCE"
 			(at 251.46 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -11818,7 +11818,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 271.78 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -11840,7 +11840,7 @@
 				)
 			)
 		)
-		(property "Description" "51 ohm 1% 0603 (Basic)"
+		(property "Description" "51 ohm 1% 62.5 mW 0402 thick film (Preferred)"
 			(at 271.78 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -11851,7 +11851,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23197"
+		(property "LCSC" "C25125"
 			(at 271.78 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -11862,7 +11862,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF510JT5E"
+		(property "MPN" "0402WGF510JTCE"
 			(at 271.78 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -14174,7 +14174,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 292.1 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -14196,7 +14196,7 @@
 				)
 			)
 		)
-		(property "Description" "10 nF 50 V X7R 0603 (Basic)"
+		(property "Description" "10 nF 50 V X7R 0402 (Basic)"
 			(at 292.1 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -14207,7 +14207,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C57112"
+		(property "LCSC" "C15195"
 			(at 292.1 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -14218,7 +14218,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603B103K500NT"
+		(property "MPN" "CL05B103KB5NNNC"
 			(at 292.1 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -16338,7 +16338,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 312.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -16360,7 +16360,7 @@
 				)
 			)
 		)
-		(property "Description" "10 nF 50 V X7R 0603 (Basic)"
+		(property "Description" "10 nF 50 V X7R 0402 (Basic)"
 			(at 312.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -16371,7 +16371,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C57112"
+		(property "LCSC" "C15195"
 			(at 312.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -16382,7 +16382,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603B103K500NT"
+		(property "MPN" "CL05B103KB5NNNC"
 			(at 312.42 205.74 0)
 			(hide yes)
 			(show_name no)

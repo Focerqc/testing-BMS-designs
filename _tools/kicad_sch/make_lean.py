@@ -22,6 +22,9 @@ and with these parts swapped (SWAP below, same nets):
   T501, T601 isoSPI transformer Pulse HM2113ZNL -> Bourns SM91502AL (same pin functions:
              chip 1-2CT-3, line 6-5CT-4 through the built-in choke; 1000 VDC working; half the area)
   H1-H4      mounting holes M3 (3.2 mm) -> M2 (2.2 mm) (2026-11-10, try 3)
+  R601, R602, C601, C602  port B termination 51 ohm / 10 nF 0603 -> 0402: they sit at the chip
+             end between port B's two lines (isoSPI Option 1, 2026-11-13); four 0603 parts need
+             13.1 mm of the 10.08 mm between U1 and T601, four 0402 about 7.4 mm
   R302       Q301 collector resistor 100 ohm 0805 -> 1 kohm 2512 (1 W): at 75.6 V and about 22 mA
              it takes about 0.5 W, so Q301 drops from about 1.5 W to about 1.05 W. At 45 V and the
              35 mA peak the collector is still 10 V above V- (datasheet p. 71: >= 6 V). Claude's
@@ -95,8 +98,21 @@ R302_1K = {
     "Note": ("Top of stack to NPN collector",
              "Top of stack to NPN collector. 18S Lean: 1 kohm takes ~0.5 W off Q301 at 75.6 V, 22 mA"),
 }
+R51_0402 = {
+    "Footprint": ("Resistor_SMD:R_0603_1608Metric", "Resistor_SMD:R_0402_1005Metric"),
+    "Description": ("51 ohm 1% 0603 (Basic)", "51 ohm 1% 62.5 mW 0402 thick film (Preferred)"),
+    "LCSC": ("C23197", "C25125"),
+    "MPN": ("0603WAF510JT5E", "0402WGF510JTCE"),
+}
+C10N_0402 = {
+    "Footprint": ("Capacitor_SMD:C_0603_1608Metric", "Capacitor_SMD:C_0402_1005Metric"),
+    "Description": ("10 nF 50 V X7R 0603 (Basic)", "10 nF 50 V X7R 0402 (Basic)"),
+    "LCSC": ("C57112", "C15195"),
+    "MPN": ("0603B103K500NT", "CL05B103KB5NNNC"),
+}
 SWAP = ({f"R2{n:02d}": R2_1206 for n in range(1, 19)} | {f"R1{n:02d}": R1_0402 for n in range(19)}
-        | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS} | {f"H{n}": HOLE_M2 for n in range(1, 5)} | {"R302": R302_1K})
+        | {"T501": XFMR_BOURNS, "T601": XFMR_BOURNS} | {f"H{n}": HOLE_M2 for n in range(1, 5)} | {"R302": R302_1K}
+        | {"R601": R51_0402, "R602": R51_0402, "C601": C10N_0402, "C602": C10N_0402})
 # Distinct contact counts for the two cell harnesses; CELL9 is on J1 only.
 # JST ePH.pdf pp. 1, 3: mounting-side pin 1, 2 mm pitch, B9B-PH-K-S.
 SWAP["J5"] = {
